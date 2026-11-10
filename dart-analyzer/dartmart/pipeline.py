@@ -13,6 +13,7 @@ from datetime import date
 from pathlib import Path
 
 from . import parse, search
+from .client import DartError
 
 ROOT = Path(__file__).resolve().parent.parent
 SCHEMA = (ROOT / "sql" / "schema.sql").read_text(encoding="utf-8")
@@ -28,7 +29,8 @@ def resolve(corps: list[dict], names: list[str], log=print) -> dict[str, dict]:
     """회사 이름 → 고유번호. 상장사(stock_code 있음)를 우선. 못 찾거나 여럿이면 건너뛰고 알림 (전체 수집은 계속)"""
     out = {}
     for n in names:
-        hits = [c for c in corps if c["corp_name"] == n]
+        n, _, code = n.partition("#")                 # "회사명#종목코드" 로 같은 이름 회사를 구분
+        hits = [c for c in corps if c["corp_name"] == n and (not code or c["stock_code"] == code)]
         listed = [c for c in hits if c["stock_code"]]
         pick = listed or hits
         if len(pick) != 1:
@@ -54,7 +56,11 @@ def load(con, client, cfg: dict, years: list[int], with_docs: bool = True, log=p
                 for f in fl[:1]:                           # 가장 최근 사업보고서 1건
                     con.execute("INSERT OR REPLACE INTO filings VALUES (?,?,?,?)", (f["rcept_no"], c["corp_code"], f["report_nm"], f["rcept_dt"]))
                     stats["filings"] += 1
-                    paras = [p for x in client.document(f["rcept_no"]) for p in parse.document_sections(x)]
+                    try:
+                        paras = [p for x in client.document(f["rcept_no"]) for p in parse.document_sections(x)]
+                    except DartError as e:                 # 원문 하나가 없어도 전체 수집은 계속
+                        log(f"⚠ {name} 원문 건너뜀: {e}")
+                        paras = []
                     con.executemany("INSERT OR REPLACE INTO paragraphs VALUES (?,?,?,?)", [(f["rcept_no"], i, p["section"], p["text"]) for i, p in enumerate(paras)])
                     stats["paragraphs"] += len(paras)
             log(f"✔ {name}")

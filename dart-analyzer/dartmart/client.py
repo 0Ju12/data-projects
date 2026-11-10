@@ -22,6 +22,10 @@ class DartError(RuntimeError):
     pass
 
 
+class NoFile(DartError):
+    """014: 원문 파일이 없음 (정정·첨부 등 일부 공시) — 그 회사 원문만 건너뛰면 됨"""
+
+
 class Client:
     def __init__(self, key: str | None = None, opener=urllib.request.urlopen, min_interval: float = 0.15, sleep=time.sleep):
         self.key = key or os.environ.get("DART_API_KEY", "")
@@ -57,7 +61,10 @@ class Client:
     def zip(self, path: str, params: dict) -> zipfile.ZipFile:
         body = self._raw(path, params)
         if body[:2] != b"PK":                       # 오류면 zip 대신 JSON/XML 메시지가 옴
-            raise DartError(f"{path}: {body[:200].decode('utf-8', 'ignore')}")
+            msg = body[:300].decode("utf-8", "ignore")
+            if "<status>014</status>" in msg or '"status":"014"' in msg:
+                raise NoFile(f"{path}: 파일 없음 (014)")
+            raise DartError(f"{path}: {msg[:200]}")
         return zipfile.ZipFile(io.BytesIO(body))
 
     # --- 엔드포인트 ---

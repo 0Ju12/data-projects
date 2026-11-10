@@ -138,3 +138,26 @@ def test_client_zip_error_message():
 def test_report_table(con):
     md = pipeline.report(con)
     assert "| 테스트 | 예시전자 | 2025 | 1,200 | 90 | 7.5% | +20.0% |" in md
+
+
+def test_resolve_with_stock_code_disambiguates():
+    corps = FakeClient().corp_codes() + [{"corp_code": "00000009", "corp_name": "예시전자", "stock_code": "999999", "modify_date": ""}]
+    assert pipeline.resolve(corps, ["예시전자"], log=lambda *a: None) == {}          # 상장사 2곳 → 건너뜀
+    got = pipeline.resolve(corps, ["예시전자#999999"], log=lambda *a: None)
+    assert got["예시전자"]["corp_code"] == "00000009"
+
+
+def test_missing_document_is_skipped(tmp_path):
+    class NoDoc(FakeClient):
+        def document(self, rcept_no):
+            raise dclient.NoFile("document.xml: 파일 없음 (014)")
+    c = pipeline.connect(tmp_path / "t.sqlite")
+    stats = pipeline.load(c, NoDoc(), {"companies": {"t": ["예시전자"]}}, [2024], log=lambda *a: None)
+    assert stats["companies"] == 1 and stats["paragraphs"] == 0 and stats["financial_rows"] > 0
+
+
+def test_client_detects_014_xml():
+    body = '<?xml version="1.0"?><result><status>014</status><message>파일이 존재하지 않습니다.</message></result>'.encode()
+    c = dclient.Client(key="dummy", opener=lambda req, timeout=60: _resp(body), sleep=lambda s: None, min_interval=0)
+    with pytest.raises(dclient.NoFile):
+        c.document("1")

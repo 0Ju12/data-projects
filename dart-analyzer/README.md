@@ -44,7 +44,7 @@ export DART_API_KEY=...            # https://opendart.fss.or.kr 에서 무료 �
 python -m dartmart.pipeline build  # config.json 의 회사·연도 수집 → data/dart.sqlite, reports/metrics.md
 python -m dartmart.pipeline report
 python -m dartmart.pipeline ask "포스코인터내셔널" "LNG 사업 투자 계획"
-python -m pytest -q                # 테스트 14개 — 가상 데이터와 가짜 클라이언트로, 실제 DART 에 접속하지 않음
+python -m pytest -q                # 테스트 17개 — 가상 데이터와 가짜 클라이언트로, 실제 DART 에 접속하지 않음
 ```
 
 GitHub Actions(저장소 루트 `.github/workflows`): `tests`(푸시마다), `dart build mart`(수동 실행 또는 매월 1일, 저장소 Secrets 에 `DART_API_KEY` 가 있어야 함).

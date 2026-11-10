@@ -16,7 +16,7 @@
 - **비밀값 관리**: 인증키는 환경변수·GitHub Secrets 로만 받습니다.
 
 ```bash
-cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 4 · dart 14
+cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 4 · dart 17
 ```
 
 GitHub Actions: `tests`(폴더별 테스트), `geo daily update`(매일 수집 → 대시보드를 GitHub Pages 로 배포), `dart build mart`(인증키가 있을 때 매월).
