@@ -5,7 +5,7 @@
 
 | 폴더 | 내용 | 데이터 | 핵심 결과 |
 |---|---|---|---|
-| [geo-data-pipeline](geo-data-pipeline/) | 지진 목록 증분 수집·정제·b값 분석·지도 대시보드, 매일 자동 갱신 | USGS FDSN (2,474건) | 동아시아 M4+ b = 1.11 ± 0.05 · 수정본 교체·격리 집계 |
+| [geo-data-pipeline](geo-data-pipeline/) | 지진 목록 증분 수집·정제·b값 분석·[지도 대시보드](https://0ju12.github.io/data-projects/), 매일 자동 갱신 | USGS FDSN (2,474건) | 동아시아 M4+ b = 1.11 ± 0.05 · 수정본 교체·격리 집계 |
 | [sensor-anomaly](sensor-anomaly/) | 유압 설비 부품별 이상 탐지·스트리밍 경보·지도학습 진단 | UCI 유압 설비 (2,205 사이클 × 17 센서) | 무작위 분할 0.99 → 시간 구간 분할에서 RF 0.46, LDA 1.00 (밸브) |
 | [power-demand](power-demand/) | 하루 전 전국 시간별 전력 수요 예측 | 전력거래소 2025 시간별 수요 + 기온 | 앙상블 MAPE 3.23% · 일 최대수요 2.64% |
 | [dart-analyzer](dart-analyzer/) | 전자공시 데이터 마트(SQL 뷰)와 사업보고서 근거 검색 | OpenDART | 피벗·LAG·RANK 뷰, 2-gram BM25 근거 검색 (인증키로 실행) |
