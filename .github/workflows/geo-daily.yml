@@ -1,0 +1,31 @@
+name: geo daily update
+on:
+  schedule: [{ cron: "17 21 * * *" }]   # 매일 06:17 KST
+  workflow_dispatch:
+permissions: { contents: write, pages: write, id-token: write }
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: geo-data-pipeline } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pytest && python -m pytest -q
+      - run: python -m geopipe.cli run
+      - name: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data docs
+          git diff --cached --quiet || git commit -m "geo: daily update $(date -u +%F)"
+          git push
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: geo-data-pipeline/docs }
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: "${{ steps.d.outputs.page_url }}" }
+    steps:
+      - id: d
+        uses: actions/deploy-pages@v4

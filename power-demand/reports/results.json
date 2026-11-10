@@ -1,0 +1,45 @@
+{
+ "hours": 8760,
+ "train": "2025-01-08 ~ 2025-09-30",
+ "test": "2025-10-01 ~ 2025-12-31",
+ "peak_MW": 95951.0,
+ "peak_time": "2025-08-25T17:00:00",
+ "results": {
+  "linear": {
+   "mape": 3.74,
+   "peak_mape": 3.19,
+   "holiday_mape": 3.99,
+   "non_holiday_mape": 3.72
+  },
+  "gbm": {
+   "mape": 4.17,
+   "peak_mape": 3.1,
+   "holiday_mape": 8.34,
+   "non_holiday_mape": 3.83
+  },
+  "naive_week": {
+   "mape": 6.17,
+   "peak_mape": 5.51,
+   "holiday_mape": 20.7,
+   "non_holiday_mape": 4.98
+  },
+  "linear+temp": {
+   "mape": 4.77,
+   "peak_mape": 3.07,
+   "holiday_mape": 5.2,
+   "non_holiday_mape": 4.73
+  },
+  "gbm+temp": {
+   "mape": 3.86,
+   "peak_mape": 2.94,
+   "holiday_mape": 8.54,
+   "non_holiday_mape": 3.47
+  },
+  "ensemble(linear, gbm+temp)": {
+   "mape": 3.23,
+   "peak_mape": 2.64,
+   "holiday_mape": 5.38,
+   "non_holiday_mape": 3.05
+  }
+ }
+}

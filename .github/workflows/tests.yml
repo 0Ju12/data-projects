@@ -1,0 +1,19 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { dir: geo-data-pipeline, deps: "pytest" }
+          - { dir: sensor-anomaly,    deps: "pytest numpy scikit-learn" }
+          - { dir: power-demand,      deps: "pytest numpy scikit-learn" }
+          - { dir: dart-analyzer,     deps: "pytest" }
+    defaults: { run: { working-directory: "${{ matrix.dir }}" } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install ${{ matrix.deps }} && python -m pytest -q

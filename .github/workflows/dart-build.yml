@@ -1,0 +1,24 @@
+name: dart build mart
+on:
+  workflow_dispatch:
+  schedule: [{ cron: "23 0 1 * *" }]   # 매월 1일 09:23 KST
+permissions: { contents: write }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ vars.DART_ENABLED == 'true' || github.event_name == 'workflow_dispatch' }}
+    defaults: { run: { working-directory: dart-analyzer } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: build
+        env: { DART_API_KEY: "${{ secrets.DART_API_KEY }}" }
+        run: python -m dartmart.pipeline build
+      - name: commit report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports
+          git diff --cached --quiet || git commit -m "dart: report $(date -u +%F)"
+          git push

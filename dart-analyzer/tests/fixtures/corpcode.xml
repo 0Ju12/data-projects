@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><result>
+<list><corp_code>00000001</corp_code><corp_name>예시전자</corp_name><stock_code>000001</stock_code><modify_date>20250101</modify_date></list>
+<list><corp_code>00000002</corp_code><corp_name>예시에너지</corp_name><stock_code>000002</stock_code><modify_date>20250101</modify_date></list>
+<list><corp_code>00000003</corp_code><corp_name>예시에너지</corp_name><stock_code> </stock_code><modify_date>20250101</modify_date></list>
+</result>

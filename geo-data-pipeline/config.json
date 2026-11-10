@@ -1,0 +1,41 @@
+{
+ "backfill_from": "2023-11-01",
+ "overlap_days": 3,
+ "map_days": 365,
+ "regions": [
+  {
+   "name": "동아시아 (한반도·일본 주변)",
+   "bbox": [
+    30,
+    46,
+    123,
+    146
+   ],
+   "min_mag": 4.0,
+   "collect": true
+  },
+  {
+   "name": "한반도 주변",
+   "bbox": [
+    33,
+    39.5,
+    124,
+    131
+   ],
+   "min_mag": 2.5,
+   "collect": true,
+   "backfill_from": "2016-01-01"
+  },
+  {
+   "name": "일본 동북 앞바다",
+   "bbox": [
+    36,
+    42,
+    140,
+    146
+   ],
+   "min_mag": 4.0,
+   "collect": false
+  }
+ ]
+}

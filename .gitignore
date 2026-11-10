@@ -1,0 +1,6 @@
+__pycache__/
+.pytest_cache/
+*.sqlite
+raw/
+cache/
+dart-analyzer/data/

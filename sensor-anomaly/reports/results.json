@@ -1,0 +1,439 @@
+{
+ "dataset": {
+  "cycles": 2205,
+  "features": 136
+ },
+ "anomaly": {
+  "cooler": {
+   "global": {
+    "train_cycles": 293,
+    "test_cycles": 1912,
+    "roc_auc": 0.9925,
+    "test_normal_false_alarm": 0.1674,
+    "test_fault_detected": 1.0,
+    "by_level": {
+     "3": {
+      "n": 732,
+      "flagged": 1.0
+     },
+     "20": {
+      "n": 732,
+      "flagged": 1.0
+     },
+     "100": {
+      "n": 448,
+      "flagged": 0.167
+     }
+    },
+    "stream": {
+     "k=1": {
+      "fault_segments": 1,
+      "detected": 1,
+      "median_latency_cycles": 0.0,
+      "false_alarms_per_100_normal": 16.74
+     },
+     "k=3": {
+      "fault_segments": 1,
+      "detected": 1,
+      "median_latency_cycles": 2.0,
+      "false_alarms_per_100_normal": 7.59
+     }
+    }
+   }
+  },
+  "valve": {
+   "global": {
+    "train_cycles": 221,
+    "test_cycles": 1984,
+    "roc_auc": 0.5347,
+    "test_normal_false_alarm": 0.4823,
+    "test_fault_detected": 0.4343,
+    "by_level": {
+     "73": {
+      "n": 360,
+      "flagged": 0.442
+     },
+     "80": {
+      "n": 360,
+      "flagged": 0.433
+     },
+     "90": {
+      "n": 360,
+      "flagged": 0.428
+     },
+     "100": {
+      "n": 904,
+      "flagged": 0.482
+     }
+    },
+    "stream": {
+     "k=1": {
+      "fault_segments": 36,
+      "detected": 29,
+      "median_latency_cycles": 0.0,
+      "false_alarms_per_100_normal": 48.23
+     },
+     "k=3": {
+      "fault_segments": 36,
+      "detected": 19,
+      "median_latency_cycles": 0.0,
+      "false_alarms_per_100_normal": 46.57
+     }
+    }
+   },
+   "regime_aware": {
+    "train_cycles": 221,
+    "test_cycles": 1984,
+    "roc_auc": 0.44,
+    "test_normal_false_alarm": 0.323,
+    "test_fault_detected": 0.3435,
+    "by_level": {
+     "73": {
+      "n": 360,
+      "flagged": 0.367
+     },
+     "80": {
+      "n": 360,
+      "flagged": 0.411
+     },
+     "90": {
+      "n": 360,
+      "flagged": 0.253
+     },
+     "100": {
+      "n": 904,
+      "flagged": 0.323
+     }
+    },
+    "stream": {
+     "k=1": {
+      "fault_segments": 36,
+      "detected": 25,
+      "median_latency_cycles": 0.0,
+      "false_alarms_per_100_normal": 32.3
+     },
+     "k=3": {
+      "fault_segments": 36,
+      "detected": 17,
+      "median_latency_cycles": 2.0,
+      "false_alarms_per_100_normal": 29.42
+     }
+    }
+   }
+  },
+  "pump": {
+   "global": {
+    "train_cycles": 293,
+    "test_cycles": 1912,
+    "roc_auc": 0.6433,
+    "test_normal_false_alarm": 0.542,
+    "test_fault_detected": 0.9939,
+    "by_level": {
+     "0": {
+      "n": 928,
+      "flagged": 0.542
+     },
+     "1": {
+      "n": 492,
+      "flagged": 0.988
+     },
+     "2": {
+      "n": 492,
+      "flagged": 1.0
+     }
+    },
+    "stream": {
+     "k=1": {
+      "fault_segments": 12,
+      "detected": 12,
+      "median_latency_cycles": 0.0,
+      "false_alarms_per_100_normal": 54.2
+     },
+     "k=3": {
+      "fault_segments": 12,
+      "detected": 12,
+      "median_latency_cycles": 2.0,
+      "false_alarms_per_100_normal": 51.29
+     }
+    }
+   },
+   "regime_aware": {
+    "train_cycles": 293,
+    "test_cycles": 1912,
+    "roc_auc": 0.6182,
+    "test_normal_false_alarm": 0.3103,
+    "test_fault_detected": 0.3496,
+    "by_level": {
+     "0": {
+      "n": 928,
+      "flagged": 0.31
+     },
+     "1": {
+      "n": 492,
+      "flagged": 0.348
+     },
+     "2": {
+      "n": 492,
+      "flagged": 0.352
+     }
+    },
+    "stream": {
+     "k=1": {
+      "fault_segments": 12,
+      "detected": 10,
+      "median_latency_cycles": 1.5,
+      "false_alarms_per_100_normal": 31.03
+     },
+     "k=3": {
+      "fault_segments": 12,
+      "detected": 4,
+      "median_latency_cycles": 1.0,
+      "false_alarms_per_100_normal": 29.31
+     }
+    }
+   }
+  },
+  "accumulator": {
+   "global": {
+    "train_cycles": 216,
+    "test_cycles": 1989,
+    "roc_auc": 0.5541,
+    "test_normal_false_alarm": 0.7885,
+    "test_fault_detected": 0.8979,
+    "by_level": {
+     "90": {
+      "n": 808,
+      "flagged": 0.936
+     },
+     "100": {
+      "n": 399,
+      "flagged": 0.915
+     },
+     "115": {
+      "n": 399,
+      "flagged": 0.805
+     },
+     "130": {
+      "n": 383,
+      "flagged": 0.789
+     }
+    },
+    "stream": {
+     "k=1": {
+      "fault_segments": 3,
+      "detected": 3,
+      "median_latency_cycles": 0.0,
+      "false_alarms_per_100_normal": 78.85
+     },
+     "k=3": {
+      "fault_segments": 3,
+      "detected": 3,
+      "median_latency_cycles": 0.0,
+      "false_alarms_per_100_normal": 66.32
+     }
+    }
+   },
+   "regime_aware": {
+    "train_cycles": 216,
+    "test_cycles": 1989,
+    "roc_auc": 0.7916,
+    "test_normal_false_alarm": 0.9426,
+    "test_fault_detected": 1.0,
+    "by_level": {
+     "90": {
+      "n": 808,
+      "flagged": 1.0
+     },
+     "100": {
+      "n": 399,
+      "flagged": 1.0
+     },
+     "115": {
+      "n": 399,
+      "flagged": 1.0
+     },
+     "130": {
+      "n": 383,
+      "flagged": 0.943
+     }
+    },
+    "stream": {
+     "k=1": {
+      "fault_segments": 3,
+      "detected": 3,
+      "median_latency_cycles": 0.0,
+      "false_alarms_per_100_normal": 94.26
+     },
+     "k=3": {
+      "fault_segments": 3,
+      "detected": 3,
+      "median_latency_cycles": 0.0,
+      "false_alarms_per_100_normal": 91.12
+     }
+    }
+   }
+  }
+ },
+ "diagnosis": {
+  "cooler": {
+   "random_forest/random_split": {
+    "accuracy": 0.9985,
+    "macro_f1": 0.9985
+   },
+   "random_forest/block_split": {
+    "accuracy": 1.0,
+    "macro_f1": 1.0
+   },
+   "rf_top_features": [
+    [
+     "CP_max",
+     0.0726
+    ],
+    [
+     "CP_p95",
+     0.0705
+    ],
+    [
+     "CP_mean",
+     0.0637
+    ],
+    [
+     "CE_mean",
+     0.0561
+    ],
+    [
+     "CP_p05",
+     0.0463
+    ]
+   ],
+   "lda/random_split": {
+    "accuracy": 1.0,
+    "macro_f1": 1.0
+   },
+   "lda/block_split": {
+    "accuracy": 1.0,
+    "macro_f1": 1.0
+   }
+  },
+  "valve": {
+   "random_forest/random_split": {
+    "accuracy": 0.9924,
+    "macro_f1": 0.9892
+   },
+   "random_forest/block_split": {
+    "accuracy": 0.4562,
+    "macro_f1": 0.1566
+   },
+   "rf_top_features": [
+    [
+     "PS2_diff_rms",
+     0.1377
+    ],
+    [
+     "PS2_slope",
+     0.0798
+    ],
+    [
+     "SE_diff_rms",
+     0.0616
+    ],
+    [
+     "PS1_slope",
+     0.0553
+    ],
+    [
+     "PS2_std",
+     0.0523
+    ]
+   ],
+   "lda/random_split": {
+    "accuracy": 1.0,
+    "macro_f1": 1.0
+   },
+   "lda/block_split": {
+    "accuracy": 1.0,
+    "macro_f1": 1.0
+   }
+  },
+  "pump": {
+   "random_forest/random_split": {
+    "accuracy": 0.9985,
+    "macro_f1": 0.9977
+   },
+   "random_forest/block_split": {
+    "accuracy": 0.7523,
+    "macro_f1": 0.6166
+   },
+   "rf_top_features": [
+    [
+     "FS1_mean",
+     0.1131
+    ],
+    [
+     "SE_mean",
+     0.0946
+    ],
+    [
+     "FS1_p95",
+     0.0792
+    ],
+    [
+     "SE_std",
+     0.0649
+    ],
+    [
+     "SE_p95",
+     0.058
+    ]
+   ],
+   "lda/random_split": {
+    "accuracy": 0.9985,
+    "macro_f1": 0.9977
+   },
+   "lda/block_split": {
+    "accuracy": 1.0,
+    "macro_f1": 1.0
+   }
+  },
+  "accumulator": {
+   "random_forest/random_split": {
+    "accuracy": 0.997,
+    "macro_f1": 0.9962
+   },
+   "random_forest/block_split": {
+    "accuracy": 0.3973,
+    "macro_f1": 0.1422
+   },
+   "rf_top_features": [
+    [
+     "PS1_diff_rms",
+     0.0644
+    ],
+    [
+     "PS6_diff_rms",
+     0.0306
+    ],
+    [
+     "SE_max",
+     0.0214
+    ],
+    [
+     "FS1_max",
+     0.0208
+    ],
+    [
+     "VS1_p05",
+     0.0205
+    ]
+   ],
+   "lda/random_split": {
+    "accuracy": 0.9486,
+    "macro_f1": 0.9405
+   },
+   "lda/block_split": {
+    "accuracy": 0.5529,
+    "macro_f1": 0.3969
+   }
+  }
+ }
+}
