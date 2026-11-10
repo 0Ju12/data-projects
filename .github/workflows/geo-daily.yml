@@ -9,6 +9,7 @@ jobs:
     defaults: { run: { working-directory: geo-data-pipeline } }
     steps:
       - uses: actions/checkout@v4
+        with: { ref: main }   # 다시 실행해도 항상 최신 main 에서 시작
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: pip install pytest && python -m pytest -q
@@ -19,6 +20,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data docs
           git diff --cached --quiet || git commit -m "geo: daily update $(date -u +%F)"
+          git pull --rebase origin main   # 그 사이 다른 커밋이 올라왔어도 밀리지 않게
           git push
       - uses: actions/upload-pages-artifact@v3
         with: { path: geo-data-pipeline/docs }
