@@ -39,3 +39,15 @@ def test_metrics():
     assert np.isclose(model.mape(y, p), 10.0)
     ts = [datetime(2025, 1, 1, 1), datetime(2025, 1, 1, 2)]
     assert np.isclose(model.daily_peak_error(ts, y, p), 10.0)    # 최대 200 vs 180
+
+
+def test_explorer_predictions_match_report():
+    """탐색기 데이터가 시험 구간 전체(92일 × 24시간)이고, 앙상블 MAPE 가 results.json 과 같은지"""
+    import json
+    p = json.loads((ROOT / "explorer" / "predictions.json").read_text(encoding="utf-8"))
+    rep = json.loads((ROOT / "reports" / "results.json").read_text(encoding="utf-8"))
+    assert p["n"] == 92 * 24 and len(p["actual"]) == p["n"]
+    assert set(p["models"]) == {"naive", "linear", "gbm", "ens"}
+    a = np.array(p["actual"], float)
+    ens = np.array(p["models"]["ens"], float)
+    assert abs(model.mape(a, ens) - rep["results"]["ensemble(linear, gbm+temp)"]["mape"]) < 0.02

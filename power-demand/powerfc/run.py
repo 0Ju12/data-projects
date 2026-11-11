@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import numpy as np
@@ -75,6 +75,20 @@ def plot(preds, out: Path):
     plt.close(fig)
 
 
+def export(preds, temp, path: Path):
+    """탐색기(explorer/index.html)용 시험 구간 시간별 실제·예측값 (MW 정수)"""
+    ts, y, _ = preds["ensemble(linear, gbm+temp)"]
+    keys = {"naive": "naive_week", "linear": "linear", "gbm": "gbm+temp", "ens": "ensemble(linear, gbm+temp)"}
+    out = {"start": ts[0].isoformat(), "n": len(ts), "actual": [int(round(v)) for v in y],
+           "temp": [None if temp.get(t) is None else round(float(temp[t]), 1) for t in ts],
+           "holiday": sorted({t.date().isoformat() for t in ts if data.is_holiday(t.date())}),
+           "models": {k: [int(round(v)) for v in preds[src][2]] for k, src in keys.items()}}
+    assert all(len(v) == len(ts) for v in out["models"].values())
+    assert all(b - a == timedelta(hours=1) for a, b in zip(ts, ts[1:])), "시험 구간이 1시간 간격으로 이어져야 함"
+    path.parent.mkdir(exist_ok=True)
+    path.write_text(json.dumps(out, separators=(",", ":")), encoding="utf-8")
+
+
 def main():
     series = dict(data.load_demand(ROOT / "data" / "kpx_hourly_demand_2025.csv"))
     temp = data.load_weather(ROOT / "data" / "weather_2025.csv")
@@ -88,6 +102,7 @@ def main():
         plot(preds, out)
     except ImportError:
         pass
+    export(preds, temp, ROOT / "explorer" / "predictions.json")
     for k, v in res.items():
         print(f"{k:28s} MAPE {v['mape']:5.2f}%  peak {v['peak_mape']:5.2f}%  holiday {v['holiday_mape']:5.2f}%  other {v['non_holiday_mape']:5.2f}%")
 

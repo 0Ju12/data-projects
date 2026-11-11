@@ -22,6 +22,8 @@ jobs:
           git diff --cached --quiet || git commit -m "geo: daily update $(date -u +%F)"
           git pull --rebase origin main   # 그 사이 다른 커밋이 올라왔어도 밀리지 않게
           git push
+      - name: 전력 수요 탐색기를 같은 Pages 에 포함 (/power/)
+        run: rm -rf docs/power && cp -r ../power-demand/explorer docs/power
       - uses: actions/upload-pages-artifact@v3
         with: { path: geo-data-pipeline/docs }
   deploy:

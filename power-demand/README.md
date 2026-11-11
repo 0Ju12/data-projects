@@ -26,6 +26,8 @@
 
 ![forecast](reports/forecast.png)
 
+**직접 보기 → [전력 수요 예측 탐색기](https://0ju12.github.io/data-projects/power/)** — 시험 구간(10~12월) 날짜를 골라 실제 수요와 모델 4종의 시간별 예측을 비교하고, 날짜별 오차 달력·가장 많이 틀린 날을 볼 수 있습니다 (`python -m powerfc.run` 이 `explorer/predictions.json` 을 만듦).
+
 ## 읽은 것
 
 - **공휴일은 트리 모델의 약점**: 1~9월 학습 데이터에 공휴일 시간이 적어 GBM 은 공휴일 오차가 평일의 두 배 이상입니다. '시각 × 날 종류' 구조를 그대로 쓰는 선형 모델은 공휴일에서 오히려 안정적이었습니다.
