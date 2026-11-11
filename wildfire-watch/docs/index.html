@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>산불 위험 지도 — 화재기상지수와 위성 탐지</title>
+<meta name="description" content="기상으로 계산한 화재기상지수(FFWI)와 위성이 실제로 탐지한 열원을 매일 모아 비교하는 지도">
+<style>
+:root{--bg:#f7f7f8;--card:#fff;--text:#18181b;--muted:#5f6670;--faint:#6e6e78;--line:#e4e6ea;--soft:#f0f2f5;--sea:#eef2f6;--fire:#dc2626;--static:#6b7280;--hi:#b91c1c}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0e1116;--card:#161a21;--text:#eef1f5;--muted:#a3abb7;--faint:#8b93a0;--line:#29303a;--soft:#1d222b;--sea:#12161c;--fire:#f87171;--static:#9ca3af;--hi:#f87171}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 Pretendard,"Noto Sans KR",system-ui,sans-serif;word-break:keep-all}
+.w{max-width:1080px;margin:0 auto;padding:28px 16px 56px}
+a{color:inherit}
+h1{font-size:clamp(26px,4vw,36px);letter-spacing:-.03em;margin:0 0 6px;line-height:1.2}
+h2{font-size:16px;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 18px;max-width:74ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+.lay{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:860px){.lay{grid-template-columns:1fr}}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{height:36px;min-width:36px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-weight:700;cursor:pointer}
+.btn:hover{border-color:var(--text)}
+input[type=range]{flex:1;min-width:120px}
+.tagf{font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.kpi{background:var(--soft);border-radius:12px;padding:10px 12px}.kpi b{display:block;font-size:20px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.kpi span{font-size:12.5px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px 4px;border-top:1px solid var(--line);text-align:left}th{color:var(--muted);font-weight:600;border-top:0}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.leg{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:8px}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.bar{display:inline-block;height:10px;width:120px;border-radius:5px;vertical-align:-1px;margin:0 6px;background:linear-gradient(90deg,#fff7d6,#fdba74,#ea580c,#7f1d1d)}
+.faint{color:var(--faint);font-size:12.5px}
+svg text{font-size:10px;fill:var(--muted)}
+:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="w">
+  <p class="faint" style="margin:0 0 6px"><a href="https://github.com/0Ju12/data-projects/tree/main/wildfire-watch">코드</a> · <a href="../">지진 대시보드</a> · <a href="../power/">전력 예측 탐색기</a></p>
+  <h1>산불 위험 지도</h1>
+  <p class="sub">날씨로 계산한 <b>화재기상지수(FFWI)</b>와 위성이 실제로 탐지한 <b>열원</b>을 매일 모아 같은 지도에 놓습니다. 지수가 높았던 곳에서 정말 불이 더 났는지를 계속 기록해, 지수를 믿어도 되는지 숫자로 확인하는 것이 목적입니다.</p>
+
+  <div class="lay">
+    <div class="card">
+      <div class="row"><button class="btn" id="prev" aria-label="전날">←</button><input type="range" id="day" min="0" max="0" value="0" aria-label="날짜"><button class="btn" id="next" aria-label="다음 날">→</button></div>
+      <div class="row" style="margin-top:6px;justify-content:space-between"><b id="dlabel"></b><span class="tagf" id="dkind"></span></div>
+      <div id="map" style="margin-top:8px"></div>
+      <div class="leg"><span>지수 낮음<span class="bar"></span>높음</span><span><i style="background:var(--fire)"></i>화재 의심 탐지</span><span><i style="background:transparent;border:1.5px solid var(--static)"></i>상시 열원(공장 등)</span></div>
+      <p class="faint" id="tip" style="margin:8px 0 0;min-height:1.6em">칸을 누르면 그날 기상 값을 볼 수 있습니다.</p>
+    </div>
+    <div>
+      <div class="card"><h2 id="toph"></h2><table id="top"></table></div>
+      <div class="card" style="margin-top:14px"><h2>지수가 맞았나</h2><div class="kpis" id="ev"></div><p class="faint" id="evn" style="margin:8px 0 0"></p></div>
+      <div class="card" style="margin-top:14px"><h2>위성 탐지의 대부분은 불이 아닙니다</h2><div class="kpis" id="st"></div><table id="stt" style="margin-top:8px"></table><p class="faint" style="margin:8px 0 0">같은 자리(약 1 km)에서 서로 다른 날 3일 이상 탐지되면 제철소·시멘트 공장 같은 상시 열원으로 보고 화재에서 뺍니다. 여러 날 이어지는 큰 산불이 잘못 걸러질 수 있고, 하루 이틀만 잡힌 공장은 '화재 의심'에 남아 있을 수 있습니다.</p></div>
+    </div>
+  </div>
+  <p class="faint" style="margin-top:16px">자료: NASA FIRMS VIIRS 375 m 활성 화재(NOAA-20·NOAA-21·Suomi NPP, 준실시간), Open-Meteo 일 기상(CC BY 4.0), 경계 Natural Earth. 지수는 Fosberg 화재기상지수로 기온·습도·풍속만 쓰며 비가 온 이력과 숲의 상태는 반영하지 않습니다. 0.25° 칸의 그날 최고기온·최저습도·최대풍속으로 계산한 '가장 나쁜 조건' 근사입니다. 이 페이지는 연구·학습용이며 산림청 산불위험예보를 대신하지 않습니다. 학부 연구의 딥러닝 산불 확산 모델과는 다른, 기상만 쓰는 기준선입니다.</p>
+</div>
+<script>
+(function(){
+var D,cur=0,$=function(id){return document.getElementById(id)},sel=null;
+function col(v){var t=Math.max(0,Math.min(1,v/45)),S=[[255,247,214],[253,186,116],[234,88,12],[127,29,29]],x=t*(S.length-1),i=Math.min(S.length-2,Math.floor(x)),f=x-i;return 'rgb('+S[i].map(function(a,k){return Math.round(a+(S[i+1][k]-a)*f)}).join(',')+')'}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+fetch('data.json').then(function(r){return r.json()}).then(function(d){D=d;
+  $('day').max=D.days.length-1;cur=Math.max(0,D.days.indexOf(D.today));$('day').value=cur;
+  $('day').oninput=function(){cur=+this.value;draw()};$('prev').onclick=function(){if(cur>0){cur--;$('day').value=cur;draw()}};$('next').onclick=function(){if(cur<D.days.length-1){cur++;$('day').value=cur;draw()}};
+  side();draw()}).catch(function(){$('map').textContent='자료를 불러오지 못했습니다.'});
+function draw(){var day=D.days[cur],W=520,b=D.bbox,kx=Math.cos(36*Math.PI/180),sc=W/((b[3]-b[2])*kx),H=Math.round((b[1]-b[0])*sc);
+  var X=function(lon){return (lon-b[2])*kx*sc},Y=function(lat){return H-(lat-b[0])*sc},wx=D.weather[day]||{},fc=D.forecast_from&&day>=D.forecast_from;
+  $('dlabel').textContent=day+' ('+'일월화수목금토'[new Date(day+'T00:00:00').getDay()]+')'+(day===D.today?' · 오늘':'');$('dkind').textContent=fc?'예보':'지난 날';
+  var cs=getComputedStyle(document.documentElement),g='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="'+day+' 화재기상지수 지도"><rect width="'+W+'" height="'+H+'" fill="'+cs.getPropertyValue('--sea').trim()+'" rx="10"/>';
+  D.cells.forEach(function(c){var p=c.split('_'),la=+p[0],lo=+p[1],v=wx[c];if(!v)return;
+    g+='<rect data-c="'+c+'" x="'+X(lo).toFixed(1)+'" y="'+Y(la+D.step).toFixed(1)+'" width="'+(D.step*kx*sc+0.5).toFixed(1)+'" height="'+(D.step*sc+0.5).toFixed(1)+'" fill="'+col(v[0])+'"'+(sel===c?' stroke="'+cs.getPropertyValue('--text').trim()+'" stroke-width="2"':'')+' style="cursor:pointer"><title>'+esc(D.near[c])+' · 지수 '+v[0]+'</title></rect>'});
+  D.outline.forEach(function(r){g+='<path d="M'+r.map(function(p){return X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)}).join('L')+'Z" fill="none" stroke="'+cs.getPropertyValue('--muted').trim()+'" stroke-width="0.8"/>'});
+  var nf=0,ns=0;D.detections.forEach(function(d){if(d[0]!==day)return;if(d[3]){ns++;g+='<circle cx="'+X(d[2]).toFixed(1)+'" cy="'+Y(d[1]).toFixed(1)+'" r="3.2" fill="none" stroke="'+cs.getPropertyValue('--static').trim()+'" stroke-width="1.3"/>'}});
+  D.detections.forEach(function(d){if(d[0]!==day||d[3])return;nf++;g+='<circle cx="'+X(d[2]).toFixed(1)+'" cy="'+Y(d[1]).toFixed(1)+'" r="3.6" fill="'+cs.getPropertyValue('--fire').trim()+'" stroke="#fff" stroke-width="0.8"><title>'+d[4]+' · FRP '+d[5]+'</title></circle>'});
+  $('map').innerHTML=g+'</svg>';
+  [].forEach.call(document.querySelectorAll('[data-c]'),function(r){r.onclick=function(){sel=r.dataset.c;var v=wx[sel];$('tip').textContent=D.near[sel]+' — 지수 '+v[0]+' · 최고 '+v[1]+'℃ · 최저 습도 '+v[2]+'% · 최대 풍속 '+v[3]+' km/h · 강수 '+v[4]+' mm';draw()}});
+  var rank=D.cells.filter(function(c){return wx[c]}).sort(function(a,b){return wx[b][0]-wx[a][0]}).slice(0,6);
+  $('toph').textContent=day+' 지수가 높은 곳'+(fc?' (예보)':'');
+  $('top').innerHTML='<tr><th>지역</th><th class="n">지수</th><th class="n">습도</th><th class="n">풍속</th></tr>'+rank.map(function(c){var v=wx[c];return '<tr><td>'+esc(D.near[c])+'</td><td class="n">'+v[0]+'</td><td class="n">'+v[2]+'%</td><td class="n">'+v[3]+'</td></tr>'}).join('')+'<tr><td colspan="4" class="faint">'+(fc?'예보 날짜라 탐지 자료는 아직 없습니다.':'이날 위성 탐지: 화재 의심 '+nf+'건 · 상시 열원 '+ns+'건')+'</td></tr>'}
+function side(){var s=D.summary,e=s.evaluation,k=function(a,b){return '<div class="kpi"><b>'+a+'</b><span>'+b+'</span></div>'};
+  if(e){$('ev').innerHTML=k(e.auc==null?'—':e.auc.toFixed(2),'AUC (0.5 = 무작위)')+k(e.top20_hit==null?'—':Math.round(e.top20_hit*100)+'%','지수 상위 20% 칸에 든 화재 칸')+k(e.positive_cell_days,'화재 의심 칸·날')+k(e.days+'일','평가 기간');
+    $('evn').textContent=e.first+' ~ '+e.last+', 육지 칸 '+D.cells.length+'개 × '+e.days+'일 = '+e.cell_days+' 칸·날 가운데 화재 의심은 '+e.positive_cell_days+'건입니다. '+(e.positive_cell_days<50?'아직 건수가 너무 적어 지수가 맞는지 틀리는지 말할 수 없습니다. 매일 쌓이면서 달라집니다.':'')+' 화재 칸의 평균 지수 '+(e.mean_ffwi_pos==null?'—':e.mean_ffwi_pos)+' · 나머지 '+e.mean_ffwi_neg+'.'}
+  else $('ev').innerHTML=k('—','평가할 날이 아직 부족합니다');
+  $('st').innerHTML=k(s.detections,'모은 탐지 ('+s.detection_days[0].slice(5)+' ~ '+s.detection_days[1].slice(5)+')')+k(Math.round(s.static_detections/s.detections*100)+'%','상시 열원으로 걸러낸 비율')+k(s.static_sources,'상시 열원 자리');
+  var m={};D.static.forEach(function(x){(m[x[3]]=m[x[3]]||[]).push(x[2])});var rows=Object.keys(m).map(function(n){return [n,m[n].length,Math.max.apply(null,m[n])]}).sort(function(a,b){return b[1]-a[1]}).slice(0,6);
+  $('stt').innerHTML='<tr><th>상시 열원이 모인 곳</th><th class="n">자리 수</th><th class="n">최다 탐지 일수</th></tr>'+rows.map(function(r){return '<tr><td>'+esc(r[0])+'</td><td class="n">'+r[1]+'</td><td class="n">'+r[2]+'일</td></tr>'}).join('')}
+})();
+</script>
+</body>
+</html>

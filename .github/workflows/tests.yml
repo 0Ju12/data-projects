@@ -11,6 +11,8 @@ jobs:
           - { dir: sensor-anomaly,    deps: "pytest numpy scikit-learn" }
           - { dir: power-demand,      deps: "pytest numpy scikit-learn" }
           - { dir: dart-analyzer,     deps: "pytest" }
+          - { dir: wildfire-watch,    deps: "pytest" }
+          - { dir: data-agent,        deps: "pytest anyio 'mcp>=1.9,<2'" }
     defaults: { run: { working-directory: "${{ matrix.dir }}" } }
     steps:
       - uses: actions/checkout@v4

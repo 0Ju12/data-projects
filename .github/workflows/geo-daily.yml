@@ -14,16 +14,26 @@ jobs:
         with: { python-version: "3.12" }
       - run: pip install pytest && python -m pytest -q
       - run: python -m geopipe.cli run
+      - name: 산불 탐지·화재기상지수 갱신 (실패해도 지진 갱신은 계속)
+        continue-on-error: true
+        working-directory: wildfire-watch
+        run: python -m pytest -q && python -m firewatch.cli run
       - name: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data docs
+          git add data docs ../wildfire-watch/data ../wildfire-watch/docs/data.json
           git diff --cached --quiet || git commit -m "geo: daily update $(date -u +%F)"
           git pull --rebase origin main   # 그 사이 다른 커밋이 올라왔어도 밀리지 않게
           git push
-      - name: 전력 수요 탐색기를 같은 Pages 에 포함 (/power/)
-        run: rm -rf docs/power && cp -r ../power-demand/explorer docs/power
+      - uses: actions/checkout@v4
+        with: { repository: 0Ju12/gravmag-wcf, path: _wcf }
+      - name: 다른 프로젝트의 페이지를 같은 Pages 에 포함 (/power/ · /fire/ · /wcf/)
+        run: |
+          rm -rf docs/power docs/fire docs/wcf
+          cp -r ../power-demand/explorer docs/power
+          cp -r ../wildfire-watch/docs docs/fire
+          cp -r ../_wcf/web docs/wcf
       - uses: actions/upload-pages-artifact@v3
         with: { path: geo-data-pipeline/docs }
   deploy:
