@@ -20,5 +20,11 @@
   "mean_ffwi_pos": 15.8,
   "mean_ffwi_neg": 15.3
  },
- "fetch": {}
+ "fetch": {
+  "N20": 189,
+  "N21": 205,
+  "SNPP": 0,
+  "new": 0,
+  "weather": "ok"
+ }
 }
