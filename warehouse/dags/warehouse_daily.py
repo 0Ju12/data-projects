@@ -25,7 +25,7 @@ with DAG(
     schedule="20 21 * * *",          # 매일 06:20 KST — 지진 수집(06:17) 뒤
     catchup=False,
     max_active_runs=1,               # 같은 DuckDB 파일을 동시에 쓰지 않도록
-    default_args={"retries": 2, "retry_delay": timedelta(minutes=3)},
+    default_args={"retries": 2, "retry_delay": timedelta(seconds=20)},
     tags=["warehouse", "dbt"],
 ) as dag:
 

@@ -139,6 +139,7 @@ def restore_state(db: str, state: Path) -> int:
     CI 는 매번 빈 DB 에서 시작하므로, 이력을 state/snap_quakes.parquet 로 저장소에 남기고 실행 전에 다시 넣습니다.
     이렇게 해야 어제까지 쌓인 판 위에 오늘의 변경이 이어집니다.
     """
+    Path(db).parent.mkdir(parents=True, exist_ok=True)   # 처음 실행이면 DB 폴더가 아직 없음
     f = state / "snap_quakes.parquet"
     if not f.exists():
         return 0

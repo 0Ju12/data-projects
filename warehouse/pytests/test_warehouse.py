@@ -153,6 +153,8 @@ def test_history_survives_a_fresh_database(src, tmp_path):
     assert q(src, "select mag from snap_quakes where quake_id = 'a1' order by dbt_valid_from") == [(4.5,), (4.8,)]
     assert P.save_state(src["db"], state) == 4
     assert P.restore_state(str(tmp_path / "other.duckdb"), tmp_path / "no-state") == 0
+    # 처음 실행: DB 폴더가 아직 없어도 되살리기가 된다 (CI 의 Airflow 실행에서 실제로 났던 실패)
+    assert P.restore_state(str(tmp_path / "fresh" / "target" / "wh.duckdb"), state) == 4
 
 
 def test_map_to_data_year():

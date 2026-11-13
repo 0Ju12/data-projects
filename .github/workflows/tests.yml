@@ -36,6 +36,6 @@ jobs:
         run: |
           export AIRFLOW_HOME=$PWD/airflow_home AIRFLOW__CORE__DAGS_FOLDER=$PWD/dags DBT_BIN=$PWD/.dbt/bin/dbt
           airflow db migrate > /dev/null 2>&1
-          airflow dags test warehouse_daily 2026-11-13 2>&1 | tee af.log | grep -E "Done. Returned|DagRun Finished|Marking run" | cut -c1-200
+          airflow dags test warehouse_daily 2026-11-13 2>&1 | tee af.log | grep -E "Done. Returned|DagRun Finished|Marking run|Error|error:" | cut -c1-400
           grep -q "state:running.*successful\|Marking run.*successful" af.log
           test -f exports/fct_demand_hourly/demand_date=2025-11-13/part.parquet
