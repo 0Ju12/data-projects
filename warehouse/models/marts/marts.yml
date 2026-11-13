@@ -1,0 +1,35 @@
+version: 2
+models:
+  - name: dim_date
+    columns:
+      - name: date_day
+        data_tests: [unique, not_null]
+  - name: fct_demand_hourly
+    description: "한 행 = 한 시간. 키는 그 시간의 시작 시각(KST)"
+    columns:
+      - name: hour_start_kst
+        data_tests: [unique, not_null]
+      - name: demand_date
+        data_tests:
+          - not_null
+          - relationships: {arguments: {to: ref('dim_date'), field: date_day}}
+      - name: demand_mw
+        data_tests:
+          - not_null
+          - accepted_range: {arguments: {min_value: 20000, max_value: 120000}}
+      - name: temp_mean
+        data_tests: [not_null]
+  - name: fct_demand_daily
+    columns:
+      - name: demand_date
+        data_tests: [unique, not_null]
+      - name: load_factor
+        data_tests: [{accepted_range: {arguments: {min_value: 0.5, max_value: 1}}}]
+  - name: dim_region
+    columns:
+      - name: region
+        data_tests: [unique, not_null]
+  - name: fct_quakes_monthly
+    columns:
+      - name: region
+        data_tests: [{relationships: {arguments: {to: ref('dim_region'), field: region}}}]

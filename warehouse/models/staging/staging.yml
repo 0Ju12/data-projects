@@ -1,0 +1,27 @@
+version: 2
+models:
+  - name: stg_quakes
+    description: "USGS 지진 목록 (geo-data-pipeline 이 매일 갱신)"
+    columns:
+      - name: quake_id
+        data_tests: [unique, not_null]
+      - name: occurred_at_utc
+        data_tests: [not_null]
+      - name: mag
+        data_tests:
+          - not_null
+          - accepted_range: {arguments: {min_value: 0, max_value: 10}}
+      - name: lat
+        data_tests: [{accepted_range: {arguments: {min_value: -90, max_value: 90}}}]
+      - name: lon
+        data_tests: [{accepted_range: {arguments: {min_value: -180, max_value: 180}}}]
+      - name: depth_km
+        data_tests: [{accepted_range: {arguments: {min_value: -10, max_value: 800}}}]
+      - name: status
+        data_tests: [{accepted_values: {arguments: {values: ["reviewed", "automatic"]}}}]
+  - name: stg_weather
+    columns:
+      - name: observed_at_kst
+        data_tests: [unique, not_null]
+      - name: temp_mean
+        data_tests: [{accepted_range: {arguments: {min_value: -40, max_value: 45}}}]

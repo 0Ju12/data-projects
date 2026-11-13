@@ -13,9 +13,29 @@ jobs:
           - { dir: dart-analyzer,     deps: "pytest" }
           - { dir: wildfire-watch,    deps: "pytest" }
           - { dir: data-agent,        deps: "pytest anyio 'mcp>=1.9,<2'" }
+          - { dir: warehouse,         deps: "-r requirements.txt" }
     defaults: { run: { working-directory: "${{ matrix.dir }}" } }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: pip install ${{ matrix.deps }} && python -m pytest -q
+
+  warehouse-airflow:     # DAG 가 실제 Airflow 에서 끝까지 도는지 (Docker 없이, dbt 는 별도 가상환경)
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: warehouse } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m venv .dbt && .dbt/bin/pip install -q "dbt-duckdb>=1.9,<2"
+      - run: pip install -q "apache-airflow>=3,<4" duckdb
+      - name: airflow dags test
+        env:
+          AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+        run: |
+          export AIRFLOW_HOME=$PWD/airflow_home AIRFLOW__CORE__DAGS_FOLDER=$PWD/dags DBT_BIN=$PWD/.dbt/bin/dbt
+          airflow db migrate > /dev/null 2>&1
+          airflow dags test warehouse_daily 2026-11-13 2>&1 | tee af.log | grep -E "Done. Returned|DagRun Finished|Marking run" | cut -c1-200
+          grep -q "state:running.*successful\|Marking run.*successful" af.log
+          test -f exports/fct_demand_hourly/demand_date=2025-11-13/part.parquet

@@ -18,22 +18,31 @@ jobs:
         continue-on-error: true
         working-directory: wildfire-watch
         run: python -m pytest -q && python -m firewatch.cli run
+      - name: 웨어하우스 — dbt 모델·테스트·변경 이력, 실행 기록 (실패해도 다른 갱신은 계속)
+        continue-on-error: true
+        working-directory: warehouse
+        run: |
+          pip install -q -r requirements.txt
+          python -m wh.cli run --date "$(date -u +%F)" | grep -v '"error"' ; rc=${PIPESTATUS[0]}
+          python -m wh.cli report || true
+          exit $rc
       - name: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data docs ../wildfire-watch/data ../wildfire-watch/docs/data.json
+          git add data docs ../wildfire-watch/data ../wildfire-watch/docs/data.json ../warehouse/runs ../warehouse/state
           git diff --cached --quiet || git commit -m "geo: daily update $(date -u +%F)"
           git pull --rebase origin main   # 그 사이 다른 커밋이 올라왔어도 밀리지 않게
           git push
       - uses: actions/checkout@v4
         with: { repository: 0Ju12/gravmag-wcf, path: _wcf }
-      - name: 다른 프로젝트의 페이지를 같은 Pages 에 포함 (/power/ · /fire/ · /wcf/)
+      - name: 다른 프로젝트의 페이지를 같은 Pages 에 포함 (/power/ · /fire/ · /wcf/ · /warehouse/)
         run: |
-          rm -rf docs/power docs/fire docs/wcf
+          rm -rf docs/power docs/fire docs/wcf docs/warehouse
           cp -r ../power-demand/explorer docs/power
           cp -r ../wildfire-watch/docs docs/fire
           cp -r ../_wcf/web docs/wcf
+          if [ -f ../warehouse/docs/index.html ]; then cp -r ../warehouse/docs docs/warehouse; fi
       - uses: actions/upload-pages-artifact@v3
         with: { path: geo-data-pipeline/docs }
   deploy:

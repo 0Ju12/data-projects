@@ -1,0 +1,9 @@
+# 변경 이력(SCD 2형): USGS 는 지진의 규모·위치·상태를 나중에 고칩니다.
+# updated_at 이 바뀐 행은 이전 판을 닫고(dbt_valid_to) 새 판을 추가해, "그때는 얼마로 알려져 있었나"를 물을 수 있게 합니다.
+snapshots:
+  - name: snap_quakes
+    relation: ref('stg_quakes')
+    config:
+      unique_key: quake_id
+      strategy: timestamp
+      updated_at: updated_at

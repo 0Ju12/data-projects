@@ -1,0 +1,9 @@
+target/
+logs/
+dbt_packages/
+exports/
+*.duckdb
+*.duckdb.wal
+airflow_home/
+docs/
+state/.snap.tmp.parquet
