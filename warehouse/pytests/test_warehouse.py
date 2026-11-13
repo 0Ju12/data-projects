@@ -163,6 +163,43 @@ def test_map_to_data_year():
     assert P.map_to_data_year("2025-03-01") == "2025-03-01"
 
 
+MONTHLY = "select month_kst, region, quakes, max_mag, mean_depth_km from fct_quakes_monthly order by 1, 2"
+
+
+def test_incremental_monthly_equals_full_rebuild(src, tmp_path):
+    """증분으로 이어 쌓은 결과와, 같은 원본으로 처음부터 다시 만든 결과가 같아야 한다"""
+    assert build(src).returncode == 0
+    before = q(src, MONTHLY)
+    assert before == [(date(2025, 3, 1), "Japan", 1, 4.1, 10.0), (date(2025, 3, 1), "South Korea", 2, 5.0, 10.0)]
+    # 다음 날: 예전 지진 하나가 고쳐지고(4.5→5.6), 새 달의 지진이 하나 들어옴
+    new = quake("b1", 6.2, "2025-04-03T00:00:00", "reviewed", "70 km E of Hualien, Taiwan")
+    new[1], new[2] = "2025-04-02T03:00:00Z", "2025-04-02 12:00:00"
+    write_quakes(src["dir"] / "quakes.csv", [
+        quake("a1", 5.6, "2025-03-05T00:00:00", "reviewed"), quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
+        quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan"), new])
+    p = build(src)
+    assert p.returncode == 0, p.stdout[-1500:]
+    inc = q(src, MONTHLY)
+    assert (date(2025, 3, 1), "South Korea", 2, 5.6, 10.0) in inc and (date(2025, 4, 1), "Taiwan", 1, 6.2, 10.0) in inc
+    full = dict(src, db=str(tmp_path / "full.duckdb"), target=str(tmp_path / "full_target"))
+    assert build(full).returncode == 0
+    assert inc == q(full, MONTHLY)
+    # 바뀐 게 없으면 증분 실행은 아무 것도 건드리지 않는다
+    assert build(src).returncode == 0 and q(src, MONTHLY) == inc
+
+
+def test_incremental_drift_is_caught_by_reconciliation(src):
+    """원본에서 지진이 빠지면 증분 집계에는 옛 값이 남는다 — 합계 대조 테스트가 이를 잡아야 한다"""
+    assert build(src).returncode == 0
+    write_quakes(src["dir"] / "quakes.csv", [
+        quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
+        quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan")])
+    p = build(src)
+    assert p.returncode != 0
+    assert "assert_quakes_monthly_matches_source" in P.run_results(P.Path(src["target"]))["failed"]
+    assert build(src, "--full-refresh").returncode == 0          # 처음부터 다시 만들면 맞춰진다
+
+
 def test_export_is_idempotent_and_partitioned(src):
     assert build(src).returncode == 0
     out = src["dir"] / "exports"

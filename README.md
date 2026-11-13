@@ -11,7 +11,7 @@
 | [dart-analyzer](dart-analyzer/) | 전자공시 데이터 마트(SQL 뷰)와 사업보고서 근거 검색 | OpenDART | 피벗·LAG·RANK 뷰, 2-gram BM25 근거 검색 (인증키로 실행) |
 | [wildfire-watch](wildfire-watch/) | 화재기상지수(FFWI)와 위성 화재 탐지를 매일 모아 비교 · [산불 위험 지도](https://0ju12.github.io/data-projects/fire/) | NASA FIRMS VIIRS + Open-Meteo | 탐지의 90%는 제철소 등 상시 열원 → 가려내는 규칙 · 지수 평가는 아직 표본 부족(AUC 0.57, 양성 10건) |
 | [data-agent](data-agent/) | 위 결과들을 LLM 이 SQL 로 조회하는 MCP 서버 + 답 속 숫자 검증 | 이 저장소의 산출물 (SQLite) | 읽기 전용 SQL 안전장치 · 틀린 숫자·지어낸 계산을 막는 검사 (LLM 연결 평가는 미실시) |
-| [warehouse](warehouse/) | 위 자료를 dbt 로 3단 모델링(원본→정제→집계)하고 Airflow DAG 로 실행 · [상태 보고서](https://0ju12.github.io/data-projects/warehouse/) | 이 저장소의 지진·수요·기온 자료 (DuckDB) | 품질 테스트 31개 · 지진 수정 이력 보존(SCD 2형) · 재실행해도 같은 결과 (자료가 작아 성능은 다루지 않음) |
+| [warehouse](warehouse/) | 위 자료를 dbt 로 3단 모델링(원본→정제→집계)하고 Airflow DAG 로 실행 · [상태 보고서](https://0ju12.github.io/data-projects/warehouse/) | 이 저장소의 지진·수요·기온 자료 (DuckDB) | 품질 테스트 36개 · 지진 수정 이력 보존(SCD 2형) · 증분 집계와 전체 재계산 일치 확인 (자료가 작아 성능은 다루지 않음) |
 
 공통으로 지킨 것
 - **평가를 정직하게**: 시계열은 시간 순서로 나눠 검증하고, 잘 안 된 결과(부품별 비지도 탐지의 오경보, 연휴 다음 날 예측 오차)도 README 에 남겼습니다.
@@ -19,7 +19,7 @@
 - **비밀값 관리**: 인증키는 환경변수·GitHub Secrets 로만 받습니다.
 
 ```bash
-cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 17
+cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 19
 ```
 
 GitHub Actions: `tests`(폴더별 테스트 + Airflow DAG 1회 실행), `geo daily update`(매일 수집 → 지진 대시보드·산불 위험 지도를 갱신하고 전력 예측 탐색기와 함께 GitHub Pages 로 배포), `dart build mart`(인증키가 있을 때 매월).
