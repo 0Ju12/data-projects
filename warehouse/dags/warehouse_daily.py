@@ -35,6 +35,12 @@ with DAG(
         from wh.sources import jobs
         return jobs.collect()
 
+    @task
+    def collect_market() -> dict:
+        """거래소 일봉·환율 수집 (끝난 날까지, 최근 7일은 다시 받아 바꿔 넣음)"""
+        from wh.sources import market
+        return market.collect()
+
     @task(trigger_rule="all_done")
     def check_sources() -> dict:
         from wh import pipeline as P
@@ -75,9 +81,8 @@ with DAG(
         from wh.report import build_report
         return str(build_report())
 
-    c = collect_jobs()
     s = check_sources()
-    c >> s
+    [collect_jobs(), collect_market()] >> s
     b = dbt_build(s)
     e = export_partition(b)
     e >> record() >> report()

@@ -16,6 +16,8 @@ vars:
   weather_csv: "../power-demand/data/weather_2025.csv"
   jobs_csv: "data/jobs.csv"
   jobs_fetch_csv: "data/jobs_fetch_log.csv"
+  candles_csv: "data/market_candles.csv"
+  fx_csv: "data/fx_rates.csv"
   quake_fresh_days: 14        # 지진 목록이 이 일수보다 오래 멈춰 있으면 경고
 
 models:

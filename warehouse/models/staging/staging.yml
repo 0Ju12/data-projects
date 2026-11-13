@@ -44,3 +44,18 @@ models:
     columns:
       - name: run_date
         data_tests: [not_null]
+  - name: stg_candles
+    description: "거래소 일봉 (업비트 KRW · 코인베이스 USD), 하루 경계 UTC 0시"
+    columns:
+      - name: exchange
+        data_tests: [{accepted_values: {arguments: {values: ["upbit", "coinbase"]}}}]
+      - name: close
+        data_tests: [not_null, {accepted_range: {arguments: {min_value: 0.000001}}}]
+      - name: volume
+        data_tests: [{accepted_range: {arguments: {min_value: 0}}}]
+  - name: stg_fx
+    columns:
+      - name: rate
+        data_tests: [not_null, {accepted_range: {arguments: {min_value: 0.000001}}}]
+      - name: quote
+        data_tests: [{accepted_values: {arguments: {values: ["KRW", "JPY", "EUR"]}}}]

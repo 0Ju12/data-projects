@@ -82,3 +82,24 @@ models:
     columns:
       - name: postings
         data_tests: [{accepted_range: {arguments: {min_value: 1}}}]
+  - name: dim_asset
+    columns:
+      - name: asset
+        data_tests: [unique, not_null]
+  - name: fct_krw_premium_daily
+    description: "일 × 자산. 업비트 원화 종가가 코인베이스 달러 종가(원화 환산)보다 몇 % 비싼가"
+    columns:
+      - name: asset
+        data_tests: [{relationships: {arguments: {to: ref('dim_asset'), field: asset}}}]
+      - name: usdkrw
+        data_tests: [{accepted_range: {arguments: {min_value: 800, max_value: 2500}}}]
+      - name: premium_pct
+        description: "(업비트 원화 종가 ÷ 코인베이스 종가의 원화 환산 − 1) × 100"
+        data_tests: [not_null, {accepted_range: {arguments: {min_value: -30, max_value: 60}}}]
+      - name: fx_stale_days
+        description: "환산에 쓴 환율이 며칠 전 고시값인가 (주말 1~2, 연휴 최대 며칠)"
+        data_tests: [{accepted_range: {arguments: {min_value: 0, max_value: 6}}}]
+  - name: fct_premium_monthly
+    columns:
+      - name: days
+        data_tests: [{accepted_range: {arguments: {min_value: 1, max_value: 31}}}]

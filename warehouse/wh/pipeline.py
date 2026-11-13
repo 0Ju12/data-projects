@@ -23,9 +23,11 @@ SOURCES = {
     "weather_csv": ("../power-demand/data/weather_2025.csv", ["time", "mean"]),
     "jobs_csv": ("data/jobs.csv", ["source", "job_id", "title", "posted_at_utc", "skills", "skills_dict", "first_seen", "last_seen"]),
     "jobs_fetch_csv": ("data/jobs_fetch_log.csv", ["run_date", "source", "fetched", "overlap"]),
+    "candles_csv": ("data/market_candles.csv", ["exchange", "asset", "day_utc", "open", "high", "low", "close", "volume"]),
+    "fx_csv": ("data/fx_rates.csv", ["day", "base", "quote", "rate"]),
 }
 RUN_FIELDS = ["run_at_utc", "logical_date", "status", "models", "tests_pass", "tests_warn", "tests_fail",
-              "seconds", "rows_demand_hourly", "rows_quakes", "snapshot_versions", "exported_rows", "sources_sha", "rows_jobs"]
+              "seconds", "rows_demand_hourly", "rows_quakes", "snapshot_versions", "exported_rows", "sources_sha", "rows_jobs", "rows_candles"]
 
 
 class SourceError(RuntimeError):
@@ -131,7 +133,8 @@ def table_counts(db: str) -> dict:
         return {"rows_demand_hourly": q("select count(*) from fct_demand_hourly"),
                 "rows_quakes": q("select count(*) from stg_quakes"),
                 "snapshot_versions": q("select count(*) from snap_quakes"),
-                "rows_jobs": q("select count(*) from fct_job_postings")}
+                "rows_jobs": q("select count(*) from fct_job_postings"),
+                "rows_candles": q("select count(*) from stg_candles")}
     finally:
         con.close()
 

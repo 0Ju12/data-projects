@@ -27,8 +27,14 @@ def main(argv=None) -> int:
     b.add_argument("end")
     sub.add_parser("report")
     sub.add_parser("collect-jobs")
+    sub.add_parser("collect-market")
     a = ap.parse_args(argv)
 
+    if a.cmd == "collect-market":
+        from .sources import market
+        st = market.collect()
+        print("끝난 날", st["end"], "· 새 봉", st["candles_new"], "· 고쳐진 봉", st["candles_changed"], "· 새 환율", st["fx_new"], "· 오류", st["errors"] or "없음")
+        return 1 if len(st["errors"]) >= 9 else 0
     if a.cmd == "collect-jobs":
         from .sources import jobs
         res = jobs.collect()

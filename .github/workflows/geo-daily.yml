@@ -24,6 +24,7 @@ jobs:
         run: |
           pip install -q -r requirements.txt
           python -m wh.cli collect-jobs || echo "채용 공고 수집 실패 — 모아 둔 자료로 계속"
+          python -m wh.cli collect-market || echo "시세·환율 수집 실패 — 모아 둔 자료로 계속"
           python -m wh.cli run --date "$(date -u +%F)" | grep -v '"error"' ; rc=${PIPESTATUS[0]}
           python -m wh.cli report || true
           exit $rc

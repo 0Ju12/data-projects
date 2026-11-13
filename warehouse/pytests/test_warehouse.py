@@ -12,6 +12,7 @@ import pytest
 
 from wh import pipeline as P
 from wh.sources import jobs as J
+from wh.sources import market as M
 from wh.report import build_report, lineage
 
 pytestmark = pytest.mark.skipif(shutil.which(P.os.environ.get("DBT_BIN", "dbt")) is None, reason="dbt 가 설치돼 있지 않음")
@@ -32,6 +33,11 @@ def write_quakes(path, rows):
 
 def quake(i, mag, updated, status="automatic", place="10 km E of Ulsan, South Korea"):
     return [i, "2025-03-01T00:00:00Z", "2025-03-01 09:00:00", ms(updated), 35.5, 129.9, 10.0, mag, "mb", place, status, "earthquake"]
+
+
+def candle(exchange, asset, quote, day, close):
+    return {"exchange": exchange, "asset": asset, "quote": quote, "day_utc": day, "open": close, "high": close * 1.01,
+            "low": close * 0.99, "close": close, "volume": 10}
 
 
 def job(source, jid, title, posted, skills="", lo="", hi="", remote="true"):
@@ -66,9 +72,20 @@ def src(tmp_path):
     J.save(ex, tmp_path / "jobs.csv")
     J.log_fetch([{"run_date": "2025-03-11", "source": "remoteok", "fetched": 2, "new": 2, "changed": 0, "pages": 1, "overlap": "first_run"},
                  {"run_date": "2025-03-11", "source": "arbeitnow", "fetched": 2, "new": 2, "changed": 0, "pages": 1, "overlap": "first_run"}], tmp_path / "fetch.csv")
+    # 시세: 2025-03-06(목)~03-10(월) 5일, 환율은 영업일(목·금·월)에만
+    cs, fx = {}, {}
+    for i, d in enumerate(["2025-03-06", "2025-03-07", "2025-03-08", "2025-03-09", "2025-03-10"]):
+        usd = 100.0 + i
+        cs[("coinbase", "BTC", d)] = candle("coinbase", "BTC", "USD", d, usd)
+        cs[("upbit", "BTC", d)] = candle("upbit", "BTC", "KRW", d, usd * 1400 * 1.02)      # 환율 1400 일 때 2% 비쌈
+    for d, r in (("2025-03-06", 1400), ("2025-03-07", 1400), ("2025-03-10", 1428)):
+        fx[(d, "KRW")] = {"day": d, "base": "USD", "quote": "KRW", "rate": r}
+    M._save(cs, tmp_path / "candles.csv", M.C_FIELDS)
+    M._save(fx, tmp_path / "fx.csv", M.F_FIELDS)
     return {"vars": {"quakes_csv": str(tmp_path / "quakes.csv"), "demand_csv": str(tmp_path / "demand.csv"),
                      "weather_csv": str(tmp_path / "weather.csv"), "quake_fresh_days": 100000,
-                     "jobs_csv": str(tmp_path / "jobs.csv"), "jobs_fetch_csv": str(tmp_path / "fetch.csv")},
+                     "jobs_csv": str(tmp_path / "jobs.csv"), "jobs_fetch_csv": str(tmp_path / "fetch.csv"),
+                     "candles_csv": str(tmp_path / "candles.csv"), "fx_csv": str(tmp_path / "fx.csv")},
             "db": str(tmp_path / "wh.duckdb"), "target": str(tmp_path / "target"), "dir": tmp_path}
 
 
@@ -286,7 +303,7 @@ def test_lineage_and_report(src, tmp_path):
 def test_dag_file_is_valid_python_and_names_tasks():
     code = (P.ROOT / "dags" / "warehouse_daily.py").read_text(encoding="utf-8")
     compile(code, "warehouse_daily.py", "exec")
-    for t in ("collect_jobs", "check_sources", "dbt_build", "export_partition", "record", "report"):
+    for t in ("collect_jobs", "collect_market", "check_sources", "dbt_build", "export_partition", "record", "report"):
         assert f"def {t}(" in code
 
 
@@ -399,3 +416,100 @@ def test_content_change_is_recorded(tmp_path):
     r = ex[("remoteok", "1")]
     assert st["changed"] == 1 and r["changed_on"] == "2025-03-12" and r["salary_min"] == 100000 and r["first_seen"] == "2025-03-11"
     assert J.merge(ex, [job("remoteok", "1", "Data Engineer", "2025-03-01T00:00:00Z", "", 100000, 130000)], "2025-03-13", "v1")["changed"] == 0
+
+
+# ---------- 시세·환율
+
+def test_premium_and_weekend_fx(src):
+    """주말에는 금요일 환율을 쓰고 그 사실을 표시한다. 월요일에 환율이 2% 오르면 같은 원화 가격의 프리미엄은 0 이 된다"""
+    assert build(src).returncode == 0
+    rows = q(src, "select day_utc, usdkrw, is_fx_filled, fx_stale_days, premium_pct from fct_krw_premium_daily order by 1")
+    assert [r[:4] for r in rows] == [
+        (date(2025, 3, 6), 1400.0, False, 0), (date(2025, 3, 7), 1400.0, False, 0),
+        (date(2025, 3, 8), 1400.0, True, 1), (date(2025, 3, 9), 1400.0, True, 2), (date(2025, 3, 10), 1428.0, False, 0)]
+    assert [r[4] for r in rows[:4]] == pytest.approx([2.0] * 4, abs=1e-6)
+    assert rows[4][4] == pytest.approx(0.0, abs=1e-6)
+    assert q(src, "select days, avg_premium_pct, days_over_3pct from fct_premium_monthly")[0] == (5, 1.6, 0)
+
+
+def test_missing_candle_day_fails(src):
+    """거래소 봉이 하루 빠지면(수집이 멈췄다 돌았을 때) 연속성 검사가 막는다"""
+    cs = M._load(P.Path(src["vars"]["candles_csv"]), lambda r: (r["exchange"], r["asset"], r["day_utc"]))
+    del cs[("upbit", "BTC", "2025-03-08")]
+    M._save(cs, P.Path(src["vars"]["candles_csv"]), M.C_FIELDS)
+    assert build(src).returncode != 0
+    assert "assert_candle_days_contiguous" in P.run_results(P.Path(src["target"]))["failed"]
+
+
+def test_missing_counterpart_is_not_silently_dropped(src):
+    """코인베이스 봉만 빠지면 조인에서 그날이 조용히 사라진다 — '업비트에 있는 날은 모두 계산됐나' 검사가 잡아야 한다"""
+    cs = M._load(P.Path(src["vars"]["candles_csv"]), lambda r: (r["exchange"], r["asset"], r["day_utc"]))
+    del cs[("coinbase", "BTC", "2025-03-10")]
+    M._save(cs, P.Path(src["vars"]["candles_csv"]), M.C_FIELDS)
+    assert build(src).returncode != 0
+    assert "assert_premium_covers_all_upbit_days" in P.run_results(P.Path(src["target"]))["failed"]
+
+
+def test_inconsistent_candle_fails(src):
+    cs = M._load(P.Path(src["vars"]["candles_csv"]), lambda r: (r["exchange"], r["asset"], r["day_utc"]))
+    cs[("upbit", "BTC", "2025-03-07")]["low"] = "999999999"
+    M._save(cs, P.Path(src["vars"]["candles_csv"]), M.C_FIELDS)
+    assert build(src).returncode != 0
+
+
+def fake_market(today="2025-03-11", revise=None):
+    """끝난 날까지의 봉을 주는 가짜 API. revise = {(거래소, 날): 종가} 로 나중에 고쳐진 값을 흉내"""
+    calls = []
+    end = date.fromisoformat(today)
+
+    def close(ex, d):
+        return (revise or {}).get((ex, d), 100.0 + date.fromisoformat(d).toordinal() % 7)
+
+    def get(url):
+        calls.append(url)
+        if "upbit" in url:
+            to = date.fromisoformat(url.split("to=")[1][:10])
+            days = [(to - timedelta(days=i + 1)).isoformat() for i in range(200)]
+            return [{"candle_date_time_utc": d + "T00:00:00", "opening_price": 1, "high_price": 200, "low_price": 1,
+                     "trade_price": close("upbit", d), "candle_acc_trade_volume": 5} for d in days if d <= end.isoformat()]
+        if "coinbase" in url:
+            a, b = (date.fromisoformat(x[:10]) for x in (url.split("start=")[1], url.split("end=")[1]))
+            out, d = [], a
+            while d <= b:
+                ts = int(datetime(d.year, d.month, d.day, tzinfo=M.timezone.utc).timestamp())
+                out.append([ts, 1, 200, 1, close("coinbase", d.isoformat()), 5])
+                d += timedelta(days=1)
+            return out
+        a, b = url.split("/v1/")[1].split("?")[0].split("..")
+        return {"rates": {d: {"KRW": 1400, "JPY": 150, "EUR": 0.9} for d in P.daterange(a, b) if date.fromisoformat(d).weekday() < 5}}
+    return get, calls
+
+
+def test_market_collect_backfill_incremental_and_revision(tmp_path):
+    cp, fp = tmp_path / "c.csv", tmp_path / "fx.csv"
+    get, _ = fake_market()
+    st = M.collect("2025-03-11", cp, fp, get, pause=0, backfill_days=30)
+    assert st["end"] == "2025-03-10" and st["errors"] == []
+    assert st["candles_total"] == 31 * 2 * len(M.ASSETS)             # 끝난 날까지만, 오늘 봉은 없음
+    assert st["fx_total"] == 21 * 3                                    # 영업일 21일 × 통화 3개 (주말은 원본에 없음)
+    first = cp.read_bytes()
+    st2 = M.collect("2025-03-11", cp, fp, get, pause=0, backfill_days=30)
+    assert st2["candles_new"] == 0 and st2["candles_changed"] == 0 and cp.read_bytes() == first      # 다시 돌려도 같은 파일
+    # 이틀 뒤: 새 날 2일이 붙고, 그사이 고쳐진 3월 9일 봉은 겹쳐 받는 구간에서 바뀐다
+    get3, calls = fake_market("2025-03-13", revise={("upbit", "2025-03-09"): 555.0})
+    st3 = M.collect("2025-03-13", cp, fp, get3, pause=0, backfill_days=30)
+    assert st3["candles_new"] == 2 * 2 * len(M.ASSETS) and st3["candles_changed"] == len(M.ASSETS)
+    rows = M._load(cp, lambda r: (r["exchange"], r["asset"], r["day_utc"]))
+    assert rows[("upbit", "BTC", "2025-03-09")]["close"] == "555" and ("upbit", "BTC", "2025-03-13") not in rows
+    assert all("2025-02" not in u for u in calls if "coinbase" in u)   # 증분: 처음부터 다시 받지 않음
+
+
+def test_market_collect_survives_partial_failure(tmp_path):
+    good, _ = fake_market()
+
+    def get(url):
+        if "coinbase" in url:
+            raise ConnectionError("down")
+        return good(url)
+    st = M.collect("2025-03-11", tmp_path / "c.csv", tmp_path / "fx.csv", get, pause=0, backfill_days=10)
+    assert len(st["errors"]) == len(M.ASSETS) and st["candles_total"] == 11 * len(M.ASSETS) and st["fx_total"] > 0
