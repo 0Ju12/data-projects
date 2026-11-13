@@ -1,2 +1,2 @@
-run_at_utc,logical_date,status,models,tests_pass,tests_warn,tests_fail,seconds,rows_demand_hourly,rows_quakes,snapshot_versions,exported_rows,sources_sha
-2026-11-13T01:53:45Z,2026-11-13,success,10,36,0,0,6.7,8760,2480,2480,24,d1abba-53c159-39839f
+run_at_utc,logical_date,status,models,tests_pass,tests_warn,tests_fail,seconds,rows_demand_hourly,rows_quakes,snapshot_versions,exported_rows,sources_sha,rows_jobs,rows_candles
+2026-11-13T05:11:25Z,2026-11-13,success,24,77,0,0,6.92,8760,2480,2480,24,d1abba-53c159-39839f-927952-fbb270-3b11df-2c5eb2,1029,5848

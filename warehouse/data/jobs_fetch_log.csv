@@ -1,3 +1,3 @@
 run_date,source,fetched,new,changed,pages,oldest_posted_utc,newest_posted_utc,overlap
-2026-11-13,arbeitnow,900,850,0,3,2026-11-09T21:51:19Z,2026-11-12T23:30:36Z,first_run
+2026-11-13,arbeitnow,900,931,0,3,2026-11-09T21:51:19Z,2026-11-13T03:55:16Z,first_run
 2026-11-13,remoteok,98,98,0,1,2026-08-14T16:00:49Z,2026-11-11T08:00:08Z,first_run

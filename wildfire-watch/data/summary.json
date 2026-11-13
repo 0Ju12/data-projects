@@ -15,7 +15,7 @@
   "days": 9,
   "cell_days": 1377,
   "positive_cell_days": 12,
-  "auc": 0.536,
+  "auc": 0.534,
   "top20_hit": 0.083,
   "mean_ffwi_pos": 13.7,
   "mean_ffwi_neg": 14.3
@@ -25,6 +25,6 @@
   "N21": 243,
   "SNPP": 0,
   "new": 0,
-  "weather": "실패: URLError"
+  "weather": "ok"
  }
 }
