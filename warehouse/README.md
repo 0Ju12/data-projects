@@ -1,6 +1,6 @@
 # warehouse — 수집한 자료를 dbt 로 모델링하고 Airflow 로 돌리기
 
-같은 저장소의 다른 프로젝트가 모으는 자료(지진 목록 · 전력 수요 · 기온)를 **원본 → 정제 → 집계** 3단으로 정리하고,
+같은 저장소의 다른 프로젝트가 모으는 자료(지진 목록 · 전력 수요 · 기온)와 직접 모으는 채용 공고를 **원본 → 정제 → 집계** 3단으로 정리하고,
 품질 테스트·변경 이력·재실행 안전성·실행 기록까지 갖춘 작은 데이터 웨어하우스입니다.
 
 - 상태 보고서(계보·테스트 결과·실행 기록): <https://0ju12.github.io/data-projects/warehouse/> — 매일 06:17 KST 실행 뒤 갱신
@@ -41,7 +41,38 @@ CI 는 매번 빈 DB 에서 시작하기 때문에 이력 표를 `state/snap_qua
 
 **dbt 를 돌리기 전에 원본부터 본다.** 파일이 없거나 약속한 열이 빠지면(`check_sources`) 모델을 만들기 전에 멈추고, 그 실패도 실행 기록에 남깁니다.
 
-## 품질 테스트 (36개)
+## 채용 공고 (Remote OK · Arbeitnow)
+
+매일 두 공개 피드에서 공고를 받아 `data/jobs.csv` 에 합치고, 기술별 언급 비중을 주 단위로 집계합니다.
+
+```
+jobs.csv ─ stg_jobs ─ int_job_skills ─┬─ dim_skill ─ fct_skill_demand_weekly
+skills (사전, seed) ──────────────────┘  fct_job_postings ─ fct_jobs_daily
+jobs_fetch_log.csv ─ stg_jobs_fetch_log
+```
+
+**본문은 저장하지 않고, 받는 순간 기술 이름만 뽑는다.** 공고 본문을 저장소에 쌓지 않으려고, 수집할 때 기술 사전(`seeds/skills.csv`, 50개)으로 제목과 본문을 훑어 이름 목록만 남깁니다.
+대가는 분명합니다. 사전을 고쳐도 예전 공고는 다시 훑을 수 없습니다. 그래서 어느 판의 사전으로 뽑았는지(`skills_dict`)를 행마다 적어 둡니다.
+
+**Remote OK 의 태그는 쓰지 않는다.** 처음 받은 98건 가운데 `golang` 태그가 29건이었는데 제목에 Go 가 나오는 공고는 0건이었습니다(간호사·채용 담당자 공고에도 붙어 있음). 태그 대신 제목·본문에서 직접 찾습니다.
+
+**급여 단위는 추측해 고치지 않는다.** 급여 칸에 시급(21), 월급(4000), 천 단위 생략(110~130), 센트로 보이는 값(114000000)이 섞여 있었습니다.
+연봉으로 볼 수 있는 범위(1만~100만 달러)만 쓰고 나머지는 `salary_quality` 에 `suspect_*` 로 표시만 합니다. 처음 받은 자료에서는 급여가 있는 29건 중 23건만 쓸 수 있었습니다.
+
+**수집 구간이 이어졌는지 기록한다.** 두 피드 모두 "최근 N건"만 주므로, 이미 아는 공고가 나올 때까지 쪽을 넘깁니다(최대 8쪽).
+끝까지 아는 공고가 안 나오면 그 사이 공고를 놓친 것이므로 수집 기록에 `overlap = no` 로 남고, dbt 가 경고합니다. 지나간 공고는 다시 받을 수 없어서, 고치는 대신 사실을 남깁니다.
+
+**글자가 깨진 제목을 되돌린다.** Remote OK 제목 일부가 `â\x80\x94` 처럼 깨져 왔습니다(UTF-8 이 Latin-1 로 한 번 더 풀린 것). 되돌릴 수 있을 때만 되돌립니다.
+
+한계
+- 해외 원격·유럽(독일어권 중심) 공고입니다. 국내 채용 시장을 말해 주지 않습니다.
+- 사전에 있는 이름이 글에 나왔는지만 봅니다. "우대"인지 "필수"인지, 얼마나 깊이 요구하는지는 알 수 없습니다. 본문에 흔히 쓰이는 낱말(AI 등)은 실제보다 많이 잡힐 수 있습니다.
+- 공고가 피드에서 사라진 것이 마감을 뜻하지는 않습니다(최근 N건 창에서 밀려난 것일 수 있음). 그래서 마감까지 걸린 기간은 계산하지 않습니다.
+- 이제 막 모으기 시작했습니다. 주별 추세는 몇 주 쌓인 뒤에야 의미가 있습니다.
+
+출처: [Remote OK](https://remoteok.com) · [Arbeitnow](https://www.arbeitnow.com) 공개 피드 (각 서비스의 이용 조건에 따라 출처를 밝히고 원문 링크를 보존합니다).
+
+## 품질 테스트 (58개)
 
 - 열 단위: `unique` · `not_null` · `relationships`(사실 표의 날짜·지역이 차원에 있는가) · `accepted_values` · 직접 만든 `accepted_range`(규모 0~10, 위도·경도, 수요 20~120 GW 등)
 - 표 단위(`tests/*.sql`): 하루는 정확히 24행 · 이웃 행 간격은 항상 1시간 · 일 요약의 최대값이 시간 표에서 다시 계산한 값과 같은가
@@ -56,7 +87,8 @@ dbt build --profiles-dir .                        # 모델 + 테스트 + 변경 
 python -m wh.cli run --date 2026-11-13            # 원본 확인 → dbt build → 파티션 내보내기 → 실행 기록
 python -m wh.cli backfill 2025-03-01 2025-03-07   # 과거 날짜 다시 채우기
 python -m wh.cli report                           # docs/index.html
-python -m pytest -q                               # 19개
+python -m wh.cli collect-jobs                     # 채용 공고 피드 수집
+python -m pytest -q                               # 26개
 ```
 
 Airflow (Docker 없이 확인하는 방법 — dbt 와 의존성이 부딪히지 않게 가상환경을 나눕니다):
@@ -69,7 +101,7 @@ airflow db migrate
 airflow dags test warehouse_daily 2026-11-13
 ```
 
-DAG `warehouse_daily`: `check_sources → dbt_build → export_partition → record → report`.
+DAG `warehouse_daily`: `collect_jobs → check_sources → dbt_build → export_partition → record → report`.
 원본 확인과 dbt 는 2번까지 재시도하고, `record`·`report` 는 앞 단계가 실패해도 실행됩니다(`trigger_rule="all_done"`).
 작업은 얇은 껍데기이고 실제 일은 `wh/pipeline.py` 의 함수가 하므로, 명령줄·테스트·Airflow 가 같은 코드를 씁니다.
 

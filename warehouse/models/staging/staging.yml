@@ -25,3 +25,22 @@ models:
         data_tests: [unique, not_null]
       - name: temp_mean
         data_tests: [{accepted_range: {arguments: {min_value: -40, max_value: 45}}}]
+  - name: stg_jobs
+    description: "채용 공고 (Remote OK · Arbeitnow). 본문 없이 집계용 항목만"
+    columns:
+      - name: job_key
+        description: "출처:공고ID — 두 출처의 ID 가 겹쳐도 구분되도록"
+        data_tests: [unique, not_null]
+      - name: source
+        data_tests: [{accepted_values: {arguments: {values: ["remoteok", "arbeitnow"]}}}]
+      - name: title
+        data_tests: [not_null]
+      - name: posted_at_utc
+        data_tests: [not_null]
+      - name: skills_dict
+        description: "기술 이름을 뽑을 때 쓴 사전의 판 (seeds/skills.csv 내용 해시)"
+        data_tests: [not_null]
+  - name: stg_jobs_fetch_log
+    columns:
+      - name: run_date
+        data_tests: [not_null]

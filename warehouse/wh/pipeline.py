@@ -21,9 +21,11 @@ SOURCES = {
     "quakes_csv": ("../geo-data-pipeline/data/events.csv", ["id", "time_utc", "updated", "mag", "place"]),
     "demand_csv": ("../power-demand/data/kpx_hourly_demand_2025.csv", ["날짜", "1시", "24시"]),
     "weather_csv": ("../power-demand/data/weather_2025.csv", ["time", "mean"]),
+    "jobs_csv": ("data/jobs.csv", ["source", "job_id", "title", "posted_at_utc", "skills", "skills_dict", "first_seen", "last_seen"]),
+    "jobs_fetch_csv": ("data/jobs_fetch_log.csv", ["run_date", "source", "fetched", "overlap"]),
 }
 RUN_FIELDS = ["run_at_utc", "logical_date", "status", "models", "tests_pass", "tests_warn", "tests_fail",
-              "seconds", "rows_demand_hourly", "rows_quakes", "snapshot_versions", "exported_rows", "sources_sha"]
+              "seconds", "rows_demand_hourly", "rows_quakes", "snapshot_versions", "exported_rows", "sources_sha", "rows_jobs"]
 
 
 class SourceError(RuntimeError):
@@ -73,7 +75,7 @@ def run_results(target: Path) -> dict:
     s = {"models": 0, "tests_pass": 0, "tests_warn": 0, "tests_fail": 0, "failed": [], "seconds": round(rr.get("elapsed_time", 0), 2)}
     for r in rr["results"]:
         kind, st = r["unique_id"].split(".")[0], r["status"]
-        if kind in ("model", "snapshot") and st == "success":
+        if kind in ("model", "snapshot", "seed") and st == "success":
             s["models"] += 1
         elif kind == "test":
             s["tests_pass" if st == "pass" else "tests_warn" if st == "warn" else "tests_fail"] += 1
@@ -128,7 +130,8 @@ def table_counts(db: str) -> dict:
         q = lambda s: con.execute(s).fetchall()[0][0]
         return {"rows_demand_hourly": q("select count(*) from fct_demand_hourly"),
                 "rows_quakes": q("select count(*) from stg_quakes"),
-                "snapshot_versions": q("select count(*) from snap_quakes")}
+                "snapshot_versions": q("select count(*) from snap_quakes"),
+                "rows_jobs": q("select count(*) from fct_job_postings")}
     finally:
         con.close()
 
@@ -177,7 +180,7 @@ def record_run(history: Path, row: dict) -> None:
     rows = []
     if history.exists():
         with history.open(encoding="utf-8", newline="") as f:
-            rows = [r for r in csv.DictReader(f) if r.get("logical_date") != row["logical_date"]]
+            rows = [{k: r.get(k, "") for k in RUN_FIELDS} for r in csv.DictReader(f) if r.get("logical_date") != row["logical_date"]]
     rows.append({k: row.get(k, "") for k in RUN_FIELDS})
     rows.sort(key=lambda r: r["logical_date"])
     tmp = history.with_suffix(".tmp")

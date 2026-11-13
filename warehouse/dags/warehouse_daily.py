@@ -1,4 +1,4 @@
-"""Airflow DAG — 매일: 원본 확인 → dbt build → 날짜 파티션 내보내기 → 실행 기록 → 보고서
+"""Airflow DAG — 매일: 채용 공고 수집 → 원본 확인 → dbt build → 날짜 파티션 내보내기 → 실행 기록 → 보고서
 
 작업은 얇은 껍데기이고, 실제 일은 wh.pipeline 의 함수가 합니다 (명령줄·테스트와 같은 코드).
 - 재시도: 원본 확인과 dbt 는 2번까지 다시 시도
@@ -30,6 +30,12 @@ with DAG(
 ) as dag:
 
     @task
+    def collect_jobs() -> list:
+        """채용 공고 피드 수집. 한 출처가 실패해도 넘어가고, 수집 기록에 남깁니다."""
+        from wh.sources import jobs
+        return jobs.collect()
+
+    @task(trigger_rule="all_done")
     def check_sources() -> dict:
         from wh import pipeline as P
         return P.check_sources()
@@ -69,7 +75,9 @@ with DAG(
         from wh.report import build_report
         return str(build_report())
 
+    c = collect_jobs()
     s = check_sources()
+    c >> s
     b = dbt_build(s)
     e = export_partition(b)
     e >> record() >> report()

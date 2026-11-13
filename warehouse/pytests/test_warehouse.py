@@ -11,6 +11,7 @@ import duckdb
 import pytest
 
 from wh import pipeline as P
+from wh.sources import jobs as J
 from wh.report import build_report, lineage
 
 pytestmark = pytest.mark.skipif(shutil.which(P.os.environ.get("DBT_BIN", "dbt")) is None, reason="dbt 가 설치돼 있지 않음")
@@ -33,6 +34,11 @@ def quake(i, mag, updated, status="automatic", place="10 km E of Ulsan, South Ko
     return [i, "2025-03-01T00:00:00Z", "2025-03-01 09:00:00", ms(updated), 35.5, 129.9, 10.0, mag, "mb", place, status, "earthquake"]
 
 
+def job(source, jid, title, posted, skills="", lo="", hi="", remote="true"):
+    return {"source": source, "job_id": jid, "title": title, "company": "Acme", "location": "", "remote": remote,
+            "posted_at_utc": posted, "salary_min": lo, "salary_max": hi, "url": "https://example.org/" + jid, "skills": skills}
+
+
 @pytest.fixture
 def src(tmp_path):
     """3일치 수요(1시~24시 열), 72시간 기온, 지진 3건"""
@@ -51,8 +57,18 @@ def src(tmp_path):
     write_quakes(tmp_path / "quakes.csv", [
         quake("a1", 4.5, "2025-03-01T01:00:00"), quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
         quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan")])
+    J.save({}, tmp_path / "jobs.csv")
+    ex = {}
+    J.merge(ex, [job("remoteok", "1", "Senior Data Engineer", "2025-03-01T10:00:00Z", "Python|SQL|dbt|Data Engineer (role)", 90000, 130000),
+                 job("remoteok", "2", "Registered Nurse", "2025-03-02T10:00:00Z", "", 110, 130),
+                 job("arbeitnow", "be-dev-1", "Backend Developer (m/w/d)", "2025-03-03T08:00:00Z", "Python|Backend (role)"),
+                 job("arbeitnow", "koch-2", "Teilzeitkraft Küche", "2025-03-10T08:00:00Z", "")], "2025-03-11", "v1")
+    J.save(ex, tmp_path / "jobs.csv")
+    J.log_fetch([{"run_date": "2025-03-11", "source": "remoteok", "fetched": 2, "new": 2, "changed": 0, "pages": 1, "overlap": "first_run"},
+                 {"run_date": "2025-03-11", "source": "arbeitnow", "fetched": 2, "new": 2, "changed": 0, "pages": 1, "overlap": "first_run"}], tmp_path / "fetch.csv")
     return {"vars": {"quakes_csv": str(tmp_path / "quakes.csv"), "demand_csv": str(tmp_path / "demand.csv"),
-                     "weather_csv": str(tmp_path / "weather.csv"), "quake_fresh_days": 100000},
+                     "weather_csv": str(tmp_path / "weather.csv"), "quake_fresh_days": 100000,
+                     "jobs_csv": str(tmp_path / "jobs.csv"), "jobs_fetch_csv": str(tmp_path / "fetch.csv")},
             "db": str(tmp_path / "wh.duckdb"), "target": str(tmp_path / "target"), "dir": tmp_path}
 
 
@@ -270,5 +286,116 @@ def test_lineage_and_report(src, tmp_path):
 def test_dag_file_is_valid_python_and_names_tasks():
     code = (P.ROOT / "dags" / "warehouse_daily.py").read_text(encoding="utf-8")
     compile(code, "warehouse_daily.py", "exec")
-    for t in ("check_sources", "dbt_build", "export_partition", "record", "report"):
+    for t in ("collect_jobs", "check_sources", "dbt_build", "export_partition", "record", "report"):
         assert f"def {t}(" in code
+
+
+# ---------- 채용 공고
+
+def test_job_marts(src):
+    assert build(src).returncode == 0
+    rows = q(src, "select job_key, is_tech, skill_count, salary_quality, salary_mid_usd from fct_job_postings order by 1")
+    assert rows == [("arbeitnow:be-dev-1", True, 2, "none", None), ("arbeitnow:koch-2", False, 0, "none", None),
+                    ("remoteok:1", True, 4, "annual", 110000.0), ("remoteok:2", False, 0, "suspect_low", None)]
+    # 2025-03-03 이 속한 주: 기술 공고 1건(백엔드), 그 전 주: 1건(데이터 엔지니어)
+    wk = q(src, "select week_start, skill, postings, tech_postings, share_of_tech from fct_skill_demand_weekly where skill = 'Python' order by 1")
+    assert wk == [(date(2025, 2, 24), "Python", 1, 1, 1.0), (date(2025, 3, 3), "Python", 1, 1, 1.0)]
+    assert q(src, "select postings from dim_skill where skill = 'dbt'")[0][0] == 1
+    assert q(src, "select sum(postings), sum(tech_postings), sum(with_suspect_salary) from fct_jobs_daily")[0] == (4, 2, 1)
+
+
+def test_skill_outside_dictionary_fails(src):
+    """사전에 없는 기술 이름이 공고에 붙어 있으면 빌드가 실패해야 한다"""
+    ex = J.load(P.Path(src["vars"]["jobs_csv"]))
+    J.merge(ex, [job("remoteok", "9", "COBOL Developer", "2025-03-04T00:00:00Z", "COBOL")], "2025-03-11", "v1")
+    J.save(ex, P.Path(src["vars"]["jobs_csv"]))
+    assert build(src).returncode != 0
+    assert "assert_job_skills_in_dictionary" in P.run_results(P.Path(src["target"]))["failed"]
+
+
+def test_find_skills_title_and_body():
+    rules, version = J.load_skill_dict()
+    assert len(version) == 8
+    f = lambda t, b="": J.find_skills(t, b, rules).split("|")
+    assert f("Senior Data Engineer", "<p>We use <b>Python</b>, dbt and Airflow on AWS.</p>") == ["AWS", "Airflow", "Data Engineer (role)", "Python", "dbt"]
+    assert "Java" not in f("JavaScript Developer") and "JavaScript" in f("JavaScript Developer")
+    assert "Java" in f("Java Engineer") and "JavaScript" not in f("Java Engineer")
+    assert f("Barista", "Go to our store. Scalable team. Spring is coming. Swift code required for transfer.") == [""]
+    assert "Go" in f("Golang Developer") and "Scala" in f("Scala Engineer") and "Spring" in f("Dev", "Spring Boot services")
+    # 직무 이름은 제목에서만: 본문에 'frontend' 가 나와도 프런트엔드 공고가 아니다
+    assert "Frontend (role)" not in f("Data Analyst", "works with the frontend team")
+    assert "C++" in f("Embedded C++ Engineer") and "C#/.NET" in f(".NET Developer")
+
+
+def test_fix_mojibake():
+    assert J.fix_mojibake("Engineer â\x80\x94 Kubernetes") == "Engineer — Kubernetes"
+    assert J.fix_mojibake("Teilzeitkraft Küche") == "Teilzeitkraft Küche"          # 정상 문자열은 그대로
+    assert J.fix_mojibake("Ã¼ber") == "über" and J.fix_mojibake("") == ""
+
+
+def fake_feeds(pages):
+    """Arbeitnow 쪽별 응답과 Remote OK 응답을 흉내 냄"""
+    calls = []
+
+    def get(url):
+        calls.append(url)
+        if "remoteok" in url:
+            return [{"legal": "x"}, {"id": "1", "position": "Data Engineer", "company": "A", "epoch": 1741000000, "salary_min": 90000,
+                                     "salary_max": 120000, "url": "https://remoteOK.com/j/1", "description": "<p>Python and SQL</p>", "tags": ["golang"]}]
+        n = int(url.split("page=")[1])
+        return {"data": pages[n - 1] if n <= len(pages) else []}
+    return get, calls
+
+
+def arb(slug, ts=1741000000):
+    return {"slug": slug, "title": "Dev " + slug, "company_name": "B", "remote": False, "created_at": ts, "url": "https://x/" + slug, "description": "Kotlin"}
+
+
+def test_collect_stops_at_overlap_and_is_idempotent(tmp_path, monkeypatch):
+    jp, lp = tmp_path / "jobs.csv", tmp_path / "log.csv"
+    get, calls = fake_feeds([[arb("a"), arb("b")], [arb("b"), arb("c")], [arb("d")], [arb("e")]])
+    res = {e["source"]: e for e in J.collect("2025-03-11", jp, lp, get, pause=0)}
+    assert res["arbeitnow"]["pages"] == 3 and res["arbeitnow"]["new"] == 4 and res["arbeitnow"]["overlap"] == "first_run"   # 처음: 3쪽까지만
+    assert res["remoteok"]["new"] == 1
+    rows = J.load(jp)
+    assert rows[("remoteok", "1")]["skills"] == "Data Engineer (role)|Python|SQL"                    # 엉뚱한 태그(golang)는 쓰지 않음
+    assert rows[("remoteok", "1")]["url"] == "https://remoteok.com/j/1" and "description" not in rows[("remoteok", "1")]
+    first = jp.read_bytes()
+    J.collect("2025-03-11", jp, lp, get, pause=0)
+    assert jp.read_bytes() == first                                              # 같은 날 다시 돌려도 같은 파일
+    log = {r["source"]: r for r in csv.DictReader(lp.open(encoding="utf-8"))}
+    assert log["arbeitnow"]["new"] == "4" and log["arbeitnow"]["overlap"] == "first_run"   # 다시 돌려도 그날 기록이 지워지지 않음
+    # 다음 날: 새 공고 z 가 맨 앞에 오고, 1쪽에서 이미 아는 a 를 만나 멈춘다
+    get2, calls2 = fake_feeds([[arb("z"), arb("a")], [arb("b")]])
+    res2 = {e["source"]: e for e in J.collect("2025-03-12", jp, lp, get2, pause=0)}
+    assert res2["arbeitnow"]["pages"] == 1 and res2["arbeitnow"]["new"] == 1 and res2["arbeitnow"]["overlap"] == "yes"
+    rows = J.load(jp)
+    assert rows[("arbeitnow", "a")]["first_seen"] == "2025-03-11" and rows[("arbeitnow", "a")]["last_seen"] == "2025-03-12"
+    assert rows[("arbeitnow", "c")]["last_seen"] == "2025-03-11"
+
+
+def test_collect_reports_gap_and_survives_failure(tmp_path):
+    jp, lp = tmp_path / "jobs.csv", tmp_path / "log.csv"
+    get, _ = fake_feeds([[arb("a")]])
+    J.collect("2025-03-11", jp, lp, get, pause=0)
+    # 오래 쉬었다 돌린 경우: 8쪽을 넘겨도 아는 공고가 안 나옴 → 빈틈(no)
+    get2, calls = fake_feeds([[arb(f"n{i}")] for i in range(12)])
+    res = {e["source"]: e for e in J.collect("2025-03-20", jp, lp, get2, pause=0)}
+    assert res["arbeitnow"]["overlap"] == "no" and res["arbeitnow"]["pages"] == J.MAX_PAGES
+
+    def broken(url):
+        if "arbeitnow" in url:
+            raise TimeoutError("timeout")
+        return [{"legal": "x"}]
+    res = {e["source"]: e for e in J.collect("2025-03-21", jp, lp, broken, pause=0)}
+    assert res["arbeitnow"]["overlap"] == "error:TimeoutError" and res["remoteok"]["fetched"] == 0
+    assert len(J.load(jp)) == 2 + 8                                              # 실패해도 모아 둔 공고는 그대로
+
+
+def test_content_change_is_recorded(tmp_path):
+    ex = {}
+    J.merge(ex, [job("remoteok", "1", "Data Engineer", "2025-03-01T00:00:00Z", "", 90000, 120000)], "2025-03-11", "v1")
+    st = J.merge(ex, [job("remoteok", "1", "Data Engineer", "2025-03-01T00:00:00Z", "", 100000, 130000)], "2025-03-12", "v1")
+    r = ex[("remoteok", "1")]
+    assert st["changed"] == 1 and r["changed_on"] == "2025-03-12" and r["salary_min"] == 100000 and r["first_seen"] == "2025-03-11"
+    assert J.merge(ex, [job("remoteok", "1", "Data Engineer", "2025-03-01T00:00:00Z", "", 100000, 130000)], "2025-03-13", "v1")["changed"] == 0

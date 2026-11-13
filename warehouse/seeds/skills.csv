@@ -1,0 +1,51 @@
+skill,category,scope,pattern
+Python,language,any,\bpython\b
+SQL,language,any,\bsql\b
+Java,language,any,\bjava\b
+JavaScript,language,any,\bjavascript\b
+TypeScript,language,any,\btypescript\b
+Go,language,any,\b(golang|go (developer|engineer|backend|programming))\b
+Rust,language,any,\brust\b(?! belt)
+C++,language,any,c\+\+
+C#/.NET,language,any,(c#|\.net\b|dotnet)
+PHP,language,any,\bphp\b
+Ruby,language,any,\b(ruby|rails)\b
+Kotlin,language,any,\bkotlin\b
+Swift,language,any,\bswift(ui)?\b(?! (code|transfer))|\bios (developer|engineer|development)\b
+Scala,language,any,\bscala\b(?!ble)
+React,frontend,any,\breact(\.?js)?\b
+Vue,frontend,any,\bvue(\.?js)?\b
+Angular,frontend,any,\bangular\b
+Node.js,backend,any,\bnode(\.?js)?\b
+Django,backend,any,\bdjango\b
+Spring,backend,any,\bspring (boot|framework|cloud)\b|\bspringboot\b
+AWS,cloud,any,\baws\b
+Azure,cloud,any,\bazure\b
+GCP,cloud,any,\b(gcp|google cloud)\b
+Kubernetes,infra,any,\b(kubernetes|k8s)\b
+Docker,infra,any,\bdocker\b
+Terraform,infra,any,\bterraform\b
+Linux,infra,any,\blinux\b
+Airflow,data,any,\bairflow\b
+dbt,data,any,\bdbt\b
+Spark,data,any,\b(spark|pyspark)\b
+Kafka,data,any,\bkafka\b
+Snowflake,data,any,\bsnowflake\b
+BigQuery,data,any,\bbigquery\b
+Databricks,data,any,\bdatabricks\b
+PostgreSQL,data,any,\b(postgres|postgresql)\b
+Tableau,analytics,any,\btableau\b
+Power BI,analytics,any,\bpower ?bi\b
+SAP,enterprise,any,\bsap\b
+Salesforce,enterprise,any,\bsalesforce\b
+Machine Learning,ai,any,\b(machine learning|mlops|deep learning)\b|\bml (engineer|infrastructure|inference|platform)\b
+AI / LLM,ai,any,\b(llms?|genai|generative ai|agentic|ai (engineer|agents?|platform|native))\b
+Data Engineer (role),role,title,\bdata engineer(ing)?\b
+Data Scientist (role),role,title,\bdata scien(tist|ce)\b
+Data Analyst (role),role,title,\b(data|business|bi) analyst\b
+DevOps / SRE (role),role,title,\b(devops|sre|site reliability|platform engineer)\b
+Backend (role),role,title,\bback-?end\b
+Frontend (role),role,title,\bfront-?end\b
+Full-stack (role),role,title,\bfull-?stack\b
+QA / Test (role),role,title,\b(qa|test (engineer|automation)|sdet|tester)\b
+Security (role),role,title,\b(security|infosec|cyber)\b

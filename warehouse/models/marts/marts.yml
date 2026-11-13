@@ -51,3 +51,34 @@ models:
       - name: last_updated_at
         description: "묶음 안 지진의 가장 늦은 수정 시각 — 다음 증분 실행의 기준선"
         data_tests: [not_null]
+  - name: dim_skill
+    description: "기술 차원 — 사전에 있는 이름·분류"
+    columns:
+      - name: skill
+        data_tests: [unique, not_null]
+      - name: category
+        data_tests: [{accepted_values: {arguments: {values: ["language", "frontend", "backend", "cloud", "infra", "data", "analytics", "enterprise", "ai", "role"]}}}]
+  - name: fct_job_postings
+    description: "한 행 = 공고 한 건"
+    columns:
+      - name: job_key
+        data_tests: [unique, not_null]
+      - name: salary_quality
+        description: "급여 칸의 상태: none(없음) · annual(연봉으로 볼 수 있음) · suspect_low/high/order(단위나 순서가 이상해 쓰지 않음)"
+        data_tests: [{accepted_values: {arguments: {values: ["none", "annual", "suspect_low", "suspect_high", "suspect_order"]}}}]
+      - name: salary_mid_usd
+        description: "연봉으로 볼 수 있는 공고(salary_quality = annual)의 범위 가운데 값, 달러. 나머지는 비움"
+        data_tests: [{accepted_range: {arguments: {min_value: 10000, max_value: 1000000}}}]
+      - name: skill_count
+        data_tests: [{accepted_range: {arguments: {min_value: 0, max_value: 30}}}]
+  - name: fct_skill_demand_weekly
+    description: "주 × 기술. share_of_tech = 그 주 기술 공고 가운데 이 기술을 언급한 비율"
+    columns:
+      - name: skill
+        data_tests: [{relationships: {arguments: {to: ref('dim_skill'), field: skill}}}]
+      - name: share_of_tech
+        data_tests: [{accepted_range: {arguments: {min_value: 0, max_value: 1}}}]
+  - name: fct_jobs_daily
+    columns:
+      - name: postings
+        data_tests: [{accepted_range: {arguments: {min_value: 1}}}]

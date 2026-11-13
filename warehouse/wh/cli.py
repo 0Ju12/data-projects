@@ -3,6 +3,7 @@
 python -m wh.cli run --date 2025-03-01            # 하루 실행
 python -m wh.cli backfill 2025-03-01 2025-03-07   # 과거 날짜 다시 채우기 (dbt 는 한 번, 내보내기는 날짜마다)
 python -m wh.cli report                           # 계보·테스트 결과·실행 기록 보고서 (docs/index.html)
+python -m wh.cli collect-jobs                     # 채용 공고 피드 수집 (data/jobs.csv 에 합침)
 """
 from __future__ import annotations
 
@@ -25,7 +26,15 @@ def main(argv=None) -> int:
     b.add_argument("start")
     b.add_argument("end")
     sub.add_parser("report")
+    sub.add_parser("collect-jobs")
     a = ap.parse_args(argv)
+
+    if a.cmd == "collect-jobs":
+        from .sources import jobs
+        res = jobs.collect()
+        for e in res:
+            print(e["source"], "받음", e["fetched"], "새 공고", e["new"], "바뀜", e["changed"], "쪽", e["pages"], "이어짐", e["overlap"])
+        return 1 if all(str(e["overlap"]).startswith("error") for e in res) else 0
 
     if a.cmd == "run":
         row = P.run(a.date, export_day_override=a.export_date)

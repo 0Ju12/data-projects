@@ -12,18 +12,21 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+import re
+
 LAYER = {"staging": 0, "intermediate": 1, "marts": 2, "snapshot": 2}
-COLOR = {"staging": "#5b6cff", "intermediate": "#16a34a", "marts": "#ea7a0c", "snapshot": "#c0338a", "source": "#6b7280"}
+COLOR = {"staging": "#5b6cff", "intermediate": "#16a34a", "marts": "#ea7a0c", "snapshot": "#c0338a", "source": "#6b7280", "seed": "#0e9aa7"}
+VAR_CSV = re.compile(r'var\("(\w+_csv)"\)')
 
 
 def lineage(manifest: dict) -> tuple[list[dict], list[tuple[str, str]]]:
     """모델·변경 이력 노드와 (부모, 자식) 간선. 원본 CSV 는 staging 모델의 var() 이름으로 붙입니다."""
     nodes, edges = {}, []
     for uid, n in manifest["nodes"].items():
-        if n["resource_type"] not in ("model", "snapshot"):
+        if n["resource_type"] not in ("model", "snapshot", "seed"):
             continue
-        kind = "snapshot" if n["resource_type"] == "snapshot" else (n.get("fqn") or ["", "marts"])[1]
-        nodes[uid] = {"id": uid, "name": n["name"], "kind": kind, "layer": 1 + LAYER.get(kind, 2),
+        kind = n["resource_type"] if n["resource_type"] in ("snapshot", "seed") else (n.get("fqn") or ["", "marts"])[1]
+        nodes[uid] = {"id": uid, "name": n["name"], "kind": kind, "layer": 0 if kind == "seed" else 1 + LAYER.get(kind, 2),
                       "materialized": n["config"].get("materialized", ""), "description": n.get("description", "")}
     for uid, n in manifest["nodes"].items():
         if uid not in nodes:
@@ -32,8 +35,8 @@ def lineage(manifest: dict) -> tuple[list[dict], list[tuple[str, str]]]:
             if parent in nodes:
                 edges.append((parent, uid))
         raw = n.get("raw_code", "")
-        for var in ("quakes_csv", "demand_csv", "weather_csv"):
-            if f'var("{var}")' in raw:
+        for var in VAR_CSV.findall(raw):
+            if True:
                 sid = "source." + var
                 nodes.setdefault(sid, {"id": sid, "name": var.replace("_csv", ".csv"), "kind": "source", "layer": 0,
                                        "materialized": "file", "description": ""})
@@ -81,7 +84,36 @@ def _svg(nodes, edges) -> str:
     return "".join(out)
 
 
-def build_report(root: Path = ROOT, out: Path | None = None) -> Path:
+def jobs_section(db: Path) -> str:
+    """채용 공고 요약: 최근 4주 기술별 언급 비중 상위와 수집 현황. DB 가 없으면 빈 문자열"""
+    if not db.exists():
+        return ""
+    import duckdb
+    con = duckdb.connect(str(db), read_only=True)
+    try:
+        tot = con.execute("select count(*), count(*) filter (where is_tech), min(posted_date), max(posted_date) from fct_job_postings").fetchall()[0]
+        top = con.execute("""
+            with recent as (select * from int_job_skills where posted_date >= (select max(posted_date) from int_job_skills) - 27),
+                 base as (select count(distinct job_key) n from recent)
+            select r.skill, d.category, count(distinct r.job_key) c, round(100.0 * count(distinct r.job_key) / (select n from base), 1) pct
+            from recent r join dim_skill d using (skill) where d.category <> 'role' group by 1, 2 order by c desc, 1 limit 15""").fetchall()
+        feed = con.execute("select source, max(run_date), sum(new_jobs), sum((overlap = 'no' or overlap like 'error%')::int) from stg_jobs_fetch_log group by 1 order by 1").fetchall()
+    except Exception:
+        return ""
+    finally:
+        con.close()
+    if not tot[0]:
+        return ""
+    mx = max([t[2] for t in top] or [1])
+    rows = "".join(f"<tr><td>{html.escape(s)}</td><td class='m'>{c0}</td><td><i class='bar' style='width:{c / mx * 100:.0f}%'></i></td><td class='n'>{c}</td><td class='n'>{p}%</td></tr>" for s, c0, c, p in top)
+    feeds = " · ".join(f"{s}: 마지막 수집 {d}, 누적 새 공고 {n}건, 빈틈·실패 {g}일" for s, d, n, g in feed)
+    return f"""<div class="card"><h2>채용 공고 — 최근 4주, 기술 공고에서 많이 언급된 기술</h2>
+<p class="note" style="margin:0 0 10px">모은 공고 {tot[0]}건(게시일 {tot[2]} ~ {tot[3]}) 가운데 기술 이름이 하나라도 나온 {tot[1]}건 기준. 해외 원격·유럽 공고이고, 제목과 본문에서 사전에 있는 이름을 찾은 것이라 실제 요구 수준과는 다를 수 있습니다.</p>
+<div class="sc"><table><tr><th>기술</th><th>분류</th><th style="width:40%"></th><th class="n">공고</th><th class="n">비중</th></tr>{rows}</table></div>
+<p class="note" style="margin:10px 0 0">{html.escape(feeds)}<br>출처: <a href="https://remoteok.com">Remote OK</a> · <a href="https://www.arbeitnow.com">Arbeitnow</a> 공개 피드. 공고 본문은 저장하지 않습니다.</p></div>"""
+
+
+def build_report(root: Path = ROOT, out: Path | None = None, db: Path | None = None) -> Path:
     target = root / "target"
     manifest = json.loads((target / "manifest.json").read_text(encoding="utf-8"))
     rr = json.loads((target / "run_results.json").read_text(encoding="utf-8"))
@@ -119,19 +151,20 @@ main{{max-width:1040px;margin:0 auto}}h1{{font-size:26px;margin:0 0 4px}}h2{{fon
 .grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}}.kpi,.card{{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}}
 .kpi b{{display:block;font-size:24px;line-height:1.2}}.kpi span{{font-size:12.5px;color:var(--muted)}}.card{{margin-bottom:14px}}.sc{{overflow-x:auto}}
 table{{width:100%;border-collapse:collapse;font-size:13.5px}}th{{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:6px 6px}}td{{padding:6px;border-top:1px solid var(--line)}}
-td.n,th.n{{text-align:right;font-variant-numeric:tabular-nums}}.b{{font-size:12px;padding:2px 9px;border-radius:999px;font-weight:700}}
+td.n,th.n{{text-align:right;font-variant-numeric:tabular-nums}}td.m{{color:var(--muted);font-size:12.5px}}.bar{{display:block;height:8px;border-radius:4px;background:#0e9aa7}}.b{{font-size:12px;padding:2px 9px;border-radius:999px;font-weight:700}}
 .ok{{background:rgba(22,163,74,.14);color:#15803d}}.wn{{background:rgba(234,122,12,.16);color:#b45309}}.ng{{background:rgba(220,38,38,.14);color:#b91c1c}}
 .lg{{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin-top:10px}}.lg i{{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}}
 .note{{font-size:12.5px;color:var(--muted)}}a{{color:inherit}}@media (max-width:640px){{.grid{{grid-template-columns:repeat(2,1fr)}}}}
 </style></head><body><main>
 <h1>웨어하우스 상태</h1>
-<p class="sub">지진 목록·전력 수요·기온 원본을 dbt 로 정리한 결과입니다. 생성 {rr['metadata']['generated_at'][:19].replace('T', ' ')} UTC · <a href="https://github.com/0Ju12/data-projects/tree/main/warehouse">코드</a></p>
+<p class="sub">지진 목록·전력 수요·기온·채용 공고 원본을 dbt 로 정리한 결과입니다. 생성 {rr['metadata']['generated_at'][:19].replace('T', ' ')} UTC · <a href="https://github.com/0Ju12/data-projects/tree/main/warehouse">코드</a></p>
 <div class="grid">
 <div class="kpi"><b>{sum(n['kind'] != 'source' for n in nodes)}</b><span>모델·변경 이력</span></div>
 <div class="kpi"><b>{npass} / {len(tests)}</b><span>테스트 통과{f" · 경고 {nwarn}" if nwarn else ""}{f" · 실패 {nfail}" if nfail else ""}</span></div>
 <div class="kpi"><b>{ok} / {len(hist)}</b><span>기록된 실행 중 성공</span></div>
 <div class="kpi"><b>{last.get('seconds', '–')}초</b><span>마지막 실행 소요</span></div></div>
 <div class="card"><h2>계보 — 어느 표가 어느 표에서 나왔나</h2><div class="sc">{_svg(nodes, edges)}</div><div class="lg">{legend}</div></div>
+{jobs_section(db or root / "target" / "warehouse.duckdb")}
 <div class="card"><h2>실행 기록 (최근 30회)</h2><div class="sc"><table><tr><th>날짜</th><th>결과</th><th class="n">모델</th><th class="n">통과</th><th class="n">경고</th><th class="n">실패</th><th class="n">초</th><th class="n">지진 행</th><th class="n">이력 판</th><th class="n">내보낸 행</th></tr>{hrs or '<tr><td colspan="10">아직 기록 없음</td></tr>'}</table></div></div>
 <div class="card"><h2>테스트 결과</h2><div class="sc"><table><tr><th>테스트</th><th>결과</th><th class="n">걸린 행</th><th class="n">초</th></tr>{trs}</table></div></div>
 <p class="note">· "이력 판"은 지진 변경 이력 표의 행 수입니다. USGS 가 규모·위치를 고치면 이전 판을 닫고 새 판을 추가하므로, 지진 행 수보다 많아질 수 있습니다.<br>· 전력 수요 자료는 2025년 한 해뿐이라, 매일 실행에서는 작년 같은 날짜의 파티션을 다시 내보내 재실행 안전성만 확인합니다.</p>

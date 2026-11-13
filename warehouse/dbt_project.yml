@@ -5,6 +5,7 @@ model-paths: ["models"]
 test-paths: ["tests"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
+seed-paths: ["seeds"]
 target-path: "target"
 clean-targets: ["target"]
 
@@ -13,6 +14,8 @@ vars:
   quakes_csv: "../geo-data-pipeline/data/events.csv"
   demand_csv: "../power-demand/data/kpx_hourly_demand_2025.csv"
   weather_csv: "../power-demand/data/weather_2025.csv"
+  jobs_csv: "data/jobs.csv"
+  jobs_fetch_csv: "data/jobs_fetch_log.csv"
   quake_fresh_days: 14        # 지진 목록이 이 일수보다 오래 멈춰 있으면 경고
 
 models:
@@ -20,3 +23,8 @@ models:
     staging:      {+materialized: view}
     intermediate: {+materialized: view}
     marts:        {+materialized: table}
+
+seeds:
+  warehouse:
+    skills:
+      +column_types: {skill: varchar, category: varchar, scope: varchar, pattern: varchar}
