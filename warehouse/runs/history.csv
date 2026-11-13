@@ -1,2 +1,2 @@
 run_at_utc,logical_date,status,models,tests_pass,tests_warn,tests_fail,seconds,rows_demand_hourly,rows_quakes,snapshot_versions,exported_rows,sources_sha
-2026-11-13T00:03:59Z,2026-11-13,success,10,31,0,0,4.55,8760,2477,2477,24,7b4356-53c159-39839f
+2026-11-13T00:18:16Z,2026-11-13,success,10,31,0,0,7.57,8760,2480,2480,24,d1abba-53c159-39839f
