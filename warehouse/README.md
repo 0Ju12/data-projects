@@ -3,7 +3,7 @@
 같은 저장소의 다른 프로젝트가 모으는 자료(지진 목록 · 전력 수요 · 기온)와 직접 모으는 채용 공고를 **원본 → 정제 → 집계** 3단으로 정리하고,
 품질 테스트·변경 이력·재실행 안전성·실행 기록까지 갖춘 작은 데이터 웨어하우스입니다.
 
-- 상태 보고서(계보·테스트 결과·실행 기록): <https://0ju12.github.io/data-projects/warehouse/> — 매일 06:17 KST 실행 뒤 갱신
+- **대시보드**: <https://0ju12.github.io/data-projects/warehouse/> — 개요 · 시세·환율 · 채용 · 전력 · 지진 · 품질(계보·테스트·실행 기록), 매일 06:17 KST 실행 뒤 갱신
 - 도구: dbt-core + DuckDB, Airflow 3 (DAG), GitHub Actions(매일 실행), pytest
 
 ## 구조
@@ -72,7 +72,33 @@ jobs_fetch_log.csv ─ stg_jobs_fetch_log
 
 출처: [Remote OK](https://remoteok.com) · [Arbeitnow](https://www.arbeitnow.com) 공개 피드 (각 서비스의 이용 조건에 따라 출처를 밝히고 원문 링크를 보존합니다).
 
-## 품질 테스트 (58개)
+## 거래소 시세와 환율 (업비트 · 코인베이스 · Frankfurter)
+
+업비트 원화 종가가, 코인베이스 달러 종가를 그날 환율로 바꾼 값보다 몇 % 비싼지(흔히 '김치 프리미엄')를 날마다 계산합니다. 자산 4종(BTC·ETH·XRP·SOL), 2년치.
+
+```
+market_candles.csv ─ stg_candles ─┬─ dim_asset
+fx_rates.csv ─ stg_fx ─ int_fx_daily ─┴─ fct_krw_premium_daily ─ fct_premium_monthly
+```
+
+**하루 경계가 같은 거래소끼리만 묶는다.** 업비트와 코인베이스 일봉은 UTC 0시에 끊기지만, 빗썸 일봉은 한국 시간 0시(UTC 15시)에 끊깁니다. 이름은 같은 '일봉'이어도 같은 하루가 아니어서 빗썸은 넣지 않았습니다.
+
+**주말 환율은 직전 영업일 값으로 채우고, 그 사실을 남긴다.** 거래소는 365일 열리지만 기준환율은 영업일에만 고시됩니다. `int_fx_daily` 가 달력의 모든 날로 넓히면서 채운 날(`is_filled`)과 며칠 묵은 값인지(`stale_days`)를 함께 둡니다. 2년 가운데 220일이 채운 값이고, 가장 길게는 4일 묵은 환율을 썼습니다.
+
+**조인에서 조용히 사라지는 날을 따로 확인한다.** 프리미엄은 두 거래소와 환율을 조인해 만들므로, 어느 한쪽이 빠진 날은 오류 없이 결과에서 빠집니다. "업비트에 봉이 있는 날은 모두 계산됐는가"를 테스트로 둡니다.
+
+**끝난 날만 저장하고, 최근 7일은 다시 받는다.** 오늘(UTC) 봉은 값이 계속 바뀌므로 저장하지 않습니다. 매일 최근 7일을 겹쳐 받아 나중에 고쳐진 봉을 반영하고, 며칠 수집이 멈췄다 돌아도 빈 날이 메워집니다. 그래도 빈 날이 남으면 날짜 연속성 테스트가 빌드를 막습니다.
+
+한계
+- 일 종가 한 점끼리의 비교입니다. 장중 차이, 수수료, 입출금 제한은 반영하지 않습니다.
+- 기준환율은 실제 거래에 쓰이는 환율과 다릅니다. 투자 판단용이 아닙니다.
+
+## 왜 이 자료들인가
+
+[public-apis-4Kr](https://github.com/yybmion/public-apis-4Kr) 목록(국내 API 311개)을 훑어봤습니다. 223개가 인증키, 46개가 로그인·OAuth 가 필요했고, 키 없이 쓸 수 있다고 표시된 30개는 대부분 통계 포털 웹사이트였습니다.
+그래서 키 없이 프로그램으로 받을 수 있는 국내 자료로 거래소 공개 시세를 골랐고, 유동인구·따릉이·실거래가 같은 자료는 인증키를 발급받은 뒤 추가할 후보로 남겼습니다.
+
+## 품질 테스트 (77개)
 
 - 열 단위: `unique` · `not_null` · `relationships`(사실 표의 날짜·지역이 차원에 있는가) · `accepted_values` · 직접 만든 `accepted_range`(규모 0~10, 위도·경도, 수요 20~120 GW 등)
 - 표 단위(`tests/*.sql`): 하루는 정확히 24행 · 이웃 행 간격은 항상 1시간 · 일 요약의 최대값이 시간 표에서 다시 계산한 값과 같은가
@@ -88,7 +114,8 @@ python -m wh.cli run --date 2026-11-13            # 원본 확인 → dbt build 
 python -m wh.cli backfill 2025-03-01 2025-03-07   # 과거 날짜 다시 채우기
 python -m wh.cli report                           # docs/index.html
 python -m wh.cli collect-jobs                     # 채용 공고 피드 수집
-python -m pytest -q                               # 26개
+python -m wh.cli collect-market                   # 거래소 일봉·환율 수집
+python -m pytest -q                               # 32개
 ```
 
 Airflow (Docker 없이 확인하는 방법 — dbt 와 의존성이 부딪히지 않게 가상환경을 나눕니다):
@@ -101,7 +128,7 @@ airflow db migrate
 airflow dags test warehouse_daily 2026-11-13
 ```
 
-DAG `warehouse_daily`: `collect_jobs → check_sources → dbt_build → export_partition → record → report`.
+DAG `warehouse_daily`: `collect_jobs · collect_market → check_sources → dbt_build → export_partition → record → report`.
 원본 확인과 dbt 는 2번까지 재시도하고, `record`·`report` 는 앞 단계가 실패해도 실행됩니다(`trigger_rule="all_done"`).
 작업은 얇은 껍데기이고 실제 일은 `wh/pipeline.py` 의 함수가 하므로, 명령줄·테스트·Airflow 가 같은 코드를 씁니다.
 

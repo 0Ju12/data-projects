@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>웨어하우스 대시보드</title>
+<style>
+:root{color-scheme:light;--bg:#f4f4f2;--surface:#fcfcfb;--text:#0b0b0b;--text2:#52514e;--muted:#7a7873;--line:#e4e2dc;--grid:#ebe9e3;--line2:#b9b6ae;
+  --s1:#2a78d6;--s2:#eb6834;--good:#0ca30c;--warn:#b97700;--crit:#d03b3b;--card:#fcfcfb;
+  --q0:#cde2fb;--q1:#9ec5f4;--q2:#6da7ec;--q3:#3987e5;--q4:#256abf;--q5:#184f95;--q6:#0d366b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#111110;--surface:#1a1a19;--text:#f0efec;--text2:#c3c2b7;--muted:#96948c;--line:#2e2e2b;--grid:#262624;--line2:#5a5852;
+  --s1:#3987e5;--s2:#d95926;--good:#0ca30c;--warn:#fab219;--crit:#e66767;--card:#1a1a19;
+  --q0:#0d366b;--q1:#184f95;--q2:#256abf;--q3:#3987e5;--q4:#6da7ec;--q5:#9ec5f4;--q6:#cde2fb}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#111110;--surface:#1a1a19;--text:#f0efec;--text2:#c3c2b7;--muted:#96948c;--line:#2e2e2b;--grid:#262624;--line2:#5a5852;
+  --s1:#3987e5;--s2:#d95926;--good:#0ca30c;--warn:#fab219;--crit:#e66767;--card:#1a1a19;
+  --q0:#0d366b;--q1:#184f95;--q2:#256abf;--q3:#3987e5;--q4:#6da7ec;--q5:#9ec5f4;--q6:#cde2fb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI","Noto Sans KR",sans-serif}
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hd{max-width:1180px;margin:0 auto;padding:14px 16px 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
+h1{font-size:19px;margin:0;letter-spacing:-.3px}.gen{font-size:12.5px;color:var(--muted)}.gen a{color:inherit}
+nav{max-width:1180px;margin:0 auto;padding:10px 16px 0;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav button{border:0;background:none;color:var(--text2);font:inherit;font-size:14.5px;font-weight:600;padding:8px 14px 11px;border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--text);border-bottom-color:var(--s1)}
+nav button:focus-visible,.seg button:focus-visible{outline:2px solid var(--s1);outline-offset:-2px;border-radius:6px}
+main{max-width:1180px;margin:0 auto;padding:18px 16px 70px}
+section{display:none}section.on{display:block}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(12,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;min-width:0}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+h2{font-size:15px;margin:0 0 2px;letter-spacing:-.2px}.sub{font-size:12.5px;color:var(--muted);margin:0 0 12px;line-height:1.5}
+.kpi b{display:block;font-size:27px;line-height:1.15;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:12.5px;color:var(--text2)}.kpi small{display:block;font-size:12px;color:var(--muted);margin-top:4px}
+.kpi button{all:unset;cursor:pointer;display:block;width:100%}.kpi button:focus-visible{outline:2px solid var(--s1);outline-offset:6px;border-radius:8px}
+.spark{display:block;width:100%;height:38px;margin-top:8px}
+.filters{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:0 0 12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow-x:auto;max-width:100%;background:var(--card);scrollbar-width:none}
+.seg button{border:0;background:none;color:var(--text2);font:inherit;font-size:13px;font-weight:600;padding:6px 12px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.fl{font-size:12.5px;color:var(--muted)}
+.chart{position:relative;width:100%}.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{fill:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.lg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--text2);margin:0 0 8px}.lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+#tip{position:fixed;z-index:50;pointer-events:none;background:var(--text);color:var(--bg);font-size:12.5px;line-height:1.5;padding:7px 10px;border-radius:8px;max-width:260px;opacity:0;transition:opacity .08s;font-variant-numeric:tabular-nums;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+#tip b{font-weight:700}
+.sc{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:6px;white-space:nowrap}td{padding:6px;border-top:1px solid var(--line);white-space:nowrap}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}td.w{white-space:normal}
+.b{font-size:12px;padding:2px 9px;border-radius:999px;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.ok{background:color-mix(in srgb,var(--good) 16%,transparent);color:color-mix(in srgb,var(--good) 70%,var(--text))}
+.wn{background:color-mix(in srgb,var(--warn) 20%,transparent);color:color-mix(in srgb,var(--warn) 60%,var(--text))}
+.ng{background:color-mix(in srgb,var(--crit) 16%,transparent);color:color-mix(in srgb,var(--crit) 75%,var(--text))}
+.note{font-size:12.5px;color:var(--muted);line-height:1.65;margin:10px 0 0}.note a{color:inherit}
+.hb{display:grid;grid-template-columns:minmax(90px,150px) 1fr 44px 52px;gap:4px 10px;align-items:center;font-size:13px}
+.hb .bar{height:10px;border-radius:0 4px 4px 0;background:var(--s1);min-width:2px}.hb .v{text-align:right;font-variant-numeric:tabular-nums}.hb .p{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.hb .cat{color:var(--muted);font-size:11.5px;margin-left:6px}
+.hb>div{min-width:0}.hb .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+details{margin-top:10px}summary{cursor:pointer;font-size:12.5px;color:var(--text2);font-weight:600}
+.empty{color:var(--muted);font-size:13.5px;padding:18px 0}
+.ramp{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);margin-top:8px}.ramp i{display:inline-block;width:22px;height:10px}
+@media (max-width:900px){.c3{grid-column:span 6}.c4,.c5,.c6,.c7,.c8{grid-column:span 12}}
+@media (max-width:520px){.kpi b{font-size:22px}.hb{grid-template-columns:minmax(80px,120px) 1fr 38px 46px}}
+</style></head><body>
+<header><div class="hd"><h1>웨어하우스 대시보드</h1><span class="gen" id="gen"></span></div>
+<nav role="tablist" aria-label="화면">
+<button role="tab" data-t="home" aria-selected="true">개요</button><button role="tab" data-t="mkt" aria-selected="false">시세·환율</button><button role="tab" data-t="jobs" aria-selected="false">채용</button><button role="tab" data-t="pwr" aria-selected="false">전력</button><button role="tab" data-t="eq" aria-selected="false">지진</button><button role="tab" data-t="qa" aria-selected="false">품질</button>
+</nav></header>
+<main>
+<section id="home" class="on"><div class="grid" id="home-g"></div></section>
+<section id="mkt"><div class="filters"><span class="fl">자산</span><span class="seg" id="f-asset"></span><span class="fl">기간</span><span class="seg" id="f-range"></span></div><div class="grid" id="mkt-g"></div></section>
+<section id="jobs"><div class="filters"><span class="fl">분류</span><span class="seg" id="f-cat"></span></div><div class="grid" id="jobs-g"></div></section>
+<section id="pwr"><div class="grid" id="pwr-g"></div></section>
+<section id="eq"><div class="grid" id="eq-g"></div></section>
+<section id="qa"><div class="grid" id="qa-g"></div></section>
+</main><div id="tip" role="status"></div>
+<script>
+const D=__DATA__;
+const $=s=>document.querySelector(s),el=(h)=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstChild};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nf=(v,d=0)=>v==null?'–':Number(v).toLocaleString('ko-KR',{maximumFractionDigits:d,minimumFractionDigits:d});
+const md=s=>{const [y,m,d]=s.split('-');return (+m)+'/'+(+d)},ym=s=>s.slice(2,4)+'.'+(+s.slice(5,7));
+const tip=$('#tip');
+function showTip(e,h){tip.innerHTML=h;tip.style.opacity=1;const r=tip.getBoundingClientRect();let x=e.clientX+14,y=e.clientY+14;if(x+r.width>innerWidth-8)x=e.clientX-r.width-14;if(y+r.height>innerHeight-8)y=e.clientY-r.height-14;tip.style.left=Math.max(8,x)+'px';tip.style.top=Math.max(8,y)+'px'}
+const hideTip=()=>tip.style.opacity=0;
+const nice=(lo,hi,n=4)=>{if(lo===hi){lo-=1;hi+=1}const st=Math.pow(10,Math.floor(Math.log10((hi-lo)/n)));const k=[1,2,2.5,5,10].find(k=>(hi-lo)/(k*st)<=n+1)*st;const a=Math.floor(lo/k)*k,b=Math.ceil(hi/k)*k,t=[];for(let v=a;v<=b+k/2;v+=k)t.push(+v.toFixed(10));return t};
+// ---- 꺾은선: series=[{name,color,pts:[[label,y,extra]]}] (x 는 순서). 가로 기준선·십자선·말풍선
+function line(host,series,o={}){const W=720,H=o.h||250,L=46,R=12,T=10,B=24,n=series[0].pts.length;if(!n){host.innerHTML='<p class="empty">자료 없음</p>';return}
+  const ys=series.flatMap(s=>s.pts.map(p=>p[1])).filter(v=>v!=null),t=nice(Math.min(...ys,o.zero?0:Infinity),Math.max(...ys,o.zero?0:-Infinity)),y0=t[0],y1=t[t.length-1];
+  const X=i=>L+(n<2?0:i/(n-1))*(W-L-R),Y=v=>T+(1-(v-y0)/(y1-y0))*(H-T-B);
+  let g='';t.forEach(v=>g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="${v===0&&o.zero?'var(--line2)':'var(--grid)'}" stroke-width="1"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end">${nf(v,o.dec??0)}${o.unit||''}</text>`);
+  const step=Math.max(1,Math.ceil(n/6));for(let i=0;i<n;i+=step)g+=`<text x="${X(i)}" y="${H-6}" text-anchor="${i===0?'start':'middle'}">${esc((o.xfmt||md)(series[0].pts[i][0]))}</text>`;
+  series.forEach(s=>{let d='',pen=false;s.pts.forEach((p,i)=>{if(p[1]==null){pen=false;return}d+=(pen?'L':'M')+X(i).toFixed(1)+','+Y(p[1]).toFixed(1);pen=true});g+=`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`});
+  if(o.endLabel)series.forEach(s=>{const p=s.pts[n-1];if(p[1]!=null)g+=`<circle cx="${X(n-1)}" cy="${Y(p[1])}" r="4" fill="${s.color}" stroke="var(--surface)" stroke-width="2"/>`});
+  host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label||'')}">${g}<line class="ch" y1="${T}" y2="${H-B}" stroke="var(--line2)" stroke-width="1" opacity="0"/>${series.map(s=>`<circle class="dot" r="4.5" fill="${s.color}" stroke="var(--surface)" stroke-width="2" opacity="0"/>`).join('')}<rect x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="transparent"/></svg>`;
+  const svg=host.firstChild,ch=svg.querySelector('.ch'),dots=[...svg.querySelectorAll('.dot')];
+  const mv=e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W,i=Math.max(0,Math.min(n-1,Math.round((px-L)/(W-L-R)*(n-1))));ch.setAttribute('x1',X(i));ch.setAttribute('x2',X(i));ch.setAttribute('opacity',1);
+    dots.forEach((c,k)=>{const v=series[k].pts[i][1];if(v==null){c.setAttribute('opacity',0);return}c.setAttribute('cx',X(i));c.setAttribute('cy',Y(v));c.setAttribute('opacity',1)});
+    showTip(e,(o.tip||((i,ss)=>`<b>${esc(ss[0].pts[i][0])}</b><br>`+ss.map(s=>`${esc(s.name)} ${nf(s.pts[i][1],o.dec??0)}${o.unit||''}`).join('<br>')))(i,series))};
+  svg.addEventListener('pointermove',mv);svg.addEventListener('pointerleave',()=>{hideTip();ch.setAttribute('opacity',0);dots.forEach(c=>c.setAttribute('opacity',0))})}
+// ---- 세로 막대(쌓기 가능): rows=[[label,v1,v2..]]
+function bars(host,rows,cols,o={}){const W=720,H=o.h||230,L=46,R=8,T=10,B=24,n=rows.length;if(!n){host.innerHTML='<p class="empty">자료 없음</p>';return}
+  const tot=rows.map(r=>cols.reduce((a,c,k)=>a+(r[k+1]||0),0)),t=nice(0,Math.max(...tot,1)),y1=t[t.length-1],Y=v=>T+(1-v/y1)*(H-T-B),bw=(W-L-R)/n,w=Math.max(2,Math.min(26,bw-2));
+  let g='';t.forEach(v=>g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end">${nf(v)}</text>`);
+  const step=Math.max(1,Math.ceil(n/8));
+  rows.forEach((r,i)=>{const x=L+i*bw+(bw-w)/2;let acc=0;cols.forEach((c,k)=>{const v=r[k+1]||0;if(!v)return;const yb=Y(acc),yt=Y(acc+v),top=k===cols.length-1||!cols.slice(k+1).some((_,j)=>r[k+2+j]);const h=Math.max(1,yb-yt-(acc?2:0));
+      g+=top?`<path d="M${x},${yt+h} v${-(h-Math.min(4,h))} q0,${-Math.min(4,h)} ${Math.min(4,w/2)},${-Math.min(4,h)} h${w-2*Math.min(4,w/2)} q${Math.min(4,w/2)},0 ${Math.min(4,w/2)},${Math.min(4,h)} v${h-Math.min(4,h)}z" fill="${c.color}"/>`:`<rect x="${x}" y="${yt}" width="${w}" height="${h}" fill="${c.color}"/>`;acc+=v});
+    if(i%step===0)g+=`<text x="${x+w/2}" y="${H-6}" text-anchor="middle">${esc((o.xfmt||md)(r[0]))}</text>`;
+    g+=`<rect class="hit" data-i="${i}" x="${L+i*bw}" y="${T}" width="${bw}" height="${H-T-B}" fill="transparent"/>`});
+  host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label||'')}">${g}</svg>`;
+  host.querySelectorAll('.hit').forEach(h=>{h.addEventListener('pointermove',e=>{const r=rows[+h.dataset.i];showTip(e,(o.tip||(r=>`<b>${esc(r[0])}</b><br>`+cols.map((c,k)=>`${esc(c.name)} ${nf(r[k+1]||0)}`).join('<br>')))(r))});h.addEventListener('pointerleave',hideTip)})}
+function spark(vals,color){const v=vals.filter(x=>x!=null);if(v.length<2)return'';const lo=Math.min(...v),hi=Math.max(...v),W=200,H=38,p=vals.map((y,i)=>y==null?null:[i/(vals.length-1)*W,3+(1-(y-lo)/((hi-lo)||1))*(H-6)]).filter(Boolean);
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${p.map((q,i)=>(i?'L':'M')+q[0].toFixed(1)+','+q[1].toFixed(1)).join('')}" fill="none" stroke="${color||'var(--s1)'}" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`}
+const seg=(host,items,cur,fn)=>{host.innerHTML=items.map(([v,l])=>`<button type="button" data-v="${esc(v)}" aria-pressed="${v===cur}">${esc(l)}</button>`).join('');host.onclick=e=>{const b=e.target.closest('button');if(!b)return;host.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));fn(b.dataset.v)}};
+const badge=s=>{const m={pass:['ok','✓ 통과'],success:['ok','✓ 성공'],warn:['wn','! 경고'],fail:['ng','✕ 실패'],error:['ng','✕ 오류'],failed:['ng','✕ 실패']}[s]||['wn',esc(s)];return `<span class="b ${m[0]}">${m[1]}</span>`};
+const card=(cls,h)=>el(`<div class="card ${cls}">${h}</div>`);
+const go=t=>document.querySelector(`nav button[data-t=${t}]`).click();
+
+// ================= 개요
+function home(){const g=$('#home-g'),T=D.tests||[],pass=T.filter(t=>t[1]==='pass').length,warn=T.filter(t=>t[1]==='warn').length,H=D.history||[],ok=H.filter(h=>h.status==='success').length,last=H[H.length-1]||{};
+  const k=(cls,big,lab,sm,t,sp)=>card('kpi '+cls,`<button type="button" ${t?`data-go="${t}" aria-label="${esc(lab)} 자세히"`:'tabindex="-1"'}><span>${lab}</span><b>${big}</b><small>${sm||''}</small>${sp||''}</button>`);
+  g.append(k('c3',D.models??'–','모델·변경 이력','원본 → 정제 → 집계','qa'),
+    k('c3',`${pass} / ${T.length}`,'품질 테스트 통과',warn?`경고 ${warn}건`:(T.length-pass?`실패 ${T.length-pass}건`:'모두 통과'),'qa'),
+    k('c3',`${ok} / ${H.length}`,'기록된 매일 실행 중 성공',last.logical_date?`마지막 ${last.logical_date} · ${last.seconds}초`:'아직 기록 없음','qa'),
+    k('c3',nf((+last.rows_quakes||0)+(+last.rows_demand_hourly||0)+(+last.rows_jobs||0)+(+last.rows_candles||0)),'정리된 원본 행','지진·수요·공고·일봉 합계','qa'));
+  const P=D.premium&&D.premium.BTC;if(P&&P.length){const l=P[P.length-1],v=P.slice(-90).map(r=>r[1]);g.append(k('c3',`${l[1]>0?'+':''}${nf(l[1],2)}%`,'비트코인 원화 프리미엄',`${l[0]} · 최근 90일 ${nf(Math.min(...v),1)}% ~ ${nf(Math.max(...v),1)}%`,'mkt',spark(v)))}
+  const F=D.fx;if(F&&F.length){const l=F[F.length-1],v=F.slice(-90).map(r=>r[1]);g.append(k('c3',nf(l[1],1)+'원','달러 환율 (기준환율)',`${l[0]} 고시`,'mkt',spark(v)))}
+  const S=(D.skills||[]).filter(s=>s[1]!=='role');if(S.length){g.append(k('c3',esc(S[0][0]),'공고에서 가장 많이 언급된 기술',`최근 4주 기술 공고의 ${S[0][3]}% · 다음 ${esc(S[1]?.[0]||'')}`,'jobs',spark((D.jobs_daily||[]).map(r=>r[3]))))}
+  const Q=D.quakes_monthly;if(Q&&Q.length){const l=Q[Q.length-1];g.append(k('c3',nf(l[1])+'건',`지진 (${ym(l[0])}월, 진행 중)`,`그달 최대 규모 ${nf(l[2],1)}`,'eq',spark(Q.slice(-24).map(r=>r[1]))))}
+  const DD=D.demand_daily;if(DD&&DD.length){const mx=DD.reduce((a,b)=>b[1]>a[1]?b:a);const c=card('c8',`<h2>2025년 하루 최대 전력 수요</h2><p class="sub">가장 높았던 날은 ${mx[0]} (${nf(mx[1])} MW). 여름과 겨울에 솟고 봄·가을에 낮습니다.</p><div class="chart" id="h-pwr"></div>`);g.append(c);
+    line(c.querySelector('#h-pwr'),[{name:'최대 수요',color:'var(--s1)',pts:DD.map(r=>[r[0],r[1]])}],{h:210,unit:'',label:'하루 최대 전력 수요',tip:(i,s)=>`<b>${DD[i][0]}${DD[i][4]?' (주말)':''}</b><br>최대 ${nf(DD[i][1])} MW<br>평균 ${nf(DD[i][2])} MW<br>평균 기온 ${nf(DD[i][5],1)}℃`})}
+  const J=D.jobs_total;g.append(card('c4',`<h2>이 화면에 대해</h2><p class="sub" style="margin-bottom:0">공개 자료 네 갈래(지진·전력 수요·채용 공고·거래소 시세와 환율)를 매일 받아 dbt 로 정리한 결과입니다. 숫자를 누르면 해당 탭으로 갑니다.<br><br>${J?`채용 공고 ${nf(J[0])}건(${J[3]} ~ ${J[4]}), `:''}${P?`일봉 ${nf(Object.values(D.premium).reduce((a,b)=>a+b.length,0)*2)}개, `:''}${DD?`시간별 수요 ${nf(DD.length*24)}행`:''}.<br><br>자료가 작아 처리 성능을 보여 주는 화면은 아닙니다. 품질 검사와 재실행 안전성을 확인하는 용도입니다.</p>`));
+  g.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go))}
+
+// ================= 시세·환율
+let asset='BTC',range=365;
+function mkt(){const g=$('#mkt-g');if(!D.premium){g.innerHTML='<p class="empty c12">시세 자료가 없습니다.</p>';return}
+  seg($('#f-asset'),Object.keys(D.premium).map(a=>[a,a]),asset,v=>{asset=v;draw()});seg($('#f-range'),[['90','90일'],['365','1년'],['730','2년']],String(range),v=>{range=+v;draw()});
+  function draw(){const A=D.premium[asset].slice(-range),l=A[A.length-1],v=A.map(r=>r[1]),avg=v.reduce((a,b)=>a+b,0)/v.length,hi=A.reduce((a,b)=>b[1]>a[1]?b:a),lo=A.reduce((a,b)=>b[1]<a[1]?b:a),neg=v.filter(x=>x<0).length;
+    g.innerHTML='';const K=(b,s,sm)=>card('kpi c3',`<span>${s}</span><b>${b}</b><small>${sm}</small>`);
+    g.append(K(`${l[1]>0?'+':''}${nf(l[1],2)}%`,`${asset} 프리미엄 (${l[0]})`,`업비트 ${nf(l[2])}원 · 환산 ${nf(l[3])}원`),K(`${avg>0?'+':''}${nf(avg,2)}%`,'기간 평균',`${A[0][0]} ~ ${l[0]}`),K(`+${nf(hi[1],2)}%`,'기간 최고',hi[0]),K(`${nf(neg)}일`,'원화가 더 쌌던 날',`${A.length}일 중 · 최저 ${nf(lo[1],2)}% (${lo[0]})`));
+    const c1=card('c12',`<h2>${asset} 원화 프리미엄</h2><p class="sub">업비트 원화 종가가 코인베이스 달러 종가를 그날 환율로 바꾼 값보다 몇 % 비싼가. 0 위면 원화 시장이 더 비쌉니다.</p><div class="chart" id="m1"></div>`);g.append(c1);
+    line(c1.querySelector('#m1'),[{name:'프리미엄',color:'var(--s1)',pts:A.map(r=>[r[0],r[1]])}],{zero:true,dec:1,unit:'%',endLabel:true,label:asset+' 원화 프리미엄',xfmt:s=>range>120?ym(s):md(s),tip:i=>`<b>${A[i][0]}</b><br>프리미엄 ${A[i][1]>0?'+':''}${nf(A[i][1],2)}%<br>업비트 ${nf(A[i][2])}원<br>코인베이스 환산 ${nf(A[i][3])}원<br>환율 ${nf(A[i][4],1)}원${A[i][5]?' (직전 영업일 값)':''}`});
+    const F=(D.fx||[]).filter(r=>r[0]>=A[0][0]);const c2=card('c7',`<h2>달러 환율</h2><p class="sub">유럽중앙은행 기준환율. 영업일에만 고시되므로 주말·휴일의 프리미엄은 직전 영업일 환율로 계산합니다.</p><div class="chart" id="m2"></div>`);g.append(c2);
+    line(c2.querySelector('#m2'),[{name:'USD/KRW',color:'var(--s2)',pts:F.map(r=>[r[0],r[1]])}],{h:220,dec:0,unit:'',label:'달러 환율',xfmt:s=>range>120?ym(s):md(s),tip:i=>`<b>${F[i][0]}</b><br>1달러 = ${nf(F[i][1],2)}원`});
+    const M=(D.premium_monthly||[]).filter(r=>r[1]===asset).slice(0,Math.ceil(range/30)+1);
+    g.append(card('c5',`<h2>월별 요약</h2><p class="sub">${asset} · 평균과 범위, 3% 를 넘은 날 수</p><div class="sc" style="max-height:236px;overflow-y:auto"><table><tr><th>월</th><th class="n">평균</th><th class="n">최저</th><th class="n">최고</th><th class="n">3% 초과</th><th class="n">음수</th></tr>${M.map(r=>`<tr><td>${r[0].slice(0,7)}</td><td class="n">${nf(r[3],2)}%</td><td class="n">${nf(r[4],2)}%</td><td class="n">${nf(r[5],2)}%</td><td class="n">${r[6]}일</td><td class="n">${r[7]}일</td></tr>`).join('')}</table></div>`));
+    g.append(el(`<p class="note c12" style="grid-column:span 12">출처: 업비트·코인베이스 공개 시세, Frankfurter(유럽중앙은행 기준환율). 두 거래소 모두 하루를 UTC 0시에 끊습니다. 일 종가 한 점끼리의 비교라 장중 차이는 보이지 않고, 기준환율은 실제 거래 환율과 다릅니다. 투자 판단용 자료가 아닙니다.</p>`))}
+  draw()}
+
+// ================= 채용
+let cat='tech';
+function jobs(){const g=$('#jobs-g'),S=D.skills,J=D.jobs_total;if(!S||!J){g.innerHTML='<p class="empty">채용 자료가 없습니다.</p>';return}
+  seg($('#f-cat'),[['tech','기술 전체'],['language','언어'],['data','데이터'],['cloud','클라우드·인프라'],['ai','AI'],['role','직무']],cat,v=>{cat=v;draw()});
+  const K=(b,s,sm)=>card('kpi c3',`<span>${s}</span><b>${b}</b><small>${sm}</small>`);
+  function draw(){g.innerHTML='';g.append(K(nf(J[0]),'모은 공고',`게시일 ${J[3]} ~ ${J[4]}`),K(nf(J[1]),'기술 이름이 나온 공고',`전체의 ${nf(J[1]/J[0]*100,0)}%`),K(nf(J[2]),'원격 근무 공고',`전체의 ${nf(J[2]/J[0]*100,0)}%`),K(J[7]?'$'+nf(J[7]):'–','연봉 가운데값 (쓸 수 있는 것만)',`${J[5]}건 사용 · 단위 이상 ${J[6]}건 제외`));
+    const rows=S.filter(s=>cat==='tech'?s[1]!=='role':cat==='cloud'?(s[1]==='cloud'||s[1]==='infra'):s[1]===cat).slice(0,15),mx=Math.max(...rows.map(r=>r[2]),1);
+    const c=card('c7',`<h2>최근 4주, 많이 언급된 기술</h2><p class="sub">기술 이름이 하나라도 나온 공고 가운데 그 기술을 언급한 비율</p><div class="hb">${rows.map(r=>`<div class="nm" title="${esc(r[0])}">${esc(r[0])}<span class="cat">${esc(r[1])}</span></div><div><div class="bar" style="width:${r[2]/mx*100}%"></div></div><div class="v">${nf(r[2])}</div><div class="p">${r[3]}%</div>`).join('')||'<p class="empty">이 분류에 해당하는 공고가 없습니다.</p>'}</div>`);g.append(c);
+    const JD=D.jobs_daily||[];const c2=card('c5',`<h2>하루에 게시된 공고</h2><p class="sub">최근 45일, 출처별</p><div class="lg"><span><i style="background:var(--s1)"></i>Arbeitnow</span><span><i style="background:var(--s2)"></i>Remote OK</span></div><div class="chart" id="j2"></div>`);g.append(c2);
+    bars(c2.querySelector('#j2'),JD.map(r=>[r[0],r[1]||0,r[2]||0,r[3]]),[{name:'Arbeitnow',color:'var(--s1)'},{name:'Remote OK',color:'var(--s2)'}],{h:250,label:'하루에 게시된 공고',tip:r=>`<b>${r[0]}</b><br>Arbeitnow ${nf(r[1])}<br>Remote OK ${nf(r[2])}<br>그중 기술 공고 ${nf(r[3])}`});
+    g.append(card('c12',`<h2>수집 현황</h2><div class="sc"><table><tr><th>출처</th><th>마지막 수집</th><th class="n">누적 새 공고</th><th class="n">빈틈·실패한 날</th></tr>${(D.jobs_feed||[]).map(r=>`<tr><td>${esc(r[0])}</td><td>${r[1]}</td><td class="n">${nf(r[2])}</td><td class="n">${r[3]?badge('warn')+' '+r[3]+'일':badge('pass')+' 0일'}</td></tr>`).join('')}</table></div>
+    <p class="note">출처: <a href="https://remoteok.com">Remote OK</a> · <a href="https://www.arbeitnow.com">Arbeitnow</a> 공개 피드. 해외 원격·유럽 공고이며 국내 채용 시장을 말해 주지 않습니다. 공고 본문은 저장하지 않고, 받을 때 기술 사전에 있는 이름이 제목·본문에 나오는지만 봅니다. "우대"와 "필수"는 구분하지 못하고, 본문에 흔한 낱말은 실제보다 많이 잡힐 수 있습니다. 이제 막 모으기 시작해 추세를 말하기엔 이릅니다.</p>`))}
+  draw()}
+
+// ================= 전력
+function pwr(){const g=$('#pwr-g'),DD=D.demand_daily,HM=D.demand_heat;if(!DD){g.innerHTML='<p class="empty">전력 자료가 없습니다.</p>';return}
+  const mx=DD.reduce((a,b)=>b[1]>a[1]?b:a),mn=DD.reduce((a,b)=>b[3]<a[3]?b:a),K=(b,s,sm)=>card('kpi c4',`<span>${s}</span><b>${b}</b><small>${sm}</small>`);
+  g.append(K(nf(mx[1])+' MW','연중 최대 수요',mx[0]),K(nf(mn[3])+' MW','연중 최저 수요',mn[0]),K(nf(DD.length*24),'시간별 행','하루 24행 · 빠진 시간 없음(테스트로 확인)'));
+  const c=card('c12',`<h2>하루 최대·평균·최저 수요 (2025)</h2><div class="lg"><span><i style="background:var(--s1)"></i>최대</span><span><i style="background:var(--s2)"></i>평균</span><span><i style="background:var(--line2)"></i>최저</span></div><div class="chart" id="p1"></div>`);g.append(c);
+  line(c.querySelector('#p1'),[{name:'최대',color:'var(--s1)',pts:DD.map(r=>[r[0],r[1]])},{name:'평균',color:'var(--s2)',pts:DD.map(r=>[r[0],r[2]])},{name:'최저',color:'var(--line2)',pts:DD.map(r=>[r[0],r[3]])}],{h:260,label:'하루 최대·평균·최저 수요',xfmt:s=>(+s.slice(5,7))+'월',tip:i=>`<b>${DD[i][0]}${DD[i][4]?' (주말)':''}</b><br>최대 ${nf(DD[i][1])} MW<br>평균 ${nf(DD[i][2])} MW<br>최저 ${nf(DD[i][3])} MW<br>평균 기온 ${nf(DD[i][5],1)}℃`});
+  if(HM&&HM.length){const v=HM.map(r=>r[2]),lo=Math.min(...v),hi=Math.max(...v),cw=26,chh=20,L=34,T=18,W=L+24*cw+4,Hh=T+12*chh+4;let s='';
+    for(let h=1;h<=24;h++)if(h%3===0||h===1)s+=`<text x="${L+(h-.5)*cw}" y="12" text-anchor="middle">${h}시</text>`;
+    for(let m=1;m<=12;m++)s+=`<text x="${L-6}" y="${T+(m-.5)*chh+4}" text-anchor="end">${m}월</text>`;
+    HM.forEach(r=>{const q=Math.min(6,Math.floor((r[2]-lo)/(hi-lo||1)*7));s+=`<rect class="hc" data-m="${r[0]}" data-h="${r[1]}" data-v="${r[2]}" x="${L+(r[1]-1)*cw+1}" y="${T+(r[0]-1)*chh+1}" width="${cw-2}" height="${chh-2}" rx="3" fill="var(--q${q})"/>`});
+    const c2=card('c8',`<h2>월 × 시간대 평균 수요</h2><p class="sub">'N시'는 그 시각에 끝나는 한 시간입니다. 색이 진할수록 수요가 높습니다.</p><div class="chart sc"><svg viewBox="0 0 ${W} ${Hh}" style="min-width:560px" role="img" aria-label="월과 시간대별 평균 수요">${s}</svg></div><div class="ramp"><span>${nf(lo)} MW</span>${[0,1,2,3,4,5,6].map(i=>`<i style="background:var(--q${i})"></i>`).join('')}<span>${nf(hi)} MW</span></div>`);g.append(c2);
+    c2.querySelectorAll('.hc').forEach(r=>{r.addEventListener('pointermove',e=>showTip(e,`<b>${r.dataset.m}월 · ${r.dataset.h-1}~${r.dataset.h}시</b><br>평균 ${nf(r.dataset.v)} MW`));r.addEventListener('pointerleave',hideTip)})}
+  const SS=D.demand_season||[],nm={winter:'겨울',spring:'봄',summer:'여름',autumn:'가을'},ord=['winter','spring','summer','autumn'];
+  g.append(card('c4',`<h2>계절·요일별 평균</h2><p class="sub">하루 최대 수요의 평균과 부하율(평균 ÷ 최대)</p><div class="sc"><table><tr><th>계절</th><th></th><th class="n">최대 평균</th><th class="n">부하율</th></tr>${ord.flatMap(s=>SS.filter(r=>r[0]===s)).map(r=>`<tr><td>${nm[r[0]]}</td><td>${r[1]?'주말':'평일'}</td><td class="n">${nf(r[2])}</td><td class="n">${nf(r[3],3)}</td></tr>`).join('')}</table></div>`));
+  g.append(el(`<p class="note" style="grid-column:span 12">출처: 전력거래소 시간별 전국 수요(2025), Open-Meteo 기온. 자료가 2025년 한 해뿐이라 해마다의 변화는 볼 수 없습니다.</p>`))}
+
+// ================= 지진
+function eq(){const g=$('#eq-g'),Q=D.quakes_monthly,T=D.quake_total;if(!Q){g.innerHTML='<p class="empty">지진 자료가 없습니다.</p>';return}
+  const K=(b,s,sm)=>card('kpi c4',`<span>${s}</span><b>${b}</b><small>${sm}</small>`);
+  g.append(K(nf(T[0])+'건','모은 지진',`가장 최근 ${T[2]}`),K('M '+nf(T[1],1),'가장 큰 규모','수집 범위 안에서'),K(nf(T[4])+'건','나중에 고쳐진 기록',`이력 표 ${nf(T[3])}판 — 수집을 시작한 뒤의 수정만`));
+  const c=card('c8',`<h2>월별 지진 수</h2><p class="sub">최근 3년. 마지막 달은 아직 진행 중입니다.</p><div class="chart" id="e1"></div>`);g.append(c);
+  bars(c.querySelector('#e1'),Q.map(r=>[r[0],r[1],r[2]]),[{name:'지진',color:'var(--s1)'}],{h:240,label:'월별 지진 수',xfmt:ym,tip:r=>`<b>${r[0].slice(0,7)}</b><br>${nf(r[1])}건<br>최대 규모 ${nf(r[2],1)}`});
+  const RG=D.quake_regions||[],mx=Math.max(...RG.map(r=>r[1]),1);
+  g.append(card('c4',`<h2>지역별</h2><p class="sub">USGS 장소 설명의 나라·해역 기준</p><div class="hb" style="grid-template-columns:minmax(80px,120px) 1fr 52px">${RG.map(r=>`<div class="nm" title="${esc(r[0])}">${esc(r[0])}</div><div><div class="bar" style="width:${r[1]/mx*100}%"></div></div><div class="v">${nf(r[1])}</div>`).join('')}</div>`));
+  g.append(el(`<p class="note" style="grid-column:span 12">출처: USGS 지진 목록 (동아시아, 지역별 최소 규모 이상). 지도와 b값 분석은 <a href="../">지진 대시보드</a>에 있습니다.</p>`))}
+
+// ================= 품질
+function qa(){const g=$('#qa-g'),T=D.tests||[],H=D.history||[];
+  g.append(card('c12',`<h2>계보 — 어느 표가 어느 표에서 나왔나</h2><p class="sub">왼쪽 원본에서 오른쪽 집계로. 상자에 마우스를 올리면 설명이 나옵니다.</p><div class="sc">${D.lineage_svg||''}</div><div class="lg" style="margin-top:10px">${(D.legend||[]).map(l=>`<span><i style="background:${l[1]}"></i>${l[0]}</span>`).join('')}</div>`));
+  const HS=H.slice(-30);const c=card('c12',`<h2>매일 실행 기록</h2><p class="sub">최근 ${HS.length}회 · 막대는 소요 시간(초)</p><div class="chart" id="q1"></div><details><summary>표로 보기</summary><div class="sc"><table><tr><th>날짜</th><th>결과</th><th class="n">모델</th><th class="n">통과</th><th class="n">경고</th><th class="n">실패</th><th class="n">초</th><th class="n">지진</th><th class="n">이력 판</th><th class="n">공고</th><th class="n">일봉</th></tr>${HS.slice().reverse().map(h=>`<tr><td>${h.logical_date}</td><td>${badge(h.status)}</td><td class="n">${h.models}</td><td class="n">${h.tests_pass}</td><td class="n">${h.tests_warn}</td><td class="n">${h.tests_fail}</td><td class="n">${h.seconds}</td><td class="n">${h.rows_quakes||''}</td><td class="n">${h.snapshot_versions||''}</td><td class="n">${h.rows_jobs||''}</td><td class="n">${h.rows_candles||''}</td></tr>`).join('')||'<tr><td colspan="11">아직 기록 없음</td></tr>'}</table></div></details>`);g.append(c);
+  if(HS.length)bars(c.querySelector('#q1'),HS.map(h=>[h.logical_date,h.status==='success'?+h.seconds:0,h.status==='success'?0:+h.seconds||0.5,h]),[{name:'성공',color:'var(--s1)'},{name:'실패',color:'var(--crit)'}],{h:170,label:'실행 소요 시간',tip:r=>`<b>${r[0]}</b> ${r[3].status==='success'?'성공':'실패'}<br>${r[3].seconds}초 · 테스트 ${r[3].tests_pass} 통과${+r[3].tests_fail?` / ${r[3].tests_fail} 실패`:''}`});else c.querySelector('#q1').innerHTML='<p class="empty">아직 기록 없음</p>';
+  const grp={};T.forEach(t=>{const k=t[1]==='pass'?'pass':t[1]==='warn'?'warn':'fail';(grp[k]=grp[k]||[]).push(t)});
+  g.append(card('c12',`<h2>품질 테스트 ${T.length}개</h2><p class="sub">통과 ${(grp.pass||[]).length} · 경고 ${(grp.warn||[]).length} · 실패 ${(grp.fail||[]).length}. 실패와 경고가 먼저 나옵니다.</p><div class="sc" style="max-height:420px;overflow-y:auto"><table><tr><th>테스트</th><th>결과</th><th class="n">걸린 행</th><th class="n">초</th></tr>${T.map(t=>`<tr><td class="w">${esc(t[0])}</td><td>${badge(t[1])}</td><td class="n">${t[2]}</td><td class="n">${t[3]}</td></tr>`).join('')}</table></div>`))}
+
+const R={home,mkt,jobs,pwr,eq,qa},done={};
+function show(t){document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===t));if(!done[t]){done[t]=1;try{R[t]()}catch(e){$('#'+t).insertAdjacentHTML('beforeend','<p class="empty">이 화면을 그리지 못했습니다: '+esc(e.message)+'</p>')}}try{history.replaceState(null,'','#'+t)}catch(e){}window.scrollTo(0,0)}
+document.querySelector('nav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)show(b.dataset.t)});
+$('#gen').innerHTML=`생성 ${esc(D.generated||'')} UTC · 매일 06:17(한국 시간) 실행 뒤 갱신 · <a href="https://github.com/0Ju12/data-projects/tree/main/warehouse">코드</a>`;
+show(R[location.hash.slice(1)]?location.hash.slice(1):'home');
+</script></body></html>

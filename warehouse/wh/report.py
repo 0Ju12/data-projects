@@ -1,8 +1,7 @@
-"""dbt 산출물(manifest.json · run_results.json)과 실행 기록으로 한 장짜리 보고서를 만듭니다.
+"""dbt 산출물과 웨어하우스 표로 대시보드(docs/index.html)를 만듭니다.
 
-- 계보: 어느 표가 어느 표에서 나왔는지 (왼쪽 원본 → 오른쪽 집계)
-- 테스트 결과: 통과·경고·실패
-- 실행 기록: 날짜별 성공 여부·소요 시간·행 수
+자료는 한 번에 JSON 으로 뽑아 화면 틀(wh/dashboard.html)에 넣습니다 — 서버 없이 정적 페이지 하나로 열립니다.
+탭: 개요 · 시세·환율 · 채용 · 전력 · 지진 · 품질(계보·테스트·실행 기록)
 """
 from __future__ import annotations
 
@@ -64,7 +63,7 @@ def _svg(nodes, edges) -> str:
         for i, n in enumerate(items):
             pos[n["id"]] = (20 + layer * W, y0 + i * (BH + GY))
     width = 20 + (max(cols) + 1) * W - (W - BW) + 20
-    out = [f'<svg viewBox="0 0 {width} {height:.0f}" role="img" aria-label="데이터 계보" style="width:100%;height:auto;min-width:720px">']
+    out = [f'<svg viewBox="0 0 {width} {height:.0f}" role="img" aria-label="데이터 계보" style="width:100%;height:auto;min-width:860px">']
     for a, b in edges:
         (x1, y1), (x2, y2) = pos[a], pos[b]
         x1 += BW
@@ -84,33 +83,51 @@ def _svg(nodes, edges) -> str:
     return "".join(out)
 
 
-def jobs_section(db: Path) -> str:
-    """채용 공고 요약: 최근 4주 기술별 언급 비중 상위와 수집 현황. DB 가 없으면 빈 문자열"""
+def _rows(con, sql):
+    return [list(r) for r in con.execute(sql).fetchall()]
+
+
+def collect_data(db: Path) -> dict:
+    """화면에 쓸 값을 표에서 뽑습니다. 표가 없으면 그 부분은 비워 둡니다 (일부만 있는 DB 에서도 화면이 열리도록)."""
     if not db.exists():
-        return ""
+        return {}
     import duckdb
     con = duckdb.connect(str(db), read_only=True)
+    d = {}
+
+    def part(name, fn):
+        try:
+            d[name] = fn()
+        except Exception:
+            d[name] = None
+    iso = lambda v: v.isoformat() if hasattr(v, "isoformat") else v
+    R = lambda sql: [[iso(x) for x in r] for r in con.execute(sql).fetchall()]
     try:
-        tot = con.execute("select count(*), count(*) filter (where is_tech), min(posted_date), max(posted_date) from fct_job_postings").fetchall()[0]
-        top = con.execute("""
+        part("premium", lambda: {a: R(f"""select day_utc, premium_pct, upbit_close_krw, coinbase_close_krw, usdkrw, is_fx_filled
+                                          from fct_krw_premium_daily where asset = '{a}' order by 1""")
+                                 for (a,) in con.execute("select asset from dim_asset order by 1").fetchall()})
+        part("premium_monthly", lambda: R("select month, asset, days, avg_premium_pct, min_premium_pct, max_premium_pct, days_over_3pct, days_negative from fct_premium_monthly order by 1 desc, 2"))
+        part("fx", lambda: R("select fx_day, rate from stg_fx where quote = 'KRW' order by 1"))
+        part("skills", lambda: R("""
             with recent as (select * from int_job_skills where posted_date >= (select max(posted_date) from int_job_skills) - 27),
                  base as (select count(distinct job_key) n from recent)
-            select r.skill, d.category, count(distinct r.job_key) c, round(100.0 * count(distinct r.job_key) / (select n from base), 1) pct
-            from recent r join dim_skill d using (skill) where d.category <> 'role' group by 1, 2 order by c desc, 1 limit 15""").fetchall()
-        feed = con.execute("select source, max(run_date), sum(new_jobs), sum((overlap = 'no' or overlap like 'error%')::int) from stg_jobs_fetch_log group by 1 order by 1").fetchall()
-    except Exception:
-        return ""
+            select r.skill, d.category, count(distinct r.job_key), round(100.0 * count(distinct r.job_key) / (select n from base), 1)
+            from recent r join dim_skill d using (skill) group by 1, 2 order by 3 desc, 1"""))
+        part("jobs_daily", lambda: R("""select posted_date, sum(postings) filter (where source = 'arbeitnow'), sum(postings) filter (where source = 'remoteok'),
+                                               sum(tech_postings) from fct_jobs_daily where posted_date >= (select max(posted_date) from fct_jobs_daily) - 44 group by 1 order by 1"""))
+        part("jobs_total", lambda: R("""select count(*), count(*) filter (where is_tech), count(*) filter (where is_remote), min(posted_date), max(posted_date),
+                                               count(*) filter (where salary_quality = 'annual'), count(*) filter (where salary_quality like 'suspect%'),
+                                               median(salary_mid_usd) from fct_job_postings""")[0])
+        part("jobs_feed", lambda: R("select source, max(run_date), sum(new_jobs), sum((overlap = 'no' or overlap like 'error%')::int) from stg_jobs_fetch_log group by 1 order by 1"))
+        part("demand_daily", lambda: R("select demand_date, peak_mw, mean_mw, min_mw, is_weekend, temp_mean from fct_demand_daily order by 1"))
+        part("demand_heat", lambda: R("select month(demand_date), hour_ending, round(avg(demand_mw)) from fct_demand_hourly group by 1, 2 order by 1, 2"))
+        part("demand_season", lambda: R("select season, is_weekend, round(avg(peak_mw)), round(avg(load_factor), 3), count(*) from fct_demand_daily group by 1, 2 order by 1, 2"))
+        part("quakes_monthly", lambda: R("select month_kst, sum(quakes), max(max_mag) from fct_quakes_monthly where month_kst >= date '2023-11-01' group by 1 order by 1"))
+        part("quake_regions", lambda: R("select region, quakes, last_seen_utc::date from dim_region order by 2 desc limit 8"))
+        part("quake_total", lambda: R("select count(*), max(mag), max(occurred_at_utc)::date, (select count(*) from snap_quakes), (select count(*) from snap_quakes where dbt_valid_to is not null) from stg_quakes")[0])
     finally:
         con.close()
-    if not tot[0]:
-        return ""
-    mx = max([t[2] for t in top] or [1])
-    rows = "".join(f"<tr><td>{html.escape(s)}</td><td class='m'>{c0}</td><td><i class='bar' style='width:{c / mx * 100:.0f}%'></i></td><td class='n'>{c}</td><td class='n'>{p}%</td></tr>" for s, c0, c, p in top)
-    feeds = " · ".join(f"{s}: 마지막 수집 {d}, 누적 새 공고 {n}건, 빈틈·실패 {g}일" for s, d, n, g in feed)
-    return f"""<div class="card"><h2>채용 공고 — 최근 4주, 기술 공고에서 많이 언급된 기술</h2>
-<p class="note" style="margin:0 0 10px">모은 공고 {tot[0]}건(게시일 {tot[2]} ~ {tot[3]}) 가운데 기술 이름이 하나라도 나온 {tot[1]}건 기준. 해외 원격·유럽 공고이고, 제목과 본문에서 사전에 있는 이름을 찾은 것이라 실제 요구 수준과는 다를 수 있습니다.</p>
-<div class="sc"><table><tr><th>기술</th><th>분류</th><th style="width:40%"></th><th class="n">공고</th><th class="n">비중</th></tr>{rows}</table></div>
-<p class="note" style="margin:10px 0 0">{html.escape(feeds)}<br>출처: <a href="https://remoteok.com">Remote OK</a> · <a href="https://www.arbeitnow.com">Arbeitnow</a> 공개 피드. 공고 본문은 저장하지 않습니다.</p></div>"""
+    return d
 
 
 def build_report(root: Path = ROOT, out: Path | None = None, db: Path | None = None) -> Path:
@@ -122,53 +139,22 @@ def build_report(root: Path = ROOT, out: Path | None = None, db: Path | None = N
     for r in rr["results"]:
         if r["unique_id"].startswith("test."):
             node = manifest["nodes"].get(r["unique_id"], {})
-            tests.append((node.get("name", r["unique_id"]), r["status"], r.get("failures") or 0, round(r.get("execution_time", 0), 3)))
+            tests.append([node.get("name", r["unique_id"]), r["status"], r.get("failures") or 0, round(r.get("execution_time", 0), 3)])
     tests.sort(key=lambda t: ({"fail": 0, "error": 0, "warn": 1}.get(t[1], 2), t[0]))
-    npass = sum(t[1] == "pass" for t in tests)
-    nwarn = sum(t[1] == "warn" for t in tests)
-    nfail = len(tests) - npass - nwarn
     hist = []
     hp = root / "runs" / "history.csv"
     if hp.exists():
         with hp.open(encoding="utf-8", newline="") as f:
             hist = list(csv.DictReader(f))
-    ok = sum(h["status"] == "success" for h in hist)
-    last = hist[-1] if hist else {}
-    badge = lambda s: f'<b class="b {"ok" if s in ("pass", "success") else "wn" if s == "warn" else "ng"}">{ {"pass": "통과", "success": "성공", "warn": "경고", "fail": "실패", "error": "오류", "failed": "실패"}.get(s, s) }</b>'
-    trs = "".join(f"<tr><td>{html.escape(n)}</td><td>{badge(s)}</td><td class='n'>{f}</td><td class='n'>{t}</td></tr>" for n, s, f, t in tests)
-    hrs = "".join(
-        f"<tr><td>{h['logical_date']}</td><td>{badge(h['status'])}</td><td class='n'>{h['models']}</td><td class='n'>{h['tests_pass']}</td>"
-        f"<td class='n'>{h['tests_warn']}</td><td class='n'>{h['tests_fail']}</td><td class='n'>{h['seconds']}</td>"
-        f"<td class='n'>{h['rows_quakes']}</td><td class='n'>{h['snapshot_versions']}</td><td class='n'>{h['exported_rows']}</td></tr>"
-        for h in reversed(hist[-30:]))
-    legend = "".join(f'<span><i style="background:{c}"></i>{k}</span>' for k, c in COLOR.items())
-    doc = f"""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>웨어하우스 상태</title><style>
-:root{{--bg:#f7f7f6;--card:#fff;--text:#1b1b1b;--muted:#6b6b6b;--line:#e6e4df;--line2:#b9b6ae}}
-@media (prefers-color-scheme:dark){{:root{{--bg:#131313;--card:#1d1d1d;--text:#f0efec;--muted:#a3a19b;--line:#2e2e2c;--line2:#5a5852}}}}
-*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,"Noto Sans KR",sans-serif;padding:28px 16px 60px}}
-main{{max-width:1040px;margin:0 auto}}h1{{font-size:26px;margin:0 0 4px}}h2{{font-size:16px;margin:0 0 12px}}.sub{{color:var(--muted);font-size:13.5px;margin:0 0 20px}}
-.grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}}.kpi,.card{{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}}
-.kpi b{{display:block;font-size:24px;line-height:1.2}}.kpi span{{font-size:12.5px;color:var(--muted)}}.card{{margin-bottom:14px}}.sc{{overflow-x:auto}}
-table{{width:100%;border-collapse:collapse;font-size:13.5px}}th{{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:6px 6px}}td{{padding:6px;border-top:1px solid var(--line)}}
-td.n,th.n{{text-align:right;font-variant-numeric:tabular-nums}}td.m{{color:var(--muted);font-size:12.5px}}.bar{{display:block;height:8px;border-radius:4px;background:#0e9aa7}}.b{{font-size:12px;padding:2px 9px;border-radius:999px;font-weight:700}}
-.ok{{background:rgba(22,163,74,.14);color:#15803d}}.wn{{background:rgba(234,122,12,.16);color:#b45309}}.ng{{background:rgba(220,38,38,.14);color:#b91c1c}}
-.lg{{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin-top:10px}}.lg i{{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}}
-.note{{font-size:12.5px;color:var(--muted)}}a{{color:inherit}}@media (max-width:640px){{.grid{{grid-template-columns:repeat(2,1fr)}}}}
-</style></head><body><main>
-<h1>웨어하우스 상태</h1>
-<p class="sub">지진 목록·전력 수요·기온·채용 공고 원본을 dbt 로 정리한 결과입니다. 생성 {rr['metadata']['generated_at'][:19].replace('T', ' ')} UTC · <a href="https://github.com/0Ju12/data-projects/tree/main/warehouse">코드</a></p>
-<div class="grid">
-<div class="kpi"><b>{sum(n['kind'] != 'source' for n in nodes)}</b><span>모델·변경 이력</span></div>
-<div class="kpi"><b>{npass} / {len(tests)}</b><span>테스트 통과{f" · 경고 {nwarn}" if nwarn else ""}{f" · 실패 {nfail}" if nfail else ""}</span></div>
-<div class="kpi"><b>{ok} / {len(hist)}</b><span>기록된 실행 중 성공</span></div>
-<div class="kpi"><b>{last.get('seconds', '–')}초</b><span>마지막 실행 소요</span></div></div>
-<div class="card"><h2>계보 — 어느 표가 어느 표에서 나왔나</h2><div class="sc">{_svg(nodes, edges)}</div><div class="lg">{legend}</div></div>
-{jobs_section(db or root / "target" / "warehouse.duckdb")}
-<div class="card"><h2>실행 기록 (최근 30회)</h2><div class="sc"><table><tr><th>날짜</th><th>결과</th><th class="n">모델</th><th class="n">통과</th><th class="n">경고</th><th class="n">실패</th><th class="n">초</th><th class="n">지진 행</th><th class="n">이력 판</th><th class="n">내보낸 행</th></tr>{hrs or '<tr><td colspan="10">아직 기록 없음</td></tr>'}</table></div></div>
-<div class="card"><h2>테스트 결과</h2><div class="sc"><table><tr><th>테스트</th><th>결과</th><th class="n">걸린 행</th><th class="n">초</th></tr>{trs}</table></div></div>
-<p class="note">· "이력 판"은 지진 변경 이력 표의 행 수입니다. USGS 가 규모·위치를 고치면 이전 판을 닫고 새 판을 추가하므로, 지진 행 수보다 많아질 수 있습니다.<br>· 전력 수요 자료는 2025년 한 해뿐이라, 매일 실행에서는 작년 같은 날짜의 파티션을 다시 내보내 재실행 안전성만 확인합니다.</p>
-</main></body></html>"""
+    data = collect_data(db or target / "warehouse.duckdb")
+    data.update({
+        "generated": rr["metadata"]["generated_at"][:19].replace("T", " "),
+        "models": sum(n["kind"] not in ("source", "seed") for n in nodes),
+        "tests": tests, "history": hist[-60:], "lineage_svg": _svg(nodes, edges),
+        "legend": [[k, c] for k, c in COLOR.items()],
+    })
+    tpl = (Path(__file__).parent / "dashboard.html").read_text(encoding="utf-8")
+    doc = tpl.replace("__DATA__", json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/"))
     out = out or root / "docs" / "index.html"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(doc, encoding="utf-8")
