@@ -7,3 +7,4 @@ exports/
 airflow_home/
 docs/
 state/.snap.tmp.parquet
+.user.yml
