@@ -2,6 +2,7 @@
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>웨어하우스 대시보드</title>
 <style>
+.lvl{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700}.lvl i{width:9px;height:9px;border-radius:50%;display:inline-block}
 :root{color-scheme:light;--bg:#f4f4f2;--surface:#fcfcfb;--text:#0b0b0b;--text2:#52514e;--muted:#7a7873;--line:#e4e2dc;--grid:#ebe9e3;--line2:#b9b6ae;
   --s1:#2a78d6;--s2:#eb6834;--good:#0ca30c;--warn:#b97700;--crit:#d03b3b;--card:#fcfcfb;
   --q0:#cde2fb;--q1:#9ec5f4;--q2:#6da7ec;--q3:#3987e5;--q4:#256abf;--q5:#184f95;--q6:#0d366b}
@@ -60,7 +61,7 @@ details{margin-top:10px}summary{cursor:pointer;font-size:12.5px;color:var(--text
 </style></head><body>
 <header><div class="hd"><h1>웨어하우스 대시보드</h1><span class="gen" id="gen"></span></div>
 <nav role="tablist" aria-label="화면">
-<button role="tab" data-t="home" aria-selected="true">개요</button><button role="tab" data-t="mkt" aria-selected="false">시세·환율</button><button role="tab" data-t="jobs" aria-selected="false">채용</button><button role="tab" data-t="pwr" aria-selected="false">전력</button><button role="tab" data-t="eq" aria-selected="false">지진</button><button role="tab" data-t="qa" aria-selected="false">품질</button>
+<button role="tab" data-t="home" aria-selected="true">개요</button><button role="tab" data-t="mkt" aria-selected="false">시세·환율</button><button role="tab" data-t="jobs" aria-selected="false">채용·도구</button><button role="tab" data-t="pwr" aria-selected="false">전력</button><button role="tab" data-t="eq" aria-selected="false">지진·재해</button><button role="tab" data-t="qa" aria-selected="false">품질</button>
 </nav></header>
 <main>
 <section id="home" class="on"><div class="grid" id="home-g"></div></section>
@@ -118,14 +119,14 @@ function home(){const g=$('#home-g'),T=D.tests||[],pass=T.filter(t=>t[1]==='pass
   g.append(k('c3',D.models??'–','모델·변경 이력','원본 → 정제 → 집계','qa'),
     k('c3',`${pass} / ${T.length}`,'품질 테스트 통과',warn?`경고 ${warn}건`:(T.length-pass?`실패 ${T.length-pass}건`:'모두 통과'),'qa'),
     k('c3',`${ok} / ${H.length}`,'기록된 매일 실행 중 성공',last.logical_date?`마지막 ${last.logical_date} · ${last.seconds}초`:'아직 기록 없음','qa'),
-    k('c3',nf((+last.rows_quakes||0)+(+last.rows_demand_hourly||0)+(+last.rows_jobs||0)+(+last.rows_candles||0)),'정리된 원본 행','지진·수요·공고·일봉 합계','qa'));
+    k('c3',nf((+last.rows_quakes||0)+(+last.rows_demand_hourly||0)+(+last.rows_jobs||0)+(+last.rows_candles||0)+(+last.rows_pkg||0)+(+last.rows_disasters||0)),'정리된 원본 행','지진·수요·공고·일봉·내려받기·재해 합계','qa'));
   const P=D.premium&&D.premium.BTC;if(P&&P.length){const l=P[P.length-1],v=P.slice(-90).map(r=>r[1]);g.append(k('c3',`${l[1]>0?'+':''}${nf(l[1],2)}%`,'비트코인 원화 프리미엄',`${l[0]} · 최근 90일 ${nf(Math.min(...v),1)}% ~ ${nf(Math.max(...v),1)}%`,'mkt',spark(v)))}
   const F=D.fx;if(F&&F.length){const l=F[F.length-1],v=F.slice(-90).map(r=>r[1]);g.append(k('c3',nf(l[1],1)+'원','달러 환율 (기준환율)',`${l[0]} 고시`,'mkt',spark(v)))}
   const S=(D.skills||[]).filter(s=>s[1]!=='role');if(S.length){g.append(k('c3',esc(S[0][0]),'공고에서 가장 많이 언급된 기술',`최근 4주 기술 공고의 ${S[0][3]}% · 다음 ${esc(S[1]?.[0]||'')}`,'jobs',spark((D.jobs_daily||[]).map(r=>r[3]))))}
   const Q=D.quakes_monthly;if(Q&&Q.length){const l=Q[Q.length-1];g.append(k('c3',nf(l[1])+'건',`지진 (${ym(l[0])}월, 진행 중)`,`그달 최대 규모 ${nf(l[2],1)}`,'eq',spark(Q.slice(-24).map(r=>r[1]))))}
   const DD=D.demand_daily;if(DD&&DD.length){const mx=DD.reduce((a,b)=>b[1]>a[1]?b:a);const c=card('c8',`<h2>2025년 하루 최대 전력 수요</h2><p class="sub">가장 높았던 날은 ${mx[0]} (${nf(mx[1])} MW). 여름과 겨울에 솟고 봄·가을에 낮습니다.</p><div class="chart" id="h-pwr"></div>`);g.append(c);
     line(c.querySelector('#h-pwr'),[{name:'최대 수요',color:'var(--s1)',pts:DD.map(r=>[r[0],r[1]])}],{h:210,unit:'',label:'하루 최대 전력 수요',tip:(i,s)=>`<b>${DD[i][0]}${DD[i][4]?' (주말)':''}</b><br>최대 ${nf(DD[i][1])} MW<br>평균 ${nf(DD[i][2])} MW<br>평균 기온 ${nf(DD[i][5],1)}℃`})}
-  const J=D.jobs_total;g.append(card('c4',`<h2>이 화면에 대해</h2><p class="sub" style="margin-bottom:0">공개 자료 네 갈래(지진·전력 수요·채용 공고·거래소 시세와 환율)를 매일 받아 dbt 로 정리한 결과입니다. 숫자를 누르면 해당 탭으로 갑니다.<br><br>${J?`채용 공고 ${nf(J[0])}건(${J[3]} ~ ${J[4]}), `:''}${P?`일봉 ${nf(Object.values(D.premium).reduce((a,b)=>a+b.length,0)*2)}개, `:''}${DD?`시간별 수요 ${nf(DD.length*24)}행`:''}.<br><br>자료가 작아 처리 성능을 보여 주는 화면은 아닙니다. 품질 검사와 재실행 안전성을 확인하는 용도입니다.</p>`));
+  const J=D.jobs_total;g.append(card('c4',`<h2>이 화면에 대해</h2><p class="sub" style="margin-bottom:0">공개 자료 여섯 갈래(지진·전력 수요·채용 공고·거래소 시세와 환율·패키지 내려받기·재해 경보)를 매일 받아 dbt 로 정리한 결과입니다. 숫자를 누르면 해당 탭으로 갑니다.<br><br>${J?`채용 공고 ${nf(J[0])}건(${J[3]} ~ ${J[4]}), `:''}${P?`일봉 ${nf(Object.values(D.premium).reduce((a,b)=>a+b.length,0)*2)}개, `:''}${DD?`시간별 수요 ${nf(DD.length*24)}행`:''}.<br><br>자료가 작아 처리 성능을 보여 주는 화면은 아닙니다. 품질 검사와 재실행 안전성을 확인하는 용도입니다.</p>`));
   g.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go))}
 
 // ================= 시세·환율
@@ -154,8 +155,13 @@ function jobs(){const g=$('#jobs-g'),S=D.skills,J=D.jobs_total;if(!S||!J){g.inne
     const c=card('c7',`<h2>최근 4주, 많이 언급된 기술</h2><p class="sub">기술 이름이 하나라도 나온 공고 가운데 그 기술을 언급한 비율</p><div class="hb">${rows.map(r=>`<div class="nm" title="${esc(r[0])}">${esc(r[0])}<span class="cat">${esc(r[1])}</span></div><div><div class="bar" style="width:${r[2]/mx*100}%"></div></div><div class="v">${nf(r[2])}</div><div class="p">${r[3]}%</div>`).join('')||'<p class="empty">이 분류에 해당하는 공고가 없습니다.</p>'}</div>`);g.append(c);
     const JD=D.jobs_daily||[];const c2=card('c5',`<h2>하루에 게시된 공고</h2><p class="sub">최근 45일, 출처별</p><div class="lg"><span><i style="background:var(--s1)"></i>Arbeitnow</span><span><i style="background:var(--s2)"></i>Remote OK</span></div><div class="chart" id="j2"></div>`);g.append(c2);
     bars(c2.querySelector('#j2'),JD.map(r=>[r[0],r[1]||0,r[2]||0,r[3]]),[{name:'Arbeitnow',color:'var(--s1)'},{name:'Remote OK',color:'var(--s2)'}],{h:250,label:'하루에 게시된 공고',tip:r=>`<b>${r[0]}</b><br>Arbeitnow ${nf(r[1])}<br>Remote OK ${nf(r[2])}<br>그중 기술 공고 ${nf(r[3])}`});
+    const SP=(D.supply||[]),PW=D.pkg_weekly||{},PD=D.pkg_dim||[];
+    if(SP.length){g.append(card('c12',`<h2>같은 기술을 두 각도에서 — 공고 언급과 패키지 내려받기</h2><p class="sub">공고는 최근 4주 언급 수, 내려받기는 짝지은 패키지의 최근 4주 합계와 그 전 4주 대비 변화. 두 값은 단위도 모집단도 달라 서로 나눌 수 없습니다.</p><div class="sc" style="max-height:330px;overflow-y:auto"><table><tr><th>기술</th><th>짝지은 패키지</th><th class="n">공고 언급</th><th class="n">내려받기 (4주)</th><th class="n">전 4주 대비</th></tr>${SP.map(r=>`<tr><td>${esc(r[0])}</td><td class="w" style="color:var(--muted)">${esc(r[6])}</td><td class="n">${nf(r[2])}</td><td class="n">${nf(r[3])}</td><td class="n">${r[5]==null?'–':(r[5]>0?'▲ +':'▼ ')+nf(r[5],1)+'%'}</td></tr>`).join('')}</table></div>`));
+      const names=PD.map(r=>r[0]),cur=names.includes('dbt-core')?'dbt-core':names[0];
+      const c3=card('c12',`<h2>패키지 주간 내려받기</h2><p class="sub">7일이 다 찬 주만 그립니다. 패키지마다 규모가 크게 달라 한 번에 하나씩 봅니다.</p><div class="filters" style="margin-bottom:8px"><label class="fl" for="pk">패키지</label><select id="pk" style="font:inherit;font-size:13px;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text)">${PD.map(r=>`<option value="${esc(r[0])}"${r[0]===cur?' selected':''}>${esc(r[0])} (${r[1]} · ${esc(r[2])})</option>`).join('')}</select></div><div class="chart" id="j3"></div>`);g.append(c3);
+      const dp=n=>{const W=PW[n]||[];line(c3.querySelector('#j3'),[{name:n,color:'var(--s1)',pts:W.map(r=>[r[0],r[1]])}],{h:220,zero:true,label:n+' 주간 내려받기',xfmt:ym,tip:i=>`<b>${W[i][0]} 주</b><br>${nf(W[i][1])}회`})};dp(cur);c3.querySelector('#pk').onchange=e=>dp(e.target.value)}
     g.append(card('c12',`<h2>수집 현황</h2><div class="sc"><table><tr><th>출처</th><th>마지막 수집</th><th class="n">누적 새 공고</th><th class="n">빈틈·실패한 날</th></tr>${(D.jobs_feed||[]).map(r=>`<tr><td>${esc(r[0])}</td><td>${r[1]}</td><td class="n">${nf(r[2])}</td><td class="n">${r[3]?badge('warn')+' '+r[3]+'일':badge('pass')+' 0일'}</td></tr>`).join('')}</table></div>
-    <p class="note">출처: <a href="https://remoteok.com">Remote OK</a> · <a href="https://www.arbeitnow.com">Arbeitnow</a> 공개 피드. 해외 원격·유럽 공고이며 국내 채용 시장을 말해 주지 않습니다. 공고 본문은 저장하지 않고, 받을 때 기술 사전에 있는 이름이 제목·본문에 나오는지만 봅니다. "우대"와 "필수"는 구분하지 못하고, 본문에 흔한 낱말은 실제보다 많이 잡힐 수 있습니다. 이제 막 모으기 시작해 추세를 말하기엔 이릅니다.</p>`))}
+    <p class="note">출처: <a href="https://remoteok.com">Remote OK</a> · <a href="https://www.arbeitnow.com">Arbeitnow</a> 공개 피드. 해외 원격·유럽 공고이며 국내 채용 시장을 말해 주지 않습니다. 공고 본문은 저장하지 않고, 받을 때 기술 사전에 있는 이름이 제목·본문에 나오는지만 봅니다. "우대"와 "필수"는 구분하지 못하고, 본문에 흔한 낱말은 실제보다 많이 잡힐 수 있습니다. 이제 막 모으기 시작해 추세를 말하기엔 이릅니다.<br>내려받기 수 출처: pypistats.org(PyPI, 미러 제외) · npm 레지스트리. 내려받기에는 자동 빌드(CI)가 많이 섞여 있어 사용자 수를 뜻하지 않습니다. PyPI 는 최근 180일만 제공돼 그 전 기록은 수집을 시작한 날부터 쌓입니다.</p>`))}
   draw()}
 
 // ================= 전력
@@ -182,7 +188,17 @@ function eq(){const g=$('#eq-g'),Q=D.quakes_monthly,T=D.quake_total;if(!Q){g.inn
   bars(c.querySelector('#e1'),Q.map(r=>[r[0],r[1],r[2]]),[{name:'지진',color:'var(--s1)'}],{h:240,label:'월별 지진 수',xfmt:ym,tip:r=>`<b>${r[0].slice(0,7)}</b><br>${nf(r[1])}건<br>최대 규모 ${nf(r[2],1)}`});
   const RG=D.quake_regions||[],mx=Math.max(...RG.map(r=>r[1]),1);
   g.append(card('c4',`<h2>지역별</h2><p class="sub">USGS 장소 설명의 나라·해역 기준</p><div class="hb" style="grid-template-columns:minmax(80px,120px) 1fr 52px">${RG.map(r=>`<div class="nm" title="${esc(r[0])}">${esc(r[0])}</div><div><div class="bar" style="width:${r[1]/mx*100}%"></div></div><div class="v">${nf(r[1])}</div>`).join('')}</div>`));
-  g.append(el(`<p class="note" style="grid-column:span 12">출처: USGS 지진 목록 (동아시아, 지역별 최소 규모 이상). 지도와 b값 분석은 <a href="../">지진 대시보드</a>에 있습니다.</p>`))}
+  const DE=D.dis_events||[];if(DE.length){const LC={Red:'var(--crit)',Orange:'var(--warn)',Green:'var(--good)'},LN={Red:'빨강',Orange:'주황',Green:'초록'},lv=l=>`<span class="lvl"><i style="background:${LC[l]}"></i>${LN[l]||esc(l)}</span>`;
+    const cnt=k=>DE.filter(r=>r[4]===k).length,act=DE.filter(r=>r[11]).length;
+    g.append(card('c12',`<h2>그 밖의 자연재해 경보 — 태풍·홍수·화산·가뭄</h2><p class="sub">최근 90일에 시작했거나 진행 중인 사건 ${nf(DE.length)}건 · 빨강 ${cnt('Red')} · 주황 ${cnt('Orange')} · 초록 ${cnt('Green')} · 지금 진행 중 ${act}건. 점에 마우스를 올리면 사건이 나옵니다.</p><div class="chart" id="e2"></div><div class="lg" style="margin-top:8px">${['Red','Orange','Green'].map(l=>`<span>${lv(l)}</span>`).join('')}<span style="color:var(--muted)">점 크기 = 지속 일수</span></div>`));
+    const W=720,H=330,X=x=>(x+180)/360*W,Y=y=>(90-y)/180*H;let sv='';for(let x=-180;x<=180;x+=60)sv+=`<line x1="${X(x)}" x2="${X(x)}" y1="0" y2="${H}" stroke="var(--grid)"/>`;for(let y=-60;y<=60;y+=30)sv+=`<line x1="0" x2="${W}" y1="${Y(y)}" y2="${Y(y)}" stroke="${y===0?'var(--line2)':'var(--grid)'}"/><text x="4" y="${Y(y)-3}">${y}°</text>`;
+    DE.slice().sort((a,b)=>a[5]-b[5]).forEach((r,i)=>{if(r[12]==null)return;const rad=Math.max(4,Math.min(13,3+Math.sqrt(r[10])));sv+=`<circle class="ev" data-k="${esc(r[0])}" cx="${X(r[12])}" cy="${Y(r[13])}" r="${rad}" fill="${LC[r[4]]}" fill-opacity="${r[5]>1?.85:.5}" stroke="var(--surface)" stroke-width="2"/>`});
+    $('#e2').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="재해 사건 위치 (경도·위도)">${sv}</svg>`;const by=Object.fromEntries(DE.map(r=>[r[0],r]));
+    document.querySelectorAll('#e2 .ev').forEach(c=>{c.addEventListener('pointermove',e=>{const r=by[c.dataset.k];showTip(e,`<b>${esc(r[2])}</b><br>${esc(r[1])} · ${LN[r[4]]} 경보<br>${r[8]} ~ ${r[9]} (${r[10]}일)${r[6]!=null?`<br>규모 ${nf(r[6],1)} ${esc(r[7]||'')}`:''}`)});c.addEventListener('pointerleave',hideTip)});
+    const top=DE.filter(r=>r[5]>=2).slice(0,12);
+    g.append(card('c7',`<h2>주황·빨강 경보</h2><p class="sub">등급이 높은 순, 최근 순</p><div class="sc" style="max-height:300px;overflow-y:auto"><table><tr><th>사건</th><th>종류</th><th>등급</th><th>시작</th><th class="n">지속</th></tr>${top.map(r=>`<tr><td class="w">${esc(r[2])}</td><td>${esc(r[1])}</td><td>${lv(r[4])}</td><td>${r[8]}</td><td class="n">${r[10]}일</td></tr>`).join('')||'<tr><td colspan="5">해당 사건 없음</td></tr>'}</table></div>`));
+    const CH=D.dis_changes||[];g.append(card('c5',`<h2>경보 등급이 바뀐 사건</h2><p class="sub">수집을 시작한 뒤에 등급이 오르내린 기록</p>${CH.length?`<div class="sc"><table><tr><th>사건</th><th>변화</th><th>날짜</th></tr>${CH.map(r=>`<tr><td class="w">${esc(r[1])}</td><td>${lv(r[2])} → ${lv(r[3])}</td><td>${r[4]}</td></tr>`).join('')}</table></div>`:'<p class="empty">아직 등급이 바뀐 사건이 없습니다. 수집을 막 시작해 이력이 쌓이는 중입니다.</p>'}`))}
+  g.append(el(`<p class="note" style="grid-column:span 12">출처: USGS 지진 목록 (동아시아, 지역별 최소 규모 이상). 지도와 b값 분석은 <a href="../">지진 대시보드</a>에 있습니다. 재해 경보: GDACS(유엔·유럽연합 공동 재난경보체계). 산불은 건수가 많아 뺐고, 경보 등급은 GDACS 의 자동 추정이라 실제 피해와 다를 수 있습니다. 위치 그림은 경도·위도를 그대로 찍은 것이라 지도 윤곽은 없습니다.</p>`))}
 
 // ================= 품질
 function qa(){const g=$('#qa-g'),T=D.tests||[],H=D.history||[];

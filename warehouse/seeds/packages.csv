@@ -1,0 +1,23 @@
+registry,package,skill
+pypi,dbt-core,dbt
+pypi,apache-airflow,Airflow
+pypi,pyspark,Spark
+pypi,confluent-kafka,Kafka
+pypi,snowflake-connector-python,Snowflake
+pypi,google-cloud-bigquery,BigQuery
+pypi,databricks-sdk,Databricks
+pypi,psycopg2-binary,PostgreSQL
+pypi,django,Django
+pypi,boto3,AWS
+pypi,azure-core,Azure
+pypi,kubernetes,Kubernetes
+pypi,docker,Docker
+pypi,openai,AI / LLM
+pypi,langchain,AI / LLM
+pypi,scikit-learn,Machine Learning
+pypi,torch,Machine Learning
+npm,react,React
+npm,vue,Vue
+npm,@angular/core,Angular
+npm,typescript,TypeScript
+npm,express,Node.js

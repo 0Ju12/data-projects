@@ -28,8 +28,15 @@ def main(argv=None) -> int:
     sub.add_parser("report")
     sub.add_parser("collect-jobs")
     sub.add_parser("collect-market")
+    sub.add_parser("collect-packages")
+    sub.add_parser("collect-disasters")
     a = ap.parse_args(argv)
 
+    if a.cmd in ("collect-packages", "collect-disasters"):
+        from .sources import extras
+        st = extras.collect_packages() if a.cmd == "collect-packages" else extras.collect_disasters()
+        print(json.dumps(st, ensure_ascii=False))
+        return 0
     if a.cmd == "collect-market":
         from .sources import market
         st = market.collect()

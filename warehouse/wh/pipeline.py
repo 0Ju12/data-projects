@@ -25,9 +25,14 @@ SOURCES = {
     "jobs_fetch_csv": ("data/jobs_fetch_log.csv", ["run_date", "source", "fetched", "overlap"]),
     "candles_csv": ("data/market_candles.csv", ["exchange", "asset", "day_utc", "open", "high", "low", "close", "volume"]),
     "fx_csv": ("data/fx_rates.csv", ["day", "base", "quote", "rate"]),
+    "pkg_csv": ("data/pkg_downloads.csv", ["registry", "package", "day", "downloads"]),
+    "disasters_csv": ("data/disasters.csv", ["event_key", "event_type", "alert_level", "from_date", "to_date"]),
 }
 RUN_FIELDS = ["run_at_utc", "logical_date", "status", "models", "tests_pass", "tests_warn", "tests_fail",
-              "seconds", "rows_demand_hourly", "rows_quakes", "snapshot_versions", "exported_rows", "sources_sha", "rows_jobs", "rows_candles"]
+              "seconds", "rows_demand_hourly", "rows_quakes", "snapshot_versions", "exported_rows", "sources_sha", "rows_jobs", "rows_candles", "rows_pkg", "rows_disasters"]
+
+
+SNAPSHOTS = {"snap_quakes": "quake_id", "snap_disasters": "event_key"}     # 변경 이력 표 → 정렬 키 (실행 사이에 파일로 이어 감)
 
 
 class SourceError(RuntimeError):
@@ -134,7 +139,9 @@ def table_counts(db: str) -> dict:
                 "rows_quakes": q("select count(*) from stg_quakes"),
                 "snapshot_versions": q("select count(*) from snap_quakes"),
                 "rows_jobs": q("select count(*) from fct_job_postings"),
-                "rows_candles": q("select count(*) from stg_candles")}
+                "rows_candles": q("select count(*) from stg_candles"),
+                "rows_pkg": q("select count(*) from stg_pkg_downloads"),
+                "rows_disasters": q("select count(*) from stg_disasters")}
     finally:
         con.close()
 
@@ -146,28 +153,38 @@ def restore_state(db: str, state: Path) -> int:
     이렇게 해야 어제까지 쌓인 판 위에 오늘의 변경이 이어집니다.
     """
     Path(db).parent.mkdir(parents=True, exist_ok=True)   # 처음 실행이면 DB 폴더가 아직 없음
-    f = state / "snap_quakes.parquet"
-    if not f.exists():
-        return 0
-    con = _connect(db, read_only=False)
-    try:
-        con.execute(f"create or replace table snap_quakes as select * from read_parquet('{f.as_posix()}')")
-        return con.execute("select count(*) from snap_quakes").fetchall()[0][0]
-    finally:
-        con.close()
+    n = 0
+    for name in SNAPSHOTS:
+        f = state / f"{name}.parquet"
+        if not f.exists():
+            continue
+        con = _connect(db, read_only=False)
+        try:
+            con.execute(f"create or replace table {name} as select * from read_parquet('{f.as_posix()}')")
+            if name == "snap_quakes":
+                n = con.execute(f"select count(*) from {name}").fetchall()[0][0]
+        finally:
+            con.close()
+    return n
 
 
 def save_state(db: str, state: Path) -> int:
     """변경 이력 표를 정렬해 파일로 저장 (내용이 같으면 파일도 같도록)"""
     state.mkdir(parents=True, exist_ok=True)
-    tmp, final = state / ".snap.tmp.parquet", state / "snap_quakes.parquet"
+    n = 0
     con = _connect(db)
     try:
-        con.execute(f"copy (select * from snap_quakes order by quake_id, dbt_valid_from) to '{tmp.as_posix()}' (format parquet, compression zstd)")
-        n = con.execute("select count(*) from snap_quakes").fetchall()[0][0]
+        have = {r[0] for r in con.execute("select table_name from information_schema.tables").fetchall()}
+        for name, key in SNAPSHOTS.items():
+            if name not in have:
+                continue
+            tmp, final = state / f".{name}.tmp.parquet", state / f"{name}.parquet"
+            con.execute(f"copy (select * from {name} order by {key}, dbt_valid_from) to '{tmp.as_posix()}' (format parquet, compression zstd)")
+            os.replace(tmp, final)
+            if name == "snap_quakes":
+                n = con.execute(f"select count(*) from {name}").fetchall()[0][0]
     finally:
         con.close()
-    os.replace(tmp, final)
     return n
 
 

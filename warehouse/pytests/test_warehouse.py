@@ -13,6 +13,7 @@ import pytest
 from wh import pipeline as P
 from wh.sources import jobs as J
 from wh.sources import market as M
+from wh.sources import extras as X
 from wh.report import build_report, lineage
 
 pytestmark = pytest.mark.skipif(shutil.which(P.os.environ.get("DBT_BIN", "dbt")) is None, reason="dbt 가 설치돼 있지 않음")
@@ -33,6 +34,12 @@ def write_quakes(path, rows):
 
 def quake(i, mag, updated, status="automatic", place="10 km E of Ulsan, South Korea"):
     return [i, "2025-03-01T00:00:00Z", "2025-03-01 09:00:00", ms(updated), 35.5, 129.9, 10.0, mag, "mb", place, status, "earthquake"]
+
+
+def event(key, level, start, end, modified="2025-03-05T00:00:00"):
+    return {"event_key": key, "event_type": key.split("-")[0], "name": "Event " + key, "country": "Korea", "iso3": "KOR", "alert_level": level,
+            "alert_score": 1, "severity": 100, "severity_unit": "km/h", "from_date": start, "to_date": end, "modified_at": modified,
+            "lon": 127.0, "lat": 36.0, "is_current": "true"}
 
 
 def candle(exchange, asset, quote, day, close):
@@ -82,10 +89,22 @@ def src(tmp_path):
         fx[(d, "KRW")] = {"day": d, "base": "USD", "quote": "KRW", "rate": r}
     M._save(cs, tmp_path / "candles.csv", M.C_FIELDS)
     M._save(fx, tmp_path / "fx.csv", M.F_FIELDS)
+    # 패키지: dbt-core 를 8주(월~일) 동안 하루 100 → 뒤 4주는 하루 150. react 는 마지막 주가 3일뿐(덜 찬 주)
+    pk = {}
+    for i in range(56):
+        d = (date(2025, 1, 6) + timedelta(days=i)).isoformat()
+        pk[("pypi", "dbt-core", d)] = {"registry": "pypi", "package": "dbt-core", "day": d, "downloads": 100 if i < 28 else 150}
+    for i in range(10):
+        d = (date(2025, 2, 17) + timedelta(days=i)).isoformat()
+        pk[("npm", "react", d)] = {"registry": "npm", "package": "react", "day": d, "downloads": 1000}
+    M._save(pk, tmp_path / "pkg.csv", X.P_FIELDS)
+    M._save({e["event_key"]: e for e in [event("TC-1", "Green", "2025-03-01T00:00:00", "2025-03-04T00:00:00"),
+                                         event("FL-2", "Orange", "2025-03-02T00:00:00", "2025-03-02T00:00:00")]}, tmp_path / "dis.csv", X.D_FIELDS)
     return {"vars": {"quakes_csv": str(tmp_path / "quakes.csv"), "demand_csv": str(tmp_path / "demand.csv"),
                      "weather_csv": str(tmp_path / "weather.csv"), "quake_fresh_days": 100000,
                      "jobs_csv": str(tmp_path / "jobs.csv"), "jobs_fetch_csv": str(tmp_path / "fetch.csv"),
-                     "candles_csv": str(tmp_path / "candles.csv"), "fx_csv": str(tmp_path / "fx.csv")},
+                     "candles_csv": str(tmp_path / "candles.csv"), "fx_csv": str(tmp_path / "fx.csv"),
+                     "pkg_csv": str(tmp_path / "pkg.csv"), "disasters_csv": str(tmp_path / "dis.csv")},
             "db": str(tmp_path / "wh.duckdb"), "target": str(tmp_path / "target"), "dir": tmp_path}
 
 
@@ -303,7 +322,7 @@ def test_lineage_and_report(src, tmp_path):
 def test_dag_file_is_valid_python_and_names_tasks():
     code = (P.ROOT / "dags" / "warehouse_daily.py").read_text(encoding="utf-8")
     compile(code, "warehouse_daily.py", "exec")
-    for t in ("collect_jobs", "collect_market", "check_sources", "dbt_build", "export_partition", "record", "report"):
+    for t in ("collect_jobs", "collect_market", "collect_packages", "collect_disasters", "check_sources", "dbt_build", "export_partition", "record", "report"):
         assert f"def {t}(" in code
 
 
@@ -513,3 +532,87 @@ def test_market_collect_survives_partial_failure(tmp_path):
         return good(url)
     st = M.collect("2025-03-11", tmp_path / "c.csv", tmp_path / "fx.csv", get, pause=0, backfill_days=10)
     assert len(st["errors"]) == len(M.ASSETS) and st["candles_total"] == 11 * len(M.ASSETS) and st["fx_total"] > 0
+
+
+# ---------- 패키지 내려받기 · 재해 경보
+
+def test_pkg_weekly_drops_partial_week_and_compares_4w(src):
+    assert build(src).returncode == 0
+    wk = q(src, "select week_start, downloads, prev_downloads from fct_pkg_weekly where package = 'dbt-core' order by 1")
+    assert len(wk) == 8 and wk[0] == (date(2025, 1, 6), 700, None) and wk[4] == (date(2025, 2, 3), 1050, 700)
+    # react: 2/17~2/23 한 주만 7일이 차고, 2/24 주는 3일뿐이라 빠진다
+    assert q(src, "select week_start, downloads from fct_pkg_weekly where package = 'react'") == [(date(2025, 2, 17), 7000)]
+    sd = q(src, "select skill, postings_4w, downloads_4w, downloads_prev_4w, downloads_change_pct from fct_skill_supply_demand order by 1")
+    assert ("dbt", 1, 4200, 2800, 50.0) in sd                      # 뒤 4주 150×28, 앞 4주 100×28 → +50%
+    react = [r for r in sd if r[0] == "React"][0]
+    assert react[1:] == (0, 7000, None, None)                       # 비교할 앞 4주가 없으면 변화율을 비움
+
+
+def test_package_mapped_to_unknown_skill_fails(src, tmp_path):
+    """패키지를 사전에 없는 기술 이름과 짝지으면 관계 검사가 막는다 (seed 를 바꿔 넣어 확인)"""
+    seed = P.ROOT / "seeds" / "packages.csv"
+    orig = seed.read_text(encoding="utf-8")
+    try:
+        seed.write_text(orig + "pypi,dbt-core,Cobol\n", encoding="utf-8")
+        p = build(src)
+        assert p.returncode != 0
+    finally:
+        seed.write_text(orig, encoding="utf-8")
+
+
+def test_disaster_marts_and_alert_history(src, tmp_path):
+    assert build(src).returncode == 0
+    rows = q(src, "select event_key, type_name, alert_rank, duration_days from fct_disaster_events order by 1")
+    assert rows == [("FL-2", "홍수", 2, 1), ("TC-1", "태풍·열대저기압", 1, 4)]
+    assert q(src, "select event_type, events, orange_or_red from fct_disasters_monthly order by 1") == [("FL", 1, 1), ("TC", 1, 0)]
+    assert q(src, "select count(*) from fct_alert_changes")[0][0] == 0
+    # 다음 날: 태풍이 Green → Red 로 오르고, 홍수는 수정 시각만 바뀜 → 등급이 바뀐 태풍만 새 판이 생긴다
+    M._save({e["event_key"]: e for e in [event("TC-1", "Red", "2025-03-01T00:00:00", "2025-03-06T00:00:00", "2025-03-06T00:00:00"),
+                                         event("FL-2", "Orange", "2025-03-02T00:00:00", "2025-03-02T00:00:00", "2025-03-06T00:00:00")]},
+            P.Path(src["vars"]["disasters_csv"]), X.D_FIELDS)
+    assert build(src).returncode == 0
+    assert q(src, "select event_key, count(*) from snap_disasters group by 1 order by 1") == [("FL-2", 1), ("TC-1", 2)]
+    assert [r[:3] for r in q(src, "select * from fct_alert_changes")] == [("TC-1", "Green", "Red")]
+    # 두 변경 이력 표 모두 파일로 이어 간다
+    state = tmp_path / "state"
+    P.save_state(src["db"], state)
+    assert sorted(f.name for f in state.iterdir()) == ["snap_disasters.parquet", "snap_quakes.parquet"]
+    P.Path(src["db"]).unlink()
+    P.restore_state(src["db"], state)
+    assert build(src).returncode == 0
+    assert q(src, "select count(*) from snap_disasters")[0][0] == 3 and q(src, "select count(*) from fct_alert_changes")[0][0] == 1
+
+
+def test_unknown_disaster_type_fails(src):
+    M._save({"XX-9": {**event("XX-9", "Green", "2025-03-01T00:00:00", "2025-03-01T00:00:00")}}, P.Path(src["vars"]["disasters_csv"]), X.D_FIELDS)
+    assert build(src).returncode != 0
+
+
+def test_collect_packages_and_disasters(tmp_path):
+    seed = tmp_path / "packages.csv"
+    seed.write_text("registry,package,skill\npypi,dbt-core,dbt\nnpm,@angular/core,Angular\n", encoding="utf-8")
+    calls = []
+
+    def get(url):
+        calls.append(url)
+        if "pypistats" in url:
+            return {"data": [{"date": f"2025-03-{d:02d}", "downloads": 10 * d} for d in range(1, 12)]}
+        if "npmjs" in url:
+            a, b = url.split("/range/")[1].split("/")[0].split(":")
+            return {"downloads": [{"day": d, "downloads": 5} for d in P.daterange(a, b)]}
+        page = int(url.split("pagenumber=")[1])
+        n = 100 if page == 1 else 3
+        return {"features": [{"properties": {"eventtype": "FL", "eventid": f"{page}{i}", "name": "Flood", "country": "X", "iso3": "XXX",
+                                             "alertlevel": "Green", "alertscore": "1", "fromdate": "2025-03-01T00:00:00", "todate": "2025-03-02T00:00:00",
+                                             "datemodified": "2025-03-03T00:00:00", "iscurrent": "true", "severitydata": {"severity": 1, "severityunit": ""}},
+                              "geometry": {"type": "Point", "coordinates": [10.0, 20.0]}} for i in range(n)]}
+    pp, dp = tmp_path / "pkg.csv", tmp_path / "dis.csv"
+    st = X.collect_packages("2025-03-12", pp, seed, get, pause=0, backfill_days=5)
+    assert st["end"] == "2025-03-10" and st["errors"] == [] and st["total"] == 6 * 2      # 이틀 전까지, 5일 전부터
+    assert any("@angular%2Fcore" in u for u in calls)                   # 범위가 있는 이름은 / 를 인코딩해 보냄
+    assert X.collect_packages("2025-03-12", pp, seed, get, pause=0, backfill_days=5)["new"] == 0
+    st = X.collect_disasters("2025-03-12", dp, get, pause=0)
+    assert st["pages"] == 2 and st["fetched"] == 103 and st["total"] == 103
+    rows = M._load(dp, lambda r: r["event_key"])
+    assert rows["FL-10"]["lon"] == "10.0" and rows["FL-10"]["alert_level"] == "Green"
+    assert X.collect_disasters("2025-03-12", dp, get, pause=0)["new"] == 0

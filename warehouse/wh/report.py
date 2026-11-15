@@ -1,7 +1,7 @@
 """dbt 산출물과 웨어하우스 표로 대시보드(docs/index.html)를 만듭니다.
 
 자료는 한 번에 JSON 으로 뽑아 화면 틀(wh/dashboard.html)에 넣습니다 — 서버 없이 정적 페이지 하나로 열립니다.
-탭: 개요 · 시세·환율 · 채용 · 전력 · 지진 · 품질(계보·테스트·실행 기록)
+탭: 개요 · 시세·환율 · 채용·도구 · 전력 · 지진·재해 · 품질(계보·테스트·실행 기록)
 """
 from __future__ import annotations
 
@@ -124,6 +124,14 @@ def collect_data(db: Path) -> dict:
         part("demand_season", lambda: R("select season, is_weekend, round(avg(peak_mw)), round(avg(load_factor), 3), count(*) from fct_demand_daily group by 1, 2 order by 1, 2"))
         part("quakes_monthly", lambda: R("select month_kst, sum(quakes), max(max_mag) from fct_quakes_monthly where month_kst >= date '2023-11-01' group by 1 order by 1"))
         part("quake_regions", lambda: R("select region, quakes, last_seen_utc::date from dim_region order by 2 desc limit 8"))
+        part("supply", lambda: R("select skill, category, postings_4w, downloads_4w, downloads_prev_4w, downloads_change_pct, packages from fct_skill_supply_demand order by postings_4w desc, downloads_4w desc"))
+        part("pkg_weekly", lambda: {p: R(f"select week_start, downloads from fct_pkg_weekly where package = '{p}' order by 1")
+                                    for (p,) in con.execute("select package from dim_package where days > 0 order by registry desc, package").fetchall()})
+        part("pkg_dim", lambda: R("select package, registry, skill, first_day, last_day from dim_package where days > 0 order by registry desc, package"))
+        part("dis_events", lambda: R("""select event_key, type_name, name, country, alert_level, alert_rank, severity, severity_unit, from_at::date, to_at::date,
+                                               duration_days, is_current, lon, lat from fct_disaster_events order by alert_rank desc, from_at desc"""))
+        part("dis_monthly", lambda: R("select month, event_type, events, orange_or_red from fct_disasters_monthly where month >= (select max(month) from fct_disasters_monthly) - interval 5 month order by 1, 2"))
+        part("dis_changes", lambda: R("select c.event_key, e.name, c.prev_level, c.new_level, c.changed_at::date from fct_alert_changes c join fct_disaster_events e using (event_key) order by 5 desc limit 20"))
         part("quake_total", lambda: R("select count(*), max(mag), max(occurred_at_utc)::date, (select count(*) from snap_quakes), (select count(*) from snap_quakes where dbt_valid_to is not null) from stg_quakes")[0])
     finally:
         con.close()

@@ -103,3 +103,37 @@ models:
     columns:
       - name: days
         data_tests: [{accepted_range: {arguments: {min_value: 1, max_value: 31}}}]
+  - name: dim_package
+    columns:
+      - name: package
+        data_tests: [not_null]
+      - name: skill
+        description: "짝지은 기술 — 기술 사전에 있는 이름이어야 함"
+        data_tests: [{relationships: {arguments: {to: ref('skills'), field: skill}}}]
+      - name: days
+        description: "자료가 있는 날 수. 0 이면 수집이 한 번도 되지 않은 패키지 (경고)"
+        data_tests: [{accepted_range: {arguments: {min_value: 1}, config: {severity: warn}}}]
+  - name: fct_pkg_weekly
+    description: "주 × 패키지. 7일이 다 찬 주만"
+    columns:
+      - name: downloads
+        data_tests: [{accepted_range: {arguments: {min_value: 0}}}]
+  - name: fct_skill_supply_demand
+    description: "기술별 공고 언급 수와 패키지 내려받기 수를 나란히. 두 값은 서로 나눌 수 없음"
+    columns:
+      - name: skill
+        data_tests: [unique, not_null]
+  - name: dim_disaster_type
+    columns:
+      - name: event_type
+        data_tests: [unique, not_null]
+  - name: fct_disaster_events
+    columns:
+      - name: event_key
+        data_tests: [unique, not_null]
+      - name: duration_days
+        data_tests: [{accepted_range: {arguments: {min_value: 1}}}]
+  - name: fct_disasters_monthly
+    columns:
+      - name: events
+        data_tests: [{accepted_range: {arguments: {min_value: 1}}}]

@@ -6,5 +6,5 @@ exports/
 *.duckdb.wal
 airflow_home/
 docs/
-state/.snap.tmp.parquet
+state/.*.tmp.parquet
 .user.yml

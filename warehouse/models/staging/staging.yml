@@ -59,3 +59,21 @@ models:
         data_tests: [not_null, {accepted_range: {arguments: {min_value: 0.000001}}}]
       - name: quote
         data_tests: [{accepted_values: {arguments: {values: ["KRW", "JPY", "EUR"]}}}]
+  - name: stg_pkg_downloads
+    columns:
+      - name: registry
+        data_tests: [{accepted_values: {arguments: {values: ["pypi", "npm"]}}}]
+      - name: downloads
+        data_tests: [not_null, {accepted_range: {arguments: {min_value: 0}}}]
+  - name: stg_disasters
+    columns:
+      - name: event_key
+        data_tests: [unique, not_null]
+      - name: event_type
+        data_tests: [{accepted_values: {arguments: {values: ["TC", "FL", "VO", "DR"]}}}]
+      - name: alert_level
+        data_tests: [{accepted_values: {arguments: {values: ["Green", "Orange", "Red"]}}}]
+      - name: lat
+        data_tests: [{accepted_range: {arguments: {min_value: -90, max_value: 90}}}]
+      - name: lon
+        data_tests: [{accepted_range: {arguments: {min_value: -180, max_value: 180}}}]

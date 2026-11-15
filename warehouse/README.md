@@ -3,7 +3,7 @@
 같은 저장소의 다른 프로젝트가 모으는 자료(지진 목록 · 전력 수요 · 기온)와 직접 모으는 채용 공고를 **원본 → 정제 → 집계** 3단으로 정리하고,
 품질 테스트·변경 이력·재실행 안전성·실행 기록까지 갖춘 작은 데이터 웨어하우스입니다.
 
-- **대시보드**: <https://0ju12.github.io/data-projects/warehouse/> — 개요 · 시세·환율 · 채용 · 전력 · 지진 · 품질(계보·테스트·실행 기록), 매일 06:17 KST 실행 뒤 갱신
+- **대시보드**: <https://0ju12.github.io/data-projects/warehouse/> — 개요 · 시세·환율 · 채용·도구 · 전력 · 지진·재해 · 품질(계보·테스트·실행 기록), 매일 06:17 KST 실행 뒤 갱신
 - 도구: dbt-core + DuckDB, Airflow 3 (DAG), GitHub Actions(매일 실행), pytest
 
 ## 구조
@@ -93,12 +93,36 @@ fx_rates.csv ─ stg_fx ─ int_fx_daily ─┴─ fct_krw_premium_daily ─ fct
 - 일 종가 한 점끼리의 비교입니다. 장중 차이, 수수료, 입출금 제한은 반영하지 않습니다.
 - 기준환율은 실제 거래에 쓰이는 환율과 다릅니다. 투자 판단용이 아닙니다.
 
+## 패키지 내려받기 수 (PyPI · npm)
+
+기술 사전의 기술과 짝지은 패키지 22개(`seeds/packages.csv`)의 일일 내려받기 수를 모아, 공고에서의 언급과 나란히 봅니다(`fct_skill_supply_demand`).
+
+- **덜 찬 주는 버린다.** 주 단위로 합칠 때 7일이 다 차지 않은 주를 그대로 두면 마지막 주가 늘 급감한 것처럼 보입니다. `fct_pkg_weekly` 는 7일이 찬 주만 남깁니다.
+- **이틀 전까지만 받고, 최근 10일은 다시 받는다.** 집계가 며칠 늦게 확정되기 때문입니다.
+- **두 값을 나누지 않는다.** 공고 언급 수와 내려받기 수는 단위도 모집단도 다릅니다. 같은 기술을 두 각도에서 보는 표로만 둡니다.
+- 패키지를 사전에 없는 기술과 짝지으면 관계 검사가 빌드를 막습니다.
+
+한계
+- 내려받기에는 자동 빌드(CI)·미러가 많이 섞여 있어 사용자 수를 뜻하지 않습니다.
+- PyPI 통계는 최근 180일만 제공됩니다. 그 전 기록은 수집을 시작한 날부터 쌓입니다.
+- `dbt-core` 는 2026년 8월에 주간 내려받기가 약 2,200만 회에서 500만 회로 급감합니다. 실제 사용 감소인지 집계·배포 방식의 변화인지는 **확인하지 못했습니다.** 이런 구간이 있어 "전 4주 대비" 같은 짧은 비교만 쓰고 긴 추세 해석은 하지 않습니다.
+
+## 자연재해 경보 (GDACS)
+
+태풍·홍수·화산·가뭄 사건의 최신 상태를 매일 받아 종류·등급별로 집계하고, 경보 등급이 바뀐 이력을 쌓습니다.
+
+- **등급이 바뀔 때만 새 판을 만든다.** 진행 중인 사건은 수정 시각이 거의 매일 바뀝니다. 그것을 기준으로 이력을 쌓으면 판만 늘어나므로, `snap_disasters` 는 등급 열만 비교합니다(지진 이력은 수정 시각 기준 — 자료 성격에 따라 기준을 다르게 잡았습니다).
+- **종류 차원에 없는 코드는 조용히 빠지지 않게 한다.** 사실 표는 종류 차원과 조인하므로, 원본과 행 수가 같은지 확인합니다.
+- 최근 90일을 매일 다시 받아 최신 상태로 덮습니다. 두 변경 이력 표(`snap_quakes`·`snap_disasters`)는 `state/` 의 파일로 실행 사이에 이어집니다.
+
+한계: 산불은 건수가 많아 뺐습니다. 경보 등급은 GDACS 의 자동 추정이라 실제 피해와 다를 수 있습니다. 등급 변화 이력은 수집을 시작한 날부터만 쌓입니다.
+
 ## 왜 이 자료들인가
 
 [public-apis-4Kr](https://github.com/yybmion/public-apis-4Kr) 목록(국내 API 311개)을 훑어봤습니다. 223개가 인증키, 46개가 로그인·OAuth 가 필요했고, 키 없이 쓸 수 있다고 표시된 30개는 대부분 통계 포털 웹사이트였습니다.
 그래서 키 없이 프로그램으로 받을 수 있는 국내 자료로 거래소 공개 시세를 골랐고, 유동인구·따릉이·실거래가 같은 자료는 인증키를 발급받은 뒤 추가할 후보로 남겼습니다.
 
-## 품질 테스트 (77개)
+## 품질 테스트 (101개)
 
 - 열 단위: `unique` · `not_null` · `relationships`(사실 표의 날짜·지역이 차원에 있는가) · `accepted_values` · 직접 만든 `accepted_range`(규모 0~10, 위도·경도, 수요 20~120 GW 등)
 - 표 단위(`tests/*.sql`): 하루는 정확히 24행 · 이웃 행 간격은 항상 1시간 · 일 요약의 최대값이 시간 표에서 다시 계산한 값과 같은가
@@ -115,7 +139,9 @@ python -m wh.cli backfill 2025-03-01 2025-03-07   # 과거 날짜 다시 채우�
 python -m wh.cli report                           # docs/index.html
 python -m wh.cli collect-jobs                     # 채용 공고 피드 수집
 python -m wh.cli collect-market                   # 거래소 일봉·환율 수집
-python -m pytest -q                               # 32개
+python -m wh.cli collect-packages                 # 패키지 내려받기 수
+python -m wh.cli collect-disasters                # 재해 경보
+python -m pytest -q                               # 37개
 ```
 
 Airflow (Docker 없이 확인하는 방법 — dbt 와 의존성이 부딪히지 않게 가상환경을 나눕니다):
@@ -128,7 +154,7 @@ airflow db migrate
 airflow dags test warehouse_daily 2026-11-13
 ```
 
-DAG `warehouse_daily`: `collect_jobs · collect_market → check_sources → dbt_build → export_partition → record → report`.
+DAG `warehouse_daily`: `collect_jobs · collect_market · collect_packages · collect_disasters → check_sources → dbt_build → export_partition → record → report`.
 원본 확인과 dbt 는 2번까지 재시도하고, `record`·`report` 는 앞 단계가 실패해도 실행됩니다(`trigger_rule="all_done"`).
 작업은 얇은 껍데기이고 실제 일은 `wh/pipeline.py` 의 함수가 하므로, 명령줄·테스트·Airflow 가 같은 코드를 씁니다.
 

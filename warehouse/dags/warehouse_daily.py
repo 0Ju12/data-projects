@@ -41,6 +41,16 @@ with DAG(
         from wh.sources import market
         return market.collect()
 
+    @task
+    def collect_packages() -> dict:
+        from wh.sources import extras
+        return extras.collect_packages()
+
+    @task
+    def collect_disasters() -> dict:
+        from wh.sources import extras
+        return extras.collect_disasters()
+
     @task(trigger_rule="all_done")
     def check_sources() -> dict:
         from wh import pipeline as P
@@ -82,7 +92,7 @@ with DAG(
         return str(build_report())
 
     s = check_sources()
-    [collect_jobs(), collect_market()] >> s
+    [collect_jobs(), collect_market(), collect_packages(), collect_disasters()] >> s
     b = dbt_build(s)
     e = export_partition(b)
     e >> record() >> report()

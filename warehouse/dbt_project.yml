@@ -18,6 +18,8 @@ vars:
   jobs_fetch_csv: "data/jobs_fetch_log.csv"
   candles_csv: "data/market_candles.csv"
   fx_csv: "data/fx_rates.csv"
+  pkg_csv: "data/pkg_downloads.csv"
+  disasters_csv: "data/disasters.csv"
   quake_fresh_days: 14        # 지진 목록이 이 일수보다 오래 멈춰 있으면 경고
 
 models:
@@ -30,3 +32,5 @@ seeds:
   warehouse:
     skills:
       +column_types: {skill: varchar, category: varchar, scope: varchar, pattern: varchar}
+    packages:
+      +column_types: {registry: varchar, package: varchar, skill: varchar}

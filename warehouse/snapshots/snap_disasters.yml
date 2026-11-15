@@ -1,0 +1,9 @@
+# 재해 사건의 경보 등급 이력. 수정 시각은 사건이 진행되는 동안 거의 매일 바뀌므로 그것으로 판을 나누면 판만 늘어납니다.
+# 등급이 바뀔 때만 새 판을 만들도록 check 전략으로 등급 열만 봅니다.
+snapshots:
+  - name: snap_disasters
+    relation: ref('stg_disasters')
+    config:
+      unique_key: event_key
+      strategy: check
+      check_cols: [alert_level]
