@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14",
+ "updated": "2026-11-15",
  "detections": 503,
  "static_detections": 463,
  "fire_detections": 40,
@@ -21,8 +21,8 @@
   "mean_ffwi_neg": 14.3
  },
  "fetch": {
-  "N20": 183,
-  "N21": 223,
+  "N20": 146,
+  "N21": 171,
   "SNPP": 0,
   "new": 0,
   "weather": "ok"
