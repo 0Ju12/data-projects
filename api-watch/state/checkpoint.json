@@ -1,9 +1,1922 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-16T07:19:06.015862+00:00",
-  "last_check_at": "2026-11-16T07:19:06.004538+00:00",
+  "generated_at": "2026-11-16T07:38:01.042298+00:00",
+  "last_check_at": "2026-11-16T07:38:01.019585+00:00",
   "expected_interval_seconds": 3600,
   "targets": [
+    {
+      "slug": "air-quality",
+      "name": "Open-Meteo · 서울 대기질",
+      "spec": {
+        "slug": "air-quality",
+        "name": "Open-Meteo · 서울 대기질",
+        "category": "지구·환경",
+        "kind": "공개 API",
+        "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=37.5665&longitude=126.9780&current=pm10,pm2_5&timezone=UTC",
+        "docs": "https://open-meteo.com/en/docs/air-quality-api",
+        "description": "대기질 모델 자료입니다. 실측 관측소 수치로 단정하지 않습니다. 자료 시각 허용 3시간.",
+        "freshness_path": "current.time",
+        "max_age_seconds": 10800,
+        "time_format": "iso",
+        "records_path": null,
+        "min_records": null,
+        "required": {
+          "current.time": "string",
+          "current.pm10": "number",
+          "current.pm2_5": "number"
+        },
+        "record_required": {},
+        "numeric_rules": {
+          "current.pm10": [
+            0,
+            5000
+          ],
+          "current.pm2_5": [
+            0,
+            5000
+          ]
+        },
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000
+      },
+      "last_run": {
+        "id": 13,
+        "target": "air-quality",
+        "checked_at": "2026-11-16T07:38:00.947176+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 494.67,
+        "data_at": "2026-11-16T07:00:00+00:00",
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "495 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:current.time",
+            "label": "필수 필드 · current.time",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:current.pm10",
+            "label": "필수 필드 · current.pm10",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:current.pm2_5",
+            "label": "필수 필드 · current.pm2_5",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "range:current.pm10",
+            "label": "값 범위 · current.pm10",
+            "ok": true,
+            "detail": "허용 0~5000 · 실제 18.0",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "range:current.pm2_5",
+            "label": "값 범위 · current.pm2_5",
+            "ok": true,
+            "detail": "허용 0~5000 · 실제 13.2",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "future-time",
+            "label": "미래 시각 검사",
+            "ok": true,
+            "detail": "현재 대비 2281초 전",
+            "group": "freshness",
+            "severity": "error"
+          },
+          {
+            "key": "freshness",
+            "label": "데이터 최신성",
+            "ok": true,
+            "detail": "38.0분 경과 · 허용 180분",
+            "group": "freshness",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.947176+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 18
+    },
+    {
+      "slug": "coingecko",
+      "name": "CoinGecko · BTC·ETH 가격",
+      "spec": {
+        "slug": "coingecko",
+        "name": "CoinGecko · BTC·ETH 가격",
+        "category": "금융·블록체인",
+        "kind": "공개 API",
+        "url": "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_last_updated_at=true",
+        "docs": "https://docs.coingecko.com/reference/simple-price",
+        "description": "공개 가격 조회의 구조와 제공 시각을 검사합니다. 투자 판단 도구가 아닙니다.",
+        "freshness_path": "bitcoin.last_updated_at",
+        "max_age_seconds": 3600,
+        "time_format": "unix",
+        "records_path": null,
+        "min_records": null,
+        "required": {
+          "bitcoin.usd": "number",
+          "bitcoin.last_updated_at": "number",
+          "ethereum.usd": "number"
+        },
+        "record_required": {},
+        "numeric_rules": {
+          "bitcoin.usd": [
+            0,
+            100000000
+          ]
+        },
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000
+      },
+      "last_run": {
+        "id": 14,
+        "target": "coingecko",
+        "checked_at": "2026-11-16T07:38:00.950245+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 142.52,
+        "data_at": "2026-11-16T07:37:27+00:00",
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "143 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:bitcoin.usd",
+            "label": "필수 필드 · bitcoin.usd",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:bitcoin.last_updated_at",
+            "label": "필수 필드 · bitcoin.last_updated_at",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:ethereum.usd",
+            "label": "필수 필드 · ethereum.usd",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "range:bitcoin.usd",
+            "label": "값 범위 · bitcoin.usd",
+            "ok": true,
+            "detail": "허용 0~100000000 · 실제 64862",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "future-time",
+            "label": "미래 시각 검사",
+            "ok": true,
+            "detail": "현재 대비 34초 전",
+            "group": "freshness",
+            "severity": "error"
+          },
+          {
+            "key": "freshness",
+            "label": "데이터 최신성",
+            "ok": true,
+            "detail": "0.6분 경과 · 허용 60분",
+            "group": "freshness",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.950245+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 7
+    },
+    {
+      "slug": "crossref",
+      "name": "Crossref · 머신러닝 논문",
+      "spec": {
+        "slug": "crossref",
+        "name": "Crossref · 머신러닝 논문",
+        "category": "지식·교육",
+        "kind": "공개 API",
+        "url": "https://api.crossref.org/works?query=machine%20learning&rows=3",
+        "docs": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": "message.items",
+        "min_records": 1,
+        "required": {
+          "status": "string",
+          "message.items": "array"
+        },
+        "record_required": {
+          "DOI": "string",
+          "title": "array"
+        },
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "id_path": "DOI",
+        "expected_values": {
+          "status": "ok"
+        },
+        "schema_ignore_prefixes": [
+          "$.message.items"
+        ]
+      },
+      "last_run": {
+        "id": 15,
+        "target": "crossref",
+        "checked_at": "2026-11-16T07:38:00.952058+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 857.24,
+        "data_at": null,
+        "record_count": 3,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "857 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:status",
+            "label": "필수 필드 · status",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:message.items",
+            "label": "필수 필드 · message.items",
+            "ok": true,
+            "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "value:status",
+            "label": "응답 의미 · status",
+            "ok": true,
+            "detail": "기대 ok · 실제 ok",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "count",
+            "label": "결과 건수",
+            "ok": true,
+            "detail": "3건 · 최소 1",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "record:DOI",
+            "label": "항목 필드 · DOI",
+            "ok": true,
+            "detail": "3건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "record:title",
+            "label": "항목 필드 · title",
+            "ok": true,
+            "detail": "3건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "duplicates",
+            "label": "식별자 중복",
+            "ok": true,
+            "detail": "중복 0건 · 식별자 없음 0건",
+            "group": "quality",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.952058+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 11
+    },
+    {
+      "slug": "dog-ceo",
+      "name": "Dog CEO · 이미지 메타데이터",
+      "spec": {
+        "slug": "dog-ceo",
+        "name": "Dog CEO · 이미지 메타데이터",
+        "category": "생활·문화",
+        "kind": "공개 API",
+        "url": "https://dog.ceo/api/breeds/image/random",
+        "docs": "https://dog.ceo/dog-api/",
+        "description": "이미지 URL을 담은 JSON 응답만 검사합니다. 이미지 파일을 내려받거나 정상 이미지라고 보증하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": null,
+        "min_records": null,
+        "required": {
+          "status": "string",
+          "message": "string"
+        },
+        "record_required": {},
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "expected_values": {
+          "status": "success"
+        }
+      },
+      "last_run": {
+        "id": 16,
+        "target": "dog-ceo",
+        "checked_at": "2026-11-16T07:38:00.954006+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 513.82,
+        "data_at": null,
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "514 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:status",
+            "label": "필수 필드 · status",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:message",
+            "label": "필수 필드 · message",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "value:status",
+            "label": "응답 의미 · status",
+            "ok": true,
+            "detail": "기대 success · 실제 success",
+            "group": "quality",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.954006+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 3
+    },
+    {
+      "slug": "exchange-rates",
+      "name": "ExchangeRate-API · 공개 환율",
+      "spec": {
+        "slug": "exchange-rates",
+        "name": "ExchangeRate-API · 공개 환율",
+        "category": "금융·블록체인",
+        "kind": "공개 API",
+        "url": "https://open.er-api.com/v6/latest/USD",
+        "docs": "https://www.exchangerate-api.com/docs/free",
+        "description": "ExchangeRate-API 공개 엔드포인트. 제공자 https://www.exchangerate-api.com 출처 표시, 48시간 기준.",
+        "freshness_path": "time_last_update_unix",
+        "max_age_seconds": 172800,
+        "time_format": "unix",
+        "records_path": null,
+        "min_records": null,
+        "required": {
+          "result": "string",
+          "time_last_update_unix": "number",
+          "rates.KRW": "number"
+        },
+        "record_required": {},
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "expected_values": {
+          "result": "success"
+        },
+        "schema_ignore_prefixes": [
+          "$.rates"
+        ]
+      },
+      "last_run": {
+        "id": 17,
+        "target": "exchange-rates",
+        "checked_at": "2026-11-16T07:38:00.955809+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 111.41,
+        "data_at": "2026-11-16T00:02:31+00:00",
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "111 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:result",
+            "label": "필수 필드 · result",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:time_last_update_unix",
+            "label": "필수 필드 · time_last_update_unix",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:rates.KRW",
+            "label": "필수 필드 · rates.KRW",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "value:result",
+            "label": "응답 의미 · result",
+            "ok": true,
+            "detail": "기대 success · 실제 success",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "future-time",
+            "label": "미래 시각 검사",
+            "ok": true,
+            "detail": "현재 대비 27330초 전",
+            "group": "freshness",
+            "severity": "error"
+          },
+          {
+            "key": "freshness",
+            "label": "데이터 최신성",
+            "ok": true,
+            "detail": "455.5분 경과 · 허용 2880분",
+            "group": "freshness",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.955809+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 11
+    },
+    {
+      "slug": "frankfurter",
+      "name": "Frankfurter · 기준 환율",
+      "spec": {
+        "slug": "frankfurter",
+        "name": "Frankfurter · 기준 환율",
+        "category": "금융·블록체인",
+        "kind": "공개 API",
+        "url": "https://api.frankfurter.dev/v1/latest?base=USD&symbols=KRW,EUR,JPY",
+        "docs": "https://frankfurter.dev/",
+        "description": "중앙은행 기준 환율입니다. 영업일·주말을 고려해 5일을 허용하며 실시간 거래 가격이 아닙니다.",
+        "freshness_path": "date",
+        "max_age_seconds": 432000,
+        "time_format": "iso",
+        "records_path": null,
+        "min_records": null,
+        "required": {
+          "date": "string",
+          "base": "string",
+          "rates.KRW": "number",
+          "rates.EUR": "number",
+          "rates.JPY": "number"
+        },
+        "record_required": {},
+        "numeric_rules": {
+          "rates.KRW": [
+            1,
+            10000
+          ]
+        },
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000
+      },
+      "last_run": {
+        "id": 18,
+        "target": "frankfurter",
+        "checked_at": "2026-11-16T07:38:00.957803+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 358.77,
+        "data_at": "2026-11-13T00:00:00+00:00",
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "359 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:date",
+            "label": "필수 필드 · date",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:base",
+            "label": "필수 필드 · base",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:rates.KRW",
+            "label": "필수 필드 · rates.KRW",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:rates.EUR",
+            "label": "필수 필드 · rates.EUR",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:rates.JPY",
+            "label": "필수 필드 · rates.JPY",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "range:rates.KRW",
+            "label": "값 범위 · rates.KRW",
+            "ok": true,
+            "detail": "허용 1~10000 · 실제 1337.13",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "future-time",
+            "label": "미래 시각 검사",
+            "ok": true,
+            "detail": "현재 대비 286681초 전",
+            "group": "freshness",
+            "severity": "error"
+          },
+          {
+            "key": "freshness",
+            "label": "데이터 최신성",
+            "ok": true,
+            "detail": "4778.0분 경과 · 허용 7200분",
+            "group": "freshness",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.957803+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 8
+    },
+    {
+      "slug": "gbif",
+      "name": "GBIF · 생물 관측 기록",
+      "spec": {
+        "slug": "gbif",
+        "name": "GBIF · 생물 관측 기록",
+        "category": "지구·환경",
+        "kind": "공개 API",
+        "url": "https://api.gbif.org/v1/occurrence/search?limit=3",
+        "docs": "https://techdocs.gbif.org/en/openapi/v1/occurrence",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": "results",
+        "min_records": 1,
+        "required": {
+          "count": "number",
+          "results": "array"
+        },
+        "record_required": {
+          "key": "number"
+        },
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "id_path": "key",
+        "schema_ignore_prefixes": [
+          "$.results"
+        ]
+      },
+      "last_run": {
+        "id": 19,
+        "target": "gbif",
+        "checked_at": "2026-11-16T07:38:00.959455+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 2012.62,
+        "data_at": null,
+        "record_count": 3,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "2013 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:count",
+            "label": "필수 필드 · count",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:results",
+            "label": "필수 필드 · results",
+            "ok": true,
+            "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "count",
+            "label": "결과 건수",
+            "ok": true,
+            "detail": "3건 · 최소 1",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "record:key",
+            "label": "항목 필드 · key",
+            "ok": true,
+            "detail": "3건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "duplicates",
+            "label": "식별자 중복",
+            "ok": true,
+            "detail": "중복 0건 · 식별자 없음 0건",
+            "group": "quality",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.959455+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 6
+    },
+    {
+      "slug": "github-catalog",
+      "name": "GitHub · API 목록 저장소",
+      "spec": {
+        "slug": "github-catalog",
+        "name": "GitHub · API 목록 저장소",
+        "category": "개발·AI",
+        "kind": "공개 API",
+        "url": "https://api.github.com/repos/yybmion/public-apis-4Kr",
+        "docs": "https://docs.github.com/en/rest/repos/repos#get-a-repository",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": null,
+        "min_records": null,
+        "required": {
+          "id": "number",
+          "full_name": "string",
+          "stargazers_count": "number"
+        },
+        "record_required": {},
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "expected_values": {
+          "full_name": "yybmion/public-apis-4Kr"
+        },
+        "schema_ignore_prefixes": [
+          "$.owner",
+          "$.license"
+        ]
+      },
+      "last_run": {
+        "id": 20,
+        "target": "github-catalog",
+        "checked_at": "2026-11-16T07:38:00.962184+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 205.02,
+        "data_at": null,
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "205 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:id",
+            "label": "필수 필드 · id",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:full_name",
+            "label": "필수 필드 · full_name",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:stargazers_count",
+            "label": "필수 필드 · stargazers_count",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "value:full_name",
+            "label": "응답 의미 · full_name",
+            "ok": true,
+            "detail": "기대 yybmion/public-apis-4Kr · 실제 yybmion/public-apis-4Kr",
+            "group": "quality",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.962184+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 84
+    },
+    {
+      "slug": "hacker-news",
+      "name": "Hacker News · 주요 글 ID",
+      "spec": {
+        "slug": "hacker-news",
+        "name": "Hacker News · 주요 글 ID",
+        "category": "개발·AI",
+        "kind": "공개 API",
+        "url": "https://hacker-news.firebaseio.com/v0/topstories.json",
+        "docs": "https://github.com/HackerNews/API",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": "$",
+        "min_records": 1,
+        "required": {
+          "$": "array"
+        },
+        "record_required": {
+          "$": "number"
+        },
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "json_root": "array",
+        "id_path": "$"
+      },
+      "last_run": {
+        "id": 21,
+        "target": "hacker-news",
+        "checked_at": "2026-11-16T07:38:00.964287+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 128.4,
+        "data_at": null,
+        "record_count": 500,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "128 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON array 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:$",
+            "label": "필수 필드 · $",
+            "ok": true,
+            "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "count",
+            "label": "결과 건수",
+            "ok": true,
+            "detail": "500건 · 최소 1",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "record:$",
+            "label": "항목 필드 · $",
+            "ok": true,
+            "detail": "500건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "duplicates",
+            "label": "식별자 중복",
+            "ok": true,
+            "detail": "중복 0건 · 식별자 없음 0건",
+            "group": "quality",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.964287+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 2
+    },
+    {
+      "slug": "huggingface",
+      "name": "Hugging Face · 모델 목록",
+      "spec": {
+        "slug": "huggingface",
+        "name": "Hugging Face · 모델 목록",
+        "category": "개발·AI",
+        "kind": "공개 API",
+        "url": "https://huggingface.co/api/models?sort=trendingScore&direction=-1&limit=5",
+        "docs": "https://huggingface.co/docs/hub/api",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": "$",
+        "min_records": 1,
+        "required": {
+          "$": "array"
+        },
+        "record_required": {
+          "id": "string",
+          "downloads": "number"
+        },
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "json_root": "array",
+        "id_path": "id",
+        "schema_ignore_prefixes": [
+          "$[]"
+        ]
+      },
+      "last_run": {
+        "id": 22,
+        "target": "huggingface",
+        "checked_at": "2026-11-16T07:38:00.966751+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 152.27,
+        "data_at": null,
+        "record_count": 5,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "152 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON array 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:$",
+            "label": "필수 필드 · $",
+            "ok": true,
+            "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "count",
+            "label": "결과 건수",
+            "ok": true,
+            "detail": "5건 · 최소 1",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "record:id",
+            "label": "항목 필드 · id",
+            "ok": true,
+            "detail": "5건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "record:downloads",
+            "label": "항목 필드 · downloads",
+            "ok": true,
+            "detail": "5건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "duplicates",
+            "label": "식별자 중복",
+            "ok": true,
+            "detail": "중복 0건 · 식별자 없음 0건",
+            "group": "quality",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.966751+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 1
+    },
+    {
+      "slug": "marine",
+      "name": "Open-Meteo · 부산 해양",
+      "spec": {
+        "slug": "marine",
+        "name": "Open-Meteo · 부산 해양",
+        "category": "지구·환경",
+        "kind": "공개 API",
+        "url": "https://marine-api.open-meteo.com/v1/marine?latitude=35.1&longitude=129.1&current=wave_height&timezone=UTC",
+        "docs": "https://open-meteo.com/en/docs/marine-weather-api",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": "current.time",
+        "max_age_seconds": 10800,
+        "time_format": "iso",
+        "records_path": null,
+        "min_records": null,
+        "required": {
+          "current.time": "string",
+          "current.wave_height": "number"
+        },
+        "record_required": {},
+        "numeric_rules": {
+          "current.wave_height": [
+            0,
+            50
+          ]
+        },
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000
+      },
+      "last_run": {
+        "id": 23,
+        "target": "marine",
+        "checked_at": "2026-11-16T07:38:00.968535+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 539.18,
+        "data_at": "2026-11-16T07:30:00+00:00",
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "539 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:current.time",
+            "label": "필수 필드 · current.time",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:current.wave_height",
+            "label": "필수 필드 · current.wave_height",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "range:current.wave_height",
+            "label": "값 범위 · current.wave_height",
+            "ok": true,
+            "detail": "허용 0~50 · 실제 1.04",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "future-time",
+            "label": "미래 시각 검사",
+            "ok": true,
+            "detail": "현재 대비 481초 전",
+            "group": "freshness",
+            "severity": "error"
+          },
+          {
+            "key": "freshness",
+            "label": "데이터 최신성",
+            "ok": true,
+            "detail": "8.0분 경과 · 허용 180분",
+            "group": "freshness",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.968535+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 16
+    },
+    {
+      "slug": "mempool",
+      "name": "mempool.space · 비트코인 수수료",
+      "spec": {
+        "slug": "mempool",
+        "name": "mempool.space · 비트코인 수수료",
+        "category": "금융·블록체인",
+        "kind": "공개 API",
+        "url": "https://mempool.space/api/v1/fees/recommended",
+        "docs": "https://mempool.space/docs/api/rest",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": null,
+        "min_records": null,
+        "required": {
+          "fastestFee": "number",
+          "halfHourFee": "number",
+          "hourFee": "number",
+          "minimumFee": "number"
+        },
+        "record_required": {},
+        "numeric_rules": {
+          "fastestFee": [
+            0,
+            100000
+          ]
+        },
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000
+      },
+      "last_run": {
+        "id": 24,
+        "target": "mempool",
+        "checked_at": "2026-11-16T07:38:00.970403+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 365.62,
+        "data_at": null,
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "366 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:fastestFee",
+            "label": "필수 필드 · fastestFee",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:halfHourFee",
+            "label": "필수 필드 · halfHourFee",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:hourFee",
+            "label": "필수 필드 · hourFee",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:minimumFee",
+            "label": "필수 필드 · minimumFee",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "range:fastestFee",
+            "label": "값 범위 · fastestFee",
+            "ok": true,
+            "detail": "허용 0~100000 · 실제 2",
+            "group": "quality",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.970403+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 6
+    },
+    {
+      "slug": "nager-holidays",
+      "name": "Nager.Date · 한국 공휴일",
+      "spec": {
+        "slug": "nager-holidays",
+        "name": "Nager.Date · 한국 공휴일",
+        "category": "생활·문화",
+        "kind": "공개 API",
+        "url": "https://date.nager.at/api/v3/PublicHolidays/2026/KR",
+        "docs": "https://date.nager.at/Api",
+        "description": "2026년 한국 공휴일 참고 데이터. 공휴일 날짜를 데이터 갱신 시각으로 오해하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": "$",
+        "min_records": 1,
+        "required": {
+          "$": "array"
+        },
+        "record_required": {
+          "date": "string",
+          "localName": "string",
+          "countryCode": "string"
+        },
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "json_root": "array",
+        "schema_ignore_prefixes": [
+          "$[]"
+        ]
+      },
+      "last_run": {
+        "id": 25,
+        "target": "nager-holidays",
+        "checked_at": "2026-11-16T07:38:00.972256+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 182.14,
+        "data_at": null,
+        "record_count": 18,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "182 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON array 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:$",
+            "label": "필수 필드 · $",
+            "ok": true,
+            "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "count",
+            "label": "결과 건수",
+            "ok": true,
+            "detail": "18건 · 최소 1",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "record:date",
+            "label": "항목 필드 · date",
+            "ok": true,
+            "detail": "18건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "record:localName",
+            "label": "항목 필드 · localName",
+            "ok": true,
+            "detail": "18건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "record:countryCode",
+            "label": "항목 필드 · countryCode",
+            "ok": true,
+            "detail": "18건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.972256+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 1
+    },
+    {
+      "slug": "npm-typescript",
+      "name": "npm · TypeScript 최신 태그",
+      "spec": {
+        "slug": "npm-typescript",
+        "name": "npm · TypeScript 최신 태그",
+        "category": "개발·AI",
+        "kind": "공개 API",
+        "url": "https://registry.npmjs.org/typescript/latest",
+        "docs": "https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": null,
+        "min_records": null,
+        "required": {
+          "name": "string",
+          "version": "string",
+          "dist.tarball": "string"
+        },
+        "record_required": {},
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "expected_values": {
+          "name": "typescript"
+        },
+        "schema_ignore_prefixes": [
+          "$.exports",
+          "$.bin",
+          "$.dist.signatures"
+        ]
+      },
+      "last_run": {
+        "id": 26,
+        "target": "npm-typescript",
+        "checked_at": "2026-11-16T07:38:00.973833+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 59.71,
+        "data_at": null,
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "60 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:name",
+            "label": "필수 필드 · name",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:version",
+            "label": "필수 필드 · version",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:dist.tarball",
+            "label": "필수 필드 · dist.tarball",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "value:name",
+            "label": "응답 의미 · name",
+            "ok": true,
+            "detail": "기대 typescript · 실제 typescript",
+            "group": "quality",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.973833+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 95
+    },
+    {
+      "slug": "open-library",
+      "name": "Open Library · Python 도서",
+      "spec": {
+        "slug": "open-library",
+        "name": "Open Library · Python 도서",
+        "category": "지식·교육",
+        "kind": "공개 API",
+        "url": "https://openlibrary.org/search.json?q=python&limit=3&fields=key,title",
+        "docs": "https://openlibrary.org/dev/docs/api/search",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": "docs",
+        "min_records": 1,
+        "required": {
+          "docs": "array",
+          "numFound": "number"
+        },
+        "record_required": {
+          "key": "string",
+          "title": "string"
+        },
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "id_path": "key",
+        "schema_ignore_prefixes": [
+          "$.docs"
+        ]
+      },
+      "last_run": {
+        "id": 27,
+        "target": "open-library",
+        "checked_at": "2026-11-16T07:38:00.976005+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 1406.76,
+        "data_at": null,
+        "record_count": 3,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "1407 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:docs",
+            "label": "필수 필드 · docs",
+            "ok": true,
+            "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:numFound",
+            "label": "필수 필드 · numFound",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "count",
+            "label": "결과 건수",
+            "ok": true,
+            "detail": "3건 · 최소 1",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "record:key",
+            "label": "항목 필드 · key",
+            "ok": true,
+            "detail": "3건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "record:title",
+            "label": "항목 필드 · title",
+            "ok": true,
+            "detail": "3건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "duplicates",
+            "label": "식별자 중복",
+            "ok": true,
+            "detail": "중복 0건 · 식별자 없음 0건",
+            "group": "quality",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.976005+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 8
+    },
+    {
+      "slug": "open-trivia",
+      "name": "Open Trivia DB · 퀴즈",
+      "spec": {
+        "slug": "open-trivia",
+        "name": "Open Trivia DB · 퀴즈",
+        "category": "지식·교육",
+        "kind": "공개 API",
+        "url": "https://opentdb.com/api.php?amount=3",
+        "docs": "https://opentdb.com/api_config.php",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": "results",
+        "min_records": 1,
+        "required": {
+          "response_code": "number",
+          "results": "array"
+        },
+        "record_required": {
+          "question": "string",
+          "correct_answer": "string",
+          "incorrect_answers": "array"
+        },
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "expected_values": {
+          "response_code": 0
+        },
+        "schema_ignore_prefixes": [
+          "$.results"
+        ]
+      },
+      "last_run": {
+        "id": 28,
+        "target": "open-trivia",
+        "checked_at": "2026-11-16T07:38:00.977523+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 246.34,
+        "data_at": null,
+        "record_count": 3,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "246 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:response_code",
+            "label": "필수 필드 · response_code",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:results",
+            "label": "필수 필드 · results",
+            "ok": true,
+            "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "value:response_code",
+            "label": "응답 의미 · response_code",
+            "ok": true,
+            "detail": "기대 0 · 실제 0",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "count",
+            "label": "결과 건수",
+            "ok": true,
+            "detail": "3건 · 최소 1",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "record:question",
+            "label": "항목 필드 · question",
+            "ok": true,
+            "detail": "3건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "record:correct_answer",
+            "label": "항목 필드 · correct_answer",
+            "ok": true,
+            "detail": "3건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "record:incorrect_answers",
+            "label": "항목 필드 · incorrect_answers",
+            "ok": true,
+            "detail": "3건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.977523+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 2
+    },
     {
       "slug": "own-pipeline",
       "name": "내 지진 파이프라인 · 수집 결과",
@@ -40,15 +1953,16 @@
         },
         "timeout_seconds": 12,
         "max_bytes": 2000000,
-        "warning_latency_ms": 3000
+        "warning_latency_ms": 3000,
+        "category": "내 파이프라인"
       },
       "last_run": {
-        "id": 10,
+        "id": 29,
         "target": "own-pipeline",
-        "checked_at": "2026-11-16T07:19:05.982045+00:00",
+        "checked_at": "2026-11-16T07:38:00.979237+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 398.2,
+        "duration_ms": 166.62,
         "data_at": "2026-11-16T01:04:00+00:00",
         "record_count": 3,
         "checks": [
@@ -64,7 +1978,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "398 ms · 기준 3000 ms",
+            "detail": "167 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -72,7 +1986,7 @@
             "key": "json",
             "label": "JSON 해석",
             "ok": true,
-            "detail": "JSON 객체 응답",
+            "detail": "JSON object 응답",
             "group": "format",
             "severity": "error"
           },
@@ -152,7 +2066,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 22506초 전",
+            "detail": "현재 대비 23641초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -160,7 +2074,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "375.1분 경과 · 허용 2160분",
+            "detail": "394.0분 경과 · 허용 2160분",
             "group": "freshness",
             "severity": "error"
           }
@@ -169,9 +2083,327 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:19:05.982045+00:00",
+      "last_success": "2026-11-16T07:38:00.979237+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 46
+    },
+    {
+      "slug": "pokeapi",
+      "name": "PokéAPI · 포켓몬 도감",
+      "spec": {
+        "slug": "pokeapi",
+        "name": "PokéAPI · 포켓몬 도감",
+        "category": "생활·문화",
+        "kind": "공개 API",
+        "url": "https://pokeapi.co/api/v2/pokemon/pikachu",
+        "docs": "https://pokeapi.co/docs/v2",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": "stats",
+        "min_records": 1,
+        "required": {
+          "id": "number",
+          "name": "string",
+          "stats": "array"
+        },
+        "record_required": {
+          "base_stat": "number",
+          "stat.name": "string"
+        },
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "expected_values": {
+          "name": "pikachu"
+        }
+      },
+      "last_run": {
+        "id": 30,
+        "target": "pokeapi",
+        "checked_at": "2026-11-16T07:38:00.990573+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 98.64,
+        "data_at": null,
+        "record_count": 6,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "99 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:id",
+            "label": "필수 필드 · id",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:name",
+            "label": "필수 필드 · name",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:stats",
+            "label": "필수 필드 · stats",
+            "ok": true,
+            "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "value:name",
+            "label": "응답 의미 · name",
+            "ok": true,
+            "detail": "기대 pikachu · 실제 pikachu",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "count",
+            "label": "결과 건수",
+            "ok": true,
+            "detail": "6건 · 최소 1",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "record:base_stat",
+            "label": "항목 필드 · base_stat",
+            "ok": true,
+            "detail": "6건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "record:stat.name",
+            "label": "항목 필드 · stat.name",
+            "ok": true,
+            "detail": "6건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:00.990573+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 405
+    },
+    {
+      "slug": "pypi-django",
+      "name": "PyPI · Django 패키지",
+      "spec": {
+        "slug": "pypi-django",
+        "name": "PyPI · Django 패키지",
+        "category": "개발·AI",
+        "kind": "공개 API",
+        "url": "https://pypi.org/pypi/Django/json",
+        "docs": "https://docs.pypi.org/api/json/",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": null,
+        "min_records": null,
+        "required": {
+          "info.name": "string",
+          "info.version": "string",
+          "releases": "object"
+        },
+        "record_required": {},
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "expected_values": {
+          "info.name": "Django"
+        },
+        "schema_ignore_prefixes": [
+          "$.releases",
+          "$.urls",
+          "$.vulnerabilities",
+          "$.ownership"
+        ]
+      },
+      "last_run": {
+        "id": 31,
+        "target": "pypi-django",
+        "checked_at": "2026-11-16T07:38:01.009754+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 83.64,
+        "data_at": null,
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "84 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON object 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:info.name",
+            "label": "필수 필드 · info.name",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:info.version",
+            "label": "필수 필드 · info.version",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:releases",
+            "label": "필수 필드 · releases",
+            "ok": true,
+            "detail": "기대 object · 실제 object",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "value:info.name",
+            "label": "응답 의미 · info.name",
+            "ok": true,
+            "detail": "기대 Django · 실제 Django",
+            "group": "quality",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:38:01.009754+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 47
+    },
+    {
+      "slug": "rest-countries",
+      "name": "REST Countries · 구버전 호환성",
+      "spec": {
+        "slug": "rest-countries",
+        "name": "REST Countries · 구버전 호환성",
+        "category": "생활·문화",
+        "kind": "공개 API",
+        "url": "https://restcountries.com/v3.1/alpha/KR",
+        "docs": "https://restcountries.com/docs/countries/legacy-api-deprecation",
+        "description": "목록의 구버전 v3.1 응답 계약을 검사합니다. HTTP 200이어도 지원 종료 오류 객체이면 형식 위반으로 표시합니다. 신버전은 이용 조건 확인 후 별도 연결해야 합니다.",
+        "freshness_path": null,
+        "max_age_seconds": null,
+        "time_format": "iso",
+        "records_path": "$",
+        "min_records": 1,
+        "required": {
+          "$": "array"
+        },
+        "record_required": {
+          "cca2": "string",
+          "population": "number"
+        },
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 1500000,
+        "warning_latency_ms": 3000,
+        "json_root": "array",
+        "schema_ignore_prefixes": [
+          "$[]"
+        ]
+      },
+      "last_run": {
+        "id": 32,
+        "target": "rest-countries",
+        "checked_at": "2026-11-16T07:38:01.013721+00:00",
+        "status": "critical",
+        "http_status": 200,
+        "duration_ms": 177.37,
+        "data_at": null,
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "177 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": false,
+            "detail": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
+            "group": "format",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": null,
+      "consecutive_failures": 0,
+      "baseline_fields": 0
     },
     {
       "slug": "usgs",
@@ -203,16 +2435,17 @@
         "numeric_rules": {},
         "timeout_seconds": 12,
         "max_bytes": 3000000,
-        "warning_latency_ms": 3000
+        "warning_latency_ms": 3000,
+        "category": "지구·환경"
       },
       "last_run": {
-        "id": 11,
+        "id": 33,
         "target": "usgs",
-        "checked_at": "2026-11-16T07:19:06.000553+00:00",
+        "checked_at": "2026-11-16T07:38:01.016024+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 260.98,
-        "data_at": "2026-11-16T07:19:05+00:00",
+        "duration_ms": 95.22,
+        "data_at": "2026-11-16T07:37:21+00:00",
         "record_count": 185,
         "checks": [
           {
@@ -227,7 +2460,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "261 ms · 기준 3000 ms",
+            "detail": "95 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -235,7 +2468,7 @@
             "key": "json",
             "label": "JSON 해석",
             "ok": true,
-            "detail": "JSON 객체 응답",
+            "detail": "JSON object 응답",
             "group": "format",
             "severity": "error"
           },
@@ -323,7 +2556,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 1초 전",
+            "detail": "현재 대비 40초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -331,7 +2564,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "0.0분 경과 · 허용 20분",
+            "detail": "0.7분 경과 · 허용 20분",
             "group": "freshness",
             "severity": "error"
           }
@@ -340,7 +2573,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:19:06.000553+00:00",
+      "last_success": "2026-11-16T07:38:01.016024+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 46
     },
@@ -384,16 +2617,17 @@
         },
         "timeout_seconds": 12,
         "max_bytes": 1000000,
-        "warning_latency_ms": 3000
+        "warning_latency_ms": 3000,
+        "category": "지구·환경"
       },
       "last_run": {
-        "id": 12,
+        "id": 34,
         "target": "weather",
-        "checked_at": "2026-11-16T07:19:06.004538+00:00",
+        "checked_at": "2026-11-16T07:38:01.019585+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 205.59,
-        "data_at": "2026-11-16T07:15:00+00:00",
+        "duration_ms": 168.93,
+        "data_at": "2026-11-16T07:30:00+00:00",
         "record_count": null,
         "checks": [
           {
@@ -408,7 +2642,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "206 ms · 기준 3000 ms",
+            "detail": "169 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -416,7 +2650,7 @@
             "key": "json",
             "label": "JSON 해석",
             "ok": true,
-            "detail": "JSON 객체 응답",
+            "detail": "JSON object 응답",
             "group": "format",
             "severity": "error"
           },
@@ -480,7 +2714,7 @@
             "key": "range:current.temperature_2m",
             "label": "값 범위 · current.temperature_2m",
             "ok": true,
-            "detail": "허용 -80~65 · 실제 16.0",
+            "detail": "허용 -80~65 · 실제 15.8",
             "group": "quality",
             "severity": "error"
           },
@@ -488,7 +2722,7 @@
             "key": "range:current.relative_humidity_2m",
             "label": "값 범위 · current.relative_humidity_2m",
             "ok": true,
-            "detail": "허용 0~100 · 실제 62",
+            "detail": "허용 0~100 · 실제 63",
             "group": "quality",
             "severity": "error"
           },
@@ -496,7 +2730,7 @@
             "key": "range:current.wind_speed_10m",
             "label": "값 범위 · current.wind_speed_10m",
             "ok": true,
-            "detail": "허용 0~500 · 실제 4.1",
+            "detail": "허용 0~500 · 실제 4.3",
             "group": "quality",
             "severity": "error"
           },
@@ -504,7 +2738,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 246초 전",
+            "detail": "현재 대비 481초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -512,7 +2746,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "4.1분 경과 · 허용 90분",
+            "detail": "8.0분 경과 · 허용 90분",
             "group": "freshness",
             "severity": "error"
           }
@@ -521,14 +2755,1936 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:19:06.004538+00:00",
+      "last_success": "2026-11-16T07:38:01.019585+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 20
     }
   ],
   "history": [
     {
-      "id": 12,
+      "id": 34,
+      "target": "weather",
+      "checked_at": "2026-11-16T07:38:01.019585+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 168.93,
+      "data_at": "2026-11-16T07:30:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "169 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:current",
+          "label": "필수 필드 · current",
+          "ok": true,
+          "detail": "기대 object · 실제 object",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.time",
+          "label": "필수 필드 · current.time",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.temperature_2m",
+          "label": "필수 필드 · current.temperature_2m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.relative_humidity_2m",
+          "label": "필수 필드 · current.relative_humidity_2m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.wind_speed_10m",
+          "label": "필수 필드 · current.wind_speed_10m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:utc_offset_seconds",
+          "label": "필수 필드 · utc_offset_seconds",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.temperature_2m",
+          "label": "값 범위 · current.temperature_2m",
+          "ok": true,
+          "detail": "허용 -80~65 · 실제 15.8",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.relative_humidity_2m",
+          "label": "값 범위 · current.relative_humidity_2m",
+          "ok": true,
+          "detail": "허용 0~100 · 실제 63",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.wind_speed_10m",
+          "label": "값 범위 · current.wind_speed_10m",
+          "ok": true,
+          "detail": "허용 0~500 · 실제 4.3",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 481초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "8.0분 경과 · 허용 90분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 33,
+      "target": "usgs",
+      "checked_at": "2026-11-16T07:38:01.016024+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 95.22,
+      "data_at": "2026-11-16T07:37:21+00:00",
+      "record_count": 185,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "95 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:type",
+          "label": "필수 필드 · type",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:metadata.generated",
+          "label": "필수 필드 · metadata.generated",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:metadata.count",
+          "label": "필수 필드 · metadata.count",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:features",
+          "label": "필수 필드 · features",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "185건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "185건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:properties",
+          "label": "항목 필드 · properties",
+          "ok": true,
+          "detail": "185건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:geometry",
+          "label": "항목 필드 · geometry",
+          "ok": true,
+          "detail": "185건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 40초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.7분 경과 · 허용 20분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 32,
+      "target": "rest-countries",
+      "checked_at": "2026-11-16T07:38:01.013721+00:00",
+      "status": "critical",
+      "http_status": 200,
+      "duration_ms": 177.37,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "177 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": false,
+          "detail": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
+          "group": "format",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 31,
+      "target": "pypi-django",
+      "checked_at": "2026-11-16T07:38:01.009754+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 83.64,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "84 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:info.name",
+          "label": "필수 필드 · info.name",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:info.version",
+          "label": "필수 필드 · info.version",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:releases",
+          "label": "필수 필드 · releases",
+          "ok": true,
+          "detail": "기대 object · 실제 object",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:info.name",
+          "label": "응답 의미 · info.name",
+          "ok": true,
+          "detail": "기대 Django · 실제 Django",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 30,
+      "target": "pokeapi",
+      "checked_at": "2026-11-16T07:38:00.990573+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 98.64,
+      "data_at": null,
+      "record_count": 6,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "99 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:id",
+          "label": "필수 필드 · id",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:name",
+          "label": "필수 필드 · name",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:stats",
+          "label": "필수 필드 · stats",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:name",
+          "label": "응답 의미 · name",
+          "ok": true,
+          "detail": "기대 pikachu · 실제 pikachu",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "6건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:base_stat",
+          "label": "항목 필드 · base_stat",
+          "ok": true,
+          "detail": "6건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:stat.name",
+          "label": "항목 필드 · stat.name",
+          "ok": true,
+          "detail": "6건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 29,
+      "target": "own-pipeline",
+      "checked_at": "2026-11-16T07:38:00.979237+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 166.62,
+      "data_at": "2026-11-16T01:04:00+00:00",
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "167 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:quality.kept",
+          "label": "필수 필드 · quality.kept",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:regions",
+          "label": "필수 필드 · regions",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:region",
+          "label": "항목 필드 · region",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:n",
+          "label": "항목 필드 · n",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:quality.kept",
+          "label": "값 범위 · quality.kept",
+          "ok": true,
+          "detail": "허용 0~10000000 · 실제 2481",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 23641초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "394.0분 경과 · 허용 2160분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 28,
+      "target": "open-trivia",
+      "checked_at": "2026-11-16T07:38:00.977523+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 246.34,
+      "data_at": null,
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "246 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:response_code",
+          "label": "필수 필드 · response_code",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:results",
+          "label": "필수 필드 · results",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:response_code",
+          "label": "응답 의미 · response_code",
+          "ok": true,
+          "detail": "기대 0 · 실제 0",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:question",
+          "label": "항목 필드 · question",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:correct_answer",
+          "label": "항목 필드 · correct_answer",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:incorrect_answers",
+          "label": "항목 필드 · incorrect_answers",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 27,
+      "target": "open-library",
+      "checked_at": "2026-11-16T07:38:00.976005+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 1406.76,
+      "data_at": null,
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "1407 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:docs",
+          "label": "필수 필드 · docs",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:numFound",
+          "label": "필수 필드 · numFound",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:key",
+          "label": "항목 필드 · key",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:title",
+          "label": "항목 필드 · title",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 26,
+      "target": "npm-typescript",
+      "checked_at": "2026-11-16T07:38:00.973833+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 59.71,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "60 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:name",
+          "label": "필수 필드 · name",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:version",
+          "label": "필수 필드 · version",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:dist.tarball",
+          "label": "필수 필드 · dist.tarball",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:name",
+          "label": "응답 의미 · name",
+          "ok": true,
+          "detail": "기대 typescript · 실제 typescript",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 25,
+      "target": "nager-holidays",
+      "checked_at": "2026-11-16T07:38:00.972256+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 182.14,
+      "data_at": null,
+      "record_count": 18,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "182 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON array 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:$",
+          "label": "필수 필드 · $",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "18건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:date",
+          "label": "항목 필드 · date",
+          "ok": true,
+          "detail": "18건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:localName",
+          "label": "항목 필드 · localName",
+          "ok": true,
+          "detail": "18건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:countryCode",
+          "label": "항목 필드 · countryCode",
+          "ok": true,
+          "detail": "18건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 24,
+      "target": "mempool",
+      "checked_at": "2026-11-16T07:38:00.970403+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 365.62,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "366 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:fastestFee",
+          "label": "필수 필드 · fastestFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:halfHourFee",
+          "label": "필수 필드 · halfHourFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:hourFee",
+          "label": "필수 필드 · hourFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:minimumFee",
+          "label": "필수 필드 · minimumFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:fastestFee",
+          "label": "값 범위 · fastestFee",
+          "ok": true,
+          "detail": "허용 0~100000 · 실제 2",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 23,
+      "target": "marine",
+      "checked_at": "2026-11-16T07:38:00.968535+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 539.18,
+      "data_at": "2026-11-16T07:30:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "539 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.time",
+          "label": "필수 필드 · current.time",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.wave_height",
+          "label": "필수 필드 · current.wave_height",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.wave_height",
+          "label": "값 범위 · current.wave_height",
+          "ok": true,
+          "detail": "허용 0~50 · 실제 1.04",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 481초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "8.0분 경과 · 허용 180분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 22,
+      "target": "huggingface",
+      "checked_at": "2026-11-16T07:38:00.966751+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 152.27,
+      "data_at": null,
+      "record_count": 5,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "152 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON array 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:$",
+          "label": "필수 필드 · $",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "5건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "5건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:downloads",
+          "label": "항목 필드 · downloads",
+          "ok": true,
+          "detail": "5건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 21,
+      "target": "hacker-news",
+      "checked_at": "2026-11-16T07:38:00.964287+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 128.4,
+      "data_at": null,
+      "record_count": 500,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "128 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON array 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:$",
+          "label": "필수 필드 · $",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "500건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:$",
+          "label": "항목 필드 · $",
+          "ok": true,
+          "detail": "500건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 20,
+      "target": "github-catalog",
+      "checked_at": "2026-11-16T07:38:00.962184+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 205.02,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "205 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:id",
+          "label": "필수 필드 · id",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:full_name",
+          "label": "필수 필드 · full_name",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:stargazers_count",
+          "label": "필수 필드 · stargazers_count",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:full_name",
+          "label": "응답 의미 · full_name",
+          "ok": true,
+          "detail": "기대 yybmion/public-apis-4Kr · 실제 yybmion/public-apis-4Kr",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 19,
+      "target": "gbif",
+      "checked_at": "2026-11-16T07:38:00.959455+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 2012.62,
+      "data_at": null,
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "2013 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:count",
+          "label": "필수 필드 · count",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:results",
+          "label": "필수 필드 · results",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:key",
+          "label": "항목 필드 · key",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 18,
+      "target": "frankfurter",
+      "checked_at": "2026-11-16T07:38:00.957803+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 358.77,
+      "data_at": "2026-11-13T00:00:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "359 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:date",
+          "label": "필수 필드 · date",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:base",
+          "label": "필수 필드 · base",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.KRW",
+          "label": "필수 필드 · rates.KRW",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.EUR",
+          "label": "필수 필드 · rates.EUR",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.JPY",
+          "label": "필수 필드 · rates.JPY",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:rates.KRW",
+          "label": "값 범위 · rates.KRW",
+          "ok": true,
+          "detail": "허용 1~10000 · 실제 1337.13",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 286681초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "4778.0분 경과 · 허용 7200분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 17,
+      "target": "exchange-rates",
+      "checked_at": "2026-11-16T07:38:00.955809+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 111.41,
+      "data_at": "2026-11-16T00:02:31+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "111 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:result",
+          "label": "필수 필드 · result",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:time_last_update_unix",
+          "label": "필수 필드 · time_last_update_unix",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.KRW",
+          "label": "필수 필드 · rates.KRW",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:result",
+          "label": "응답 의미 · result",
+          "ok": true,
+          "detail": "기대 success · 실제 success",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 27330초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "455.5분 경과 · 허용 2880분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 16,
+      "target": "dog-ceo",
+      "checked_at": "2026-11-16T07:38:00.954006+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 513.82,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "514 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:status",
+          "label": "필수 필드 · status",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:message",
+          "label": "필수 필드 · message",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:status",
+          "label": "응답 의미 · status",
+          "ok": true,
+          "detail": "기대 success · 실제 success",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 15,
+      "target": "crossref",
+      "checked_at": "2026-11-16T07:38:00.952058+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 857.24,
+      "data_at": null,
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "857 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:status",
+          "label": "필수 필드 · status",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:message.items",
+          "label": "필수 필드 · message.items",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:status",
+          "label": "응답 의미 · status",
+          "ok": true,
+          "detail": "기대 ok · 실제 ok",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:DOI",
+          "label": "항목 필드 · DOI",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:title",
+          "label": "항목 필드 · title",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 14,
+      "target": "coingecko",
+      "checked_at": "2026-11-16T07:38:00.950245+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 142.52,
+      "data_at": "2026-11-16T07:37:27+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "143 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:bitcoin.usd",
+          "label": "필수 필드 · bitcoin.usd",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:bitcoin.last_updated_at",
+          "label": "필수 필드 · bitcoin.last_updated_at",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:ethereum.usd",
+          "label": "필수 필드 · ethereum.usd",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:bitcoin.usd",
+          "label": "값 범위 · bitcoin.usd",
+          "ok": true,
+          "detail": "허용 0~100000000 · 실제 64862",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 34초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.6분 경과 · 허용 60분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 13,
+      "target": "air-quality",
+      "checked_at": "2026-11-16T07:38:00.947176+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 494.67,
+      "data_at": "2026-11-16T07:00:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "495 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.time",
+          "label": "필수 필드 · current.time",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.pm10",
+          "label": "필수 필드 · current.pm10",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.pm2_5",
+          "label": "필수 필드 · current.pm2_5",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.pm10",
+          "label": "값 범위 · current.pm10",
+          "ok": true,
+          "detail": "허용 0~5000 · 실제 18.0",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.pm2_5",
+          "label": "값 범위 · current.pm2_5",
+          "ok": true,
+          "detail": "허용 0~5000 · 실제 13.2",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 2281초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "38.0분 경과 · 허용 180분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 1,
       "target": "weather",
       "checked_at": "2026-11-16T07:19:06.004538+00:00",
       "status": "healthy",
@@ -663,7 +4819,7 @@
       "source": "live"
     },
     {
-      "id": 11,
+      "id": 2,
       "target": "usgs",
       "checked_at": "2026-11-16T07:19:06.000553+00:00",
       "status": "healthy",
@@ -798,7 +4954,7 @@
       "source": "live"
     },
     {
-      "id": 10,
+      "id": 3,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:19:05.982045+00:00",
       "status": "healthy",
@@ -925,7 +5081,7 @@
       "source": "live"
     },
     {
-      "id": 1,
+      "id": 4,
       "target": "weather",
       "checked_at": "2026-11-16T07:08:46.035411+00:00",
       "status": "healthy",
@@ -1060,7 +5216,7 @@
       "source": "live"
     },
     {
-      "id": 2,
+      "id": 5,
       "target": "usgs",
       "checked_at": "2026-11-16T07:08:46.031178+00:00",
       "status": "healthy",
@@ -1195,7 +5351,7 @@
       "source": "live"
     },
     {
-      "id": 3,
+      "id": 6,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:08:46.013296+00:00",
       "status": "healthy",
@@ -1322,7 +5478,7 @@
       "source": "live"
     },
     {
-      "id": 4,
+      "id": 7,
       "target": "weather",
       "checked_at": "2026-11-16T07:07:11.352477+00:00",
       "status": "healthy",
@@ -1457,7 +5613,7 @@
       "source": "live"
     },
     {
-      "id": 5,
+      "id": 8,
       "target": "usgs",
       "checked_at": "2026-11-16T07:07:11.347821+00:00",
       "status": "healthy",
@@ -1592,7 +5748,7 @@
       "source": "live"
     },
     {
-      "id": 6,
+      "id": 9,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:07:11.340508+00:00",
       "status": "healthy",
@@ -1719,7 +5875,7 @@
       "source": "live"
     },
     {
-      "id": 7,
+      "id": 10,
       "target": "weather",
       "checked_at": "2026-11-16T07:00:39.460639+00:00",
       "status": "healthy",
@@ -1846,7 +6002,7 @@
       "source": "live"
     },
     {
-      "id": 8,
+      "id": 11,
       "target": "usgs",
       "checked_at": "2026-11-16T07:00:39.453165+00:00",
       "status": "healthy",
@@ -1973,7 +6129,7 @@
       "source": "live"
     },
     {
-      "id": 9,
+      "id": 12,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:00:39.445480+00:00",
       "status": "healthy",
@@ -2092,7 +6248,20 @@
       "source": "live"
     }
   ],
-  "incidents": [],
+  "incidents": [
+    {
+      "id": 1,
+      "target": "rest-countries",
+      "key": "json",
+      "kind": "format",
+      "severity": "error",
+      "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
+      "opened_at": "2026-11-16T07:38:01.013721+00:00",
+      "last_seen_at": "2026-11-16T07:38:01.013721+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    }
+  ],
   "ai_latest": {
     "date": "2026-11-16",
     "item_id": "langchain-ai/langgraph:444929380",
@@ -2366,7 +6535,7 @@
         ]
       },
       "consecutive_failures": 0,
-      "last_success": "2026-11-16T07:19:06.000553+00:00"
+      "last_success": "2026-11-16T07:38:01.016024+00:00"
     },
     {
       "slug": "weather",
@@ -2433,7 +6602,7 @@
         ]
       },
       "consecutive_failures": 0,
-      "last_success": "2026-11-16T07:19:06.004538+00:00"
+      "last_success": "2026-11-16T07:38:01.019585+00:00"
     },
     {
       "slug": "own-pipeline",
@@ -2583,7 +6752,2333 @@
         ]
       },
       "consecutive_failures": 0,
-      "last_success": "2026-11-16T07:19:05.982045+00:00"
+      "last_success": "2026-11-16T07:38:00.979237+00:00"
+    },
+    {
+      "slug": "air-quality",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.current": [
+          "object"
+        ],
+        "$.current.interval": [
+          "number"
+        ],
+        "$.current.pm10": [
+          "number"
+        ],
+        "$.current.pm2_5": [
+          "number"
+        ],
+        "$.current.time": [
+          "string"
+        ],
+        "$.current_units": [
+          "object"
+        ],
+        "$.current_units.interval": [
+          "string"
+        ],
+        "$.current_units.pm10": [
+          "string"
+        ],
+        "$.current_units.pm2_5": [
+          "string"
+        ],
+        "$.current_units.time": [
+          "string"
+        ],
+        "$.elevation": [
+          "number"
+        ],
+        "$.generationtime_ms": [
+          "number"
+        ],
+        "$.latitude": [
+          "number"
+        ],
+        "$.longitude": [
+          "number"
+        ],
+        "$.timezone": [
+          "string"
+        ],
+        "$.timezone_abbreviation": [
+          "string"
+        ],
+        "$.utc_offset_seconds": [
+          "number"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.947176+00:00"
+    },
+    {
+      "slug": "marine",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.current": [
+          "object"
+        ],
+        "$.current.interval": [
+          "number"
+        ],
+        "$.current.time": [
+          "string"
+        ],
+        "$.current.wave_height": [
+          "number"
+        ],
+        "$.current_units": [
+          "object"
+        ],
+        "$.current_units.interval": [
+          "string"
+        ],
+        "$.current_units.time": [
+          "string"
+        ],
+        "$.current_units.wave_height": [
+          "string"
+        ],
+        "$.elevation": [
+          "number"
+        ],
+        "$.generationtime_ms": [
+          "number"
+        ],
+        "$.latitude": [
+          "number"
+        ],
+        "$.longitude": [
+          "number"
+        ],
+        "$.timezone": [
+          "string"
+        ],
+        "$.timezone_abbreviation": [
+          "string"
+        ],
+        "$.utc_offset_seconds": [
+          "number"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.968535+00:00"
+    },
+    {
+      "slug": "frankfurter",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.amount": [
+          "number"
+        ],
+        "$.base": [
+          "string"
+        ],
+        "$.date": [
+          "string"
+        ],
+        "$.rates": [
+          "object"
+        ],
+        "$.rates.EUR": [
+          "number"
+        ],
+        "$.rates.JPY": [
+          "number"
+        ],
+        "$.rates.KRW": [
+          "number"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.957803+00:00"
+    },
+    {
+      "slug": "exchange-rates",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.base_code": [
+          "string"
+        ],
+        "$.documentation": [
+          "string"
+        ],
+        "$.provider": [
+          "string"
+        ],
+        "$.result": [
+          "string"
+        ],
+        "$.terms_of_use": [
+          "string"
+        ],
+        "$.time_eol_unix": [
+          "number"
+        ],
+        "$.time_last_update_unix": [
+          "number"
+        ],
+        "$.time_last_update_utc": [
+          "string"
+        ],
+        "$.time_next_update_unix": [
+          "number"
+        ],
+        "$.time_next_update_utc": [
+          "string"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.955809+00:00"
+    },
+    {
+      "slug": "coingecko",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.bitcoin": [
+          "object"
+        ],
+        "$.bitcoin.last_updated_at": [
+          "number"
+        ],
+        "$.bitcoin.usd": [
+          "number"
+        ],
+        "$.ethereum": [
+          "object"
+        ],
+        "$.ethereum.last_updated_at": [
+          "number"
+        ],
+        "$.ethereum.usd": [
+          "number"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.950245+00:00"
+    },
+    {
+      "slug": "mempool",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.economyFee": [
+          "number"
+        ],
+        "$.fastestFee": [
+          "number"
+        ],
+        "$.halfHourFee": [
+          "number"
+        ],
+        "$.hourFee": [
+          "number"
+        ],
+        "$.minimumFee": [
+          "number"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.970403+00:00"
+    },
+    {
+      "slug": "github-catalog",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.allow_forking": [
+          "boolean"
+        ],
+        "$.archive_url": [
+          "string"
+        ],
+        "$.archived": [
+          "boolean"
+        ],
+        "$.assignees_url": [
+          "string"
+        ],
+        "$.blobs_url": [
+          "string"
+        ],
+        "$.branches_url": [
+          "string"
+        ],
+        "$.clone_url": [
+          "string"
+        ],
+        "$.collaborators_url": [
+          "string"
+        ],
+        "$.comments_url": [
+          "string"
+        ],
+        "$.commits_url": [
+          "string"
+        ],
+        "$.compare_url": [
+          "string"
+        ],
+        "$.contents_url": [
+          "string"
+        ],
+        "$.contributors_url": [
+          "string"
+        ],
+        "$.created_at": [
+          "string"
+        ],
+        "$.default_branch": [
+          "string"
+        ],
+        "$.deployments_url": [
+          "string"
+        ],
+        "$.description": [
+          "string"
+        ],
+        "$.disabled": [
+          "boolean"
+        ],
+        "$.downloads_url": [
+          "string"
+        ],
+        "$.events_url": [
+          "string"
+        ],
+        "$.fork": [
+          "boolean"
+        ],
+        "$.forks": [
+          "number"
+        ],
+        "$.forks_count": [
+          "number"
+        ],
+        "$.forks_url": [
+          "string"
+        ],
+        "$.full_name": [
+          "string"
+        ],
+        "$.git_commits_url": [
+          "string"
+        ],
+        "$.git_refs_url": [
+          "string"
+        ],
+        "$.git_tags_url": [
+          "string"
+        ],
+        "$.git_url": [
+          "string"
+        ],
+        "$.has_discussions": [
+          "boolean"
+        ],
+        "$.has_downloads": [
+          "boolean"
+        ],
+        "$.has_issues": [
+          "boolean"
+        ],
+        "$.has_pages": [
+          "boolean"
+        ],
+        "$.has_projects": [
+          "boolean"
+        ],
+        "$.has_pull_requests": [
+          "boolean"
+        ],
+        "$.has_wiki": [
+          "boolean"
+        ],
+        "$.homepage": [
+          "string"
+        ],
+        "$.hooks_url": [
+          "string"
+        ],
+        "$.html_url": [
+          "string"
+        ],
+        "$.id": [
+          "number"
+        ],
+        "$.is_template": [
+          "boolean"
+        ],
+        "$.issue_comment_url": [
+          "string"
+        ],
+        "$.issue_events_url": [
+          "string"
+        ],
+        "$.issues_url": [
+          "string"
+        ],
+        "$.keys_url": [
+          "string"
+        ],
+        "$.labels_url": [
+          "string"
+        ],
+        "$.language": [
+          "string"
+        ],
+        "$.languages_url": [
+          "string"
+        ],
+        "$.merges_url": [
+          "string"
+        ],
+        "$.milestones_url": [
+          "string"
+        ],
+        "$.mirror_url": [
+          "null"
+        ],
+        "$.name": [
+          "string"
+        ],
+        "$.network_count": [
+          "number"
+        ],
+        "$.node_id": [
+          "string"
+        ],
+        "$.notifications_url": [
+          "string"
+        ],
+        "$.open_issues": [
+          "number"
+        ],
+        "$.open_issues_count": [
+          "number"
+        ],
+        "$.private": [
+          "boolean"
+        ],
+        "$.pull_request_creation_policy": [
+          "string"
+        ],
+        "$.pulls_url": [
+          "string"
+        ],
+        "$.pushed_at": [
+          "string"
+        ],
+        "$.releases_url": [
+          "string"
+        ],
+        "$.size": [
+          "number"
+        ],
+        "$.ssh_url": [
+          "string"
+        ],
+        "$.stargazers_count": [
+          "number"
+        ],
+        "$.stargazers_url": [
+          "string"
+        ],
+        "$.statuses_url": [
+          "string"
+        ],
+        "$.subscribers_count": [
+          "number"
+        ],
+        "$.subscribers_url": [
+          "string"
+        ],
+        "$.subscription_url": [
+          "string"
+        ],
+        "$.svn_url": [
+          "string"
+        ],
+        "$.tags_url": [
+          "string"
+        ],
+        "$.teams_url": [
+          "string"
+        ],
+        "$.temp_clone_token": [
+          "null"
+        ],
+        "$.topics": [
+          "array"
+        ],
+        "$.topics[]": [
+          "string"
+        ],
+        "$.trees_url": [
+          "string"
+        ],
+        "$.updated_at": [
+          "string"
+        ],
+        "$.url": [
+          "string"
+        ],
+        "$.visibility": [
+          "string"
+        ],
+        "$.watchers": [
+          "number"
+        ],
+        "$.watchers_count": [
+          "number"
+        ],
+        "$.web_commit_signoff_required": [
+          "boolean"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.962184+00:00"
+    },
+    {
+      "slug": "hacker-news",
+      "baseline": {
+        "$": [
+          "array"
+        ],
+        "$[]": [
+          "number"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.964287+00:00"
+    },
+    {
+      "slug": "npm-typescript",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$._from": [
+          "string"
+        ],
+        "$._hasShrinkwrap": [
+          "boolean"
+        ],
+        "$._id": [
+          "string"
+        ],
+        "$._integrity": [
+          "string"
+        ],
+        "$._nodeVersion": [
+          "string"
+        ],
+        "$._npmOperationalInternal": [
+          "object"
+        ],
+        "$._npmOperationalInternal.host": [
+          "string"
+        ],
+        "$._npmOperationalInternal.tmp": [
+          "string"
+        ],
+        "$._npmUser": [
+          "object"
+        ],
+        "$._npmUser.email": [
+          "string"
+        ],
+        "$._npmUser.name": [
+          "string"
+        ],
+        "$._resolved": [
+          "string"
+        ],
+        "$.author": [
+          "object"
+        ],
+        "$.author.name": [
+          "string"
+        ],
+        "$.bugs": [
+          "object"
+        ],
+        "$.bugs.url": [
+          "string"
+        ],
+        "$.dependencies": [
+          "object"
+        ],
+        "$.dependencies.@typescript/typescript-aix-ppc64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-darwin-arm64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-darwin-x64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-freebsd-arm64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-freebsd-x64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-linux-arm": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-linux-arm64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-linux-loong64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-linux-mips64el": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-linux-ppc64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-linux-riscv64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-linux-s390x": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-linux-x64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-netbsd-arm64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-netbsd-x64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-openbsd-arm64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-openbsd-x64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-sunos-x64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-win32-arm64": [
+          "string"
+        ],
+        "$.dependencies.@typescript/typescript-win32-x64": [
+          "string"
+        ],
+        "$.description": [
+          "string"
+        ],
+        "$.directories": [
+          "object"
+        ],
+        "$.dist": [
+          "object"
+        ],
+        "$.dist.fileCount": [
+          "number"
+        ],
+        "$.dist.integrity": [
+          "string"
+        ],
+        "$.dist.shasum": [
+          "string"
+        ],
+        "$.dist.tarball": [
+          "string"
+        ],
+        "$.dist.unpackedSize": [
+          "number"
+        ],
+        "$.engines": [
+          "object"
+        ],
+        "$.engines.node": [
+          "string"
+        ],
+        "$.gitHead": [
+          "string"
+        ],
+        "$.homepage": [
+          "string"
+        ],
+        "$.imports": [
+          "object"
+        ],
+        "$.imports.#enums/*": [
+          "object"
+        ],
+        "$.imports.#enums/*.default": [
+          "string"
+        ],
+        "$.imports.#enums/*.types": [
+          "string"
+        ],
+        "$.imports.#getExePath": [
+          "string"
+        ],
+        "$.imports.#vscode-jsonrpc/node": [
+          "string"
+        ],
+        "$.keywords": [
+          "array"
+        ],
+        "$.keywords[]": [
+          "string"
+        ],
+        "$.license": [
+          "string"
+        ],
+        "$.maintainers": [
+          "array"
+        ],
+        "$.maintainers[]": [
+          "object"
+        ],
+        "$.maintainers[].email": [
+          "string"
+        ],
+        "$.maintainers[].name": [
+          "string"
+        ],
+        "$.name": [
+          "string"
+        ],
+        "$.optionalDependencies": [
+          "object"
+        ],
+        "$.optionalDependencies.@typescript/typescript-aix-ppc64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-darwin-arm64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-darwin-x64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-freebsd-arm64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-freebsd-x64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-linux-arm": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-linux-arm64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-linux-loong64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-linux-mips64el": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-linux-ppc64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-linux-riscv64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-linux-s390x": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-linux-x64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-netbsd-arm64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-netbsd-x64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-openbsd-arm64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-openbsd-x64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-sunos-x64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-win32-arm64": [
+          "string"
+        ],
+        "$.optionalDependencies.@typescript/typescript-win32-x64": [
+          "string"
+        ],
+        "$.preferUnplugged": [
+          "boolean"
+        ],
+        "$.publishConfig": [
+          "object"
+        ],
+        "$.publishConfig.access": [
+          "string"
+        ],
+        "$.publishConfig.tag": [
+          "string"
+        ],
+        "$.repository": [
+          "object"
+        ],
+        "$.repository.type": [
+          "string"
+        ],
+        "$.repository.url": [
+          "string"
+        ],
+        "$.tag": [
+          "string"
+        ],
+        "$.type": [
+          "string"
+        ],
+        "$.version": [
+          "string"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.973833+00:00"
+    },
+    {
+      "slug": "pypi-django",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.info": [
+          "object"
+        ],
+        "$.info.author": [
+          "null"
+        ],
+        "$.info.author_email": [
+          "string"
+        ],
+        "$.info.bugtrack_url": [
+          "null"
+        ],
+        "$.info.classifiers": [
+          "array"
+        ],
+        "$.info.classifiers[]": [
+          "string"
+        ],
+        "$.info.description": [
+          "string"
+        ],
+        "$.info.description_content_type": [
+          "string"
+        ],
+        "$.info.docs_url": [
+          "null"
+        ],
+        "$.info.download_url": [
+          "null"
+        ],
+        "$.info.downloads": [
+          "object"
+        ],
+        "$.info.downloads.last_day": [
+          "number"
+        ],
+        "$.info.downloads.last_month": [
+          "number"
+        ],
+        "$.info.downloads.last_week": [
+          "number"
+        ],
+        "$.info.dynamic": [
+          "array"
+        ],
+        "$.info.dynamic[]": [
+          "string"
+        ],
+        "$.info.home_page": [
+          "null"
+        ],
+        "$.info.keywords": [
+          "null"
+        ],
+        "$.info.license": [
+          "null"
+        ],
+        "$.info.license_expression": [
+          "string"
+        ],
+        "$.info.license_files": [
+          "array"
+        ],
+        "$.info.license_files[]": [
+          "string"
+        ],
+        "$.info.maintainer": [
+          "null"
+        ],
+        "$.info.maintainer_email": [
+          "null"
+        ],
+        "$.info.name": [
+          "string"
+        ],
+        "$.info.package_url": [
+          "string"
+        ],
+        "$.info.platform": [
+          "null"
+        ],
+        "$.info.project_url": [
+          "string"
+        ],
+        "$.info.project_urls": [
+          "object"
+        ],
+        "$.info.project_urls.Documentation": [
+          "string"
+        ],
+        "$.info.project_urls.Funding": [
+          "string"
+        ],
+        "$.info.project_urls.Homepage": [
+          "string"
+        ],
+        "$.info.project_urls.Release notes": [
+          "string"
+        ],
+        "$.info.project_urls.Source": [
+          "string"
+        ],
+        "$.info.project_urls.Tracker": [
+          "string"
+        ],
+        "$.info.provides_extra": [
+          "array"
+        ],
+        "$.info.provides_extra[]": [
+          "string"
+        ],
+        "$.info.release_url": [
+          "string"
+        ],
+        "$.info.requires_dist": [
+          "array"
+        ],
+        "$.info.requires_dist[]": [
+          "string"
+        ],
+        "$.info.requires_python": [
+          "string"
+        ],
+        "$.info.summary": [
+          "string"
+        ],
+        "$.info.version": [
+          "string"
+        ],
+        "$.info.yanked": [
+          "boolean"
+        ],
+        "$.info.yanked_reason": [
+          "null"
+        ],
+        "$.last_serial": [
+          "number"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:01.009754+00:00"
+    },
+    {
+      "slug": "huggingface",
+      "baseline": {
+        "$": [
+          "array"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.966751+00:00"
+    },
+    {
+      "slug": "open-library",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.documentation_url": [
+          "string"
+        ],
+        "$.numFound": [
+          "number"
+        ],
+        "$.numFoundExact": [
+          "boolean"
+        ],
+        "$.num_found": [
+          "number"
+        ],
+        "$.offset": [
+          "null"
+        ],
+        "$.q": [
+          "string"
+        ],
+        "$.start": [
+          "number"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.976005+00:00"
+    },
+    {
+      "slug": "crossref",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.message": [
+          "object"
+        ],
+        "$.message.facets": [
+          "object"
+        ],
+        "$.message.items-per-page": [
+          "number"
+        ],
+        "$.message.query": [
+          "object"
+        ],
+        "$.message.query.search-terms": [
+          "string"
+        ],
+        "$.message.query.start-index": [
+          "number"
+        ],
+        "$.message.total-results": [
+          "number"
+        ],
+        "$.message-type": [
+          "string"
+        ],
+        "$.message-version": [
+          "string"
+        ],
+        "$.status": [
+          "string"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.952058+00:00"
+    },
+    {
+      "slug": "gbif",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.count": [
+          "number"
+        ],
+        "$.endOfRecords": [
+          "boolean"
+        ],
+        "$.facets": [
+          "array"
+        ],
+        "$.limit": [
+          "number"
+        ],
+        "$.offset": [
+          "number"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.959455+00:00"
+    },
+    {
+      "slug": "nager-holidays",
+      "baseline": {
+        "$": [
+          "array"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.972256+00:00"
+    },
+    {
+      "slug": "rest-countries",
+      "baseline": {},
+      "consecutive_failures": 0,
+      "last_success": null
+    },
+    {
+      "slug": "pokeapi",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.abilities": [
+          "array"
+        ],
+        "$.abilities[]": [
+          "object"
+        ],
+        "$.abilities[].ability": [
+          "object"
+        ],
+        "$.abilities[].ability.name": [
+          "string"
+        ],
+        "$.abilities[].ability.url": [
+          "string"
+        ],
+        "$.abilities[].is_hidden": [
+          "boolean"
+        ],
+        "$.abilities[].slot": [
+          "number"
+        ],
+        "$.base_experience": [
+          "number"
+        ],
+        "$.cries": [
+          "object"
+        ],
+        "$.cries.latest": [
+          "string"
+        ],
+        "$.cries.legacy": [
+          "string"
+        ],
+        "$.forms": [
+          "array"
+        ],
+        "$.forms[]": [
+          "object"
+        ],
+        "$.forms[].name": [
+          "string"
+        ],
+        "$.forms[].url": [
+          "string"
+        ],
+        "$.game_indices": [
+          "array"
+        ],
+        "$.game_indices[]": [
+          "object"
+        ],
+        "$.game_indices[].game_index": [
+          "number"
+        ],
+        "$.game_indices[].version": [
+          "object"
+        ],
+        "$.game_indices[].version.name": [
+          "string"
+        ],
+        "$.game_indices[].version.url": [
+          "string"
+        ],
+        "$.height": [
+          "number"
+        ],
+        "$.held_items": [
+          "array"
+        ],
+        "$.held_items[]": [
+          "object"
+        ],
+        "$.held_items[].item": [
+          "object"
+        ],
+        "$.held_items[].item.name": [
+          "string"
+        ],
+        "$.held_items[].item.url": [
+          "string"
+        ],
+        "$.held_items[].version_details": [
+          "array"
+        ],
+        "$.held_items[].version_details[]": [
+          "object"
+        ],
+        "$.held_items[].version_details[].rarity": [
+          "number"
+        ],
+        "$.held_items[].version_details[].version": [
+          "object"
+        ],
+        "$.held_items[].version_details[].version.name": [
+          "string"
+        ],
+        "$.held_items[].version_details[].version.url": [
+          "string"
+        ],
+        "$.id": [
+          "number"
+        ],
+        "$.is_default": [
+          "boolean"
+        ],
+        "$.location_area_encounters": [
+          "string"
+        ],
+        "$.moves": [
+          "array"
+        ],
+        "$.moves[]": [
+          "object"
+        ],
+        "$.moves[].move": [
+          "object"
+        ],
+        "$.moves[].move.name": [
+          "string"
+        ],
+        "$.moves[].move.url": [
+          "string"
+        ],
+        "$.moves[].version_group_details": [
+          "array"
+        ],
+        "$.moves[].version_group_details[]": [
+          "object"
+        ],
+        "$.moves[].version_group_details[].level_learned_at": [
+          "number"
+        ],
+        "$.moves[].version_group_details[].move_learn_method": [
+          "object"
+        ],
+        "$.moves[].version_group_details[].move_learn_method.name": [
+          "string"
+        ],
+        "$.moves[].version_group_details[].move_learn_method.url": [
+          "string"
+        ],
+        "$.moves[].version_group_details[].order": [
+          "null",
+          "number"
+        ],
+        "$.moves[].version_group_details[].version_group": [
+          "object"
+        ],
+        "$.moves[].version_group_details[].version_group.name": [
+          "string"
+        ],
+        "$.moves[].version_group_details[].version_group.url": [
+          "string"
+        ],
+        "$.name": [
+          "string"
+        ],
+        "$.order": [
+          "number"
+        ],
+        "$.past_abilities": [
+          "array"
+        ],
+        "$.past_abilities[]": [
+          "object"
+        ],
+        "$.past_abilities[].abilities": [
+          "array"
+        ],
+        "$.past_abilities[].abilities[]": [
+          "object"
+        ],
+        "$.past_abilities[].abilities[].ability": [
+          "null"
+        ],
+        "$.past_abilities[].abilities[].is_hidden": [
+          "boolean"
+        ],
+        "$.past_abilities[].abilities[].slot": [
+          "number"
+        ],
+        "$.past_abilities[].generation": [
+          "object"
+        ],
+        "$.past_abilities[].generation.name": [
+          "string"
+        ],
+        "$.past_abilities[].generation.url": [
+          "string"
+        ],
+        "$.past_stats": [
+          "array"
+        ],
+        "$.past_stats[]": [
+          "object"
+        ],
+        "$.past_stats[].generation": [
+          "object"
+        ],
+        "$.past_stats[].generation.name": [
+          "string"
+        ],
+        "$.past_stats[].generation.url": [
+          "string"
+        ],
+        "$.past_stats[].stats": [
+          "array"
+        ],
+        "$.past_stats[].stats[]": [
+          "object"
+        ],
+        "$.past_stats[].stats[].base_stat": [
+          "number"
+        ],
+        "$.past_stats[].stats[].effort": [
+          "number"
+        ],
+        "$.past_stats[].stats[].stat": [
+          "object"
+        ],
+        "$.past_stats[].stats[].stat.name": [
+          "string"
+        ],
+        "$.past_stats[].stats[].stat.url": [
+          "string"
+        ],
+        "$.past_types": [
+          "array"
+        ],
+        "$.species": [
+          "object"
+        ],
+        "$.species.name": [
+          "string"
+        ],
+        "$.species.url": [
+          "string"
+        ],
+        "$.sprites": [
+          "object"
+        ],
+        "$.sprites.back_default": [
+          "string"
+        ],
+        "$.sprites.back_female": [
+          "string"
+        ],
+        "$.sprites.back_shiny": [
+          "string"
+        ],
+        "$.sprites.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.front_default": [
+          "string"
+        ],
+        "$.sprites.front_female": [
+          "string"
+        ],
+        "$.sprites.front_shiny": [
+          "string"
+        ],
+        "$.sprites.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.other": [
+          "object"
+        ],
+        "$.sprites.other.dream_world": [
+          "object"
+        ],
+        "$.sprites.other.dream_world.front_default": [
+          "string"
+        ],
+        "$.sprites.other.dream_world.front_female": [
+          "null"
+        ],
+        "$.sprites.other.home": [
+          "object"
+        ],
+        "$.sprites.other.home.front_default": [
+          "string"
+        ],
+        "$.sprites.other.home.front_female": [
+          "string"
+        ],
+        "$.sprites.other.home.front_shiny": [
+          "string"
+        ],
+        "$.sprites.other.home.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.other.official-artwork": [
+          "object"
+        ],
+        "$.sprites.other.official-artwork.front_default": [
+          "string"
+        ],
+        "$.sprites.other.official-artwork.front_shiny": [
+          "string"
+        ],
+        "$.sprites.other.official-artwork.versions": [
+          "object"
+        ],
+        "$.sprites.other.official-artwork.versions.generation-i": [
+          "object"
+        ],
+        "$.sprites.other.official-artwork.versions.generation-i.red-and-blue": [
+          "object"
+        ],
+        "$.sprites.other.official-artwork.versions.generation-i.red-and-blue.front_default": [
+          "string"
+        ],
+        "$.sprites.other.official-artwork.versions.generation-i.red-and-green": [
+          "object"
+        ],
+        "$.sprites.other.official-artwork.versions.generation-i.red-and-green.front_default": [
+          "string"
+        ],
+        "$.sprites.other.official-artwork.versions.generation-ii": [
+          "object"
+        ],
+        "$.sprites.other.official-artwork.versions.generation-ii.gold-and-silver": [
+          "object"
+        ],
+        "$.sprites.other.official-artwork.versions.generation-ii.gold-and-silver.front_default": [
+          "null"
+        ],
+        "$.sprites.other.showdown": [
+          "object"
+        ],
+        "$.sprites.other.showdown.back_default": [
+          "string"
+        ],
+        "$.sprites.other.showdown.back_female": [
+          "string"
+        ],
+        "$.sprites.other.showdown.back_shiny": [
+          "string"
+        ],
+        "$.sprites.other.showdown.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.other.showdown.front_default": [
+          "string"
+        ],
+        "$.sprites.other.showdown.front_female": [
+          "string"
+        ],
+        "$.sprites.other.showdown.front_shiny": [
+          "string"
+        ],
+        "$.sprites.other.showdown.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions": [
+          "object"
+        ],
+        "$.sprites.versions.generation-i": [
+          "object"
+        ],
+        "$.sprites.versions.generation-i.red-blue": [
+          "object"
+        ],
+        "$.sprites.versions.generation-i.red-blue.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.red-blue.back_gray": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.red-blue.back_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.red-blue.back_transparent_gray": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.red-blue.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.red-blue.front_gray": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.red-blue.front_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.red-blue.front_transparent_gray": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.red-green-japan": [
+          "object"
+        ],
+        "$.sprites.versions.generation-i.red-green-japan.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.red-green-japan.back_gray": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.red-green-japan.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.red-green-japan.front_gray": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.yellow": [
+          "object"
+        ],
+        "$.sprites.versions.generation-i.yellow.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.yellow.back_gbc": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.yellow.back_gray": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.yellow.back_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.yellow.back_transparent_gray": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.yellow.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.yellow.front_gbc": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.yellow.front_gray": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.yellow.front_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-i.yellow.front_transparent_gray": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ii.crystal": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ii.crystal.animated": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ii.crystal.animated.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.crystal.animated.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.crystal.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.crystal.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.crystal.back_shiny_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.crystal.back_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.crystal.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.crystal.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.crystal.front_shiny_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.crystal.front_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.gold": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ii.gold.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.gold.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.gold.back_shiny_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.gold.back_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.gold.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.gold.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.gold.front_shiny_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.gold.front_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.silver": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ii.silver.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.silver.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.silver.back_shiny_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.silver.back_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.silver.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.silver.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.silver.front_shiny_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ii.silver.front_transparent": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iii.emerald": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iii.emerald.animated": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iii.emerald.animated.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.emerald.animated.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.emerald.animated.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.emerald.animated.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.emerald.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.emerald.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.emerald.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.emerald.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.firered-leafgreen": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iii.firered-leafgreen.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.firered-leafgreen.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.firered-leafgreen.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.firered-leafgreen.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iii.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.ruby-sapphire": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iii.ruby-sapphire.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.ruby-sapphire.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.ruby-sapphire.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iii.ruby-sapphire.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.animated": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.animated.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.animated.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.animated.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.animated.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.diamond-pearl.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.animated": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.animated.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.animated.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.animated.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.animated.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.heartgold-soulsilver.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iv.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iv.platinum.animated": [
+          "object"
+        ],
+        "$.sprites.versions.generation-iv.platinum.animated.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum.animated.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum.animated.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum.animated.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-iv.platinum.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ix.champions": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ix.champions.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.champions.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.champions.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.champions.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.champions.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.champions.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.champions.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.champions.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.champions.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ix.champions.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.champions.icons.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.icons.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.icons.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.legends-za.icons.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-ix.scarlet-violet.icons.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v": [
+          "object"
+        ],
+        "$.sprites.versions.generation-v.black-white": [
+          "object"
+        ],
+        "$.sprites.versions.generation-v.black-white.animated": [
+          "object"
+        ],
+        "$.sprites.versions.generation-v.black-white.animated.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.animated.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.animated.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.animated.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.animated.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.animated.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.animated.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.animated.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.black-white.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-v.icons.animated": [
+          "object"
+        ],
+        "$.sprites.versions.generation-v.icons.animated.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-v.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi": [
+          "object"
+        ],
+        "$.sprites.versions.generation-vi.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-vi.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.icons.front_female": [
+          "null"
+        ],
+        "$.sprites.versions.generation-vi.omega-ruby-alpha-sapphire": [
+          "object"
+        ],
+        "$.sprites.versions.generation-vi.omega-ruby-alpha-sapphire.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.omega-ruby-alpha-sapphire.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.omega-ruby-alpha-sapphire.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.omega-ruby-alpha-sapphire.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.omega-ruby-alpha-sapphire.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.omega-ruby-alpha-sapphire.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.omega-ruby-alpha-sapphire.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.omega-ruby-alpha-sapphire.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.x-y": [
+          "object"
+        ],
+        "$.sprites.versions.generation-vi.x-y.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.x-y.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.x-y.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.x-y.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.x-y.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.x-y.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.x-y.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vi.x-y.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii": [
+          "object"
+        ],
+        "$.sprites.versions.generation-vii.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-vii.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.icons.front_female": [
+          "null"
+        ],
+        "$.sprites.versions.generation-vii.lets-go-pikachu-lets-go-eevee": [
+          "object"
+        ],
+        "$.sprites.versions.generation-vii.lets-go-pikachu-lets-go-eevee.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.lets-go-pikachu-lets-go-eevee.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.lets-go-pikachu-lets-go-eevee.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.lets-go-pikachu-lets-go-eevee.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.lets-go-pikachu-lets-go-eevee.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.lets-go-pikachu-lets-go-eevee.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.lets-go-pikachu-lets-go-eevee.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.lets-go-pikachu-lets-go-eevee.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.lets-go-pikachu-lets-go-eevee.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-vii.lets-go-pikachu-lets-go-eevee.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.ultra-sun-ultra-moon": [
+          "object"
+        ],
+        "$.sprites.versions.generation-vii.ultra-sun-ultra-moon.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.ultra-sun-ultra-moon.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.ultra-sun-ultra-moon.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.ultra-sun-ultra-moon.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.ultra-sun-ultra-moon.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.ultra-sun-ultra-moon.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.ultra-sun-ultra-moon.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-vii.ultra-sun-ultra-moon.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii": [
+          "object"
+        ],
+        "$.sprites.versions.generation-viii.brilliant-diamond-shining-pearl": [
+          "object"
+        ],
+        "$.sprites.versions.generation-viii.brilliant-diamond-shining-pearl.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.brilliant-diamond-shining-pearl.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.brilliant-diamond-shining-pearl.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.brilliant-diamond-shining-pearl.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.brilliant-diamond-shining-pearl.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.brilliant-diamond-shining-pearl.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.brilliant-diamond-shining-pearl.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.brilliant-diamond-shining-pearl.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.brilliant-diamond-shining-pearl.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-viii.brilliant-diamond-shining-pearl.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus": [
+          "object"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.icons.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.icons.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.legends-arceus.icons.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield": [
+          "object"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield.back_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield.back_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield.back_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield.back_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield.front_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield.front_shiny": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield.front_shiny_female": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield.icons": [
+          "object"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield.icons.front_default": [
+          "string"
+        ],
+        "$.sprites.versions.generation-viii.sword-shield.icons.front_female": [
+          "string"
+        ],
+        "$.stats": [
+          "array"
+        ],
+        "$.stats[]": [
+          "object"
+        ],
+        "$.stats[].base_stat": [
+          "number"
+        ],
+        "$.stats[].effort": [
+          "number"
+        ],
+        "$.stats[].stat": [
+          "object"
+        ],
+        "$.stats[].stat.name": [
+          "string"
+        ],
+        "$.stats[].stat.url": [
+          "string"
+        ],
+        "$.types": [
+          "array"
+        ],
+        "$.types[]": [
+          "object"
+        ],
+        "$.types[].slot": [
+          "number"
+        ],
+        "$.types[].type": [
+          "object"
+        ],
+        "$.types[].type.name": [
+          "string"
+        ],
+        "$.types[].type.url": [
+          "string"
+        ],
+        "$.weight": [
+          "number"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.990573+00:00"
+    },
+    {
+      "slug": "dog-ceo",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.message": [
+          "string"
+        ],
+        "$.status": [
+          "string"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.954006+00:00"
+    },
+    {
+      "slug": "open-trivia",
+      "baseline": {
+        "$": [
+          "object"
+        ],
+        "$.response_code": [
+          "number"
+        ]
+      },
+      "consecutive_failures": 0,
+      "last_success": "2026-11-16T07:38:00.977523+00:00"
     }
   ]
 }
