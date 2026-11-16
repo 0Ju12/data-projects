@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-16T07:38:01.030618+00:00",
-  "last_check_at": "2026-11-16T07:38:01.019585+00:00",
+  "generated_at": "2026-11-16T17:24:57.944636+00:00",
+  "last_check_at": "2026-11-16T17:24:54.595282+00:00",
   "expected_interval_seconds": 3600,
   "targets": [
     {
@@ -41,13 +41,13 @@
         "warning_latency_ms": 3000
       },
       "last_run": {
-        "id": 13,
+        "id": 35,
         "target": "air-quality",
-        "checked_at": "2026-11-16T07:38:00.947176+00:00",
+        "checked_at": "2026-11-16T17:24:54.443785+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 494.67,
-        "data_at": "2026-11-16T07:00:00+00:00",
+        "duration_ms": 587.03,
+        "data_at": "2026-11-16T17:00:00+00:00",
         "record_count": null,
         "checks": [
           {
@@ -62,7 +62,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "495 ms · 기준 3000 ms",
+            "detail": "587 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -99,10 +99,18 @@
             "severity": "error"
           },
           {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
             "key": "range:current.pm10",
             "label": "값 범위 · current.pm10",
             "ok": true,
-            "detail": "허용 0~5000 · 실제 18.0",
+            "detail": "허용 0~5000 · 실제 9.2",
             "group": "quality",
             "severity": "error"
           },
@@ -110,7 +118,7 @@
             "key": "range:current.pm2_5",
             "label": "값 범위 · current.pm2_5",
             "ok": true,
-            "detail": "허용 0~5000 · 실제 13.2",
+            "detail": "허용 0~5000 · 실제 7.6",
             "group": "quality",
             "severity": "error"
           },
@@ -118,7 +126,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 2281초 전",
+            "detail": "현재 대비 1494초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -126,7 +134,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "38.0분 경과 · 허용 180분",
+            "detail": "24.9분 경과 · 허용 180분",
             "group": "freshness",
             "severity": "error"
           }
@@ -135,7 +143,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.947176+00:00",
+      "last_success": "2026-11-16T17:24:54.443785+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 18
     },
@@ -172,13 +180,13 @@
         "warning_latency_ms": 3000
       },
       "last_run": {
-        "id": 14,
+        "id": 36,
         "target": "coingecko",
-        "checked_at": "2026-11-16T07:38:00.950245+00:00",
+        "checked_at": "2026-11-16T17:24:54.447671+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 142.52,
-        "data_at": "2026-11-16T07:37:27+00:00",
+        "duration_ms": 265.66,
+        "data_at": "2026-11-16T17:24:18+00:00",
         "record_count": null,
         "checks": [
           {
@@ -193,7 +201,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "143 ms · 기준 3000 ms",
+            "detail": "266 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -230,10 +238,18 @@
             "severity": "error"
           },
           {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
             "key": "range:bitcoin.usd",
             "label": "값 범위 · bitcoin.usd",
             "ok": true,
-            "detail": "허용 0~100000000 · 실제 64862",
+            "detail": "허용 0~100000000 · 실제 64997",
             "group": "quality",
             "severity": "error"
           },
@@ -241,7 +257,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 34초 전",
+            "detail": "현재 대비 36초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -258,7 +274,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.950245+00:00",
+      "last_success": "2026-11-16T17:24:54.447671+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 7
     },
@@ -299,12 +315,12 @@
         ]
       },
       "last_run": {
-        "id": 15,
+        "id": 37,
         "target": "crossref",
-        "checked_at": "2026-11-16T07:38:00.952058+00:00",
+        "checked_at": "2026-11-16T17:24:54.449851+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 857.24,
+        "duration_ms": 533.96,
         "data_at": null,
         "record_count": 3,
         "checks": [
@@ -320,7 +336,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "857 ms · 기준 3000 ms",
+            "detail": "534 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -354,6 +370,14 @@
             "ok": true,
             "detail": "기대 ok · 실제 ok",
             "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
             "severity": "error"
           },
           {
@@ -393,7 +417,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.952058+00:00",
+      "last_success": "2026-11-16T17:24:54.449851+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 11
     },
@@ -427,12 +451,12 @@
         }
       },
       "last_run": {
-        "id": 16,
+        "id": 38,
         "target": "dog-ceo",
-        "checked_at": "2026-11-16T07:38:00.954006+00:00",
+        "checked_at": "2026-11-16T17:24:54.451831+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 513.82,
+        "duration_ms": 321.52,
         "data_at": null,
         "record_count": null,
         "checks": [
@@ -448,7 +472,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "514 ms · 기준 3000 ms",
+            "detail": "322 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -483,13 +507,21 @@
             "detail": "기대 success · 실제 success",
             "group": "quality",
             "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
           }
         ],
         "schema_diff": [],
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.954006+00:00",
+      "last_success": "2026-11-16T17:24:54.451831+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 3
     },
@@ -527,12 +559,12 @@
         ]
       },
       "last_run": {
-        "id": 17,
+        "id": 39,
         "target": "exchange-rates",
-        "checked_at": "2026-11-16T07:38:00.955809+00:00",
+        "checked_at": "2026-11-16T17:24:54.453330+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 111.41,
+        "duration_ms": 170.57,
         "data_at": "2026-11-16T00:02:31+00:00",
         "record_count": null,
         "checks": [
@@ -548,7 +580,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "111 ms · 기준 3000 ms",
+            "detail": "171 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -593,10 +625,18 @@
             "severity": "error"
           },
           {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 27330초 전",
+            "detail": "현재 대비 62543초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -604,7 +644,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "455.5분 경과 · 허용 2880분",
+            "detail": "1042.4분 경과 · 허용 2880분",
             "group": "freshness",
             "severity": "error"
           }
@@ -613,7 +653,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.955809+00:00",
+      "last_success": "2026-11-16T17:24:54.453330+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 11
     },
@@ -652,13 +692,13 @@
         "warning_latency_ms": 3000
       },
       "last_run": {
-        "id": 18,
+        "id": 40,
         "target": "frankfurter",
-        "checked_at": "2026-11-16T07:38:00.957803+00:00",
+        "checked_at": "2026-11-16T17:24:54.455220+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 358.77,
-        "data_at": "2026-11-13T00:00:00+00:00",
+        "duration_ms": 497.35,
+        "data_at": "2026-11-16T00:00:00+00:00",
         "record_count": null,
         "checks": [
           {
@@ -673,7 +713,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "359 ms · 기준 3000 ms",
+            "detail": "497 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -726,10 +766,18 @@
             "severity": "error"
           },
           {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
             "key": "range:rates.KRW",
             "label": "값 범위 · rates.KRW",
             "ok": true,
-            "detail": "허용 1~10000 · 실제 1337.13",
+            "detail": "허용 1~10000 · 실제 1334.87",
             "group": "quality",
             "severity": "error"
           },
@@ -737,7 +785,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 286681초 전",
+            "detail": "현재 대비 62694초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -745,7 +793,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "4778.0분 경과 · 허용 7200분",
+            "detail": "1044.9분 경과 · 허용 7200분",
             "group": "freshness",
             "severity": "error"
           }
@@ -754,7 +802,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.957803+00:00",
+      "last_success": "2026-11-16T17:24:54.455220+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 8
     },
@@ -791,12 +839,12 @@
         ]
       },
       "last_run": {
-        "id": 19,
+        "id": 41,
         "target": "gbif",
-        "checked_at": "2026-11-16T07:38:00.959455+00:00",
+        "checked_at": "2026-11-16T17:24:54.457421+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 2012.62,
+        "duration_ms": 1705.12,
         "data_at": null,
         "record_count": 3,
         "checks": [
@@ -812,7 +860,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "2013 ms · 기준 3000 ms",
+            "detail": "1705 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -837,6 +885,14 @@
             "label": "필수 필드 · results",
             "ok": true,
             "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
             "group": "schema",
             "severity": "error"
           },
@@ -869,7 +925,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.959455+00:00",
+      "last_success": "2026-11-16T17:24:54.457421+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 6
     },
@@ -908,12 +964,12 @@
         ]
       },
       "last_run": {
-        "id": 20,
+        "id": 42,
         "target": "github-catalog",
-        "checked_at": "2026-11-16T07:38:00.962184+00:00",
+        "checked_at": "2026-11-16T17:24:54.459162+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 205.02,
+        "duration_ms": 359.36,
         "data_at": null,
         "record_count": null,
         "checks": [
@@ -929,7 +985,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "205 ms · 기준 3000 ms",
+            "detail": "359 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -972,13 +1028,21 @@
             "detail": "기대 yybmion/public-apis-4Kr · 실제 yybmion/public-apis-4Kr",
             "group": "quality",
             "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
           }
         ],
         "schema_diff": [],
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.962184+00:00",
+      "last_success": "2026-11-16T17:24:54.459162+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 84
     },
@@ -1012,12 +1076,12 @@
         "id_path": "$"
       },
       "last_run": {
-        "id": 21,
+        "id": 43,
         "target": "hacker-news",
-        "checked_at": "2026-11-16T07:38:00.964287+00:00",
+        "checked_at": "2026-11-16T17:24:54.461246+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 128.4,
+        "duration_ms": 160.64,
         "data_at": null,
         "record_count": 500,
         "checks": [
@@ -1033,7 +1097,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "128 ms · 기준 3000 ms",
+            "detail": "161 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1050,6 +1114,14 @@
             "label": "필수 필드 · $",
             "ok": true,
             "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
             "group": "schema",
             "severity": "error"
           },
@@ -1082,7 +1154,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.964287+00:00",
+      "last_success": "2026-11-16T17:24:54.461246+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 2
     },
@@ -1120,12 +1192,12 @@
         ]
       },
       "last_run": {
-        "id": 22,
+        "id": 44,
         "target": "huggingface",
-        "checked_at": "2026-11-16T07:38:00.966751+00:00",
+        "checked_at": "2026-11-16T17:24:54.463573+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 152.27,
+        "duration_ms": 120.57,
         "data_at": null,
         "record_count": 5,
         "checks": [
@@ -1141,7 +1213,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "152 ms · 기준 3000 ms",
+            "detail": "121 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1158,6 +1230,14 @@
             "label": "필수 필드 · $",
             "ok": true,
             "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
             "group": "schema",
             "severity": "error"
           },
@@ -1198,7 +1278,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.966751+00:00",
+      "last_success": "2026-11-16T17:24:54.463573+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 1
     },
@@ -1234,13 +1314,13 @@
         "warning_latency_ms": 3000
       },
       "last_run": {
-        "id": 23,
+        "id": 45,
         "target": "marine",
-        "checked_at": "2026-11-16T07:38:00.968535+00:00",
+        "checked_at": "2026-11-16T17:24:54.465382+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 539.18,
-        "data_at": "2026-11-16T07:30:00+00:00",
+        "duration_ms": 620.38,
+        "data_at": "2026-11-16T17:15:00+00:00",
         "record_count": null,
         "checks": [
           {
@@ -1255,7 +1335,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "539 ms · 기준 3000 ms",
+            "detail": "620 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1284,10 +1364,18 @@
             "severity": "error"
           },
           {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
             "key": "range:current.wave_height",
             "label": "값 범위 · current.wave_height",
             "ok": true,
-            "detail": "허용 0~50 · 실제 1.04",
+            "detail": "허용 0~50 · 실제 1.58",
             "group": "quality",
             "severity": "error"
           },
@@ -1295,7 +1383,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 481초 전",
+            "detail": "현재 대비 594초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -1303,7 +1391,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "8.0분 경과 · 허용 180분",
+            "detail": "9.9분 경과 · 허용 180분",
             "group": "freshness",
             "severity": "error"
           }
@@ -1312,7 +1400,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.968535+00:00",
+      "last_success": "2026-11-16T17:24:54.465382+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 16
     },
@@ -1350,12 +1438,12 @@
         "warning_latency_ms": 3000
       },
       "last_run": {
-        "id": 24,
+        "id": 46,
         "target": "mempool",
-        "checked_at": "2026-11-16T07:38:00.970403+00:00",
+        "checked_at": "2026-11-16T17:24:54.466983+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 365.62,
+        "duration_ms": 317.77,
         "data_at": null,
         "record_count": null,
         "checks": [
@@ -1371,7 +1459,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "366 ms · 기준 3000 ms",
+            "detail": "318 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1416,10 +1504,18 @@
             "severity": "error"
           },
           {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
             "key": "range:fastestFee",
             "label": "값 범위 · fastestFee",
             "ok": true,
-            "detail": "허용 0~100000 · 실제 2",
+            "detail": "허용 0~100000 · 실제 1",
             "group": "quality",
             "severity": "error"
           }
@@ -1428,7 +1524,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.970403+00:00",
+      "last_success": "2026-11-16T17:24:54.466983+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 6
     },
@@ -1466,12 +1562,12 @@
         ]
       },
       "last_run": {
-        "id": 25,
+        "id": 47,
         "target": "nager-holidays",
-        "checked_at": "2026-11-16T07:38:00.972256+00:00",
+        "checked_at": "2026-11-16T17:24:54.486393+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 182.14,
+        "duration_ms": 412.06,
         "data_at": null,
         "record_count": 18,
         "checks": [
@@ -1487,7 +1583,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "182 ms · 기준 3000 ms",
+            "detail": "412 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1504,6 +1600,14 @@
             "label": "필수 필드 · $",
             "ok": true,
             "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
             "group": "schema",
             "severity": "error"
           },
@@ -1544,7 +1648,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.972256+00:00",
+      "last_success": "2026-11-16T17:24:54.486393+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 1
     },
@@ -1584,12 +1688,12 @@
         ]
       },
       "last_run": {
-        "id": 26,
+        "id": 48,
         "target": "npm-typescript",
-        "checked_at": "2026-11-16T07:38:00.973833+00:00",
+        "checked_at": "2026-11-16T17:24:54.488408+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 59.71,
+        "duration_ms": 75.03,
         "data_at": null,
         "record_count": null,
         "checks": [
@@ -1605,7 +1709,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "60 ms · 기준 3000 ms",
+            "detail": "75 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1648,13 +1752,21 @@
             "detail": "기대 typescript · 실제 typescript",
             "group": "quality",
             "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
           }
         ],
         "schema_diff": [],
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.973833+00:00",
+      "last_success": "2026-11-16T17:24:54.488408+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 95
     },
@@ -1692,12 +1804,12 @@
         ]
       },
       "last_run": {
-        "id": 27,
+        "id": 49,
         "target": "open-library",
-        "checked_at": "2026-11-16T07:38:00.976005+00:00",
-        "status": "healthy",
+        "checked_at": "2026-11-16T17:24:54.490656+00:00",
+        "status": "warning",
         "http_status": 200,
-        "duration_ms": 1406.76,
+        "duration_ms": 4745.03,
         "data_at": null,
         "record_count": 3,
         "checks": [
@@ -1712,8 +1824,8 @@
           {
             "key": "latency",
             "label": "응답 시간",
-            "ok": true,
-            "detail": "1407 ms · 기준 3000 ms",
+            "ok": false,
+            "detail": "4745 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1738,6 +1850,14 @@
             "label": "필수 필드 · numFound",
             "ok": true,
             "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
             "group": "schema",
             "severity": "error"
           },
@@ -1819,12 +1939,12 @@
         ]
       },
       "last_run": {
-        "id": 28,
+        "id": 50,
         "target": "open-trivia",
-        "checked_at": "2026-11-16T07:38:00.977523+00:00",
+        "checked_at": "2026-11-16T17:24:54.493225+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 246.34,
+        "duration_ms": 307.16,
         "data_at": null,
         "record_count": 3,
         "checks": [
@@ -1840,7 +1960,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "246 ms · 기준 3000 ms",
+            "detail": "307 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1874,6 +1994,14 @@
             "ok": true,
             "detail": "기대 0 · 실제 0",
             "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
             "severity": "error"
           },
           {
@@ -1913,7 +2041,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.977523+00:00",
+      "last_success": "2026-11-16T17:24:54.493225+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 2
     },
@@ -1957,12 +2085,12 @@
         "category": "내 파이프라인"
       },
       "last_run": {
-        "id": 29,
+        "id": 51,
         "target": "own-pipeline",
-        "checked_at": "2026-11-16T07:38:00.979237+00:00",
+        "checked_at": "2026-11-16T17:24:54.495080+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 166.62,
+        "duration_ms": 147.84,
         "data_at": "2026-11-16T01:04:00+00:00",
         "record_count": 3,
         "checks": [
@@ -1978,7 +2106,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "167 ms · 기준 3000 ms",
+            "detail": "148 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -2066,7 +2194,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 23641초 전",
+            "detail": "현재 대비 58854초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -2074,7 +2202,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "394.0분 경과 · 허용 2160분",
+            "detail": "980.9분 경과 · 허용 2160분",
             "group": "freshness",
             "severity": "error"
           }
@@ -2083,7 +2211,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.979237+00:00",
+      "last_success": "2026-11-16T17:24:54.495080+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 46
     },
@@ -2121,12 +2249,12 @@
         }
       },
       "last_run": {
-        "id": 30,
+        "id": 52,
         "target": "pokeapi",
-        "checked_at": "2026-11-16T07:38:00.990573+00:00",
+        "checked_at": "2026-11-16T17:24:54.577706+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 98.64,
+        "duration_ms": 411.91,
         "data_at": null,
         "record_count": 6,
         "checks": [
@@ -2142,7 +2270,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "99 ms · 기준 3000 ms",
+            "detail": "412 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -2187,6 +2315,14 @@
             "severity": "error"
           },
           {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
             "key": "count",
             "label": "결과 건수",
             "ok": true,
@@ -2215,7 +2351,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:00.990573+00:00",
+      "last_success": "2026-11-16T17:24:54.577706+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 405
     },
@@ -2256,12 +2392,12 @@
         ]
       },
       "last_run": {
-        "id": 31,
+        "id": 53,
         "target": "pypi-django",
-        "checked_at": "2026-11-16T07:38:01.009754+00:00",
+        "checked_at": "2026-11-16T17:24:54.585039+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 83.64,
+        "duration_ms": 25.98,
         "data_at": null,
         "record_count": null,
         "checks": [
@@ -2277,7 +2413,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "84 ms · 기준 3000 ms",
+            "detail": "26 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -2320,13 +2456,21 @@
             "detail": "기대 Django · 실제 Django",
             "group": "quality",
             "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
           }
         ],
         "schema_diff": [],
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:01.009754+00:00",
+      "last_success": "2026-11-16T17:24:54.585039+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 47
     },
@@ -2363,12 +2507,12 @@
         ]
       },
       "last_run": {
-        "id": 32,
+        "id": 54,
         "target": "rest-countries",
-        "checked_at": "2026-11-16T07:38:01.013721+00:00",
+        "checked_at": "2026-11-16T17:24:54.588885+00:00",
         "status": "critical",
         "http_status": 200,
-        "duration_ms": 177.37,
+        "duration_ms": 283.11,
         "data_at": null,
         "record_count": null,
         "checks": [
@@ -2384,7 +2528,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "177 ms · 기준 3000 ms",
+            "detail": "283 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -2439,14 +2583,14 @@
         "category": "지구·환경"
       },
       "last_run": {
-        "id": 33,
+        "id": 55,
         "target": "usgs",
-        "checked_at": "2026-11-16T07:38:01.016024+00:00",
+        "checked_at": "2026-11-16T17:24:54.591702+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 95.22,
-        "data_at": "2026-11-16T07:37:21+00:00",
-        "record_count": 185,
+        "duration_ms": 88.09,
+        "data_at": "2026-11-16T17:23:51+00:00",
+        "record_count": 176,
         "checks": [
           {
             "key": "availability",
@@ -2460,7 +2604,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "95 ms · 기준 3000 ms",
+            "detail": "88 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -2516,7 +2660,7 @@
             "key": "count",
             "label": "결과 건수",
             "ok": true,
-            "detail": "185건 · 최소 1",
+            "detail": "176건 · 최소 1",
             "group": "quality",
             "severity": "error"
           },
@@ -2524,7 +2668,7 @@
             "key": "record:id",
             "label": "항목 필드 · id",
             "ok": true,
-            "detail": "185건 중 누락·자료형 오류 0건",
+            "detail": "176건 중 누락·자료형 오류 0건",
             "group": "schema",
             "severity": "error"
           },
@@ -2532,7 +2676,7 @@
             "key": "record:properties",
             "label": "항목 필드 · properties",
             "ok": true,
-            "detail": "185건 중 누락·자료형 오류 0건",
+            "detail": "176건 중 누락·자료형 오류 0건",
             "group": "schema",
             "severity": "error"
           },
@@ -2540,7 +2684,7 @@
             "key": "record:geometry",
             "label": "항목 필드 · geometry",
             "ok": true,
-            "detail": "185건 중 누락·자료형 오류 0건",
+            "detail": "176건 중 누락·자료형 오류 0건",
             "group": "schema",
             "severity": "error"
           },
@@ -2556,7 +2700,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 40초 전",
+            "detail": "현재 대비 64초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -2564,7 +2708,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "0.7분 경과 · 허용 20분",
+            "detail": "1.1분 경과 · 허용 20분",
             "group": "freshness",
             "severity": "error"
           }
@@ -2573,7 +2717,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-16T07:38:01.016024+00:00",
+      "last_success": "2026-11-16T17:24:54.591702+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 46
     },
@@ -2621,148 +2765,1990 @@
         "category": "지구·환경"
       },
       "last_run": {
-        "id": 34,
+        "id": 56,
         "target": "weather",
-        "checked_at": "2026-11-16T07:38:01.019585+00:00",
-        "status": "healthy",
-        "http_status": 200,
-        "duration_ms": 168.93,
-        "data_at": "2026-11-16T07:30:00+00:00",
+        "checked_at": "2026-11-16T17:24:54.595282+00:00",
+        "status": "warning",
+        "http_status": null,
+        "duration_ms": 12093.71,
+        "data_at": null,
         "record_count": null,
         "checks": [
           {
             "key": "availability",
             "label": "HTTP 응답",
-            "ok": true,
-            "detail": "HTTP 200",
+            "ok": false,
+            "detail": "URLError · 응답을 읽지 못했습니다.",
             "group": "availability",
-            "severity": "error"
-          },
-          {
-            "key": "latency",
-            "label": "응답 시간",
-            "ok": true,
-            "detail": "169 ms · 기준 3000 ms",
-            "group": "latency",
-            "severity": "warning"
-          },
-          {
-            "key": "json",
-            "label": "JSON 해석",
-            "ok": true,
-            "detail": "JSON object 응답",
-            "group": "format",
-            "severity": "error"
-          },
-          {
-            "key": "field:current",
-            "label": "필수 필드 · current",
-            "ok": true,
-            "detail": "기대 object · 실제 object",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "field:current.time",
-            "label": "필수 필드 · current.time",
-            "ok": true,
-            "detail": "기대 string · 실제 string",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "field:current.temperature_2m",
-            "label": "필수 필드 · current.temperature_2m",
-            "ok": true,
-            "detail": "기대 number · 실제 number",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "field:current.relative_humidity_2m",
-            "label": "필수 필드 · current.relative_humidity_2m",
-            "ok": true,
-            "detail": "기대 number · 실제 number",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "field:current.wind_speed_10m",
-            "label": "필수 필드 · current.wind_speed_10m",
-            "ok": true,
-            "detail": "기대 number · 실제 number",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "field:utc_offset_seconds",
-            "label": "필수 필드 · utc_offset_seconds",
-            "ok": true,
-            "detail": "기대 number · 실제 number",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "schema-drift",
-            "label": "이전 승인 구조와 비교",
-            "ok": true,
-            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "range:current.temperature_2m",
-            "label": "값 범위 · current.temperature_2m",
-            "ok": true,
-            "detail": "허용 -80~65 · 실제 15.8",
-            "group": "quality",
-            "severity": "error"
-          },
-          {
-            "key": "range:current.relative_humidity_2m",
-            "label": "값 범위 · current.relative_humidity_2m",
-            "ok": true,
-            "detail": "허용 0~100 · 실제 63",
-            "group": "quality",
-            "severity": "error"
-          },
-          {
-            "key": "range:current.wind_speed_10m",
-            "label": "값 범위 · current.wind_speed_10m",
-            "ok": true,
-            "detail": "허용 0~500 · 실제 4.3",
-            "group": "quality",
-            "severity": "error"
-          },
-          {
-            "key": "future-time",
-            "label": "미래 시각 검사",
-            "ok": true,
-            "detail": "현재 대비 481초 전",
-            "group": "freshness",
-            "severity": "error"
-          },
-          {
-            "key": "freshness",
-            "label": "데이터 최신성",
-            "ok": true,
-            "detail": "8.0분 경과 · 허용 90분",
-            "group": "freshness",
             "severity": "error"
           }
         ],
         "schema_diff": [],
-        "error": "",
+        "error": "URLError · 응답을 읽지 못했습니다.",
         "source": "live"
       },
       "last_success": "2026-11-16T07:38:01.019585+00:00",
-      "consecutive_failures": 0,
+      "consecutive_failures": 1,
       "baseline_fields": 20
     }
   ],
   "history": [
     {
-      "id": 34,
+      "id": 56,
+      "target": "weather",
+      "checked_at": "2026-11-16T17:24:54.595282+00:00",
+      "status": "warning",
+      "http_status": null,
+      "duration_ms": 12093.71,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": false,
+          "detail": "URLError · 응답을 읽지 못했습니다.",
+          "group": "availability",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "URLError · 응답을 읽지 못했습니다.",
+      "source": "live"
+    },
+    {
+      "id": 55,
+      "target": "usgs",
+      "checked_at": "2026-11-16T17:24:54.591702+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 88.09,
+      "data_at": "2026-11-16T17:23:51+00:00",
+      "record_count": 176,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "88 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:type",
+          "label": "필수 필드 · type",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:metadata.generated",
+          "label": "필수 필드 · metadata.generated",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:metadata.count",
+          "label": "필수 필드 · metadata.count",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:features",
+          "label": "필수 필드 · features",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "176건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "176건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:properties",
+          "label": "항목 필드 · properties",
+          "ok": true,
+          "detail": "176건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:geometry",
+          "label": "항목 필드 · geometry",
+          "ok": true,
+          "detail": "176건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 64초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "1.1분 경과 · 허용 20분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 54,
+      "target": "rest-countries",
+      "checked_at": "2026-11-16T17:24:54.588885+00:00",
+      "status": "critical",
+      "http_status": 200,
+      "duration_ms": 283.11,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "283 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": false,
+          "detail": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
+          "group": "format",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 53,
+      "target": "pypi-django",
+      "checked_at": "2026-11-16T17:24:54.585039+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 25.98,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "26 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:info.name",
+          "label": "필수 필드 · info.name",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:info.version",
+          "label": "필수 필드 · info.version",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:releases",
+          "label": "필수 필드 · releases",
+          "ok": true,
+          "detail": "기대 object · 실제 object",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:info.name",
+          "label": "응답 의미 · info.name",
+          "ok": true,
+          "detail": "기대 Django · 실제 Django",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 52,
+      "target": "pokeapi",
+      "checked_at": "2026-11-16T17:24:54.577706+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 411.91,
+      "data_at": null,
+      "record_count": 6,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "412 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:id",
+          "label": "필수 필드 · id",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:name",
+          "label": "필수 필드 · name",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:stats",
+          "label": "필수 필드 · stats",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:name",
+          "label": "응답 의미 · name",
+          "ok": true,
+          "detail": "기대 pikachu · 실제 pikachu",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "6건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:base_stat",
+          "label": "항목 필드 · base_stat",
+          "ok": true,
+          "detail": "6건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:stat.name",
+          "label": "항목 필드 · stat.name",
+          "ok": true,
+          "detail": "6건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 51,
+      "target": "own-pipeline",
+      "checked_at": "2026-11-16T17:24:54.495080+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 147.84,
+      "data_at": "2026-11-16T01:04:00+00:00",
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "148 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:quality.kept",
+          "label": "필수 필드 · quality.kept",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:regions",
+          "label": "필수 필드 · regions",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:region",
+          "label": "항목 필드 · region",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:n",
+          "label": "항목 필드 · n",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:quality.kept",
+          "label": "값 범위 · quality.kept",
+          "ok": true,
+          "detail": "허용 0~10000000 · 실제 2481",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 58854초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "980.9분 경과 · 허용 2160분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 50,
+      "target": "open-trivia",
+      "checked_at": "2026-11-16T17:24:54.493225+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 307.16,
+      "data_at": null,
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "307 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:response_code",
+          "label": "필수 필드 · response_code",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:results",
+          "label": "필수 필드 · results",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:response_code",
+          "label": "응답 의미 · response_code",
+          "ok": true,
+          "detail": "기대 0 · 실제 0",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:question",
+          "label": "항목 필드 · question",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:correct_answer",
+          "label": "항목 필드 · correct_answer",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:incorrect_answers",
+          "label": "항목 필드 · incorrect_answers",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 49,
+      "target": "open-library",
+      "checked_at": "2026-11-16T17:24:54.490656+00:00",
+      "status": "warning",
+      "http_status": 200,
+      "duration_ms": 4745.03,
+      "data_at": null,
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": false,
+          "detail": "4745 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:docs",
+          "label": "필수 필드 · docs",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:numFound",
+          "label": "필수 필드 · numFound",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:key",
+          "label": "항목 필드 · key",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:title",
+          "label": "항목 필드 · title",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 48,
+      "target": "npm-typescript",
+      "checked_at": "2026-11-16T17:24:54.488408+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 75.03,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "75 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:name",
+          "label": "필수 필드 · name",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:version",
+          "label": "필수 필드 · version",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:dist.tarball",
+          "label": "필수 필드 · dist.tarball",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:name",
+          "label": "응답 의미 · name",
+          "ok": true,
+          "detail": "기대 typescript · 실제 typescript",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 47,
+      "target": "nager-holidays",
+      "checked_at": "2026-11-16T17:24:54.486393+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 412.06,
+      "data_at": null,
+      "record_count": 18,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "412 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON array 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:$",
+          "label": "필수 필드 · $",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "18건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:date",
+          "label": "항목 필드 · date",
+          "ok": true,
+          "detail": "18건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:localName",
+          "label": "항목 필드 · localName",
+          "ok": true,
+          "detail": "18건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:countryCode",
+          "label": "항목 필드 · countryCode",
+          "ok": true,
+          "detail": "18건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 46,
+      "target": "mempool",
+      "checked_at": "2026-11-16T17:24:54.466983+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 317.77,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "318 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:fastestFee",
+          "label": "필수 필드 · fastestFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:halfHourFee",
+          "label": "필수 필드 · halfHourFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:hourFee",
+          "label": "필수 필드 · hourFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:minimumFee",
+          "label": "필수 필드 · minimumFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:fastestFee",
+          "label": "값 범위 · fastestFee",
+          "ok": true,
+          "detail": "허용 0~100000 · 실제 1",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 45,
+      "target": "marine",
+      "checked_at": "2026-11-16T17:24:54.465382+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 620.38,
+      "data_at": "2026-11-16T17:15:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "620 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.time",
+          "label": "필수 필드 · current.time",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.wave_height",
+          "label": "필수 필드 · current.wave_height",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.wave_height",
+          "label": "값 범위 · current.wave_height",
+          "ok": true,
+          "detail": "허용 0~50 · 실제 1.58",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 594초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "9.9분 경과 · 허용 180분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 44,
+      "target": "huggingface",
+      "checked_at": "2026-11-16T17:24:54.463573+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 120.57,
+      "data_at": null,
+      "record_count": 5,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "121 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON array 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:$",
+          "label": "필수 필드 · $",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "5건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "5건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:downloads",
+          "label": "항목 필드 · downloads",
+          "ok": true,
+          "detail": "5건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 43,
+      "target": "hacker-news",
+      "checked_at": "2026-11-16T17:24:54.461246+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 160.64,
+      "data_at": null,
+      "record_count": 500,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "161 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON array 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:$",
+          "label": "필수 필드 · $",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "500건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:$",
+          "label": "항목 필드 · $",
+          "ok": true,
+          "detail": "500건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 42,
+      "target": "github-catalog",
+      "checked_at": "2026-11-16T17:24:54.459162+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 359.36,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "359 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:id",
+          "label": "필수 필드 · id",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:full_name",
+          "label": "필수 필드 · full_name",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:stargazers_count",
+          "label": "필수 필드 · stargazers_count",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:full_name",
+          "label": "응답 의미 · full_name",
+          "ok": true,
+          "detail": "기대 yybmion/public-apis-4Kr · 실제 yybmion/public-apis-4Kr",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 41,
+      "target": "gbif",
+      "checked_at": "2026-11-16T17:24:54.457421+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 1705.12,
+      "data_at": null,
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "1705 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:count",
+          "label": "필수 필드 · count",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:results",
+          "label": "필수 필드 · results",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:key",
+          "label": "항목 필드 · key",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 40,
+      "target": "frankfurter",
+      "checked_at": "2026-11-16T17:24:54.455220+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 497.35,
+      "data_at": "2026-11-16T00:00:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "497 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:date",
+          "label": "필수 필드 · date",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:base",
+          "label": "필수 필드 · base",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.KRW",
+          "label": "필수 필드 · rates.KRW",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.EUR",
+          "label": "필수 필드 · rates.EUR",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.JPY",
+          "label": "필수 필드 · rates.JPY",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:rates.KRW",
+          "label": "값 범위 · rates.KRW",
+          "ok": true,
+          "detail": "허용 1~10000 · 실제 1334.87",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 62694초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "1044.9분 경과 · 허용 7200분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 39,
+      "target": "exchange-rates",
+      "checked_at": "2026-11-16T17:24:54.453330+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 170.57,
+      "data_at": "2026-11-16T00:02:31+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "171 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:result",
+          "label": "필수 필드 · result",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:time_last_update_unix",
+          "label": "필수 필드 · time_last_update_unix",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.KRW",
+          "label": "필수 필드 · rates.KRW",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:result",
+          "label": "응답 의미 · result",
+          "ok": true,
+          "detail": "기대 success · 실제 success",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 62543초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "1042.4분 경과 · 허용 2880분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 38,
+      "target": "dog-ceo",
+      "checked_at": "2026-11-16T17:24:54.451831+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 321.52,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "322 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:status",
+          "label": "필수 필드 · status",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:message",
+          "label": "필수 필드 · message",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:status",
+          "label": "응답 의미 · status",
+          "ok": true,
+          "detail": "기대 success · 실제 success",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 37,
+      "target": "crossref",
+      "checked_at": "2026-11-16T17:24:54.449851+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 533.96,
+      "data_at": null,
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "534 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:status",
+          "label": "필수 필드 · status",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:message.items",
+          "label": "필수 필드 · message.items",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:status",
+          "label": "응답 의미 · status",
+          "ok": true,
+          "detail": "기대 ok · 실제 ok",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:DOI",
+          "label": "항목 필드 · DOI",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:title",
+          "label": "항목 필드 · title",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 36,
+      "target": "coingecko",
+      "checked_at": "2026-11-16T17:24:54.447671+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 265.66,
+      "data_at": "2026-11-16T17:24:18+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "266 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:bitcoin.usd",
+          "label": "필수 필드 · bitcoin.usd",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:bitcoin.last_updated_at",
+          "label": "필수 필드 · bitcoin.last_updated_at",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:ethereum.usd",
+          "label": "필수 필드 · ethereum.usd",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:bitcoin.usd",
+          "label": "값 범위 · bitcoin.usd",
+          "ok": true,
+          "detail": "허용 0~100000000 · 실제 64997",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 36초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.6분 경과 · 허용 60분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 35,
+      "target": "air-quality",
+      "checked_at": "2026-11-16T17:24:54.443785+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 587.03,
+      "data_at": "2026-11-16T17:00:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "587 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.time",
+          "label": "필수 필드 · current.time",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.pm10",
+          "label": "필수 필드 · current.pm10",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.pm2_5",
+          "label": "필수 필드 · current.pm2_5",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.pm10",
+          "label": "값 범위 · current.pm10",
+          "ok": true,
+          "detail": "허용 0~5000 · 실제 9.2",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.pm2_5",
+          "label": "값 범위 · current.pm2_5",
+          "ok": true,
+          "detail": "허용 0~5000 · 실제 7.6",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 1494초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "24.9분 경과 · 허용 180분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 1,
       "target": "weather",
       "checked_at": "2026-11-16T07:38:01.019585+00:00",
       "status": "healthy",
@@ -2897,7 +4883,7 @@
       "source": "live"
     },
     {
-      "id": 33,
+      "id": 2,
       "target": "usgs",
       "checked_at": "2026-11-16T07:38:01.016024+00:00",
       "status": "healthy",
@@ -3032,7 +5018,7 @@
       "source": "live"
     },
     {
-      "id": 32,
+      "id": 3,
       "target": "rest-countries",
       "checked_at": "2026-11-16T07:38:01.013721+00:00",
       "status": "critical",
@@ -3071,7 +5057,7 @@
       "source": "live"
     },
     {
-      "id": 31,
+      "id": 4,
       "target": "pypi-django",
       "checked_at": "2026-11-16T07:38:01.009754+00:00",
       "status": "healthy",
@@ -3142,7 +5128,7 @@
       "source": "live"
     },
     {
-      "id": 30,
+      "id": 5,
       "target": "pokeapi",
       "checked_at": "2026-11-16T07:38:00.990573+00:00",
       "status": "healthy",
@@ -3237,7 +5223,7 @@
       "source": "live"
     },
     {
-      "id": 29,
+      "id": 6,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:38:00.979237+00:00",
       "status": "healthy",
@@ -3364,7 +5350,7 @@
       "source": "live"
     },
     {
-      "id": 28,
+      "id": 7,
       "target": "open-trivia",
       "checked_at": "2026-11-16T07:38:00.977523+00:00",
       "status": "healthy",
@@ -3459,7 +5445,7 @@
       "source": "live"
     },
     {
-      "id": 27,
+      "id": 8,
       "target": "open-library",
       "checked_at": "2026-11-16T07:38:00.976005+00:00",
       "status": "healthy",
@@ -3546,7 +5532,7 @@
       "source": "live"
     },
     {
-      "id": 26,
+      "id": 9,
       "target": "npm-typescript",
       "checked_at": "2026-11-16T07:38:00.973833+00:00",
       "status": "healthy",
@@ -3617,7 +5603,7 @@
       "source": "live"
     },
     {
-      "id": 25,
+      "id": 10,
       "target": "nager-holidays",
       "checked_at": "2026-11-16T07:38:00.972256+00:00",
       "status": "healthy",
@@ -3696,7 +5682,7 @@
       "source": "live"
     },
     {
-      "id": 24,
+      "id": 11,
       "target": "mempool",
       "checked_at": "2026-11-16T07:38:00.970403+00:00",
       "status": "healthy",
@@ -3775,7 +5761,7 @@
       "source": "live"
     },
     {
-      "id": 23,
+      "id": 12,
       "target": "marine",
       "checked_at": "2026-11-16T07:38:00.968535+00:00",
       "status": "healthy",
@@ -3854,7 +5840,7 @@
       "source": "live"
     },
     {
-      "id": 22,
+      "id": 13,
       "target": "huggingface",
       "checked_at": "2026-11-16T07:38:00.966751+00:00",
       "status": "healthy",
@@ -3933,7 +5919,7 @@
       "source": "live"
     },
     {
-      "id": 21,
+      "id": 14,
       "target": "hacker-news",
       "checked_at": "2026-11-16T07:38:00.964287+00:00",
       "status": "healthy",
@@ -4004,7 +5990,7 @@
       "source": "live"
     },
     {
-      "id": 20,
+      "id": 15,
       "target": "github-catalog",
       "checked_at": "2026-11-16T07:38:00.962184+00:00",
       "status": "healthy",
@@ -4075,7 +6061,7 @@
       "source": "live"
     },
     {
-      "id": 19,
+      "id": 16,
       "target": "gbif",
       "checked_at": "2026-11-16T07:38:00.959455+00:00",
       "status": "healthy",
@@ -4154,7 +6140,7 @@
       "source": "live"
     },
     {
-      "id": 18,
+      "id": 17,
       "target": "frankfurter",
       "checked_at": "2026-11-16T07:38:00.957803+00:00",
       "status": "healthy",
@@ -4257,7 +6243,7 @@
       "source": "live"
     },
     {
-      "id": 17,
+      "id": 18,
       "target": "exchange-rates",
       "checked_at": "2026-11-16T07:38:00.955809+00:00",
       "status": "healthy",
@@ -4344,7 +6330,7 @@
       "source": "live"
     },
     {
-      "id": 16,
+      "id": 19,
       "target": "dog-ceo",
       "checked_at": "2026-11-16T07:38:00.954006+00:00",
       "status": "healthy",
@@ -4407,7 +6393,7 @@
       "source": "live"
     },
     {
-      "id": 15,
+      "id": 20,
       "target": "crossref",
       "checked_at": "2026-11-16T07:38:00.952058+00:00",
       "status": "healthy",
@@ -4502,7 +6488,7 @@
       "source": "live"
     },
     {
-      "id": 14,
+      "id": 21,
       "target": "coingecko",
       "checked_at": "2026-11-16T07:38:00.950245+00:00",
       "status": "healthy",
@@ -4589,7 +6575,7 @@
       "source": "live"
     },
     {
-      "id": 13,
+      "id": 22,
       "target": "air-quality",
       "checked_at": "2026-11-16T07:38:00.947176+00:00",
       "status": "healthy",
@@ -4684,7 +6670,7 @@
       "source": "live"
     },
     {
-      "id": 1,
+      "id": 23,
       "target": "weather",
       "checked_at": "2026-11-16T07:19:06.004538+00:00",
       "status": "healthy",
@@ -4819,7 +6805,7 @@
       "source": "live"
     },
     {
-      "id": 2,
+      "id": 24,
       "target": "usgs",
       "checked_at": "2026-11-16T07:19:06.000553+00:00",
       "status": "healthy",
@@ -4954,7 +6940,7 @@
       "source": "live"
     },
     {
-      "id": 3,
+      "id": 25,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:19:05.982045+00:00",
       "status": "healthy",
@@ -5081,7 +7067,7 @@
       "source": "live"
     },
     {
-      "id": 4,
+      "id": 26,
       "target": "weather",
       "checked_at": "2026-11-16T07:08:46.035411+00:00",
       "status": "healthy",
@@ -5216,7 +7202,7 @@
       "source": "live"
     },
     {
-      "id": 5,
+      "id": 27,
       "target": "usgs",
       "checked_at": "2026-11-16T07:08:46.031178+00:00",
       "status": "healthy",
@@ -5351,7 +7337,7 @@
       "source": "live"
     },
     {
-      "id": 6,
+      "id": 28,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:08:46.013296+00:00",
       "status": "healthy",
@@ -5478,7 +7464,7 @@
       "source": "live"
     },
     {
-      "id": 7,
+      "id": 29,
       "target": "weather",
       "checked_at": "2026-11-16T07:07:11.352477+00:00",
       "status": "healthy",
@@ -5613,7 +7599,7 @@
       "source": "live"
     },
     {
-      "id": 8,
+      "id": 30,
       "target": "usgs",
       "checked_at": "2026-11-16T07:07:11.347821+00:00",
       "status": "healthy",
@@ -5748,7 +7734,7 @@
       "source": "live"
     },
     {
-      "id": 9,
+      "id": 31,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:07:11.340508+00:00",
       "status": "healthy",
@@ -5875,7 +7861,7 @@
       "source": "live"
     },
     {
-      "id": 10,
+      "id": 32,
       "target": "weather",
       "checked_at": "2026-11-16T07:00:39.460639+00:00",
       "status": "healthy",
@@ -6002,7 +7988,7 @@
       "source": "live"
     },
     {
-      "id": 11,
+      "id": 33,
       "target": "usgs",
       "checked_at": "2026-11-16T07:00:39.453165+00:00",
       "status": "healthy",
@@ -6129,7 +8115,7 @@
       "source": "live"
     },
     {
-      "id": 12,
+      "id": 34,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:00:39.445480+00:00",
       "status": "healthy",
@@ -6250,6 +8236,30 @@
   ],
   "incidents": [
     {
+      "id": 3,
+      "target": "weather",
+      "key": "availability",
+      "kind": "availability",
+      "severity": "warning",
+      "message": "URLError · 응답을 읽지 못했습니다.",
+      "opened_at": "2026-11-16T17:24:54.595282+00:00",
+      "last_seen_at": "2026-11-16T17:24:54.595282+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    },
+    {
+      "id": 2,
+      "target": "open-library",
+      "key": "latency",
+      "kind": "latency",
+      "severity": "warning",
+      "message": "4745 ms · 기준 3000 ms",
+      "opened_at": "2026-11-16T17:24:54.490656+00:00",
+      "last_seen_at": "2026-11-16T17:24:54.490656+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    },
+    {
       "id": 1,
       "target": "rest-countries",
       "key": "json",
@@ -6257,21 +8267,21 @@
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-16T07:38:01.013721+00:00",
+      "last_seen_at": "2026-11-16T17:24:54.588885+00:00",
       "resolved_at": null,
-      "occurrences": 1
+      "occurrences": 2
     }
   ],
   "ai_latest": {
-    "date": "2026-11-16",
-    "item_id": "langchain-ai/langgraph:444929380",
-    "created_at": "2026-11-16T06:55:47.042588+00:00",
+    "date": "2026-11-17",
+    "item_id": "langchain-ai/langgraph:444925298",
+    "created_at": "2026-11-16T17:24:54.598562+00:00",
     "kind": "release",
     "label": "관심 저장소의 공식 릴리스",
-    "title": "LangGraph · langgraph==1.2.22",
+    "title": "LangGraph · langgraph-checkpoint-postgres==3.2.1",
     "technology": "LangGraph",
-    "official_published_at": "2026-11-14T01:43:55Z",
-    "collected_at": "2026-11-16T06:55:47.042588+00:00",
+    "official_published_at": "2026-11-14T01:39:04Z",
+    "collected_at": "2026-11-16T17:24:54.598562+00:00",
     "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
     "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
     "flow": [
@@ -6280,15 +8290,15 @@
       "검증·분기",
       "최종 응답"
     ],
-    "release_excerpt": "Changes since 1.2.21 * release(langgraph): 1.2.22 (#9702) * release(checkpoint-postgres): 3.2.1 (#9700) * release(prebuilt): 1.1.2 (#9701) * release(checkpoint): 4.3.2 (#9699) * fix(langgraph): stream a child graph on its own thread to a caller streaming subgraphs (#9698) * perf(langgraph): skip message conversion in add_messages for plain messages (#9631) * perf(langgraph): filter pending writes to the given tasks before reading their statuses (#9634) * perf(langgraph): match update keys against a set on wide stat",
+    "release_excerpt": "Changes since checkpointpostgres==3.2.0 * release(checkpoint-postgres): 3.2.1 (#9700) * release(checkpoint): 4.3.2 (#9699) * perf(checkpoint-postgres): run a lone store read outside a pipeline (#9635) * perf(checkpoint-postgres): skip the async saver's lock for connection pools (#9638) * perf(checkpoint-postgres): load no pending writes without a thread hop (#9639) * release(checkpoint): 4.3.1 (#9447) * chore(deps): bump certifi from 2026.1.4 to 2026.10.19 in /libs/checkpoint-postgres (#9369)",
     "facts": [
       {
         "label": "공식 발표일",
-        "value": "2026-11-14T01:43:55Z"
+        "value": "2026-11-14T01:39:04Z"
       },
       {
         "label": "버전",
-        "value": "1.2.22"
+        "value": "checkpointpostgres==3.2.1"
       },
       {
         "label": "저장소",
@@ -6303,7 +8313,7 @@
     "sources": [
       {
         "title": "공식 릴리스 또는 프로젝트 원문",
-        "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.22"
+        "url": "https://github.com/langchain-ai/langgraph/releases/tag/checkpointpostgres%3D%3D3.2.1"
       },
       {
         "title": "공식 저장소",
@@ -6324,6 +8334,67 @@
     "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
   },
   "ai_archive": [
+    {
+      "date": "2026-11-17",
+      "item_id": "langchain-ai/langgraph:444925298",
+      "created_at": "2026-11-16T17:24:54.598562+00:00",
+      "kind": "release",
+      "label": "관심 저장소의 공식 릴리스",
+      "title": "LangGraph · langgraph-checkpoint-postgres==3.2.1",
+      "technology": "LangGraph",
+      "official_published_at": "2026-11-14T01:39:04Z",
+      "collected_at": "2026-11-16T17:24:54.598562+00:00",
+      "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+      "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+      "flow": [
+        "상태 입력",
+        "검색·도구 노드",
+        "검증·분기",
+        "최종 응답"
+      ],
+      "release_excerpt": "Changes since checkpointpostgres==3.2.0 * release(checkpoint-postgres): 3.2.1 (#9700) * release(checkpoint): 4.3.2 (#9699) * perf(checkpoint-postgres): run a lone store read outside a pipeline (#9635) * perf(checkpoint-postgres): skip the async saver's lock for connection pools (#9638) * perf(checkpoint-postgres): load no pending writes without a thread hop (#9639) * release(checkpoint): 4.3.1 (#9447) * chore(deps): bump certifi from 2026.1.4 to 2026.10.19 in /libs/checkpoint-postgres (#9369)",
+      "facts": [
+        {
+          "label": "공식 발표일",
+          "value": "2026-11-14T01:39:04Z"
+        },
+        {
+          "label": "버전",
+          "value": "checkpointpostgres==3.2.1"
+        },
+        {
+          "label": "저장소",
+          "value": "langchain-ai/langgraph"
+        }
+      ],
+      "limits": [
+        "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+        "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+      ],
+      "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+      "sources": [
+        {
+          "title": "공식 릴리스 또는 프로젝트 원문",
+          "url": "https://github.com/langchain-ai/langgraph/releases/tag/checkpointpostgres%3D%3D3.2.1"
+        },
+        {
+          "title": "공식 저장소",
+          "url": "https://github.com/langchain-ai/langgraph"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    },
     {
       "date": "2026-11-16",
       "item_id": "langchain-ai/langgraph:444929380",
