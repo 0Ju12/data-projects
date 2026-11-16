@@ -12,7 +12,7 @@
 | [wildfire-watch](wildfire-watch/) | 화재기상지수(FFWI)와 위성 화재 탐지를 매일 모아 비교 · [산불 위험 지도](https://0ju12.github.io/data-projects/fire/) | NASA FIRMS VIIRS + Open-Meteo | 탐지의 90%는 제철소 등 상시 열원 → 가려내는 규칙 · 지수 평가는 아직 표본 부족(AUC 0.57, 양성 10건) |
 | [data-agent](data-agent/) | 위 결과들을 LLM 이 SQL 로 조회하는 MCP 서버 + 답 속 숫자 검증 | 이 저장소의 산출물 (SQLite) | 읽기 전용 SQL 안전장치 · 틀린 숫자·지어낸 계산을 막는 검사 (LLM 연결 평가는 미실시) |
 | [warehouse](warehouse/) | 위 자료를 dbt 로 3단 모델링(원본→정제→집계)하고 Airflow DAG 로 실행 · [대시보드](https://0ju12.github.io/data-projects/warehouse/) | 이 저장소의 지진·수요·기온 자료 + 채용 공고·거래소 시세·환율·패키지 통계·재해 경보 공개 API (DuckDB) | 품질 테스트 101개 · 지진 수정 이력 보존(SCD 2형) · 증분 집계와 전체 재계산 일치 확인 · 채용 공고 기술 수요 · 원화 프리미엄 · 패키지 내려받기 · 재해 경보 집계 (자료가 작아 성능은 다루지 않음) |
-| [api-watch](api-watch/) | API 응답·최신성·구조·품질 관제 + 하루 한 개 AI 기술 학습 · [관제판](https://0ju12.github.io/data-projects/api-watch/) | USGS · Open-Meteo · 지진 수집 산출물 · 공식 GitHub/Hugging Face 메타데이터 | 실제 검사와 합성 장애 10종을 분리 · Django/PostgreSQL 실행 구성 · 정기 검사 표본을 가동률로 일반화하지 않음 |
+| [api-watch](api-watch/) | API 응답·최신성·구조·품질 관제 + 하루 한 개 AI 기술 학습 · [관제판](https://0ju12.github.io/data-projects/api-watch/) | 22개 공개 엔드포인트 · 한국·글로벌 API/리소스 전체 탐색 · 공식 GitHub/Hugging Face 메타데이터 | 실제 검사와 합성 장애 10종을 분리 · Django/PostgreSQL 실행 구성 · 정기 검사 표본을 가동률로 일반화하지 않음 |
 
 공통으로 지킨 것
 - **평가를 정직하게**: 시계열은 시간 순서로 나눠 검증하고, 잘 안 된 결과(부품별 비지도 탐지의 오경보, 연휴 다음 날 예측 오차)도 README 에 남겼습니다.

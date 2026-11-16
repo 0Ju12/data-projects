@@ -53,7 +53,8 @@ def run_all(fetcher=fetch):
  locked=Lease.objects.filter(name='monitor').filter(Q(until__isnull=True)|Q(until__lte=now)).update(token=token,until=now+timedelta(minutes=3))
  if not locked:raise Busy('다른 검사가 실행 중입니다.')
  try:
-  targets=list(Target.objects.order_by('slug'));responses=list(ThreadPoolExecutor(max_workers=3).map(fetcher,[t.spec for t in targets]));runs=[]
+  targets=list(Target.objects.order_by('slug'));runs=[]
+  with ThreadPoolExecutor(max_workers=6)as pool:responses=list(pool.map(fetcher,[t.spec for t in targets]))
   for target,response in zip(targets,responses):
    with transaction.atomic():runs.append(record(target,response,timezone.now()))
   return runs

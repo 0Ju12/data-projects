@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from django.conf import settings
 from django.http import JsonResponse,HttpResponse
@@ -9,6 +10,9 @@ from .lab import exercise
 def dashboard(request):return HttpResponse((Path(settings.BASE_DIR)/'public/index.html').read_text().replace('data-mode="static"','data-mode="django"'))
 def report(request):return JsonResponse(service.report())
 def lab(request):return JsonResponse(exercise())
+def catalog(request):
+ path=Path(settings.BASE_DIR)/'public/catalog.json'
+ return JsonResponse(json.loads(path.read_text())if path.exists()else{'entries':[],'count':0})
 @require_POST
 def run(request):
  if not request.user.is_authenticated or not request.user.is_staff:return JsonResponse({'error':'관리자 로그인 후 실행하세요.'},status=403)

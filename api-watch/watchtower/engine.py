@@ -3,6 +3,7 @@ import json,math
 from datetime import datetime,timezone
 MISSING=object()
 def at(data,path):
+ if path=='$':return data
  for part in path.split('.') if path else []:
   if not isinstance(data,dict)or part not in data:return MISSING
   data=data[part]
@@ -15,16 +16,17 @@ def kind(x):
  if isinstance(x,str):return 'string'
  if isinstance(x,list):return 'array'
  return 'object'
-def signature(value,path='$',out=None,depth=0):
+def signature(value,path='$',out=None,depth=0,ignore=()):
  out={}if out is None else out
- if depth>8 or len(out)>=512:return out
+ if depth>8 or len(out)>=512 or any(path==prefix or path.startswith(prefix+'.')for prefix in ignore):return out
  out.setdefault(path,set()).add(kind(value))
  if isinstance(value,dict):
-  for k,v in sorted(value.items()):signature(v,path+'.'+k,out,depth+1)
+  for k,v in sorted(value.items()):signature(v,path+'.'+k,out,depth+1,ignore)
  elif isinstance(value,list):
-  for v in value[:25]:signature(v,path+'[]',out,depth+1)
+  for v in value[:25]:signature(v,path+'[]',out,depth+1,ignore)
  return out
 def parse_time(value,fmt):
+ if fmt=='unix':return datetime.fromtimestamp(float(value),timezone.utc)
  if fmt=='unix_ms':return datetime.fromtimestamp(float(value)/1000,timezone.utc)
  if fmt=='utc_minute':return datetime.strptime(value,'%Y-%m-%d %H:%M').replace(tzinfo=timezone.utc)
  parsed=datetime.fromisoformat(value.replace('Z','+00:00'))
@@ -37,13 +39,15 @@ def evaluate(spec,response,now,baseline=None):
  if not checks[-1]['ok']:return {'checks':checks,'schema_diff':diff,'data_at':None,'record_count':None,'observed':observed}
  check('latency','응답 시간',elapsed<=spec.get('warning_latency_ms',3000),f'{elapsed:.0f} ms · 기준 {spec.get("warning_latency_ms",3000)} ms','latency','warning')
  try:
-  data=json.loads(response['body'],parse_constant=lambda x:(_ for _ in ()).throw(ValueError(x)));valid=isinstance(data,dict)
+  data=json.loads(response['body'],parse_constant=lambda x:(_ for _ in ()).throw(ValueError(x)));valid=kind(data)==spec.get('json_root','object')
  except (ValueError,TypeError,KeyError):data=None;valid=False
- check('json','JSON 해석',valid,'JSON 객체 응답'if valid else'유효한 JSON 객체가 아닙니다.','format')
+ check('json','JSON 해석',valid,'JSON '+spec.get('json_root','object')+' 응답'if valid else'기대 JSON '+spec.get('json_root','object')+' 형식과 다르거나 해석할 수 없습니다.','format')
  if not valid:return {'checks':checks,'schema_diff':diff,'data_at':None,'record_count':None,'observed':observed}
  for path,expected in spec.get('required',{}).items():
   actual=kind(at(data,path));check('field:'+path,'필수 필드 · '+path,actual==expected,f'기대 {expected} · 실제 {actual}','schema')
- observed={k:sorted(v)for k,v in signature(data).items()if not any(k==prefix or k.startswith(prefix+'.')for prefix in spec.get('schema_ignore_prefixes',[]))}
+ for path,expected in spec.get('expected_values',{}).items():
+  actual=at(data,path);check('value:'+path,'응답 의미 · '+path,kind(actual)==kind(expected)and actual==expected,f'기대 {expected} · 실제 {actual if actual is not MISSING else "없음"}','quality')
+ observed={k:sorted(v)for k,v in signature(data,ignore=spec.get('schema_ignore_prefixes',[])).items()if not any(k==prefix or k.startswith(prefix+'.')for prefix in spec.get('schema_ignore_prefixes',[]))}
  for path,types in (baseline or {}).items():
   if any(path==prefix or path.startswith(prefix+'.')for prefix in spec.get('schema_ignore_prefixes',[])):continue
   if path not in observed:
@@ -65,6 +69,7 @@ def evaluate(spec,response,now,baseline=None):
     ids=[at(row,field)for row in records];missing=sum(x is MISSING or x is None for x in ids);texts=[json.dumps(x,sort_keys=True)for x in ids if x is not MISSING and x is not None];duplicates=len(texts)-len(set(texts));check('duplicates','식별자 중복',duplicates==0 and missing==0,f'중복 {duplicates}건 · 식별자 없음 {missing}건','quality')
  for path,bounds in spec.get('numeric_rules',{}).items():
   v=at(data,path);valid=kind(v)=='number'and math.isfinite(v)and bounds[0]<=v<=bounds[1];check('range:'+path,'값 범위 · '+path,valid,f'허용 {bounds[0]}~{bounds[1]} · 실제 {str(v)if v is not MISSING else "없음"}','quality')
+ if not spec.get('freshness_path'):return {'checks':checks,'schema_diff':diff,'data_at':None,'record_count':count,'observed':observed}
  try:
   data_at=parse_time(at(data,spec['freshness_path']),spec['time_format']);age=(now-data_at).total_seconds();check('future-time','미래 시각 검사',age>=-300,f'현재 대비 {age:.0f}초 전','freshness');check('freshness','데이터 최신성',age<=spec['max_age_seconds'],f'{max(0,age)/60:.1f}분 경과 · 허용 {spec["max_age_seconds"]/60:g}분','freshness')
  except (ValueError,TypeError,OverflowError,OSError,AttributeError):check('time-format','기준 시각 해석',False,'기준 시각이 없거나 형식이 올바르지 않습니다.','freshness')
