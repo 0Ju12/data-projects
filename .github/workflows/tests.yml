@@ -7,6 +7,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - { dir: api-watch, deps: "-r requirements.txt" }
           - { dir: geo-data-pipeline, deps: "pytest" }
           - { dir: sensor-anomaly,    deps: "pytest numpy scikit-learn" }
           - { dir: power-demand,      deps: "pytest numpy scikit-learn" }
@@ -19,7 +20,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - run: pip install ${{ matrix.deps }} && python -m pytest -q
+      - run: |
+          pip install ${{ matrix.deps }}
+          if [ "${{ matrix.dir }}" = "api-watch" ]; then python manage.py test tests; else python -m pytest -q; fi
 
   warehouse-airflow:     # DAG 가 실제 Airflow 에서 끝까지 도는지 (Docker 없이, dbt 는 별도 가상환경)
     runs-on: ubuntu-latest

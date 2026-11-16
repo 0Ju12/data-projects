@@ -1,0 +1,63 @@
+name: API Watch — hourly data checks and daily AI note
+on:
+  schedule: [{cron: '43 * * * *'}]
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['api-watch/**', '.github/workflows/api-watch.yml']
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: api-watch-monitor
+  cancel-in-progress: false
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    defaults: {run: {working-directory: api-watch}}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: main}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -r requirements.txt
+      - run: python manage.py test tests && python manage.py check
+      - run: python manage.py migrate --noinput
+      - name: Check live endpoints and prepare one AI note per Seoul date
+        env: {GITHUB_TOKEN: '${{ github.token }}'}
+        run: python manage.py monitor
+      - name: Save measured history and report
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/report.json public/lab.json state/checkpoint.json
+          git diff --cached --quiet || git commit -m "api-watch: measured checks and daily learning note"
+          git pull --rebase origin main
+          git push
+      - uses: actions/checkout@v4
+        with: {repository: 0Ju12/gravmag-wcf, path: _wcf}
+      - name: Assemble all existing Pages sections and API Watch
+        working-directory: .
+        run: |
+          mkdir -p _pages
+          cp -r geo-data-pipeline/docs/. _pages/
+          cp -r power-demand/explorer _pages/power
+          cp -r wildfire-watch/docs _pages/fire
+          cp -r _wcf/web _pages/wcf
+          if [ -f warehouse/docs/index.html ]; then cp -r warehouse/docs _pages/warehouse; fi
+          cp -r api-watch/public _pages/api-watch
+          test -s _pages/api-watch/report.json
+          test -s _pages/api-watch/index.html
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: _pages}
+  deploy:
+    needs: monitor
+    runs-on: ubuntu-latest
+    concurrency: {group: pages-deployment, cancel-in-progress: false}
+    environment:
+      name: github-pages
+      url: '${{ steps.d.outputs.page_url }}'
+    steps:
+      - id: d
+        uses: actions/deploy-pages@v4

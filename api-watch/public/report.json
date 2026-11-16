@@ -1,0 +1,1428 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-16T07:07:11.359954+00:00",
+  "last_check_at": "2026-11-16T07:07:11.352477+00:00",
+  "expected_interval_seconds": 3600,
+  "targets": [
+    {
+      "slug": "own-pipeline",
+      "name": "내 지진 파이프라인 · 수집 결과",
+      "spec": {
+        "slug": "own-pipeline",
+        "name": "내 지진 파이프라인 · 수집 결과",
+        "kind": "운영 산출물 JSON",
+        "url": "https://raw.githubusercontent.com/0Ju12/data-projects/main/geo-data-pipeline/data/summary.json",
+        "docs": "https://github.com/0Ju12/data-projects/tree/main/geo-data-pipeline",
+        "description": "매일 갱신하는 산출물입니다. updated는 생산 코드에서 정의한 UTC로 해석합니다.",
+        "schema_ignore_prefixes": [
+          "$.quality.mag_types"
+        ],
+        "freshness_path": "updated",
+        "time_format": "utc_minute",
+        "max_age_seconds": 129600,
+        "records_path": "regions",
+        "id_path": "region",
+        "min_records": 1,
+        "required": {
+          "updated": "string",
+          "quality.kept": "number",
+          "regions": "array"
+        },
+        "record_required": {
+          "region": "string",
+          "n": "number"
+        },
+        "numeric_rules": {
+          "quality.kept": [
+            0,
+            10000000
+          ]
+        },
+        "timeout_seconds": 12,
+        "max_bytes": 2000000,
+        "warning_latency_ms": 3000
+      },
+      "last_run": {
+        "id": 4,
+        "target": "own-pipeline",
+        "checked_at": "2026-11-16T07:07:11.340508+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 212.67,
+        "data_at": "2026-11-16T01:04:00+00:00",
+        "record_count": 3,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "213 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON 객체 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:updated",
+            "label": "필수 필드 · updated",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:quality.kept",
+            "label": "필수 필드 · quality.kept",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:regions",
+            "label": "필수 필드 · regions",
+            "ok": true,
+            "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "count",
+            "label": "결과 건수",
+            "ok": true,
+            "detail": "3건 · 최소 1",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "record:region",
+            "label": "항목 필드 · region",
+            "ok": true,
+            "detail": "3건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "record:n",
+            "label": "항목 필드 · n",
+            "ok": true,
+            "detail": "3건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "duplicates",
+            "label": "식별자 중복",
+            "ok": true,
+            "detail": "중복 0건 · 식별자 없음 0건",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "range:quality.kept",
+            "label": "값 범위 · quality.kept",
+            "ok": true,
+            "detail": "허용 0~10000000 · 실제 2481",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "future-time",
+            "label": "미래 시각 검사",
+            "ok": true,
+            "detail": "현재 대비 21791초 전",
+            "group": "freshness",
+            "severity": "error"
+          },
+          {
+            "key": "freshness",
+            "label": "데이터 최신성",
+            "ok": true,
+            "detail": "363.2분 경과 · 허용 2160분",
+            "group": "freshness",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:07:11.340508+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 46
+    },
+    {
+      "slug": "usgs",
+      "name": "USGS · 전 세계 최근 24시간 지진",
+      "spec": {
+        "slug": "usgs",
+        "name": "USGS · 전 세계 최근 24시간 지진",
+        "kind": "공개 API",
+        "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson",
+        "docs": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php",
+        "description": "사건 발생 시각이 아닌 피드 생성 시각을 검사합니다.",
+        "freshness_path": "metadata.generated",
+        "time_format": "unix_ms",
+        "max_age_seconds": 1200,
+        "records_path": "features",
+        "id_path": "id",
+        "min_records": 1,
+        "required": {
+          "type": "string",
+          "metadata.generated": "number",
+          "metadata.count": "number",
+          "features": "array"
+        },
+        "record_required": {
+          "id": "string",
+          "properties": "object",
+          "geometry": "object"
+        },
+        "numeric_rules": {},
+        "timeout_seconds": 12,
+        "max_bytes": 3000000,
+        "warning_latency_ms": 3000
+      },
+      "last_run": {
+        "id": 5,
+        "target": "usgs",
+        "checked_at": "2026-11-16T07:07:11.347821+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 201.01,
+        "data_at": "2026-11-16T07:06:21+00:00",
+        "record_count": 183,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "201 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON 객체 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:type",
+            "label": "필수 필드 · type",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:metadata.generated",
+            "label": "필수 필드 · metadata.generated",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:metadata.count",
+            "label": "필수 필드 · metadata.count",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:features",
+            "label": "필수 필드 · features",
+            "ok": true,
+            "detail": "기대 array · 실제 array",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "count",
+            "label": "결과 건수",
+            "ok": true,
+            "detail": "183건 · 최소 1",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "record:id",
+            "label": "항목 필드 · id",
+            "ok": true,
+            "detail": "183건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "record:properties",
+            "label": "항목 필드 · properties",
+            "ok": true,
+            "detail": "183건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "record:geometry",
+            "label": "항목 필드 · geometry",
+            "ok": true,
+            "detail": "183건 중 누락·자료형 오류 0건",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "duplicates",
+            "label": "식별자 중복",
+            "ok": true,
+            "detail": "중복 0건 · 식별자 없음 0건",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "future-time",
+            "label": "미래 시각 검사",
+            "ok": true,
+            "detail": "현재 대비 50초 전",
+            "group": "freshness",
+            "severity": "error"
+          },
+          {
+            "key": "freshness",
+            "label": "데이터 최신성",
+            "ok": true,
+            "detail": "0.8분 경과 · 허용 20분",
+            "group": "freshness",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:07:11.347821+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 46
+    },
+    {
+      "slug": "weather",
+      "name": "Open-Meteo · 서울 현재 날씨",
+      "spec": {
+        "slug": "weather",
+        "name": "Open-Meteo · 서울 현재 날씨",
+        "kind": "공개 API",
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,relative_humidity_2m,wind_speed_10m&timezone=UTC",
+        "docs": "https://open-meteo.com/en/docs",
+        "description": "관측소 실측값으로 단정하지 않고 API의 현재 날씨 자료로 표시합니다.",
+        "freshness_path": "current.time",
+        "time_format": "iso",
+        "max_age_seconds": 5400,
+        "records_path": null,
+        "min_records": null,
+        "required": {
+          "current": "object",
+          "current.time": "string",
+          "current.temperature_2m": "number",
+          "current.relative_humidity_2m": "number",
+          "current.wind_speed_10m": "number",
+          "utc_offset_seconds": "number"
+        },
+        "record_required": {},
+        "numeric_rules": {
+          "current.temperature_2m": [
+            -80,
+            65
+          ],
+          "current.relative_humidity_2m": [
+            0,
+            100
+          ],
+          "current.wind_speed_10m": [
+            0,
+            500
+          ]
+        },
+        "timeout_seconds": 12,
+        "max_bytes": 1000000,
+        "warning_latency_ms": 3000
+      },
+      "last_run": {
+        "id": 6,
+        "target": "weather",
+        "checked_at": "2026-11-16T07:07:11.352477+00:00",
+        "status": "healthy",
+        "http_status": 200,
+        "duration_ms": 1894.11,
+        "data_at": "2026-11-16T07:00:00+00:00",
+        "record_count": null,
+        "checks": [
+          {
+            "key": "availability",
+            "label": "HTTP 응답",
+            "ok": true,
+            "detail": "HTTP 200",
+            "group": "availability",
+            "severity": "error"
+          },
+          {
+            "key": "latency",
+            "label": "응답 시간",
+            "ok": true,
+            "detail": "1894 ms · 기준 3000 ms",
+            "group": "latency",
+            "severity": "warning"
+          },
+          {
+            "key": "json",
+            "label": "JSON 해석",
+            "ok": true,
+            "detail": "JSON 객체 응답",
+            "group": "format",
+            "severity": "error"
+          },
+          {
+            "key": "field:current",
+            "label": "필수 필드 · current",
+            "ok": true,
+            "detail": "기대 object · 실제 object",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:current.time",
+            "label": "필수 필드 · current.time",
+            "ok": true,
+            "detail": "기대 string · 실제 string",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:current.temperature_2m",
+            "label": "필수 필드 · current.temperature_2m",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:current.relative_humidity_2m",
+            "label": "필수 필드 · current.relative_humidity_2m",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:current.wind_speed_10m",
+            "label": "필수 필드 · current.wind_speed_10m",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "field:utc_offset_seconds",
+            "label": "필수 필드 · utc_offset_seconds",
+            "ok": true,
+            "detail": "기대 number · 실제 number",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "schema-drift",
+            "label": "이전 승인 구조와 비교",
+            "ok": true,
+            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+            "group": "schema",
+            "severity": "error"
+          },
+          {
+            "key": "range:current.temperature_2m",
+            "label": "값 범위 · current.temperature_2m",
+            "ok": true,
+            "detail": "허용 -80~65 · 실제 16.2",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "range:current.relative_humidity_2m",
+            "label": "값 범위 · current.relative_humidity_2m",
+            "ok": true,
+            "detail": "허용 0~100 · 실제 61",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "range:current.wind_speed_10m",
+            "label": "값 범위 · current.wind_speed_10m",
+            "ok": true,
+            "detail": "허용 0~500 · 실제 3.9",
+            "group": "quality",
+            "severity": "error"
+          },
+          {
+            "key": "future-time",
+            "label": "미래 시각 검사",
+            "ok": true,
+            "detail": "현재 대비 431초 전",
+            "group": "freshness",
+            "severity": "error"
+          },
+          {
+            "key": "freshness",
+            "label": "데이터 최신성",
+            "ok": true,
+            "detail": "7.2분 경과 · 허용 90분",
+            "group": "freshness",
+            "severity": "error"
+          }
+        ],
+        "schema_diff": [],
+        "error": "",
+        "source": "live"
+      },
+      "last_success": "2026-11-16T07:07:11.352477+00:00",
+      "consecutive_failures": 0,
+      "baseline_fields": 20
+    }
+  ],
+  "history": [
+    {
+      "id": 6,
+      "target": "weather",
+      "checked_at": "2026-11-16T07:07:11.352477+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 1894.11,
+      "data_at": "2026-11-16T07:00:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "1894 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:current",
+          "label": "필수 필드 · current",
+          "ok": true,
+          "detail": "기대 object · 실제 object",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.time",
+          "label": "필수 필드 · current.time",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.temperature_2m",
+          "label": "필수 필드 · current.temperature_2m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.relative_humidity_2m",
+          "label": "필수 필드 · current.relative_humidity_2m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.wind_speed_10m",
+          "label": "필수 필드 · current.wind_speed_10m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:utc_offset_seconds",
+          "label": "필수 필드 · utc_offset_seconds",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.temperature_2m",
+          "label": "값 범위 · current.temperature_2m",
+          "ok": true,
+          "detail": "허용 -80~65 · 실제 16.2",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.relative_humidity_2m",
+          "label": "값 범위 · current.relative_humidity_2m",
+          "ok": true,
+          "detail": "허용 0~100 · 실제 61",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.wind_speed_10m",
+          "label": "값 범위 · current.wind_speed_10m",
+          "ok": true,
+          "detail": "허용 0~500 · 실제 3.9",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 431초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "7.2분 경과 · 허용 90분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 5,
+      "target": "usgs",
+      "checked_at": "2026-11-16T07:07:11.347821+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 201.01,
+      "data_at": "2026-11-16T07:06:21+00:00",
+      "record_count": 183,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "201 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:type",
+          "label": "필수 필드 · type",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:metadata.generated",
+          "label": "필수 필드 · metadata.generated",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:metadata.count",
+          "label": "필수 필드 · metadata.count",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:features",
+          "label": "필수 필드 · features",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "183건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "183건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:properties",
+          "label": "항목 필드 · properties",
+          "ok": true,
+          "detail": "183건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:geometry",
+          "label": "항목 필드 · geometry",
+          "ok": true,
+          "detail": "183건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 50초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.8분 경과 · 허용 20분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 4,
+      "target": "own-pipeline",
+      "checked_at": "2026-11-16T07:07:11.340508+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 212.67,
+      "data_at": "2026-11-16T01:04:00+00:00",
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "213 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:quality.kept",
+          "label": "필수 필드 · quality.kept",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:regions",
+          "label": "필수 필드 · regions",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:region",
+          "label": "항목 필드 · region",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:n",
+          "label": "항목 필드 · n",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:quality.kept",
+          "label": "값 범위 · quality.kept",
+          "ok": true,
+          "detail": "허용 0~10000000 · 실제 2481",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 21791초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "363.2분 경과 · 허용 2160분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 3,
+      "target": "weather",
+      "checked_at": "2026-11-16T07:00:39.460639+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 172.05,
+      "data_at": "2026-11-16T07:00:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "172 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:current",
+          "label": "필수 필드 · current",
+          "ok": true,
+          "detail": "기대 object · 실제 object",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.time",
+          "label": "필수 필드 · current.time",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.temperature_2m",
+          "label": "필수 필드 · current.temperature_2m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.relative_humidity_2m",
+          "label": "필수 필드 · current.relative_humidity_2m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.wind_speed_10m",
+          "label": "필수 필드 · current.wind_speed_10m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:utc_offset_seconds",
+          "label": "필수 필드 · utc_offset_seconds",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.temperature_2m",
+          "label": "값 범위 · current.temperature_2m",
+          "ok": true,
+          "detail": "허용 -80~65 · 실제 16.2",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.relative_humidity_2m",
+          "label": "값 범위 · current.relative_humidity_2m",
+          "ok": true,
+          "detail": "허용 0~100 · 실제 61",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.wind_speed_10m",
+          "label": "값 범위 · current.wind_speed_10m",
+          "ok": true,
+          "detail": "허용 0~500 · 실제 3.9",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 39초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.7분 경과 · 허용 90분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 2,
+      "target": "usgs",
+      "checked_at": "2026-11-16T07:00:39.453165+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 185.87,
+      "data_at": "2026-11-16T07:00:21+00:00",
+      "record_count": 184,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "186 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:type",
+          "label": "필수 필드 · type",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:metadata.generated",
+          "label": "필수 필드 · metadata.generated",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:metadata.count",
+          "label": "필수 필드 · metadata.count",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:features",
+          "label": "필수 필드 · features",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "184건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "184건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:properties",
+          "label": "항목 필드 · properties",
+          "ok": true,
+          "detail": "184건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:geometry",
+          "label": "항목 필드 · geometry",
+          "ok": true,
+          "detail": "184건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 18초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.3분 경과 · 허용 20분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 1,
+      "target": "own-pipeline",
+      "checked_at": "2026-11-16T07:00:39.445480+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 90.9,
+      "data_at": "2026-11-16T01:04:00+00:00",
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "91 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:quality.kept",
+          "label": "필수 필드 · quality.kept",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:regions",
+          "label": "필수 필드 · regions",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:region",
+          "label": "항목 필드 · region",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:n",
+          "label": "항목 필드 · n",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:quality.kept",
+          "label": "값 범위 · quality.kept",
+          "ok": true,
+          "detail": "허용 0~10000000 · 실제 2481",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 21399초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "356.7분 경과 · 허용 2160분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    }
+  ],
+  "incidents": [],
+  "ai_latest": {
+    "date": "2026-11-16",
+    "item_id": "langchain-ai/langgraph:444929380",
+    "created_at": "2026-11-16T06:55:47.042588+00:00",
+    "kind": "release",
+    "label": "관심 저장소의 공식 릴리스",
+    "title": "LangGraph · langgraph==1.2.22",
+    "technology": "LangGraph",
+    "official_published_at": "2026-11-14T01:43:55Z",
+    "collected_at": "2026-11-16T06:55:47.042588+00:00",
+    "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+    "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+    "flow": [
+      "상태 입력",
+      "검색·도구 노드",
+      "검증·분기",
+      "최종 응답"
+    ],
+    "release_excerpt": "Changes since 1.2.21 * release(langgraph): 1.2.22 (#9702) * release(checkpoint-postgres): 3.2.1 (#9700) * release(prebuilt): 1.1.2 (#9701) * release(checkpoint): 4.3.2 (#9699) * fix(langgraph): stream a child graph on its own thread to a caller streaming subgraphs (#9698) * perf(langgraph): skip message conversion in add_messages for plain messages (#9631) * perf(langgraph): filter pending writes to the given tasks before reading their statuses (#9634) * perf(langgraph): match update keys against a set on wide stat",
+    "facts": [
+      {
+        "label": "공식 발표일",
+        "value": "2026-11-14T01:43:55Z"
+      },
+      {
+        "label": "버전",
+        "value": "1.2.22"
+      },
+      {
+        "label": "저장소",
+        "value": "langchain-ai/langgraph"
+      }
+    ],
+    "limits": [
+      "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+      "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+    ],
+    "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+    "sources": [
+      {
+        "title": "공식 릴리스 또는 프로젝트 원문",
+        "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.22"
+      },
+      {
+        "title": "공식 저장소",
+        "url": "https://github.com/langchain-ai/langgraph"
+      }
+    ],
+    "exercise": {
+      "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+      "steps": [
+        "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+        "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+        "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+      ],
+      "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+    },
+    "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+    "fetch_errors": [],
+    "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+  },
+  "ai_archive": [
+    {
+      "date": "2026-11-16",
+      "item_id": "langchain-ai/langgraph:444929380",
+      "created_at": "2026-11-16T06:55:47.042588+00:00",
+      "kind": "release",
+      "label": "관심 저장소의 공식 릴리스",
+      "title": "LangGraph · langgraph==1.2.22",
+      "technology": "LangGraph",
+      "official_published_at": "2026-11-14T01:43:55Z",
+      "collected_at": "2026-11-16T06:55:47.042588+00:00",
+      "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+      "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+      "flow": [
+        "상태 입력",
+        "검색·도구 노드",
+        "검증·분기",
+        "최종 응답"
+      ],
+      "release_excerpt": "Changes since 1.2.21 * release(langgraph): 1.2.22 (#9702) * release(checkpoint-postgres): 3.2.1 (#9700) * release(prebuilt): 1.1.2 (#9701) * release(checkpoint): 4.3.2 (#9699) * fix(langgraph): stream a child graph on its own thread to a caller streaming subgraphs (#9698) * perf(langgraph): skip message conversion in add_messages for plain messages (#9631) * perf(langgraph): filter pending writes to the given tasks before reading their statuses (#9634) * perf(langgraph): match update keys against a set on wide stat",
+      "facts": [
+        {
+          "label": "공식 발표일",
+          "value": "2026-11-14T01:43:55Z"
+        },
+        {
+          "label": "버전",
+          "value": "1.2.22"
+        },
+        {
+          "label": "저장소",
+          "value": "langchain-ai/langgraph"
+        }
+      ],
+      "limits": [
+        "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+        "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+      ],
+      "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+      "sources": [
+        {
+          "title": "공식 릴리스 또는 프로젝트 원문",
+          "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.22"
+        },
+        {
+          "title": "공식 저장소",
+          "url": "https://github.com/langchain-ai/langgraph"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    }
+  ],
+  "mode": "scheduled-report",
+  "provenance": "실제 HTTP 요청의 검사 결과입니다. 합성 장애 실험은 lab.json으로 분리합니다."
+}

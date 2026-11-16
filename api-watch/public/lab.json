@@ -1,0 +1,992 @@
+{
+  "source": "synthetic",
+  "executed_at": "2026-11-16T07:07:11.360259+00:00",
+  "description": "합성 응답을 실제 검사 엔진에 넣은 결과입니다. 운영 장애·모델 성능 수치가 아닙니다.",
+  "cases": [
+    {
+      "name": "정상 응답",
+      "expected": null,
+      "detected": [],
+      "passed": true,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "100 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:items",
+          "label": "필수 필드 · items",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "1건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "1건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:value",
+          "label": "항목 필드 · value",
+          "ok": true,
+          "detail": "1건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 0초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.0분 경과 · 허용 60분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "payload": {
+        "updated": "2026-11-16T07:07:11.360259+00:00",
+        "items": [
+          {
+            "id": "one",
+            "value": 1
+          }
+        ]
+      },
+      "http_status": 200
+    },
+    {
+      "name": "HTTP 503",
+      "expected": "availability",
+      "detected": [
+        "availability"
+      ],
+      "passed": true,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": false,
+          "detail": "HTTP 503",
+          "group": "availability",
+          "severity": "error"
+        }
+      ],
+      "payload": {
+        "updated": "2026-11-16T07:07:11.360259+00:00",
+        "items": [
+          {
+            "id": "one",
+            "value": 1
+          }
+        ]
+      },
+      "http_status": 503
+    },
+    {
+      "name": "잘못된 JSON",
+      "expected": "json",
+      "detected": [
+        "json"
+      ],
+      "passed": true,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "100 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": false,
+          "detail": "유효한 JSON 객체가 아닙니다.",
+          "group": "format",
+          "severity": "error"
+        }
+      ],
+      "payload": "<html>upstream error</html>",
+      "http_status": 200
+    },
+    {
+      "name": "HTTP 200 · 빈 목록",
+      "expected": "count",
+      "detected": [
+        "count"
+      ],
+      "passed": true,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "100 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:items",
+          "label": "필수 필드 · items",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": false,
+          "detail": "0건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "0건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:value",
+          "label": "항목 필드 · value",
+          "ok": true,
+          "detail": "0건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 0초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.0분 경과 · 허용 60분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "payload": {
+        "updated": "2026-11-16T07:07:11.360259+00:00",
+        "items": []
+      },
+      "http_status": 200
+    },
+    {
+      "name": "HTTP 200 · 오래된 자료",
+      "expected": "freshness",
+      "detected": [
+        "freshness"
+      ],
+      "passed": true,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "100 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:items",
+          "label": "필수 필드 · items",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "1건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "1건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:value",
+          "label": "항목 필드 · value",
+          "ok": true,
+          "detail": "1건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 259200초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": false,
+          "detail": "4320.0분 경과 · 허용 60분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "payload": {
+        "updated": "2026-11-13T07:07:11.360259+00:00",
+        "items": [
+          {
+            "id": "one",
+            "value": 1
+          }
+        ]
+      },
+      "http_status": 200
+    },
+    {
+      "name": "중복 식별자",
+      "expected": "duplicates",
+      "detected": [
+        "duplicates"
+      ],
+      "passed": true,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "100 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:items",
+          "label": "필수 필드 · items",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "2건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "2건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:value",
+          "label": "항목 필드 · value",
+          "ok": true,
+          "detail": "2건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": false,
+          "detail": "중복 1건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 0초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.0분 경과 · 허용 60분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "payload": {
+        "updated": "2026-11-16T07:07:11.360259+00:00",
+        "items": [
+          {
+            "id": "one",
+            "value": 1
+          },
+          {
+            "id": "one",
+            "value": 2
+          }
+        ]
+      },
+      "http_status": 200
+    },
+    {
+      "name": "자료형 변경",
+      "expected": "record:value",
+      "detected": [
+        "schema-drift",
+        "record:value"
+      ],
+      "passed": true,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "100 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:items",
+          "label": "필수 필드 · items",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": false,
+          "detail": "변경 1개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "1건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "1건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:value",
+          "label": "항목 필드 · value",
+          "ok": false,
+          "detail": "1건 중 누락·자료형 오류 1건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 0초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.0분 경과 · 허용 60분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "payload": {
+        "updated": "2026-11-16T07:07:11.360259+00:00",
+        "items": [
+          {
+            "id": "one",
+            "value": "1"
+          }
+        ]
+      },
+      "http_status": 200
+    },
+    {
+      "name": "필수 필드 누락",
+      "expected": "field:updated",
+      "detected": [
+        "field:updated",
+        "schema-drift",
+        "time-format"
+      ],
+      "passed": true,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "100 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": false,
+          "detail": "기대 string · 실제 missing",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:items",
+          "label": "필수 필드 · items",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": false,
+          "detail": "변경 1개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "1건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "1건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:value",
+          "label": "항목 필드 · value",
+          "ok": true,
+          "detail": "1건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "time-format",
+          "label": "기준 시각 해석",
+          "ok": false,
+          "detail": "기준 시각이 없거나 형식이 올바르지 않습니다.",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "payload": {
+        "items": [
+          {
+            "id": "one",
+            "value": 1
+          }
+        ]
+      },
+      "http_status": 200
+    },
+    {
+      "name": "미래 시각",
+      "expected": "future-time",
+      "detected": [
+        "future-time"
+      ],
+      "passed": true,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "100 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:items",
+          "label": "필수 필드 · items",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "1건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "1건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:value",
+          "label": "항목 필드 · value",
+          "ok": true,
+          "detail": "1건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": false,
+          "detail": "현재 대비 -7200초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.0분 경과 · 허용 60분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "payload": {
+        "updated": "2026-11-16T09:07:11.360259+00:00",
+        "items": [
+          {
+            "id": "one",
+            "value": 1
+          }
+        ]
+      },
+      "http_status": 200
+    },
+    {
+      "name": "응답 지연",
+      "expected": "latency",
+      "detected": [
+        "latency"
+      ],
+      "passed": true,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": false,
+          "detail": "5000 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON 객체 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:items",
+          "label": "필수 필드 · items",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "1건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "1건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:value",
+          "label": "항목 필드 · value",
+          "ok": true,
+          "detail": "1건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 0초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.0분 경과 · 허용 60분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "payload": {
+        "updated": "2026-11-16T07:07:11.360259+00:00",
+        "items": [
+          {
+            "id": "one",
+            "value": 1
+          }
+        ]
+      },
+      "http_status": 200
+    }
+  ],
+  "passed": 10,
+  "total": 10
+}

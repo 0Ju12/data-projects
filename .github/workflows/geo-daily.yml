@@ -47,9 +47,11 @@ jobs:
           cp -r ../wildfire-watch/docs docs/fire
           cp -r ../_wcf/web docs/wcf
           if [ -f ../warehouse/docs/index.html ]; then cp -r ../warehouse/docs docs/warehouse; fi
+          if [ -f ../api-watch/public/index.html ]; then cp -r ../api-watch/public docs/api-watch; fi
       - uses: actions/upload-pages-artifact@v3
         with: { path: geo-data-pipeline/docs }
   deploy:
+    concurrency: { group: pages-deployment, cancel-in-progress: false }
     needs: update
     runs-on: ubuntu-latest
     environment: { name: github-pages, url: "${{ steps.d.outputs.page_url }}" }

@@ -4,3 +4,8 @@ __pycache__/
 raw/
 cache/
 dart-analyzer/data/
+api-watch/*.sqlite3
+api-watch/.env
+api-watch/staticfiles/
+api-watch/.qa/
+_pages/
