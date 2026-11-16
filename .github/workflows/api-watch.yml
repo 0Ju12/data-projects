@@ -23,6 +23,7 @@ jobs:
         with: {python-version: '3.12'}
       - run: pip install -r requirements.txt
       - run: python manage.py test tests && python manage.py check
+      - run: node --test personal-workspace/lab.test.mjs personal-workspace/client.test.mjs
       - run: python manage.py migrate --noinput
       - name: Check live endpoints and prepare one AI note per Seoul date
         env: {GITHUB_TOKEN: '${{ github.token }}'}

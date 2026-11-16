@@ -1,0 +1,8 @@
+{
+  "name": "project-lab-personal-workspace",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test lab.test.mjs client.test.mjs"
+  }
+}

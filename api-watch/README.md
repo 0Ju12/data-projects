@@ -107,3 +107,8 @@ python manage.py accept_schema usgs --confirm
 대상별 최근 72회, 이슈 200개, 학습 노트 90개를 보고서에 포함합니다. 상시 서버는 DB를 사용하고 일회성 CI DB는 체크포인트에서 복원합니다. 검사 사이의 관측하지 않은 장애까지 탐지했다고 주장하지 않습니다.
 
 데이터와 모델의 이용 조건은 제공자 문서를 따릅니다. USGS/Open-Meteo/본인 저장소 출처를 상세 화면에 표시합니다. Open-Meteo 출처와 비상업 공개 API의 조건, 각 모델 카드의 라이선스를 별도로 확인하세요.
+
+
+## Project Lab 개인 기록 연결
+
+관제판에서 [개인 프로젝트·학습 공간](https://career-workspace-0ju12.affectionateimage.chatgpt.site/lab)으로 이어집니다. 프로젝트별 관제 링크는 공개 API slug만 전달하며 개인 프로젝트 이름·메모는 URL이나 공개 보고서에 넣지 않습니다. 기존 브라우저 학습 메모를 JSON으로 내보낸 후 개인 공간에서 가져올 수 있습니다. 구현·검증 설명은 [personal-workspace](personal-workspace/)를 참고하세요.
