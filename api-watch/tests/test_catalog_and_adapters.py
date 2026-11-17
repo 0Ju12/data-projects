@@ -47,3 +47,9 @@ class CatalogTests(SimpleTestCase):
    original=p.read_text();self.assertEqual(sync(p,fetcher=lambda _:self.fail('duplicate daily fetch'))['count'],60)
    with self.assertRaises(ValueError):sync(p,fetcher=lambda _:'broken',force=True)
    self.assertEqual(p.read_text(),original)
+
+class WorkspaceFeedTests(SimpleTestCase):
+ def test_compact_learning_feed_is_independent_of_history_size(self):
+  from watchtower.service import workspace_feed
+  source={'last_check_at':'2026-11-17T00:00:00Z','targets':[{'slug':'weather','name':'Weather','spec':{'category':'환경','description':'설명','docs':'https://example.com/docs','url':'https://example.com/full-request'},'last_run':{'status':'healthy','checked_at':'2026-11-17T00:00:00Z','duration_ms':150,'checks':[{'detail':'large'}]*1000}}],'history':[{'large':'x'*1000}]*10000,'incidents':[{'id':1,'resolved_at':None},{'id':2,'resolved_at':'2026-11-17T00:00:00Z'}],'ai_latest':None,'ai_archive':[]}
+  feed=workspace_feed(source);self.assertNotIn('history',feed);self.assertNotIn('checks',feed['targets'][0]['last_run']);self.assertNotIn('url',feed['targets'][0]['spec']);self.assertEqual(len(feed['incidents']),1);self.assertLess(len(json.dumps(feed)),2000)

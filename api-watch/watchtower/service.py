@@ -70,9 +70,17 @@ def report():
  briefs=list(DailyBrief.objects.all()[:90]);latest=max((r['checked_at']for r in history),default=None)
  return {'schema_version':1,'generated_at':timezone.now().isoformat(),'last_check_at':latest,'expected_interval_seconds':3600,'targets':targets,'history':sorted(history,key=lambda r:r['checked_at'],reverse=True),'incidents':[incident_dict(i)for i in Incident.objects.all()[:200]],'ai_latest':briefs[0].payload if briefs else None,'ai_archive':[b.payload for b in briefs],'mode':'scheduled-report','provenance':'실제 HTTP 요청의 검사 결과입니다. 합성 장애 실험은 lab.json으로 분리합니다.'}
 
+def workspace_feed(data):
+ # Only public, current signals cross into the private learning app; history stays here.
+ targets=[]
+ for t in data['targets']:
+  latest=t.get('last_run')
+  targets.append({'slug':t['slug'],'name':t['name'],'spec':{k:t['spec'].get(k)for k in ['category','description','docs']},'last_run':{k:latest.get(k)for k in ['status','checked_at','duration_ms']}if latest else None})
+ return {'schema_version':1,'last_check_at':data['last_check_at'],'targets':targets,'incidents':[i for i in data['incidents']if not i['resolved_at']],'ai_latest':data['ai_latest'],'ai_archive':data['ai_archive']}
+
 def export_files(directory):
  directory=Path(directory);directory.mkdir(parents=True,exist_ok=True);data=report()
- for name,value in [('report.json',data),('lab.json',__import__('watchtower.lab',fromlist=['exercise']).exercise())]:
+ for name,value in [('report.json',data),('workspace.json',workspace_feed(data)),('lab.json',__import__('watchtower.lab',fromlist=['exercise']).exercise())]:
   path=directory/name;tmp=path.with_suffix('.tmp');tmp.write_text(json.dumps(value,ensure_ascii=False,indent=2));tmp.replace(path)
  return data
 

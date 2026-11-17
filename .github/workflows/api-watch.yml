@@ -34,7 +34,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add public/report.json public/lab.json public/catalog.json state/checkpoint.json
+          git add public/report.json public/workspace.json public/lab.json public/catalog.json state/checkpoint.json
           git diff --cached --quiet || git commit -m "api-watch: measured checks and daily learning note"
           git pull --rebase origin main
           git push

@@ -101,6 +101,7 @@ python manage.py accept_schema usgs --confirm
 ## 이력과 재현
 
 - `public/report.json`: 실제 검사, 이력, 이슈, 일일 학습 노트
+- `public/workspace.json`: 전체 이력 없이 최신 상태·열린 이슈·AI 자료만 담은 개인 공간 연결 파일
 - `public/lab.json`: 실제 검사 엔진에 합성 장애 10종을 넣은 사전 실행 결과
 - `state/checkpoint.json`: CI에서 구조 기준·실패 횟수·이력·이슈·일일 노트를 복원하는 공개 체크포인트
 

@@ -1,0 +1,513 @@
+{
+  "schema_version": 1,
+  "last_check_at": "2026-11-16T23:39:06.458825+00:00",
+  "targets": [
+    {
+      "slug": "air-quality",
+      "name": "Open-Meteo · 서울 대기질",
+      "spec": {
+        "category": "지구·환경",
+        "description": "대기질 모델 자료입니다. 실측 관측소 수치로 단정하지 않습니다. 자료 시각 허용 3시간.",
+        "docs": "https://open-meteo.com/en/docs/air-quality-api"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.363295+00:00",
+        "duration_ms": 430.31
+      }
+    },
+    {
+      "slug": "coingecko",
+      "name": "CoinGecko · BTC·ETH 가격",
+      "spec": {
+        "category": "금융·블록체인",
+        "description": "공개 가격 조회의 구조와 제공 시각을 검사합니다. 투자 판단 도구가 아닙니다.",
+        "docs": "https://docs.coingecko.com/reference/simple-price"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.366719+00:00",
+        "duration_ms": 76.49
+      }
+    },
+    {
+      "slug": "crossref",
+      "name": "Crossref · 머신러닝 논문",
+      "spec": {
+        "category": "지식·교육",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.369241+00:00",
+        "duration_ms": 235.59
+      }
+    },
+    {
+      "slug": "dog-ceo",
+      "name": "Dog CEO · 이미지 메타데이터",
+      "spec": {
+        "category": "생활·문화",
+        "description": "이미지 URL을 담은 JSON 응답만 검사합니다. 이미지 파일을 내려받거나 정상 이미지라고 보증하지 않습니다.",
+        "docs": "https://dog.ceo/dog-api/"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.371923+00:00",
+        "duration_ms": 152.96
+      }
+    },
+    {
+      "slug": "exchange-rates",
+      "name": "ExchangeRate-API · 공개 환율",
+      "spec": {
+        "category": "금융·블록체인",
+        "description": "ExchangeRate-API 공개 엔드포인트. 제공자 https://www.exchangerate-api.com 출처 표시, 48시간 기준.",
+        "docs": "https://www.exchangerate-api.com/docs/free"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.374152+00:00",
+        "duration_ms": 66.89
+      }
+    },
+    {
+      "slug": "frankfurter",
+      "name": "Frankfurter · 기준 환율",
+      "spec": {
+        "category": "금융·블록체인",
+        "description": "중앙은행 기준 환율입니다. 영업일·주말을 고려해 5일을 허용하며 실시간 거래 가격이 아닙니다.",
+        "docs": "https://frankfurter.dev/"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.376701+00:00",
+        "duration_ms": 389.68
+      }
+    },
+    {
+      "slug": "gbif",
+      "name": "GBIF · 생물 관측 기록",
+      "spec": {
+        "category": "지구·환경",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://techdocs.gbif.org/en/openapi/v1/occurrence"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.379299+00:00",
+        "duration_ms": 622.53
+      }
+    },
+    {
+      "slug": "github-catalog",
+      "name": "GitHub · API 목록 저장소",
+      "spec": {
+        "category": "개발·AI",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://docs.github.com/en/rest/repos/repos#get-a-repository"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.381634+00:00",
+        "duration_ms": 150.69
+      }
+    },
+    {
+      "slug": "hacker-news",
+      "name": "Hacker News · 주요 글 ID",
+      "spec": {
+        "category": "개발·AI",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://github.com/HackerNews/API"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.384574+00:00",
+        "duration_ms": 206.21
+      }
+    },
+    {
+      "slug": "huggingface",
+      "name": "Hugging Face · 모델 목록",
+      "spec": {
+        "category": "개발·AI",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://huggingface.co/docs/hub/api"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.388151+00:00",
+        "duration_ms": 53.04
+      }
+    },
+    {
+      "slug": "marine",
+      "name": "Open-Meteo · 부산 해양",
+      "spec": {
+        "category": "지구·환경",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://open-meteo.com/en/docs/marine-weather-api"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.390465+00:00",
+        "duration_ms": 377.76
+      }
+    },
+    {
+      "slug": "mempool",
+      "name": "mempool.space · 비트코인 수수료",
+      "spec": {
+        "category": "금융·블록체인",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://mempool.space/docs/api/rest"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.392670+00:00",
+        "duration_ms": 471.27
+      }
+    },
+    {
+      "slug": "nager-holidays",
+      "name": "Nager.Date · 한국 공휴일",
+      "spec": {
+        "category": "생활·문화",
+        "description": "2026년 한국 공휴일 참고 데이터. 공휴일 날짜를 데이터 갱신 시각으로 오해하지 않습니다.",
+        "docs": "https://date.nager.at/Api"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.394953+00:00",
+        "duration_ms": 60.28
+      }
+    },
+    {
+      "slug": "npm-typescript",
+      "name": "npm · TypeScript 최신 태그",
+      "spec": {
+        "category": "개발·AI",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.397012+00:00",
+        "duration_ms": 26.9
+      }
+    },
+    {
+      "slug": "open-library",
+      "name": "Open Library · Python 도서",
+      "spec": {
+        "category": "지식·교육",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://openlibrary.org/dev/docs/api/search"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.399979+00:00",
+        "duration_ms": 382.06
+      }
+    },
+    {
+      "slug": "open-trivia",
+      "name": "Open Trivia DB · 퀴즈",
+      "spec": {
+        "category": "지식·교육",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://opentdb.com/api_config.php"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.402127+00:00",
+        "duration_ms": 91.11
+      }
+    },
+    {
+      "slug": "own-pipeline",
+      "name": "내 지진 파이프라인 · 수집 결과",
+      "spec": {
+        "category": "내 파이프라인",
+        "description": "매일 갱신하는 산출물입니다. updated는 생산 코드에서 정의한 UTC로 해석합니다.",
+        "docs": "https://github.com/0Ju12/data-projects/tree/main/geo-data-pipeline"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.404922+00:00",
+        "duration_ms": 65.61
+      }
+    },
+    {
+      "slug": "pokeapi",
+      "name": "PokéAPI · 포켓몬 도감",
+      "spec": {
+        "category": "생활·문화",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://pokeapi.co/docs/v2"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.433143+00:00",
+        "duration_ms": 104.37
+      }
+    },
+    {
+      "slug": "pypi-django",
+      "name": "PyPI · Django 패키지",
+      "spec": {
+        "category": "개발·AI",
+        "description": "공개 응답의 필수 필드와 품질을 검사합니다. 제공하지 않는 데이터 갱신 시각은 추정하지 않습니다.",
+        "docs": "https://docs.pypi.org/api/json/"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.443694+00:00",
+        "duration_ms": 255.91
+      }
+    },
+    {
+      "slug": "rest-countries",
+      "name": "REST Countries · 구버전 호환성",
+      "spec": {
+        "category": "생활·문화",
+        "description": "목록의 구버전 v3.1 응답 계약을 검사합니다. HTTP 200이어도 지원 종료 오류 객체이면 형식 위반으로 표시합니다. 신버전은 이용 조건 확인 후 별도 연결해야 합니다.",
+        "docs": "https://restcountries.com/docs/countries/legacy-api-deprecation"
+      },
+      "last_run": {
+        "status": "critical",
+        "checked_at": "2026-11-16T23:39:06.449510+00:00",
+        "duration_ms": 222.35
+      }
+    },
+    {
+      "slug": "usgs",
+      "name": "USGS · 전 세계 최근 24시간 지진",
+      "spec": {
+        "category": "지구·환경",
+        "description": "사건 발생 시각이 아닌 피드 생성 시각을 검사합니다.",
+        "docs": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.453358+00:00",
+        "duration_ms": 82.25
+      }
+    },
+    {
+      "slug": "weather",
+      "name": "Open-Meteo · 서울 현재 날씨",
+      "spec": {
+        "category": "지구·환경",
+        "description": "관측소 실측값으로 단정하지 않고 API의 현재 날씨 자료로 표시합니다.",
+        "docs": "https://open-meteo.com/en/docs"
+      },
+      "last_run": {
+        "status": "healthy",
+        "checked_at": "2026-11-16T23:39:06.458825+00:00",
+        "duration_ms": 198.46
+      }
+    }
+  ],
+  "incidents": [
+    {
+      "id": 3,
+      "target": "rest-countries",
+      "key": "json",
+      "kind": "format",
+      "severity": "error",
+      "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
+      "opened_at": "2026-11-16T07:38:01.013721+00:00",
+      "last_seen_at": "2026-11-16T23:39:06.449510+00:00",
+      "resolved_at": null,
+      "occurrences": 4
+    }
+  ],
+  "ai_latest": {
+    "date": "2026-11-17",
+    "item_id": "langchain-ai/langgraph:444925298",
+    "created_at": "2026-11-16T17:24:54.598562+00:00",
+    "kind": "release",
+    "label": "관심 저장소의 공식 릴리스",
+    "title": "LangGraph · langgraph-checkpoint-postgres==3.2.1",
+    "technology": "LangGraph",
+    "official_published_at": "2026-11-14T01:39:04Z",
+    "collected_at": "2026-11-16T17:24:54.598562+00:00",
+    "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+    "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+    "flow": [
+      "상태 입력",
+      "검색·도구 노드",
+      "검증·분기",
+      "최종 응답"
+    ],
+    "release_excerpt": "Changes since checkpointpostgres==3.2.0 * release(checkpoint-postgres): 3.2.1 (#9700) * release(checkpoint): 4.3.2 (#9699) * perf(checkpoint-postgres): run a lone store read outside a pipeline (#9635) * perf(checkpoint-postgres): skip the async saver's lock for connection pools (#9638) * perf(checkpoint-postgres): load no pending writes without a thread hop (#9639) * release(checkpoint): 4.3.1 (#9447) * chore(deps): bump certifi from 2026.1.4 to 2026.10.19 in /libs/checkpoint-postgres (#9369)",
+    "facts": [
+      {
+        "label": "공식 발표일",
+        "value": "2026-11-14T01:39:04Z"
+      },
+      {
+        "label": "버전",
+        "value": "checkpointpostgres==3.2.1"
+      },
+      {
+        "label": "저장소",
+        "value": "langchain-ai/langgraph"
+      }
+    ],
+    "limits": [
+      "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+      "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+    ],
+    "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+    "sources": [
+      {
+        "title": "공식 릴리스 또는 프로젝트 원문",
+        "url": "https://github.com/langchain-ai/langgraph/releases/tag/checkpointpostgres%3D%3D3.2.1"
+      },
+      {
+        "title": "공식 저장소",
+        "url": "https://github.com/langchain-ai/langgraph"
+      }
+    ],
+    "exercise": {
+      "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+      "steps": [
+        "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+        "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+        "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+      ],
+      "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+    },
+    "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+    "fetch_errors": [],
+    "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+  },
+  "ai_archive": [
+    {
+      "date": "2026-11-17",
+      "item_id": "langchain-ai/langgraph:444925298",
+      "created_at": "2026-11-16T17:24:54.598562+00:00",
+      "kind": "release",
+      "label": "관심 저장소의 공식 릴리스",
+      "title": "LangGraph · langgraph-checkpoint-postgres==3.2.1",
+      "technology": "LangGraph",
+      "official_published_at": "2026-11-14T01:39:04Z",
+      "collected_at": "2026-11-16T17:24:54.598562+00:00",
+      "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+      "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+      "flow": [
+        "상태 입력",
+        "검색·도구 노드",
+        "검증·분기",
+        "최종 응답"
+      ],
+      "release_excerpt": "Changes since checkpointpostgres==3.2.0 * release(checkpoint-postgres): 3.2.1 (#9700) * release(checkpoint): 4.3.2 (#9699) * perf(checkpoint-postgres): run a lone store read outside a pipeline (#9635) * perf(checkpoint-postgres): skip the async saver's lock for connection pools (#9638) * perf(checkpoint-postgres): load no pending writes without a thread hop (#9639) * release(checkpoint): 4.3.1 (#9447) * chore(deps): bump certifi from 2026.1.4 to 2026.10.19 in /libs/checkpoint-postgres (#9369)",
+      "facts": [
+        {
+          "label": "공식 발표일",
+          "value": "2026-11-14T01:39:04Z"
+        },
+        {
+          "label": "버전",
+          "value": "checkpointpostgres==3.2.1"
+        },
+        {
+          "label": "저장소",
+          "value": "langchain-ai/langgraph"
+        }
+      ],
+      "limits": [
+        "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+        "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+      ],
+      "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+      "sources": [
+        {
+          "title": "공식 릴리스 또는 프로젝트 원문",
+          "url": "https://github.com/langchain-ai/langgraph/releases/tag/checkpointpostgres%3D%3D3.2.1"
+        },
+        {
+          "title": "공식 저장소",
+          "url": "https://github.com/langchain-ai/langgraph"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    },
+    {
+      "date": "2026-11-16",
+      "item_id": "langchain-ai/langgraph:444929380",
+      "created_at": "2026-11-16T06:55:47.042588+00:00",
+      "kind": "release",
+      "label": "관심 저장소의 공식 릴리스",
+      "title": "LangGraph · langgraph==1.2.22",
+      "technology": "LangGraph",
+      "official_published_at": "2026-11-14T01:43:55Z",
+      "collected_at": "2026-11-16T06:55:47.042588+00:00",
+      "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+      "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+      "flow": [
+        "상태 입력",
+        "검색·도구 노드",
+        "검증·분기",
+        "최종 응답"
+      ],
+      "release_excerpt": "Changes since 1.2.21 * release(langgraph): 1.2.22 (#9702) * release(checkpoint-postgres): 3.2.1 (#9700) * release(prebuilt): 1.1.2 (#9701) * release(checkpoint): 4.3.2 (#9699) * fix(langgraph): stream a child graph on its own thread to a caller streaming subgraphs (#9698) * perf(langgraph): skip message conversion in add_messages for plain messages (#9631) * perf(langgraph): filter pending writes to the given tasks before reading their statuses (#9634) * perf(langgraph): match update keys against a set on wide stat",
+      "facts": [
+        {
+          "label": "공식 발표일",
+          "value": "2026-11-14T01:43:55Z"
+        },
+        {
+          "label": "버전",
+          "value": "1.2.22"
+        },
+        {
+          "label": "저장소",
+          "value": "langchain-ai/langgraph"
+        }
+      ],
+      "limits": [
+        "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+        "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+      ],
+      "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+      "sources": [
+        {
+          "title": "공식 릴리스 또는 프로젝트 원문",
+          "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.22"
+        },
+        {
+          "title": "공식 저장소",
+          "url": "https://github.com/langchain-ai/langgraph"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    }
+  ]
+}
