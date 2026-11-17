@@ -7,3 +7,5 @@ run_date,source,fetched,new,changed,pages,oldest_posted_utc,newest_posted_utc,ov
 2026-11-15,remoteok,97,2,0,1,2026-08-16T00:00:16Z,2026-11-13T08:00:21Z,yes
 2026-11-16,arbeitnow,300,13,0,1,2026-11-13T15:31:43Z,2026-11-15T23:00:35Z,yes
 2026-11-16,remoteok,97,0,0,1,2026-08-15T00:00:25Z,2026-11-13T08:00:21Z,yes
+2026-11-17,arbeitnow,300,268,0,1,2026-11-13T21:40:18Z,2026-11-17T03:30:31Z,yes
+2026-11-17,remoteok,97,0,0,1,2026-08-14T16:00:49Z,2026-11-13T08:00:21Z,yes
