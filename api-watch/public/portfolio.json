@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_repository": "0Ju12/0Ju12.github.io",
-  "source_sha": "ba23d7670e57af80f2cb28dbcff5da97c45a2897",
-  "source_updated_at": "2026-11-17T01:17:14Z",
-  "synced_at": "2026-11-17T01:17:32.842476+00:00",
+  "source_sha": "4c6052640e90ef03f9c806bd6929fc29b30d6748",
+  "source_updated_at": "2026-11-17T08:57:32Z",
+  "synced_at": "2026-11-17T09:43:00.055611+00:00",
   "links": {
     "preparation": "https://0ju12.github.io/study/index.html",
     "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -159,6 +159,25 @@
       "activity_id": "calgary-2024"
     },
     {
+      "id": "data-projects",
+      "title": "공개 데이터 프로젝트 — 지진 파이프라인 · 설비 이상 탐지 · 전력 수요 예측 · DART 데이터 마트 · dbt 웨어하우스",
+      "summary": "에너지·자원·제조·금융 분야의 공개 데이터로 데이터 파이프라인, 이상 탐지, 수요 예측, SQL 데이터 마트를 만들고 시간 순서를 지킨 평가로 검증한 프로젝트 모음",
+      "url": "https://0ju12.github.io/projects/data-projects.html",
+      "repository": "https://github.com/0Ju12/data-projects",
+      "stack": [],
+      "links": [
+        "https://github.com/0Ju12/data-projects",
+        "https://0ju12.github.io/data-projects/",
+        "https://0ju12.github.io/data-projects/power/",
+        "https://0ju12.github.io/data-projects/fire/",
+        "https://github.com/0Ju12/data-projects/tree/main/data-agent",
+        "https://0ju12.github.io/data-projects/warehouse/",
+        "https://0ju12.github.io/data-projects/api-watch/",
+        "https://github.com/0Ju12/data-projects/tree/main/warehouse"
+      ],
+      "activity_id": "data-projects"
+    },
+    {
       "id": "portfolio-site",
       "title": "데이터 기반 포트폴리오 생성기 — YAML → 국문·영문 사이트 · 이력서 PDF · 자동 점검",
       "summary": "포트폴리오 내용을 YAML 데이터로 관리하고, 빌드 스크립트가 국문·영문 사이트·프로젝트 상세·이력서 PDF·검색 색인을 만든 뒤 자동 점검을 통과해야 배포되는 정적 사이트 생성기",
@@ -182,27 +201,27 @@
         "https://0ju12.github.io/study/"
       ],
       "activity_id": "prep-apps"
-    },
-    {
-      "id": "data-projects",
-      "title": "공개 데이터 프로젝트 — 지진 파이프라인 · 설비 이상 탐지 · 전력 수요 예측 · DART 데이터 마트 · dbt 웨어하우스",
-      "summary": "에너지·자원·제조·금융 분야의 공개 데이터로 데이터 파이프라인, 이상 탐지, 수요 예측, SQL 데이터 마트를 만들고 시간 순서를 지킨 평가로 검증한 프로젝트 모음",
-      "url": "https://0ju12.github.io/projects/data-projects.html",
-      "repository": "https://github.com/0Ju12/data-projects",
-      "stack": [],
-      "links": [
-        "https://github.com/0Ju12/data-projects",
-        "https://0ju12.github.io/data-projects/",
-        "https://0ju12.github.io/data-projects/power/",
-        "https://0ju12.github.io/data-projects/fire/",
-        "https://github.com/0Ju12/data-projects/tree/main/data-agent",
-        "https://0ju12.github.io/data-projects/warehouse/",
-        "https://github.com/0Ju12/data-projects/tree/main/warehouse"
-      ],
-      "activity_id": "data-projects"
     }
   ],
   "learning_notes": [
+    {
+      "id": "2026-11-ai-trend-16-cost-latency-optimization",
+      "title": "비용·지연 최적화 — 캐싱·라우팅·배치로 같은 답을 더 싸고 빠르게",
+      "summary": "LLM 서비스의 비용과 지연을 줄이는 세 가지 장치, 프롬프트 캐싱·모델 라우팅·배치 처리를 정리했습니다. 공식 문서의 캐시 수명과 가격 배수, 그리고 캐시가 맞지 않는 구조를 봅니다.",
+      "date": "2026-11-17",
+      "episode": 16,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-16-cost-latency-optimization.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
+    {
+      "id": "2026-11-ai-trend-15-finetune-prompt-rag",
+      "title": "파인튜닝 vs 프롬프트 vs RAG — 모델을 바꿀지, 입력을 바꿀지",
+      "summary": "같은 문제를 프롬프트로 풀지, 검색(RAG)으로 풀지, 파인튜닝으로 풀지를 정하는 기준을 정리했습니다. 세 방법은 각각 지시·지식·행동을 바꾸고, 고르는 순서보다 평가 기준을 먼저 세우는 것이 중요합니다.",
+      "date": "2026-11-17",
+      "episode": 15,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-15-finetune-prompt-rag.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
     {
       "id": "2026-11-ai-trend-14-small-on-device-models",
       "title": "소형·온디바이스 모델 — 작은 모델로 충분한 일은 얼마나 되나",
