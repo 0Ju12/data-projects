@@ -23,18 +23,19 @@ jobs:
         with: {python-version: '3.12'}
       - run: pip install -r requirements.txt
       - run: python manage.py test tests && python manage.py check
-      - run: node --test personal-workspace/lab.test.mjs personal-workspace/client.test.mjs
+      - run: node --test personal-workspace/lab.test.mjs personal-workspace/client.test.mjs personal-workspace/prep-backup.test.mjs
       - run: python manage.py migrate --noinput
       - name: Check live endpoints and prepare one AI note per Seoul date
         env: {GITHUB_TOKEN: '${{ github.token }}'}
         run: |
           python manage.py sync_catalog || echo 'Catalog refresh unavailable; retaining last collected catalog.'
+          python manage.py sync_portfolio || echo 'Portfolio refresh unavailable; retaining last collected metadata.'
           python manage.py monitor
       - name: Save measured history and report
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add public/report.json public/workspace.json public/lab.json public/catalog.json state/checkpoint.json
+          git add public/report.json public/workspace.json public/portfolio.json public/lab.json public/catalog.json state/checkpoint.json
           git diff --cached --quiet || git commit -m "api-watch: measured checks and daily learning note"
           git pull --rebase origin main
           git push

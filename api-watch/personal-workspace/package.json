@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test lab.test.mjs client.test.mjs"
+    "test": "node --test lab.test.mjs client.test.mjs prep-backup.test.mjs"
   }
 }

@@ -113,3 +113,7 @@ python manage.py accept_schema usgs --confirm
 ## Project Lab 개인 기록 연결
 
 관제판에서 [개인 프로젝트·학습 공간](https://career-workspace-0ju12.affectionateimage.chatgpt.site/lab)으로 이어집니다. 프로젝트별 관제 링크는 공개 API slug만 전달하며 개인 프로젝트 이름·메모는 URL이나 공개 보고서에 넣지 않습니다. 기존 브라우저 학습 메모를 JSON으로 내보낸 후 개인 공간에서 가져올 수 있습니다. 구현·검증 설명은 [personal-workspace](personal-workspace/)를 참고하세요.
+
+## 공개 포트폴리오 메타데이터 동기화
+
+`python manage.py sync_portfolio`는 0Ju12/0Ju12.github.io의 현재 main 커밋을 확인하고, 해당 커밋의 공개 프로젝트와 AI 글 목록을 `public/portfolio.json`에 원자적으로 저장합니다. 같은 커밋이면 재사용하며 실패하면 이전 파일을 유지합니다. 시간별 GitHub Actions에서도 실행합니다. 강의 파일은 목록 개수와 공개 링크만 읽으며 암호화된 내용을 복호화하지 않습니다. 개인 연락처나 비공개 답변은 내보내지 않습니다.
