@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-17T01:02:37.131498+00:00",
+  "last_check_at": "2026-11-17T01:19:28.750394+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.049565+00:00",
-        "duration_ms": 509.22
+        "checked_at": "2026-11-17T01:19:28.665591+00:00",
+        "duration_ms": 466.04
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.052218+00:00",
-        "duration_ms": 104.31
+        "checked_at": "2026-11-17T01:19:28.669099+00:00",
+        "duration_ms": 98.8
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.054498+00:00",
-        "duration_ms": 775.44
+        "checked_at": "2026-11-17T01:19:28.671613+00:00",
+        "duration_ms": 778.85
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.056395+00:00",
-        "duration_ms": 559.35
+        "checked_at": "2026-11-17T01:19:28.674116+00:00",
+        "duration_ms": 700.51
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.057895+00:00",
-        "duration_ms": 168.73
+        "checked_at": "2026-11-17T01:19:28.676099+00:00",
+        "duration_ms": 56.53
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.064861+00:00",
-        "duration_ms": 395.43
+        "checked_at": "2026-11-17T01:19:28.678382+00:00",
+        "duration_ms": 348.3
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.074841+00:00",
-        "duration_ms": 1867.56
+        "checked_at": "2026-11-17T01:19:28.680660+00:00",
+        "duration_ms": 2005.1
       }
     },
     {
@@ -110,8 +110,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.076673+00:00",
-        "duration_ms": 194.41
+        "checked_at": "2026-11-17T01:19:28.683071+00:00",
+        "duration_ms": 242.93
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.078716+00:00",
-        "duration_ms": 161.94
+        "checked_at": "2026-11-17T01:19:28.686046+00:00",
+        "duration_ms": 112.6
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.080962+00:00",
-        "duration_ms": 94.04
+        "checked_at": "2026-11-17T01:19:28.689476+00:00",
+        "duration_ms": 73.63
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.082781+00:00",
-        "duration_ms": 513.81
+        "checked_at": "2026-11-17T01:19:28.691653+00:00",
+        "duration_ms": 477.61
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.086912+00:00",
-        "duration_ms": 538.49
+        "checked_at": "2026-11-17T01:19:28.693663+00:00",
+        "duration_ms": 567.12
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.088738+00:00",
-        "duration_ms": 221.19
+        "checked_at": "2026-11-17T01:19:28.695781+00:00",
+        "duration_ms": 274.91
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.090300+00:00",
-        "duration_ms": 72.44
+        "checked_at": "2026-11-17T01:19:28.697732+00:00",
+        "duration_ms": 34.98
       }
     },
     {
@@ -208,8 +208,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.092329+00:00",
-        "duration_ms": 502.4
+        "checked_at": "2026-11-17T01:19:28.700551+00:00",
+        "duration_ms": 650.2
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.093756+00:00",
-        "duration_ms": 224.77
+        "checked_at": "2026-11-17T01:19:28.702572+00:00",
+        "duration_ms": 153.88
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.095451+00:00",
-        "duration_ms": 209.22
+        "checked_at": "2026-11-17T01:19:28.704854+00:00",
+        "duration_ms": 93.47
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.115124+00:00",
-        "duration_ms": 181.93
+        "checked_at": "2026-11-17T01:19:28.726092+00:00",
+        "duration_ms": 63.72
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.121404+00:00",
-        "duration_ms": 90.49
+        "checked_at": "2026-11-17T01:19:28.736232+00:00",
+        "duration_ms": 17.6
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-17T01:02:37.124896+00:00",
-        "duration_ms": 368.98
+        "checked_at": "2026-11-17T01:19:28.741744+00:00",
+        "duration_ms": 210.25
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.127377+00:00",
-        "duration_ms": 100.11
+        "checked_at": "2026-11-17T01:19:28.745163+00:00",
+        "duration_ms": 135.55
       }
     },
     {
@@ -306,8 +306,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T01:02:37.131498+00:00",
-        "duration_ms": 352.38
+        "checked_at": "2026-11-17T01:19:28.750394+00:00",
+        "duration_ms": 274.91
       }
     }
   ],
@@ -320,9 +320,9 @@
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-17T01:02:37.124896+00:00",
+      "last_seen_at": "2026-11-17T01:19:28.741744+00:00",
       "resolved_at": null,
-      "occurrences": 7
+      "occurrences": 8
     }
   ],
   "ai_latest": {
@@ -509,5 +509,353 @@
       "fetch_errors": [],
       "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
     }
-  ]
+  ],
+  "portfolio": {
+    "schema_version": 1,
+    "source_repository": "0Ju12/0Ju12.github.io",
+    "source_sha": "ba23d7670e57af80f2cb28dbcff5da97c45a2897",
+    "source_updated_at": "2026-11-17T01:17:14Z",
+    "synced_at": "2026-11-17T01:17:32.842476+00:00",
+    "links": {
+      "preparation": "https://0ju12.github.io/study/index.html",
+      "study": "https://0ju12.github.io/study/index.html#/notes",
+      "interview": "https://0ju12.github.io/study/index.html#/questions",
+      "practice_log": "https://0ju12.github.io/study/index.html#/log",
+      "ai_notes": "https://0ju12.github.io/posts/ai-trend.html",
+      "monitor": "https://0ju12.github.io/data-projects/api-watch/"
+    },
+    "projects": [
+      {
+        "id": "vqa",
+        "title": "VQA 챌린지 — 멀티모델 확률 앙상블",
+        "summary": "이미지+질문 4지선다 VQA. Qwen QLoRA·Gemma·OCR·멀티뷰를 확률 앙상블하고, 후보는 정확도가 아니라 fixes−breaks로 채택",
+        "url": "https://0ju12.github.io/posts/2026-11-vqa-ensemble-fixes-breaks.html",
+        "repository": "https://0ju12.github.io/posts/2026-11-vqa-ensemble-fixes-breaks.html",
+        "stack": [
+          "PyTorch",
+          "Hugging Face",
+          "QLoRA",
+          "Qwen",
+          "Gemma",
+          "OCR"
+        ],
+        "links": [
+          "https://0ju12.github.io/posts/2026-11-vqa-ensemble-fixes-breaks.html"
+        ],
+        "activity_id": "ssafy-16"
+      },
+      {
+        "id": "heritage",
+        "title": "국보 입문 가이드 — 인용을 검증하는 RAG",
+        "summary": "국가유산청 오픈API·위키백과를 수집해 ChromaDB에 색인하고, 답변의 [근거 N]을 코드로 다시 검사해 실제 인용한 근거만 보여 주는 RAG",
+        "url": "https://0ju12.github.io/posts/2026-11-rag-citation-verify.html",
+        "repository": "https://github.com/0Ju12/heritage-rag-guide",
+        "stack": [
+          "LangGraph",
+          "ChromaDB",
+          "FastAPI",
+          "Streamlit",
+          "pytest"
+        ],
+        "links": [
+          "https://0ju12.github.io/posts/2026-11-rag-citation-verify.html",
+          "https://github.com/0Ju12/heritage-rag-guide"
+        ],
+        "activity_id": "ssafy-16"
+      },
+      {
+        "id": "thread",
+        "title": "ThRead — LLM 댓글 분석 파이프라인",
+        "summary": "Selenium 수집 → LLM 판단(번호만) → 코드 검증 → pandas 정제·증강·요약. 도서 서비스를 7회에 걸쳐 확장",
+        "url": "https://0ju12.github.io/posts/2026-11-llm-verify-pipeline.html",
+        "repository": "https://github.com/0Ju12/ssafy-thread",
+        "stack": [
+          "Python",
+          "Django",
+          "FastAPI",
+          "Selenium",
+          "Pandas",
+          "LLM API"
+        ],
+        "links": [
+          "https://0ju12.github.io/posts/2026-11-llm-verify-pipeline.html",
+          "https://github.com/0Ju12/ssafy-thread"
+        ],
+        "activity_id": "ssafy-16"
+      },
+      {
+        "id": "posco-pospeak",
+        "title": "POSPEAK — 콩글리시 교정 생성 모델 + RAG",
+        "summary": "콩글리시→원어민 표현 교정 데이터셋을 만들고 FLAN-T5 LoRA 학습 전략을 비교, catastrophic forgetting을 실험으로 확인 · 장려상",
+        "url": "https://0ju12.github.io/posts/2026-11-catastrophic-forgetting.html",
+        "repository": "https://github.com/POSCO-AI-BigData-30th/ai-pospeak/tree/db2-t5",
+        "stack": [
+          "Hugging Face",
+          "FLAN-T5",
+          "LoRA",
+          "FAISS"
+        ],
+        "links": [
+          "https://0ju12.github.io/posts/2026-11-catastrophic-forgetting.html",
+          "https://github.com/POSCO-AI-BigData-30th/ai-pospeak/tree/db2-t5"
+        ],
+        "activity_id": "posco-pospeak"
+      },
+      {
+        "id": "masters",
+        "title": "파수 상관 분석으로 겹친 중력·자력 신호 분리",
+        "summary": "파수 영역 상관 분석으로 암염·기반암 신호를 분리하는 지표(SLFI·DLFI)를 설계해 SCIE SPE Journal 제1저자 논문과 학위논문으로 완성",
+        "url": "https://0ju12.github.io/posts/2026-11-wavenumber-correlation.html",
+        "repository": "https://github.com/0Ju12/gravmag-wcf",
+        "stack": [
+          "Python",
+          "신호처리(파수 영역)",
+          "중력·자력",
+          "상관 분석"
+        ],
+        "links": [
+          "https://0ju12.github.io/posts/2026-11-wavenumber-correlation.html",
+          "https://doi.org/10.2118/236968-PA",
+          "https://github.com/0Ju12/gravmag-wcf",
+          "https://0ju12.github.io/data-projects/wcf/",
+          "https://www.geoverselab.com/ko/research-history/13/"
+        ],
+        "activity_id": "masters"
+      },
+      {
+        "id": "wildfire-capstone",
+        "title": "U-LSTM 산불 확산 경로 예측",
+        "summary": "이전 시점의 화선·기상·지형 래스터(산불 4건)로 Conv2D 인코더–LSTM–디코더를 설계·학습해 다음 시점 화선을 예측",
+        "url": "https://0ju12.github.io/posts/2026-11-small-data-spatiotemporal.html",
+        "repository": "https://github.com/0Ju12/wildfire-spread-prediction",
+        "stack": [
+          "TensorFlow",
+          "PyTorch",
+          "U-LSTM",
+          "ArcGIS"
+        ],
+        "links": [
+          "https://0ju12.github.io/posts/2026-11-small-data-spatiotemporal.html",
+          "https://github.com/0Ju12/wildfire-spread-prediction"
+        ],
+        "activity_id": "wildfire-capstone"
+      },
+      {
+        "id": "undergrad-research",
+        "title": "판구조 형성사로 해석한 해외 CO2 저장소 탄성파",
+        "summary": "GPlates로 북미·북해·오세아니아·중동 대규모 CO2 저장소의 판구조 형성사를 복원하고 대표 저장소 탄성파 영상을 해석",
+        "url": "https://0ju12.github.io/posts/2026-11-plate-tectonics-co2-storage.html",
+        "repository": "https://0ju12.github.io/projects/undergrad-research.html",
+        "stack": [
+          "GPlates",
+          "탄성파 해석",
+          "CCS"
+        ],
+        "links": [
+          "https://0ju12.github.io/posts/2026-11-plate-tectonics-co2-storage.html",
+          "https://koreascience.or.kr/article/JAKO202410348585789.page",
+          "https://koreascience.or.kr/article/JAKO202335272000266.page"
+        ],
+        "activity_id": "undergrad-research"
+      },
+      {
+        "id": "calgary-2024",
+        "title": "캐나다 캘거리대학교 장기 파견연구 — 중력·자력 데이터 복합 해석",
+        "summary": "중력·자력 탐사 자료를 결합해 아부다비 가샤 암염돔과 지하 기반암 구조를 파악",
+        "url": "https://0ju12.github.io/projects/calgary-2024.html",
+        "repository": "https://0ju12.github.io/projects/calgary-2024.html",
+        "stack": [],
+        "links": [
+          "https://doi.org/10.2118/236968-PA"
+        ],
+        "activity_id": "calgary-2024"
+      },
+      {
+        "id": "portfolio-site",
+        "title": "데이터 기반 포트폴리오 생성기 — YAML → 국문·영문 사이트 · 이력서 PDF · 자동 점검",
+        "summary": "포트폴리오 내용을 YAML 데이터로 관리하고, 빌드 스크립트가 국문·영문 사이트·프로젝트 상세·이력서 PDF·검색 색인을 만든 뒤 자동 점검을 통과해야 배포되는 정적 사이트 생성기",
+        "url": "https://0ju12.github.io/projects/portfolio-site.html",
+        "repository": "https://0ju12.github.io/projects/portfolio-site.html",
+        "stack": [],
+        "links": [
+          "https://0ju12.github.io/",
+          "https://0ju12.github.io/posts/2026-11-portfolio-one-yaml.html"
+        ],
+        "activity_id": "portfolio-site"
+      },
+      {
+        "id": "prep-apps",
+        "title": "암호화 학습 노트 · 면접 준비 앱 — 정적 호스팅 위의 PBKDF2·AES-GCM PWA",
+        "summary": "강의 노트와 면접 준비 자료를 빌드할 때 암호화해 정적 사이트에 올리고, 브라우저에서 암호로 풀어 쓰는 학습·면접 연습 앱",
+        "url": "https://0ju12.github.io/projects/prep-apps.html",
+        "repository": "https://0ju12.github.io/projects/prep-apps.html",
+        "stack": [],
+        "links": [
+          "https://0ju12.github.io/study/"
+        ],
+        "activity_id": "prep-apps"
+      },
+      {
+        "id": "data-projects",
+        "title": "공개 데이터 프로젝트 — 지진 파이프라인 · 설비 이상 탐지 · 전력 수요 예측 · DART 데이터 마트 · dbt 웨어하우스",
+        "summary": "에너지·자원·제조·금융 분야의 공개 데이터로 데이터 파이프라인, 이상 탐지, 수요 예측, SQL 데이터 마트를 만들고 시간 순서를 지킨 평가로 검증한 프로젝트 모음",
+        "url": "https://0ju12.github.io/projects/data-projects.html",
+        "repository": "https://github.com/0Ju12/data-projects",
+        "stack": [],
+        "links": [
+          "https://github.com/0Ju12/data-projects",
+          "https://0ju12.github.io/data-projects/",
+          "https://0ju12.github.io/data-projects/power/",
+          "https://0ju12.github.io/data-projects/fire/",
+          "https://github.com/0Ju12/data-projects/tree/main/data-agent",
+          "https://0ju12.github.io/data-projects/warehouse/",
+          "https://github.com/0Ju12/data-projects/tree/main/warehouse"
+        ],
+        "activity_id": "data-projects"
+      }
+    ],
+    "learning_notes": [
+      {
+        "id": "2026-11-ai-trend-14-small-on-device-models",
+        "title": "소형·온디바이스 모델 — 작은 모델로 충분한 일은 얼마나 되나",
+        "summary": "수십억 개 이하 파라미터의 작은 모델을 기기 안에서 돌리는 흐름을 정리했습니다. 양자화가 무엇을 줄이는지, 큰 모델과 작은 모델을 섞어 쓰는 구조, 그리고 '작아도 된다'는 주장의 조건을 봅니다.",
+        "date": "2026-11-16",
+        "episode": 14,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-14-small-on-device-models.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-13-reasoning-test-time-compute",
+        "title": "추론 모델과 test-time compute — 더 오래 생각하게 하면 무엇이 달라지나",
+        "summary": "답하기 전에 생각하는 데 계산을 더 쓰는 추론 모델의 원리와, '생각 예산'을 조절할 때 생기는 비용·지연·과잉 사고 문제를 정리했습니다.",
+        "date": "2026-11-16",
+        "episode": 13,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-13-reasoning-test-time-compute.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-12-computer-use",
+        "title": "컴퓨터 사용 에이전트 — 화면을 보고 클릭하는 모델",
+        "summary": "API가 없는 프로그램을 사람처럼 화면으로 다루는 에이전트를 정리했습니다. 화면 캡처 → 좌표 → 행동의 루프, 벤치마크 점수가 사람 기준선을 넘었다는 보고와 그 점수를 그대로 믿기 어려운 이유를 봅니다.",
+        "date": "2026-11-15",
+        "episode": 12,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-12-computer-use.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-11-coding-agents",
+        "title": "코딩 에이전트 — 코드를 쓰는 것보다 확인하는 것이 일이다",
+        "summary": "자동 완성에서 '저장소를 읽고, 고치고, 테스트를 돌리는' 에이전트로 넘어온 흐름을 정리했습니다. 벤치마크 점수가 출처마다 엇갈리는 이유와, 사람의 일이 작성에서 검증으로 옮겨 가는 지점을 봅니다.",
+        "date": "2026-11-15",
+        "episode": 11,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-11-coding-agents.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-10-agent-evaluation",
+        "title": "에이전트 평가 — 점수가 높다는 것과 믿을 수 있다는 것",
+        "summary": "에이전트는 답 하나가 아니라 과정 전체를 평가해야 합니다. 채점기의 세 종류, 한 번 성공과 매번 성공의 차이, 그리고 공개 벤치마크 점수가 오염으로 흔들리는 사례를 정리했습니다.",
+        "date": "2026-11-13",
+        "episode": 10,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-10-agent-evaluation.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-09-guardrails-prompt-injection",
+        "title": "가드레일과 프롬프트 인젝션 방어 — 모델이 읽는 모든 글이 공격 경로다",
+        "summary": "프롬프트 인젝션이 왜 필터 하나로 막히지 않는지, 직접·간접 인젝션의 차이와 '탐지'에서 '권한 설계'로 옮겨 가는 방어 흐름을 정리했습니다.",
+        "date": "2026-11-13",
+        "episode": 9,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-09-guardrails-prompt-injection.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-08-multi-agent",
+        "title": "멀티 에이전트 오케스트레이션 — 나누면 빨라지지만 맥락이 끊긴다",
+        "summary": "일을 여러 에이전트에게 나눠 맡기는 구조(지휘자-작업자, 핸드오프)의 장단점을 정리했습니다. 병렬 조사에서는 효과가 보고됐지만 토큰이 크게 늘고, 맥락이 쪼개져 생기는 실패가 따로 연구될 만큼 흔합니다.",
+        "date": "2026-11-12",
+        "episode": 8,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-08-multi-agent.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-07-agentic-rag",
+        "title": "RAG에서 Agentic RAG로 — 검색을 한 번 할지, 에이전트가 여러 번 할지",
+        "summary": "한 번 검색해 답하는 RAG와, 검색 여부·횟수·결과 품질을 스스로 판단하는 Agentic RAG의 차이를 정리했습니다. Self-RAG·CRAG·Adaptive-RAG가 각각 어느 판단을 추가했는지와, 반복이 늘 때 생기는 비용과 평가 문제를 봅니다.",
+        "date": "2026-11-12",
+        "episode": 7,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-07-agentic-rag.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-06-agent-memory",
+        "title": "에이전트 메모리 — 대화가 끝나도 남는 것과 남기면 안 되는 것",
+        "summary": "컨텍스트 창 안의 단기 기억과 대화 밖에 저장하는 장기 기억을 나누고, 무엇을 쓰고 언제 꺼내는지의 설계를 정리했습니다. 한 번 오염되면 세션이 끝나도 남는 메모리 포이즈닝도 함께 봅니다.",
+        "date": "2026-11-11",
+        "episode": 6,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-06-agent-memory.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-05-react-plan-execute",
+        "title": "ReAct와 Plan-and-Execute — 에이전트는 어떻게 계획하나",
+        "summary": "한 걸음마다 다시 생각하는 ReAct와, 먼저 계획을 세우고 실행하는 Plan-and-Execute의 차이를 비용·속도·실패 방식으로 비교했습니다. ReWOO·LLMCompiler 같은 변형과 코딩 에이전트의 plan mode까지 이어서 봅니다.",
+        "date": "2026-11-11",
+        "episode": 5,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-05-react-plan-execute.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-04-a2a",
+        "title": "에이전트 간 통신 — A2A는 MCP와 무엇이 다른가",
+        "summary": "MCP가 '에이전트와 도구'를 잇는다면 A2A는 '에이전트와 에이전트'를 잇습니다. Agent Card로 상대를 찾고, 상태가 있는 task로 일을 맡기는 구조와, 버전마다 바뀐 부분·엇갈리는 보도를 정리했습니다.",
+        "date": "2026-11-10",
+        "episode": 4,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-04-a2a.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-03-mcp",
+        "title": "MCP — 도구를 매번 새로 붙이지 않는 방법",
+        "summary": "지난 회차의 tool use를 앱마다 다시 만들지 않도록 '도구 서버'를 표준 규격으로 분리한 MCP의 구조(호스트·클라이언트·서버, tools·resources·prompts)와 최근 사양 변화, 보안상 약한 고리를 정리했습니다.",
+        "date": "2026-11-10",
+        "episode": 3,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-03-mcp.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-02-tool-use",
+        "title": "Tool use — 모델은 함수를 실행하지 않는다",
+        "summary": "Function calling의 실제 동작(모델은 호출 '요청'만 만들고 실행은 내 코드가 한다), strict 스키마와 Structured Outputs의 관계, 도구를 쓸 때와 출력 형식만 고정할 때를 구분했습니다.",
+        "date": "2026-11-09",
+        "episode": 2,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-02-tool-use.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-01-agent",
+        "title": "AI 에이전트란 무엇인가 — LLM이 도구를 쥐고 반복할 때",
+        "summary": "에이전트를 '도구를 쓰며 스스로 다음 단계를 정하는 LLM 루프'로 정의하고, 워크플로와 무엇이 다른지, 기업 도입 숫자가 왜 엇갈리는지 정리했습니다.",
+        "date": "2026-11-09",
+        "episode": 1,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-01-agent.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      }
+    ],
+    "scope": "공개 프로젝트 YAML과 공개 AI 글의 제목·요약만 가져옵니다. 기존 개인 기록과 실험 결과를 수정하지 않습니다.",
+    "study": {
+      "note_count": 54,
+      "url": "https://0ju12.github.io/study/index.html#/notes",
+      "highlights": [
+        {
+          "title": "JavaScript · Basic Syntax 02",
+          "url": "https://0ju12.github.io/study/notes/js_basic_syntax_2.html"
+        },
+        {
+          "title": "JavaScript · Controlling Event",
+          "url": "https://0ju12.github.io/study/notes/js_controlling_event.html"
+        }
+      ]
+    }
+  }
 }
