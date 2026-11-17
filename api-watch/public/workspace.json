@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-17T09:43:02.893395+00:00",
+  "last_check_at": "2026-11-17T18:45:09.194599+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.831539+00:00",
-        "duration_ms": 415.71
+        "checked_at": "2026-11-17T18:45:09.116891+00:00",
+        "duration_ms": 620.33
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.834567+00:00",
-        "duration_ms": 76.11
+        "checked_at": "2026-11-17T18:45:09.120288+00:00",
+        "duration_ms": 222.21
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.836851+00:00",
-        "duration_ms": 2456.34
+        "checked_at": "2026-11-17T18:45:09.122782+00:00",
+        "duration_ms": 333.46
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.838965+00:00",
-        "duration_ms": 377.4
+        "checked_at": "2026-11-17T18:45:09.125382+00:00",
+        "duration_ms": 926.75
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.840614+00:00",
-        "duration_ms": 75.8
+        "checked_at": "2026-11-17T18:45:09.127402+00:00",
+        "duration_ms": 92.55
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.842539+00:00",
-        "duration_ms": 321.78
+        "checked_at": "2026-11-17T18:45:09.129790+00:00",
+        "duration_ms": 462.88
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.844525+00:00",
-        "duration_ms": 1687.03
+        "checked_at": "2026-11-17T18:45:09.132208+00:00",
+        "duration_ms": 1988.6
       }
     },
     {
@@ -110,8 +110,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.846396+00:00",
-        "duration_ms": 182.33
+        "checked_at": "2026-11-17T18:45:09.134563+00:00",
+        "duration_ms": 200.89
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.848664+00:00",
-        "duration_ms": 105.95
+        "checked_at": "2026-11-17T18:45:09.137440+00:00",
+        "duration_ms": 274.17
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.851436+00:00",
-        "duration_ms": 88.61
+        "checked_at": "2026-11-17T18:45:09.140803+00:00",
+        "duration_ms": 139.06
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.853344+00:00",
-        "duration_ms": 422.88
+        "checked_at": "2026-11-17T18:45:09.143145+00:00",
+        "duration_ms": 633.96
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.855127+00:00",
-        "duration_ms": 489.95
+        "checked_at": "2026-11-17T18:45:09.145209+00:00",
+        "duration_ms": 338.59
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.857059+00:00",
-        "duration_ms": 231.83
+        "checked_at": "2026-11-17T18:45:09.147498+00:00",
+        "duration_ms": 658.41
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.858833+00:00",
-        "duration_ms": 29.71
+        "checked_at": "2026-11-17T18:45:09.149671+00:00",
+        "duration_ms": 53.42
       }
     },
     {
@@ -207,9 +207,9 @@
         "docs": "https://openlibrary.org/dev/docs/api/search"
       },
       "last_run": {
-        "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.861157+00:00",
-        "duration_ms": 396.59
+        "status": "warning",
+        "checked_at": "2026-11-17T18:45:09.152891+00:00",
+        "duration_ms": 84.01
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.862900+00:00",
-        "duration_ms": 154.58
+        "checked_at": "2026-11-17T18:45:09.155847+00:00",
+        "duration_ms": 350.93
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.864723+00:00",
-        "duration_ms": 113.47
+        "checked_at": "2026-11-17T18:45:09.157895+00:00",
+        "duration_ms": 193.21
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.874007+00:00",
-        "duration_ms": 28.46
+        "checked_at": "2026-11-17T18:45:09.169058+00:00",
+        "duration_ms": 421.13
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.882230+00:00",
-        "duration_ms": 198.87
+        "checked_at": "2026-11-17T18:45:09.180362+00:00",
+        "duration_ms": 45.26
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-17T09:43:02.886617+00:00",
-        "duration_ms": 146.49
+        "checked_at": "2026-11-17T18:45:09.185721+00:00",
+        "duration_ms": 495.3
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.889488+00:00",
-        "duration_ms": 90.83
+        "checked_at": "2026-11-17T18:45:09.189188+00:00",
+        "duration_ms": 87.29
       }
     },
     {
@@ -306,12 +306,24 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T09:43:02.893395+00:00",
-        "duration_ms": 105.49
+        "checked_at": "2026-11-17T18:45:09.194599+00:00",
+        "duration_ms": 73.62
       }
     }
   ],
   "incidents": [
+    {
+      "id": 5,
+      "target": "open-library",
+      "key": "availability",
+      "kind": "availability",
+      "severity": "warning",
+      "message": "URLError · 응답을 읽지 못했습니다.",
+      "opened_at": "2026-11-17T18:45:09.152891+00:00",
+      "last_seen_at": "2026-11-17T18:45:09.152891+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    },
     {
       "id": 4,
       "target": "rest-countries",
@@ -320,57 +332,69 @@
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-17T09:43:02.886617+00:00",
+      "last_seen_at": "2026-11-17T18:45:09.185721+00:00",
       "resolved_at": null,
-      "occurrences": 9
+      "occurrences": 10
     }
   ],
   "ai_latest": {
-    "date": "2026-11-17",
-    "item_id": "langchain-ai/langgraph:444925298",
-    "created_at": "2026-11-16T17:24:54.598562+00:00",
-    "kind": "release",
-    "label": "관심 저장소의 공식 릴리스",
-    "title": "LangGraph · langgraph-checkpoint-postgres==3.2.1",
-    "technology": "LangGraph",
-    "official_published_at": "2026-11-14T01:39:04Z",
-    "collected_at": "2026-11-16T17:24:54.598562+00:00",
-    "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
-    "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+    "date": "2026-11-18",
+    "item_id": "model:MiniMaxAI/MiniMax-H3-Image",
+    "created_at": "2026-11-17T18:45:09.198098+00:00",
+    "kind": "model",
+    "label": "공개 모델 저장소 업데이트 · 최초 발표일과 구분",
+    "title": "MiniMaxAI/MiniMax-H3-Image",
+    "technology": "MiniMaxAI/MiniMax-H3-Image",
+    "official_published_at": null,
+    "collected_at": "2026-11-17T18:45:09.198098+00:00",
+    "what": "Hugging Face에 공개된 모델 저장소입니다. 메타데이터의 작업 유형은 text-to-image이며, 실제 지원 입력·출력과 사용 조건은 모델 카드에서 확인해야 합니다.",
+    "why_for_you": "본인의 VQA·교정 모델·RAG 실험에서 같은 평가 입력과 기준선을 고정해 비교하는 후보로 검토할 수 있습니다. 최근 수정이나 다운로드 수만으로 더 우수하다고 판단하지 않습니다.",
     "flow": [
-      "상태 입력",
-      "검색·도구 노드",
-      "검증·분기",
-      "최종 응답"
+      "모델 카드·라이선스 확인",
+      "작업·입출력 확인",
+      "기준선과 평가 설계",
+      "자원·오류 유형 비교"
     ],
-    "release_excerpt": "Changes since checkpointpostgres==3.2.0 * release(checkpoint-postgres): 3.2.1 (#9700) * release(checkpoint): 4.3.2 (#9699) * perf(checkpoint-postgres): run a lone store read outside a pipeline (#9635) * perf(checkpoint-postgres): skip the async saver's lock for connection pools (#9638) * perf(checkpoint-postgres): load no pending writes without a thread hop (#9639) * release(checkpoint): 4.3.1 (#9447) * chore(deps): bump certifi from 2026.1.4 to 2026.10.19 in /libs/checkpoint-postgres (#9369)",
+    "release_excerpt": "모델을 다운로드하거나 실행하지 않고 공개 메타데이터를 읽어 구성한 학습 노트입니다.",
     "facts": [
       {
-        "label": "공식 발표일",
-        "value": "2026-11-14T01:39:04Z"
+        "label": "모델 ID",
+        "value": "MiniMaxAI/MiniMax-H3-Image"
       },
       {
-        "label": "버전",
-        "value": "checkpointpostgres==3.2.1"
+        "label": "작업 유형",
+        "value": "text-to-image"
       },
       {
-        "label": "저장소",
-        "value": "langchain-ai/langgraph"
+        "label": "저장소 최근 수정일",
+        "value": "2026-11-16T10:00:08.000Z"
+      },
+      {
+        "label": "라이브러리",
+        "value": "minimax-h3"
+      },
+      {
+        "label": "라이선스",
+        "value": "모델 카드 원문 확인 필요"
+      },
+      {
+        "label": "접근 제한",
+        "value": "False"
       }
     ],
     "limits": [
-      "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
-      "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+      "저장소 수정일은 신규 모델의 최초 발표일과 다를 수 있습니다.",
+      "메타데이터만으로 성능·메모리·라이선스 적합성을 검증하지 않았습니다."
     ],
-    "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+    "question": "이 모델을 내 프로젝트의 기준선과 비교할 때 데이터·프롬프트·평가 조건을 어떻게 고정할까요?",
     "sources": [
       {
-        "title": "공식 릴리스 또는 프로젝트 원문",
-        "url": "https://github.com/langchain-ai/langgraph/releases/tag/checkpointpostgres%3D%3D3.2.1"
+        "title": "모델 카드",
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-H3-Image"
       },
       {
-        "title": "공식 저장소",
-        "url": "https://github.com/langchain-ai/langgraph"
+        "title": "모델 메타데이터 원문",
+        "url": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-H3-Image"
       }
     ],
     "exercise": {
@@ -387,6 +411,79 @@
     "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
   },
   "ai_archive": [
+    {
+      "date": "2026-11-18",
+      "item_id": "model:MiniMaxAI/MiniMax-H3-Image",
+      "created_at": "2026-11-17T18:45:09.198098+00:00",
+      "kind": "model",
+      "label": "공개 모델 저장소 업데이트 · 최초 발표일과 구분",
+      "title": "MiniMaxAI/MiniMax-H3-Image",
+      "technology": "MiniMaxAI/MiniMax-H3-Image",
+      "official_published_at": null,
+      "collected_at": "2026-11-17T18:45:09.198098+00:00",
+      "what": "Hugging Face에 공개된 모델 저장소입니다. 메타데이터의 작업 유형은 text-to-image이며, 실제 지원 입력·출력과 사용 조건은 모델 카드에서 확인해야 합니다.",
+      "why_for_you": "본인의 VQA·교정 모델·RAG 실험에서 같은 평가 입력과 기준선을 고정해 비교하는 후보로 검토할 수 있습니다. 최근 수정이나 다운로드 수만으로 더 우수하다고 판단하지 않습니다.",
+      "flow": [
+        "모델 카드·라이선스 확인",
+        "작업·입출력 확인",
+        "기준선과 평가 설계",
+        "자원·오류 유형 비교"
+      ],
+      "release_excerpt": "모델을 다운로드하거나 실행하지 않고 공개 메타데이터를 읽어 구성한 학습 노트입니다.",
+      "facts": [
+        {
+          "label": "모델 ID",
+          "value": "MiniMaxAI/MiniMax-H3-Image"
+        },
+        {
+          "label": "작업 유형",
+          "value": "text-to-image"
+        },
+        {
+          "label": "저장소 최근 수정일",
+          "value": "2026-11-16T10:00:08.000Z"
+        },
+        {
+          "label": "라이브러리",
+          "value": "minimax-h3"
+        },
+        {
+          "label": "라이선스",
+          "value": "모델 카드 원문 확인 필요"
+        },
+        {
+          "label": "접근 제한",
+          "value": "False"
+        }
+      ],
+      "limits": [
+        "저장소 수정일은 신규 모델의 최초 발표일과 다를 수 있습니다.",
+        "메타데이터만으로 성능·메모리·라이선스 적합성을 검증하지 않았습니다."
+      ],
+      "question": "이 모델을 내 프로젝트의 기준선과 비교할 때 데이터·프롬프트·평가 조건을 어떻게 고정할까요?",
+      "sources": [
+        {
+          "title": "모델 카드",
+          "url": "https://huggingface.co/MiniMaxAI/MiniMax-H3-Image"
+        },
+        {
+          "title": "모델 메타데이터 원문",
+          "url": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-H3-Image"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    },
     {
       "date": "2026-11-17",
       "item_id": "langchain-ai/langgraph:444925298",
