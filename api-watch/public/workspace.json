@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-18T10:40:16.305949+00:00",
+  "last_check_at": "2026-11-18T19:02:21.334669+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.243304+00:00",
-        "duration_ms": 622.83
+        "checked_at": "2026-11-18T19:02:21.238181+00:00",
+        "duration_ms": 739.71
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.246321+00:00",
-        "duration_ms": 107.01
+        "checked_at": "2026-11-18T19:02:21.240925+00:00",
+        "duration_ms": 170.43
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.248365+00:00",
-        "duration_ms": 1344.89
+        "checked_at": "2026-11-18T19:02:21.242756+00:00",
+        "duration_ms": 293.51
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.250287+00:00",
-        "duration_ms": 390.13
+        "checked_at": "2026-11-18T19:02:21.244423+00:00",
+        "duration_ms": 199.79
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.251846+00:00",
-        "duration_ms": 115.77
+        "checked_at": "2026-11-18T19:02:21.245725+00:00",
+        "duration_ms": 210.07
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.253612+00:00",
-        "duration_ms": 440.21
+        "checked_at": "2026-11-18T19:02:21.247396+00:00",
+        "duration_ms": 557.98
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.255567+00:00",
-        "duration_ms": 620.16
+        "checked_at": "2026-11-18T19:02:21.249032+00:00",
+        "duration_ms": 2044.74
       }
     },
     {
@@ -109,9 +109,9 @@
         "docs": "https://docs.github.com/en/rest/repos/repos#get-a-repository"
       },
       "last_run": {
-        "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.257216+00:00",
-        "duration_ms": 295.59
+        "status": "warning",
+        "checked_at": "2026-11-18T19:02:21.250638+00:00",
+        "duration_ms": 45.74
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.259380+00:00",
-        "duration_ms": 137.69
+        "checked_at": "2026-11-18T19:02:21.252946+00:00",
+        "duration_ms": 158.0
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.261689+00:00",
-        "duration_ms": 124.49
+        "checked_at": "2026-11-18T19:02:21.255195+00:00",
+        "duration_ms": 102.67
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.263352+00:00",
-        "duration_ms": 579.54
+        "checked_at": "2026-11-18T19:02:21.256625+00:00",
+        "duration_ms": 716.91
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.264912+00:00",
-        "duration_ms": 400.02
+        "checked_at": "2026-11-18T19:02:21.258231+00:00",
+        "duration_ms": 565.42
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.266555+00:00",
-        "duration_ms": 106.83
+        "checked_at": "2026-11-18T19:02:21.259573+00:00",
+        "duration_ms": 106.82
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.268176+00:00",
-        "duration_ms": 86.41
+        "checked_at": "2026-11-18T19:02:21.261149+00:00",
+        "duration_ms": 112.92
       }
     },
     {
@@ -208,8 +208,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.270337+00:00",
-        "duration_ms": 181.37
+        "checked_at": "2026-11-18T19:02:21.262899+00:00",
+        "duration_ms": 627.81
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.271950+00:00",
-        "duration_ms": 325.01
+        "checked_at": "2026-11-18T19:02:21.264498+00:00",
+        "duration_ms": 512.49
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.273662+00:00",
-        "duration_ms": 171.58
+        "checked_at": "2026-11-18T19:02:21.266036+00:00",
+        "duration_ms": 184.1
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.289746+00:00",
-        "duration_ms": 120.03
+        "checked_at": "2026-11-18T19:02:21.316500+00:00",
+        "duration_ms": 115.42
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.296379+00:00",
-        "duration_ms": 121.14
+        "checked_at": "2026-11-18T19:02:21.324387+00:00",
+        "duration_ms": 63.1
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-18T10:40:16.299877+00:00",
-        "duration_ms": 214.24
+        "checked_at": "2026-11-18T19:02:21.328503+00:00",
+        "duration_ms": 110.83
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-18T10:40:16.302520+00:00",
-        "duration_ms": 61.33
+        "checked_at": "2026-11-18T19:02:21.331035+00:00",
+        "duration_ms": 39.82
       }
     },
     {
@@ -305,24 +305,24 @@
         "docs": "https://open-meteo.com/en/docs"
       },
       "last_run": {
-        "status": "critical",
-        "checked_at": "2026-11-18T10:40:16.305949+00:00",
-        "duration_ms": 12113.74
+        "status": "healthy",
+        "checked_at": "2026-11-18T19:02:21.334669+00:00",
+        "duration_ms": 25.16
       }
     }
   ],
   "incidents": [
     {
-      "id": 1,
-      "target": "weather",
+      "id": 10,
+      "target": "github-catalog",
       "key": "availability",
       "kind": "availability",
-      "severity": "error",
-      "message": "URLError · 응답을 읽지 못했습니다.",
-      "opened_at": "2026-11-18T08:56:54.366276+00:00",
-      "last_seen_at": "2026-11-18T10:40:16.305949+00:00",
+      "severity": "warning",
+      "message": "HTTP 403",
+      "opened_at": "2026-11-18T19:02:21.250638+00:00",
+      "last_seen_at": "2026-11-18T19:02:21.250638+00:00",
       "resolved_at": null,
-      "occurrences": 2
+      "occurrences": 1
     },
     {
       "id": 9,
@@ -332,69 +332,57 @@
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-18T10:40:16.299877+00:00",
+      "last_seen_at": "2026-11-18T19:02:21.328503+00:00",
       "resolved_at": null,
-      "occurrences": 14
+      "occurrences": 15
     }
   ],
   "ai_latest": {
-    "date": "2026-11-18",
-    "item_id": "model:MiniMaxAI/MiniMax-H3-Image",
-    "created_at": "2026-11-17T18:45:09.198098+00:00",
-    "kind": "model",
-    "label": "공개 모델 저장소 업데이트 · 최초 발표일과 구분",
-    "title": "MiniMaxAI/MiniMax-H3-Image",
-    "technology": "MiniMaxAI/MiniMax-H3-Image",
-    "official_published_at": null,
-    "collected_at": "2026-11-17T18:45:09.198098+00:00",
-    "what": "Hugging Face에 공개된 모델 저장소입니다. 메타데이터의 작업 유형은 text-to-image이며, 실제 지원 입력·출력과 사용 조건은 모델 카드에서 확인해야 합니다.",
-    "why_for_you": "본인의 VQA·교정 모델·RAG 실험에서 같은 평가 입력과 기준선을 고정해 비교하는 후보로 검토할 수 있습니다. 최근 수정이나 다운로드 수만으로 더 우수하다고 판단하지 않습니다.",
+    "date": "2026-11-19",
+    "item_id": "vllm-project/vllm:447739190",
+    "created_at": "2026-11-18T19:02:21.337069+00:00",
+    "kind": "release",
+    "label": "관심 저장소의 공식 릴리스",
+    "title": "vLLM · v0.34.0",
+    "technology": "vLLM",
+    "official_published_at": "2026-11-16T23:22:00Z",
+    "collected_at": "2026-11-18T19:02:21.337069+00:00",
+    "what": "언어 모델 추론을 서버로 제공할 때 처리량과 메모리 사용을 다루는 추론 엔진입니다.",
+    "why_for_you": "모델을 학습한 뒤 API 서비스로 제공하는 과정, 동시 요청·지연·메모리 조건을 비교하는 실험으로 확장할 수 있습니다.",
     "flow": [
-      "모델 카드·라이선스 확인",
-      "작업·입출력 확인",
-      "기준선과 평가 설계",
-      "자원·오류 유형 비교"
+      "요청 수신",
+      "스케줄링·배치",
+      "모델 추론",
+      "토큰 응답"
     ],
-    "release_excerpt": "모델을 다운로드하거나 실행하지 않고 공개 메타데이터를 읽어 구성한 학습 노트입니다.",
+    "release_excerpt": "# v0.34.0 **1,061 commits from 412 contributors (120 new).** Thank you! ## TL;DR - **10 new models** (Mistral Large 4, MiniMax-M3.1-Flash, Nemotron-3.5-Transcribe, and more!) - **Extensible KV cache is on by default:** vLLM sizes the KV cache from memory actually free after warmup, so most models get a bigger cache and more throughput. - **Model Runner V1 is gone.** Model Runner V2 is now the only GPU runner. - **Big speedups** on Blackwell and MI355X: up to 1.95× decode (Step5 on GB200), 1.6× throughput (GLM-5.3-F",
     "facts": [
       {
-        "label": "모델 ID",
-        "value": "MiniMaxAI/MiniMax-H3-Image"
+        "label": "공식 발표일",
+        "value": "2026-11-16T23:22:00Z"
       },
       {
-        "label": "작업 유형",
-        "value": "text-to-image"
+        "label": "버전",
+        "value": "v0.34.0"
       },
       {
-        "label": "저장소 최근 수정일",
-        "value": "2026-11-16T10:00:08.000Z"
-      },
-      {
-        "label": "라이브러리",
-        "value": "minimax-h3"
-      },
-      {
-        "label": "라이선스",
-        "value": "모델 카드 원문 확인 필요"
-      },
-      {
-        "label": "접근 제한",
-        "value": "False"
+        "label": "저장소",
+        "value": "vllm-project/vllm"
       }
     ],
     "limits": [
-      "저장소 수정일은 신규 모델의 최초 발표일과 다를 수 있습니다.",
-      "메타데이터만으로 성능·메모리·라이선스 적합성을 검증하지 않았습니다."
+      "실제 GPU·모델·배치 조건 없이 속도 개선 수치를 일반화할 수 없습니다.",
+      "학습 프레임워크와 추론 서빙 엔진의 역할을 구분해야 합니다."
     ],
-    "question": "이 모델을 내 프로젝트의 기준선과 비교할 때 데이터·프롬프트·평가 조건을 어떻게 고정할까요?",
+    "question": "평균 응답 시간과 첫 토큰 지연, 처리량은 각각 어떤 의미가 있을까요?",
     "sources": [
       {
-        "title": "모델 카드",
-        "url": "https://huggingface.co/MiniMaxAI/MiniMax-H3-Image"
+        "title": "공식 릴리스 또는 프로젝트 원문",
+        "url": "https://github.com/vllm-project/vllm/releases/tag/v0.34.0"
       },
       {
-        "title": "모델 메타데이터 원문",
-        "url": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-H3-Image"
+        "title": "공식 저장소",
+        "url": "https://github.com/vllm-project/vllm"
       }
     ],
     "exercise": {
@@ -411,6 +399,67 @@
     "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
   },
   "ai_archive": [
+    {
+      "date": "2026-11-19",
+      "item_id": "vllm-project/vllm:447739190",
+      "created_at": "2026-11-18T19:02:21.337069+00:00",
+      "kind": "release",
+      "label": "관심 저장소의 공식 릴리스",
+      "title": "vLLM · v0.34.0",
+      "technology": "vLLM",
+      "official_published_at": "2026-11-16T23:22:00Z",
+      "collected_at": "2026-11-18T19:02:21.337069+00:00",
+      "what": "언어 모델 추론을 서버로 제공할 때 처리량과 메모리 사용을 다루는 추론 엔진입니다.",
+      "why_for_you": "모델을 학습한 뒤 API 서비스로 제공하는 과정, 동시 요청·지연·메모리 조건을 비교하는 실험으로 확장할 수 있습니다.",
+      "flow": [
+        "요청 수신",
+        "스케줄링·배치",
+        "모델 추론",
+        "토큰 응답"
+      ],
+      "release_excerpt": "# v0.34.0 **1,061 commits from 412 contributors (120 new).** Thank you! ## TL;DR - **10 new models** (Mistral Large 4, MiniMax-M3.1-Flash, Nemotron-3.5-Transcribe, and more!) - **Extensible KV cache is on by default:** vLLM sizes the KV cache from memory actually free after warmup, so most models get a bigger cache and more throughput. - **Model Runner V1 is gone.** Model Runner V2 is now the only GPU runner. - **Big speedups** on Blackwell and MI355X: up to 1.95× decode (Step5 on GB200), 1.6× throughput (GLM-5.3-F",
+      "facts": [
+        {
+          "label": "공식 발표일",
+          "value": "2026-11-16T23:22:00Z"
+        },
+        {
+          "label": "버전",
+          "value": "v0.34.0"
+        },
+        {
+          "label": "저장소",
+          "value": "vllm-project/vllm"
+        }
+      ],
+      "limits": [
+        "실제 GPU·모델·배치 조건 없이 속도 개선 수치를 일반화할 수 없습니다.",
+        "학습 프레임워크와 추론 서빙 엔진의 역할을 구분해야 합니다."
+      ],
+      "question": "평균 응답 시간과 첫 토큰 지연, 처리량은 각각 어떤 의미가 있을까요?",
+      "sources": [
+        {
+          "title": "공식 릴리스 또는 프로젝트 원문",
+          "url": "https://github.com/vllm-project/vllm/releases/tag/v0.34.0"
+        },
+        {
+          "title": "공식 저장소",
+          "url": "https://github.com/vllm-project/vllm"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    },
     {
       "date": "2026-11-18",
       "item_id": "model:MiniMaxAI/MiniMax-H3-Image",
