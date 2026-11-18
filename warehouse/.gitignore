@@ -5,6 +5,6 @@ exports/
 *.duckdb
 *.duckdb.wal
 airflow_home/
-docs/
+# docs/ 는 커밋함 — 매시 도는 API Watch 배포가 저장소의 대시보드를 그대로 싣기 때문 (빠지면 /warehouse/ 가 404)
 state/.*.tmp.parquet
 .user.yml
