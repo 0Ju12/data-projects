@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-17T18:45:09.194599+00:00",
+  "last_check_at": "2026-11-18T01:51:33.509246+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.116891+00:00",
-        "duration_ms": 620.33
+        "checked_at": "2026-11-18T01:51:33.399005+00:00",
+        "duration_ms": 639.8
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.120288+00:00",
-        "duration_ms": 222.21
+        "checked_at": "2026-11-18T01:51:33.406797+00:00",
+        "duration_ms": 122.29
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.122782+00:00",
-        "duration_ms": 333.46
+        "checked_at": "2026-11-18T01:51:33.412075+00:00",
+        "duration_ms": 597.73
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.125382+00:00",
-        "duration_ms": 926.75
+        "checked_at": "2026-11-18T01:51:33.415831+00:00",
+        "duration_ms": 491.33
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.127402+00:00",
-        "duration_ms": 92.55
+        "checked_at": "2026-11-18T01:51:33.419443+00:00",
+        "duration_ms": 124.02
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.129790+00:00",
-        "duration_ms": 462.88
+        "checked_at": "2026-11-18T01:51:33.421597+00:00",
+        "duration_ms": 112.09
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.132208+00:00",
-        "duration_ms": 1988.6
+        "checked_at": "2026-11-18T01:51:33.423665+00:00",
+        "duration_ms": 1762.94
       }
     },
     {
@@ -109,9 +109,9 @@
         "docs": "https://docs.github.com/en/rest/repos/repos#get-a-repository"
       },
       "last_run": {
-        "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.134563+00:00",
-        "duration_ms": 200.89
+        "status": "warning",
+        "checked_at": "2026-11-18T01:51:33.425651+00:00",
+        "duration_ms": 15.99
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.137440+00:00",
-        "duration_ms": 274.17
+        "checked_at": "2026-11-18T01:51:33.428507+00:00",
+        "duration_ms": 186.25
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.140803+00:00",
-        "duration_ms": 139.06
+        "checked_at": "2026-11-18T01:51:33.431294+00:00",
+        "duration_ms": 148.65
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.143145+00:00",
-        "duration_ms": 633.96
+        "checked_at": "2026-11-18T01:51:33.433022+00:00",
+        "duration_ms": 599.47
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.145209+00:00",
-        "duration_ms": 338.59
+        "checked_at": "2026-11-18T01:51:33.434874+00:00",
+        "duration_ms": 396.86
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.147498+00:00",
-        "duration_ms": 658.41
+        "checked_at": "2026-11-18T01:51:33.436624+00:00",
+        "duration_ms": 113.75
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.149671+00:00",
-        "duration_ms": 53.42
+        "checked_at": "2026-11-18T01:51:33.438697+00:00",
+        "duration_ms": 57.57
       }
     },
     {
@@ -207,9 +207,9 @@
         "docs": "https://openlibrary.org/dev/docs/api/search"
       },
       "last_run": {
-        "status": "warning",
-        "checked_at": "2026-11-17T18:45:09.152891+00:00",
-        "duration_ms": 84.01
+        "status": "healthy",
+        "checked_at": "2026-11-18T01:51:33.440941+00:00",
+        "duration_ms": 227.91
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.155847+00:00",
-        "duration_ms": 350.93
+        "checked_at": "2026-11-18T01:51:33.442985+00:00",
+        "duration_ms": 286.17
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.157895+00:00",
-        "duration_ms": 193.21
+        "checked_at": "2026-11-18T01:51:33.444858+00:00",
+        "duration_ms": 162.23
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.169058+00:00",
-        "duration_ms": 421.13
+        "checked_at": "2026-11-18T01:51:33.470567+00:00",
+        "duration_ms": 105.98
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.180362+00:00",
-        "duration_ms": 45.26
+        "checked_at": "2026-11-18T01:51:33.489755+00:00",
+        "duration_ms": 50.63
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-17T18:45:09.185721+00:00",
-        "duration_ms": 495.3
+        "checked_at": "2026-11-18T01:51:33.494332+00:00",
+        "duration_ms": 175.8
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.189188+00:00",
-        "duration_ms": 87.29
+        "checked_at": "2026-11-18T01:51:33.497821+00:00",
+        "duration_ms": 123.57
       }
     },
     {
@@ -305,36 +305,48 @@
         "docs": "https://open-meteo.com/en/docs"
       },
       "last_run": {
-        "status": "healthy",
-        "checked_at": "2026-11-17T18:45:09.194599+00:00",
-        "duration_ms": 73.62
+        "status": "warning",
+        "checked_at": "2026-11-18T01:51:33.509246+00:00",
+        "duration_ms": 12051.71
       }
     }
   ],
   "incidents": [
     {
-      "id": 5,
-      "target": "open-library",
+      "id": 7,
+      "target": "weather",
       "key": "availability",
       "kind": "availability",
       "severity": "warning",
       "message": "URLError · 응답을 읽지 못했습니다.",
-      "opened_at": "2026-11-17T18:45:09.152891+00:00",
-      "last_seen_at": "2026-11-17T18:45:09.152891+00:00",
+      "opened_at": "2026-11-18T01:51:33.509246+00:00",
+      "last_seen_at": "2026-11-18T01:51:33.509246+00:00",
       "resolved_at": null,
       "occurrences": 1
     },
     {
-      "id": 4,
+      "id": 6,
+      "target": "github-catalog",
+      "key": "availability",
+      "kind": "availability",
+      "severity": "warning",
+      "message": "HTTP 403",
+      "opened_at": "2026-11-18T01:51:33.425651+00:00",
+      "last_seen_at": "2026-11-18T01:51:33.425651+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    },
+    {
+      "id": 5,
       "target": "rest-countries",
       "key": "json",
       "kind": "format",
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-17T18:45:09.185721+00:00",
+      "last_seen_at": "2026-11-18T01:51:33.494332+00:00",
       "resolved_at": null,
-      "occurrences": 10
+      "occurrences": 11
     }
   ],
   "ai_latest": {
@@ -610,9 +622,9 @@
   "portfolio": {
     "schema_version": 1,
     "source_repository": "0Ju12/0Ju12.github.io",
-    "source_sha": "4c6052640e90ef03f9c806bd6929fc29b30d6748",
-    "source_updated_at": "2026-11-17T08:57:32Z",
-    "synced_at": "2026-11-17T09:43:00.055611+00:00",
+    "source_sha": "6d676bbbb78eabb48ce2427a6bea6334cb9ce56d",
+    "source_updated_at": "2026-11-18T00:00:40Z",
+    "synced_at": "2026-11-18T01:51:20.139747+00:00",
     "links": {
       "preparation": "https://0ju12.github.io/study/index.html",
       "study": "https://0ju12.github.io/study/index.html#/notes",
