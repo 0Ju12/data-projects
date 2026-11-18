@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_repository": "0Ju12/0Ju12.github.io",
-  "source_sha": "6d676bbbb78eabb48ce2427a6bea6334cb9ce56d",
-  "source_updated_at": "2026-11-18T00:00:40Z",
-  "synced_at": "2026-11-18T01:51:20.139747+00:00",
+  "source_sha": "0847f6909384c7a37746605660c4ccfae8feb2bd",
+  "source_updated_at": "2026-11-18T03:27:49Z",
+  "synced_at": "2026-11-18T05:02:08.009009+00:00",
   "links": {
     "preparation": "https://0ju12.github.io/study/index.html",
     "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -204,6 +204,24 @@
     }
   ],
   "learning_notes": [
+    {
+      "id": "2026-11-ai-trend-18-ai-regulation-safety",
+      "title": "AI 규제·안전 — EU AI Act와 한국 AI 기본법은 개발자에게 무엇을 요구하나",
+      "summary": "2026년 실제로 시행되거나 일정이 바뀐 EU AI Act와 한국 AI 기본법을 개발자 관점에서 정리했습니다. 위험도에 따라 의무가 달라지는 구조, 생성물 표시, 그리고 일정이 출처마다 엇갈리는 부분을 봅니다.",
+      "date": "2026-11-18",
+      "episode": 18,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-18-ai-regulation-safety.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
+    {
+      "id": "2026-11-ai-trend-17-multimodal-generation",
+      "title": "멀티모달 생성 — 이미지·음성·영상을 만드는 모델은 무엇이 다른가",
+      "summary": "글자 대신 이미지·음성·영상을 만들어 내는 생성 모델의 구조와 2026년의 흐름(소리까지 함께 만드는 영상 모델, 여러 입력을 섞는 모델)을 정리했습니다. 평가와 출처 표시가 텍스트보다 어려운 이유도 봅니다.",
+      "date": "2026-11-18",
+      "episode": 17,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-17-multimodal-generation.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
     {
       "id": "2026-11-ai-trend-16-cost-latency-optimization",
       "title": "비용·지연 최적화 — 캐싱·라우팅·배치로 같은 답을 더 싸고 빠르게",
