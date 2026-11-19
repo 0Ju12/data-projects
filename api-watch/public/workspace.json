@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-19T01:28:06.109273+00:00",
+  "last_check_at": "2026-11-19T09:28:56.166534+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:05.855980+00:00",
-        "duration_ms": 627.98
+        "checked_at": "2026-11-19T09:28:56.080002+00:00",
+        "duration_ms": 609.38
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.044700+00:00",
-        "duration_ms": 92.34
+        "checked_at": "2026-11-19T09:28:56.084653+00:00",
+        "duration_ms": 157.83
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.047359+00:00",
-        "duration_ms": 376.14
+        "checked_at": "2026-11-19T09:28:56.087214+00:00",
+        "duration_ms": 398.65
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.049484+00:00",
-        "duration_ms": 467.61
+        "checked_at": "2026-11-19T09:28:56.089858+00:00",
+        "duration_ms": 349.3
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.051156+00:00",
-        "duration_ms": 92.88
+        "checked_at": "2026-11-19T09:28:56.091987+00:00",
+        "duration_ms": 116.19
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.055275+00:00",
-        "duration_ms": 447.91
+        "checked_at": "2026-11-19T09:28:56.094409+00:00",
+        "duration_ms": 493.44
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.057524+00:00",
-        "duration_ms": 1710.91
+        "checked_at": "2026-11-19T09:28:56.097093+00:00",
+        "duration_ms": 1806.96
       }
     },
     {
@@ -110,8 +110,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.059447+00:00",
-        "duration_ms": 155.35
+        "checked_at": "2026-11-19T09:28:56.099514+00:00",
+        "duration_ms": 304.71
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.062005+00:00",
-        "duration_ms": 163.89
+        "checked_at": "2026-11-19T09:28:56.102585+00:00",
+        "duration_ms": 123.13
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.064719+00:00",
-        "duration_ms": 142.91
+        "checked_at": "2026-11-19T09:28:56.106364+00:00",
+        "duration_ms": 121.29
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.066508+00:00",
-        "duration_ms": 612.71
+        "checked_at": "2026-11-19T09:28:56.108995+00:00",
+        "duration_ms": 565.19
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.068495+00:00",
-        "duration_ms": 472.08
+        "checked_at": "2026-11-19T09:28:56.111531+00:00",
+        "duration_ms": 327.9
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.070355+00:00",
-        "duration_ms": 304.89
+        "checked_at": "2026-11-19T09:28:56.114157+00:00",
+        "duration_ms": 319.25
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.072107+00:00",
-        "duration_ms": 97.46
+        "checked_at": "2026-11-19T09:28:56.116600+00:00",
+        "duration_ms": 50.48
       }
     },
     {
@@ -208,8 +208,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.074475+00:00",
-        "duration_ms": 2370.66
+        "checked_at": "2026-11-19T09:28:56.120391+00:00",
+        "duration_ms": 1280.67
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.076285+00:00",
-        "duration_ms": 295.78
+        "checked_at": "2026-11-19T09:28:56.122753+00:00",
+        "duration_ms": 256.67
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.078136+00:00",
-        "duration_ms": 181.12
+        "checked_at": "2026-11-19T09:28:56.125217+00:00",
+        "duration_ms": 954.81
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.087681+00:00",
-        "duration_ms": 293.64
+        "checked_at": "2026-11-19T09:28:56.140129+00:00",
+        "duration_ms": 90.63
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.097063+00:00",
-        "duration_ms": 161.77
+        "checked_at": "2026-11-19T09:28:56.151726+00:00",
+        "duration_ms": 56.83
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-19T01:28:06.101708+00:00",
-        "duration_ms": 419.8
+        "checked_at": "2026-11-19T09:28:56.157236+00:00",
+        "duration_ms": 178.89
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-19T01:28:06.104709+00:00",
-        "duration_ms": 106.83
+        "checked_at": "2026-11-19T09:28:56.161127+00:00",
+        "duration_ms": 46.18
       }
     },
     {
@@ -305,36 +305,36 @@
         "docs": "https://open-meteo.com/en/docs"
       },
       "last_run": {
-        "status": "warning",
-        "checked_at": "2026-11-19T01:28:06.109273+00:00",
-        "duration_ms": 12053.09
+        "status": "critical",
+        "checked_at": "2026-11-19T09:28:56.166534+00:00",
+        "duration_ms": 12100.16
       }
     }
   ],
   "incidents": [
     {
-      "id": 11,
+      "id": 1,
       "target": "weather",
       "key": "availability",
       "kind": "availability",
-      "severity": "warning",
+      "severity": "error",
       "message": "URLError · 응답을 읽지 못했습니다.",
       "opened_at": "2026-11-19T01:28:06.109273+00:00",
-      "last_seen_at": "2026-11-19T01:28:06.109273+00:00",
+      "last_seen_at": "2026-11-19T09:28:56.166534+00:00",
       "resolved_at": null,
-      "occurrences": 1
+      "occurrences": 2
     },
     {
-      "id": 10,
+      "id": 11,
       "target": "rest-countries",
       "key": "json",
       "kind": "format",
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-19T01:28:06.101708+00:00",
+      "last_seen_at": "2026-11-19T09:28:56.157236+00:00",
       "resolved_at": null,
-      "occurrences": 16
+      "occurrences": 17
     }
   ],
   "ai_latest": {
@@ -659,9 +659,9 @@
   "portfolio": {
     "schema_version": 1,
     "source_repository": "0Ju12/0Ju12.github.io",
-    "source_sha": "a1969c2fa41a51497803d68ca56652f21450b0c6",
-    "source_updated_at": "2026-11-18T22:50:01Z",
-    "synced_at": "2026-11-19T01:27:51.878332+00:00",
+    "source_sha": "49435297475a2c2e1cb29cb5c53078f36ec78bf9",
+    "source_updated_at": "2026-11-19T09:27:46Z",
+    "synced_at": "2026-11-19T09:28:42.518913+00:00",
     "links": {
       "preparation": "https://0ju12.github.io/study/index.html",
       "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -862,6 +862,24 @@
       }
     ],
     "learning_notes": [
+      {
+        "id": "2026-11-ai-trend-20-dbt-v2-remote-mcp",
+        "title": "11월 dbt 업데이트 — dbt v2 지원 확대와 원격 MCP 서버의 권한 검사",
+        "summary": "dbt의 11월 정리 글과 릴리스 노트를 바탕으로, dbt v2가 지원하는 웨어하우스·묶음 테스트, 원격 dbt MCP 서버의 권한 검사 변경을 정리했습니다. 에이전트가 dbt 프로젝트를 읽고 실행하게 될 때 무엇을 확인해야 하는지 봅니다.",
+        "date": "2026-11-19",
+        "episode": 20,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-20-dbt-v2-remote-mcp.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
+      {
+        "id": "2026-11-ai-trend-19-data-platform-ontology",
+        "title": "11/9 Databricks Genie Ontology GA · 11/3 Snowflake Business Ontology — 에이전트에게 '업무 정의'를 주는 계층",
+        "summary": "데이터 플랫폼 두 곳이 11월 초 에이전트용 '온톨로지(업무 정의) 계층'을 잇달아 내놓았습니다. 무엇을 발표했는지, 공식 자료끼리 상태 표기가 어떻게 엇갈리는지, 데이터 엔지니어에게 어떤 일이 생기는지 정리했습니다.",
+        "date": "2026-11-19",
+        "episode": 19,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-19-data-platform-ontology.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
       {
         "id": "2026-11-ai-trend-18-ai-regulation-safety",
         "title": "AI 규제·안전 — EU AI Act와 한국 AI 기본법은 개발자에게 무엇을 요구하나",

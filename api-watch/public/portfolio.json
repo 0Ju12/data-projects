@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_repository": "0Ju12/0Ju12.github.io",
-  "source_sha": "a1969c2fa41a51497803d68ca56652f21450b0c6",
-  "source_updated_at": "2026-11-18T22:50:01Z",
-  "synced_at": "2026-11-19T01:27:51.878332+00:00",
+  "source_sha": "49435297475a2c2e1cb29cb5c53078f36ec78bf9",
+  "source_updated_at": "2026-11-19T09:27:46Z",
+  "synced_at": "2026-11-19T09:28:42.518913+00:00",
   "links": {
     "preparation": "https://0ju12.github.io/study/index.html",
     "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -204,6 +204,24 @@
     }
   ],
   "learning_notes": [
+    {
+      "id": "2026-11-ai-trend-20-dbt-v2-remote-mcp",
+      "title": "11월 dbt 업데이트 — dbt v2 지원 확대와 원격 MCP 서버의 권한 검사",
+      "summary": "dbt의 11월 정리 글과 릴리스 노트를 바탕으로, dbt v2가 지원하는 웨어하우스·묶음 테스트, 원격 dbt MCP 서버의 권한 검사 변경을 정리했습니다. 에이전트가 dbt 프로젝트를 읽고 실행하게 될 때 무엇을 확인해야 하는지 봅니다.",
+      "date": "2026-11-19",
+      "episode": 20,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-20-dbt-v2-remote-mcp.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
+    {
+      "id": "2026-11-ai-trend-19-data-platform-ontology",
+      "title": "11/9 Databricks Genie Ontology GA · 11/3 Snowflake Business Ontology — 에이전트에게 '업무 정의'를 주는 계층",
+      "summary": "데이터 플랫폼 두 곳이 11월 초 에이전트용 '온톨로지(업무 정의) 계층'을 잇달아 내놓았습니다. 무엇을 발표했는지, 공식 자료끼리 상태 표기가 어떻게 엇갈리는지, 데이터 엔지니어에게 어떤 일이 생기는지 정리했습니다.",
+      "date": "2026-11-19",
+      "episode": 19,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-19-data-platform-ontology.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
     {
       "id": "2026-11-ai-trend-18-ai-regulation-safety",
       "title": "AI 규제·안전 — EU AI Act와 한국 AI 기본법은 개발자에게 무엇을 요구하나",
