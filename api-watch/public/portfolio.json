@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_repository": "0Ju12/0Ju12.github.io",
-  "source_sha": "44bf792b61aeb604295258513598852f7ae07f8f",
-  "source_updated_at": "2026-11-20T00:59:22Z",
-  "synced_at": "2026-11-20T01:08:40.707080+00:00",
+  "source_sha": "e49418a2ff5df673f1682a8b363ff06dfe216fcf",
+  "source_updated_at": "2026-11-20T08:34:21Z",
+  "synced_at": "2026-11-20T09:08:09.248236+00:00",
   "links": {
     "preparation": "https://0ju12.github.io/study/index.html",
     "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -30,7 +30,7 @@
       "links": [
         "https://0ju12.github.io/posts/2026-11-vqa-ensemble-fixes-breaks.html"
       ],
-      "activity_id": "ssafy-16"
+      "activity_id": "vqa"
     },
     {
       "id": "heritage",
@@ -49,27 +49,7 @@
         "https://0ju12.github.io/posts/2026-11-rag-citation-verify.html",
         "https://github.com/0Ju12/heritage-rag-guide"
       ],
-      "activity_id": "ssafy-16"
-    },
-    {
-      "id": "thread",
-      "title": "ThRead — LLM 댓글 분석 파이프라인",
-      "summary": "Selenium 수집 → LLM 판단(번호만) → 코드 검증 → pandas 정제·증강·요약. 도서 서비스를 7회에 걸쳐 확장",
-      "url": "https://0ju12.github.io/posts/2026-11-llm-verify-pipeline.html",
-      "repository": "https://github.com/0Ju12/ssafy-thread",
-      "stack": [
-        "Python",
-        "Django",
-        "FastAPI",
-        "Selenium",
-        "Pandas",
-        "LLM API"
-      ],
-      "links": [
-        "https://0ju12.github.io/posts/2026-11-llm-verify-pipeline.html",
-        "https://github.com/0Ju12/ssafy-thread"
-      ],
-      "activity_id": "ssafy-16"
+      "activity_id": "heritage"
     },
     {
       "id": "posco-pospeak",
@@ -218,6 +198,24 @@
     }
   ],
   "learning_notes": [
+    {
+      "id": "2026-11-ai-trend-22-gpt-6-2-critical-cyber",
+      "title": "11/17 OpenAI GPT-6.2 Astra·Sol — 사이버보안 'Critical' 등급 모델을 내보내며 붙인 조건",
+      "summary": "OpenAI가 11월 17일 공개한 GPT-6.2 Astra·Sol은 시스템 카드에서 두 모델 모두 사이버보안 'Critical' 등급으로 평가됐습니다. 등급이 무엇을 뜻하는지, 공개하면서 어떤 접근 제한을 걸었는지, 자료끼리 엇갈리는 부분을 정리했습니다.",
+      "date": "2026-11-20",
+      "episode": 22,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-22-gpt-6-2-critical-cyber.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
+    {
+      "id": "2026-11-ai-trend-21-bigquery-agent-observability",
+      "title": "11/14 BigQuery·Looker 에이전트 관측·평가 — 에이전트의 대화와 비용을 내 BigQuery 테이블에 남기기",
+      "summary": "Google Data Cloud가 11월 14일 BigQuery·Looker 데이터 에이전트의 관측·평가 기능을 넓혔습니다. 무엇이 GA이고 무엇이 아직 미리 보기인지, 어떤 기록이 어디에 남는지, 데이터 엔지니어가 이 기록으로 무엇을 확인할 수 있는지 정리했습니다.",
+      "date": "2026-11-20",
+      "episode": 21,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-21-bigquery-agent-observability.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
     {
       "id": "2026-11-ai-trend-20-dbt-v2-remote-mcp",
       "title": "11월 dbt 업데이트 — dbt v2 지원 확대와 원격 MCP 서버의 권한 검사",
