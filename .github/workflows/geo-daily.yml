@@ -30,23 +30,32 @@ jobs:
           python -m wh.cli run --date "$(date -u +%F)" | grep -v '"error"' ; rc=${PIPESTATUS[0]}
           python -m wh.cli report || true
           exit $rc
+      - name: 전력 전환 분석 — Ember·OWID 공개 자료 갱신 (실패해도 다른 갱신은 계속, 받기 실패 시 이전 파일 유지)
+        continue-on-error: true
+        working-directory: energy-transition
+        run: |
+          pip install -q -r requirements.txt
+          python -m pytest -q
+          python -m etl.fetch || echo "일부 원본 받기 실패 — 이전 파일로 계속"
+          python -m etl.analyze
       - name: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data docs ../wildfire-watch/data ../wildfire-watch/docs/data.json ../warehouse/runs ../warehouse/state ../warehouse/data ../warehouse/docs
+          git add data docs ../wildfire-watch/data ../wildfire-watch/docs/data.json ../warehouse/runs ../warehouse/state ../warehouse/data ../warehouse/docs ../energy-transition/data ../energy-transition/docs
           git diff --cached --quiet || git commit -m "geo: daily update $(date -u +%F)"
           git pull --rebase origin main   # 그 사이 다른 커밋이 올라왔어도 밀리지 않게
           git push
       - uses: actions/checkout@v4
         with: { repository: 0Ju12/gravmag-wcf, path: _wcf }
-      - name: 다른 프로젝트의 페이지를 같은 Pages 에 포함 (/power/ · /fire/ · /wcf/ · /warehouse/)
+      - name: 다른 프로젝트의 페이지를 같은 Pages 에 포함 (/power/ · /fire/ · /wcf/ · /warehouse/ · /energy/)
         run: |
-          rm -rf docs/power docs/fire docs/wcf docs/warehouse
+          rm -rf docs/power docs/fire docs/wcf docs/warehouse docs/energy
           cp -r ../power-demand/explorer docs/power
           cp -r ../wildfire-watch/docs docs/fire
           cp -r ../_wcf/web docs/wcf
           if [ -f ../warehouse/docs/index.html ]; then cp -r ../warehouse/docs docs/warehouse; fi
+          if [ -f ../energy-transition/docs/index.html ]; then cp -r ../energy-transition/docs docs/energy; fi
           if [ -f ../api-watch/public/index.html ]; then cp -r ../api-watch/public docs/api-watch; fi
       - uses: actions/upload-pages-artifact@v3
         with: { path: geo-data-pipeline/docs }

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>한국 전력 전환 분석</title>
+<meta name="description" content="Ember 월별 발전량과 Our World in Data 연간 에너지 자료로 본 한국 발전 구성·태양광·탄소 집약도의 변화와 다른 나라 비교">
+<style>
+:root{color-scheme:light;--page:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--ring:rgba(11,11,11,.10);
+  --coal:#8f4f1f;--nuclear:#6250d6;--gas:#eb6834;--other:#2a78d6;--wind:#1baf7a;--solar:#eda100;
+  --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--dim:#c9c7c0;--dimtext:#9a988f;
+  --q1:#cde2fb;--q2:#9ec5f4;--q3:#6da7ec;--q4:#3987e5;--q5:#256abf;--q6:#184f95;--q7:#0d366b;--tip:#0b0b0b;--tipink:#fcfcfb}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])){color-scheme:dark;--page:#0d0d0d;--surface:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7;--muted:#898781;--grid:#2c2c2a;--axis:#383835;--ring:rgba(255,255,255,.10);
+  --coal:#a8692e;--nuclear:#9085e9;--gas:#d95926;--other:#3987e5;--wind:#199e70;--solar:#c98500;
+  --s1:#3987e5;--s2:#d95926;--s3:#199e70;--dim:#4a4945;--dimtext:#77756e;
+  --q1:#0d366b;--q2:#184f95;--q3:#256abf;--q4:#3987e5;--q5:#6da7ec;--q6:#9ec5f4;--q7:#cde2fb;--tip:#f0efec;--tipink:#1a1a19}}
+:root[data-theme="dark"]{color-scheme:dark;--page:#0d0d0d;--surface:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7;--muted:#898781;--grid:#2c2c2a;--axis:#383835;--ring:rgba(255,255,255,.10);
+  --coal:#a8692e;--nuclear:#9085e9;--gas:#d95926;--other:#3987e5;--wind:#199e70;--solar:#c98500;
+  --s1:#3987e5;--s2:#d95926;--s3:#199e70;--dim:#4a4945;--dimtext:#77756e;
+  --q1:#0d366b;--q2:#184f95;--q3:#256abf;--q4:#3987e5;--q5:#6da7ec;--q6:#9ec5f4;--q7:#cde2fb;--tip:#f0efec;--tipink:#1a1a19}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI","Noto Sans KR",sans-serif;word-break:keep-all;overflow-wrap:anywhere}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+header.hero{padding:40px 0 18px}
+.eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.4px;color:var(--s1);margin:0 0 8px}
+h1{font-size:clamp(25px,4vw,36px);line-height:1.25;letter-spacing:-.8px;margin:0 0 12px;text-wrap:balance}
+.lede{font-size:16px;color:var(--ink2);max-width:760px;margin:0}
+.meta{font-size:12.5px;color:var(--muted);margin-top:12px}
+nav.toc{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--page) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--grid)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-top:8px;padding-bottom:8px}
+nav.toc a{font-size:13px;font-weight:600;color:var(--ink2);text-decoration:none;padding:6px 11px;border-radius:999px;white-space:nowrap}
+nav.toc a:hover,nav.toc a:focus-visible{background:var(--surface);color:var(--ink);outline:none;box-shadow:0 0 0 1px var(--ring)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0 8px}
+.tile{background:var(--surface);border-radius:14px;padding:16px;box-shadow:0 0 0 1px var(--ring)}
+.tile .k{font-size:12.5px;color:var(--ink2);display:flex;align-items:center;gap:7px}.tile .k i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.tile b{display:block;font-size:30px;line-height:1.15;letter-spacing:-.8px;font-variant-numeric:tabular-nums;margin-top:4px}
+.tile small{display:block;font-size:12.5px;color:var(--muted);margin-top:4px}
+section.q{padding:34px 0 8px}
+.qn{font-size:12px;font-weight:700;color:var(--s1);letter-spacing:.3px;margin:0 0 6px}
+h2{font-size:clamp(20px,2.6vw,25px);line-height:1.3;letter-spacing:-.5px;margin:0 0 8px;text-wrap:balance}
+.ans{font-size:15.5px;color:var(--ink2);max-width:820px;margin:0 0 16px}.ans b{color:var(--ink)}
+.card{background:var(--surface);border-radius:16px;padding:18px 18px 12px;box-shadow:0 0 0 1px var(--ring)}
+.row{display:grid;grid-template-columns:1.6fr 1fr;gap:14px}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:0 0 12px}
+.seg{display:inline-flex;border-radius:10px;box-shadow:0 0 0 1px var(--ring);overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;color:var(--ink2);font:inherit;font-size:13px;font-weight:600;padding:6px 12px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.seg button:focus-visible,.chip:focus-visible,.play:focus-visible{outline:2px solid var(--s1);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:0;font:inherit;font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:999px;cursor:pointer;background:var(--page);color:var(--ink2);box-shadow:0 0 0 1px var(--ring)}
+.chip[aria-pressed="true"]{background:var(--s2);color:#fff;box-shadow:none}
+.lbl{font-size:12.5px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--ink2);margin:0 0 6px}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.legend .ln{width:16px;height:3px;border-radius:2px;vertical-align:3px}
+svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{fill:var(--muted);font-size:11.5px;font-variant-numeric:tabular-nums}
+svg .ink{fill:var(--ink)}svg .ink2{fill:var(--ink2)}
+.note{font-size:12.5px;color:var(--muted);line-height:1.65;margin:10px 0 2px}
+details{margin:8px 0 4px}summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink2)}
+.tbl{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
+th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:5px 8px;white-space:nowrap}td{padding:5px 8px;border-top:1px solid var(--grid);white-space:nowrap}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+#tip{position:fixed;z-index:50;pointer-events:none;background:var(--tip);color:var(--tipink);font-size:12.5px;line-height:1.55;padding:8px 11px;border-radius:9px;max-width:270px;opacity:0;transition:opacity .08s;font-variant-numeric:tabular-nums;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#tip i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
+.play{border:0;background:var(--ink);color:var(--surface);font:inherit;font-size:13px;font-weight:700;padding:6px 14px;border-radius:999px;cursor:pointer;min-width:74px}
+input[type=range]{width:min(420px,100%);accent-color:var(--s1)}
+.yearbig{font-size:13px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+footer{padding:36px 0 60px;font-size:12.5px;color:var(--muted);line-height:1.7}
+@media (max-width:860px){.tiles{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}}
+@media (max-width:420px){.tile b{font-size:24px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">공개 데이터 분석 · Ember · Our World in Data</p>
+  <h1>한국 전력은 얼마나 바뀌었나 — 발전 구성, 태양광, 탄소 집약도</h1>
+  <p class="lede" id="lede"></p>
+  <p class="meta" id="meta"></p>
+  <div class="tiles" id="tiles"></div>
+</div></header>
+<nav class="toc" aria-label="질문 바로가기"><div class="wrap">
+  <a href="#q1">1 발전 구성 25년</a><a href="#q2">2 석탄 감소 속도</a><a href="#q3">3 태양광 성장</a><a href="#q4">4 태양광의 계절</a><a href="#q5">5 달마다 바뀌는 구성</a><a href="#q6">6 탄소 집약도</a><a href="#q7">7 나라별 위치</a>
+</div></nav>
+<main class="wrap">
+<section class="q" id="q1"><p class="qn">질문 1</p><h2>한국 발전 구성은 25년 동안 어떻게 바뀌었나?</h2><p class="ans" id="a1"></p>
+  <div class="card"><div class="ctrl"><span class="seg" id="mixmode"><button type="button" data-v="share" aria-pressed="true">비중 (%)</button><button type="button" data-v="twh" aria-pressed="false">발전량 (TWh)</button></span></div>
+  <div class="legend" id="lg1"></div><div id="c1"></div>
+  <details><summary>표로 보기</summary><div class="tbl" id="t1"></div></details>
+  <p class="note">출처: Our World in Data, Energy dataset (Ember·Energy Institute 자료를 정리). '기타'는 수력·바이오·석유·기타 재생으로, 한국에서는 합쳐도 몇 % 수준입니다.</p></div></section>
+
+<section class="q" id="q2"><p class="qn">질문 2</p><h2>석탄 비중은 다른 나라와 비교해 얼마나 빨리 줄고 있나?</h2><p class="ans" id="a2"></p>
+  <div class="row"><div class="card"><div class="legend"><span><i class="ln" style="background:var(--s1)"></i>한국</span><span><i class="ln" style="background:var(--dim)"></i>다른 나라 (마우스를 올리면 강조)</span></div><div id="c2"></div></div>
+  <div class="card"><h3 style="font-size:15px;margin:0 0 4px">2015년 → <span class="ly"></span>년 변화</h3><p class="lbl" style="margin:0 0 8px">석탄 비중 변화(%p)가 작은 나라부터. 저탄소 = 원자력 + 재생</p><div class="tbl" id="t2"></div></div></div></section>
+
+<section class="q" id="q3"><p class="qn">질문 3</p><h2>태양광은 언제, 얼마나 빠르게 늘었나?</h2><p class="ans" id="a3"></p>
+  <div class="card"><div class="ctrl"><span class="lbl">한국과 비교할 나라</span><div class="chips" id="pick3"></div></div>
+  <div class="legend" id="lg3"></div><div id="c3"></div>
+  <details><summary>1%·5%·10%를 처음 넘은 해 (표)</summary><div class="tbl" id="t3"></div></details></div></section>
+
+<section class="q" id="q4"><p class="qn">질문 4</p><h2>태양광 비중은 계절에 따라 어떻게 달라지나?</h2><p class="ans" id="a4"></p>
+  <div class="row"><div class="card"><h3 style="font-size:15px;margin:0 0 4px">한국 태양광 비중 — 연 × 월</h3><p class="lbl" style="margin:0 0 8px">색이 진할수록 비중이 큼. 칸에 마우스를 올리면 값이 나옵니다.</p><div id="c4"></div><div id="ramp4"></div></div>
+  <div class="card"><h3 style="font-size:15px;margin:0 0 4px">달별 평균 (다 찬 최근 4개 연도)</h3><p class="lbl" style="margin:0 0 8px">같은 해 안에서 봄이 겨울의 약 두 배</p><div id="c4b"></div></div></div>
+  <p class="note">같은 저장소의 <a href="../warehouse/">전력 수요·채용 공고 분석</a>에서, 평일 12~13시 수요가 새벽 최저보다 낮아진 날이 4월에 가장 많았습니다(22일 중 14일). 그때는 "봄 낮의 자가용 태양광과 맞는 모양이지만 확인하지 못했다"고 적었습니다. 이 그림은 전력망 태양광 발전도 같은 봄에 비중이 가장 크다는 것을 보여 줍니다. 다만 Ember 수치는 전력망에 잡히는 발전량이라, 계량기 뒤 자가용 발전을 직접 재지는 않습니다. 두 자료가 같은 방향을 가리킨다는 데까지만 말할 수 있습니다.</p></section>
+
+<section class="q" id="q5"><p class="qn">질문 5</p><h2>1년 안에서도 발전 구성이 바뀌나?</h2><p class="ans" id="a5"></p>
+  <div class="card"><div class="legend" id="lg5"></div><div id="c5"></div><p class="note">한국, 다 찬 최근 4개 연도의 달별 평균 비중. 막대 하나가 100%입니다. 출처: Ember 월별 발전량.</p></div></section>
+
+<section class="q" id="q6"><p class="qn">질문 6</p><h2>전력 1kWh를 만들 때 나오는 탄소는 줄고 있나?</h2><p class="ans" id="a6"></p>
+  <div class="card"><div class="legend" id="lg6"></div><div id="c6"></div><p class="note">굵은 선은 12개월 이동 평균, 옅은 선은 달별 값(gCO₂e/kWh, 발전 단계 배출 기준). 출처: Ember.</p></div></section>
+
+<section class="q" id="q7"><p class="qn">질문 7</p><h2>저탄소 발전 비중과 탄소 집약도 — 나라마다 어디에 있고, 어떻게 움직였나?</h2><p class="ans" id="a7"></p>
+  <div class="card"><div class="ctrl"><button type="button" class="play" id="play">▶ 재생</button><input type="range" id="yr" aria-label="연도"><span class="yearbig" id="yrv"></span></div>
+  <div class="legend"><span><i style="background:var(--s1);border-radius:50%"></i>한국 (옅은 선 = 2000년부터 지나온 길)</span><span><i style="background:var(--dim);border-radius:50%"></i>다른 나라</span><span style="color:var(--muted)">원 크기 = 연간 발전량</span></div>
+  <div id="c7"></div><p class="note">가로: 원자력과 재생에너지 발전 비중. 세로: 1kWh당 배출(gCO₂/kWh). 오른쪽 아래로 갈수록 깨끗한 전력입니다. 출처: Our World in Data.</p></div></section>
+</main>
+<footer><div class="wrap">
+  자료: <a href="https://ember-energy.org/data/monthly-electricity-data/">Ember, Monthly Electricity Data</a> (CC BY 4.0) · <a href="https://github.com/owid/energy-data">Our World in Data, Energy dataset</a> (CC BY 4.0).<br>
+  분석 쿼리와 수집 코드: <a href="https://github.com/0Ju12/data-projects/tree/main/energy-transition">github.com/0Ju12/data-projects/energy-transition</a> · 같은 저장소의 <a href="../warehouse/">전력 수요·채용 공고 분석</a> · <a href="../power/">하루 전 전력 수요 예측</a>
+</div></footer>
+<div id="tip" role="status"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+const D=__DATA__;
+const G=D.meta.groups, GK={'석탄':'coal','원자력':'nuclear','가스':'gas','기타':'other','풍력':'wind','태양광':'solar'}, col=g=>`var(--${GK[g]})`;
+const nf=(v,d=0)=>v==null||isNaN(v)?'–':Number(v).toLocaleString('ko-KR',{maximumFractionDigits:d,minimumFractionDigits:d});
+const KR='한국', LY=D.meta.owid_last_year;
+const tip=document.getElementById('tip');
+function showTip(e,h){tip.innerHTML=h;tip.style.opacity=1;const r=tip.getBoundingClientRect();let x=e.clientX+14,y=e.clientY+14;if(x+r.width>innerWidth-8)x=e.clientX-r.width-14;if(y+r.height>innerHeight-8)y=e.clientY-r.height-14;tip.style.left=Math.max(8,x)+'px';tip.style.top=Math.max(8,y)+'px'}
+const hideTip=()=>tip.style.opacity=0;
+const sw=c=>`<i style="background:${c}"></i>`;
+const seg=(el,fn)=>el.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));fn(b.dataset.v)});
+const W=()=>Math.max(320,Math.min(1060,document.querySelector('main').clientWidth-36));
+const frame=(host,w,h,m)=>{host.innerHTML='';const svg=d3.select(host).append('svg').attr('viewBox',`0 0 ${w} ${h}`).attr('role','img');return {svg,g:svg.append('g').attr('transform',`translate(${m.l},${m.t})`),iw:w-m.l-m.r,ih:h-m.t-m.b}};
+const yAxis=(g,y,iw,fmt,ticks=5)=>{y.ticks(ticks).forEach(v=>{g.append('line').attr('x1',0).attr('x2',iw).attr('y1',y(v)).attr('y2',y(v)).attr('stroke','var(--grid)');g.append('text').attr('x',-8).attr('y',y(v)+4).attr('text-anchor','end').text(fmt(v))})};
+const xTicks=(g,x,ih,vals,fmt)=>vals.forEach(v=>g.append('text').attr('x',x(v)).attr('y',ih+18).attr('text-anchor','middle').text(fmt(v)));
+
+// ---------- 머리말·지표
+const MY=D.mix_yearly, last=MY[MY.length-1], first=MY.find(r=>r.year===2015)||MY[0];
+const peakCoal=MY.reduce((a,b)=>b.coal>a.coal?b:a), peakInt=MY.filter(r=>r.intensity).reduce((a,b)=>b.intensity>a.intensity?b:a);
+const lowC=r=>r.nuclear+r.wind+r.solar+(r.other-0);
+const CC=D.coal_change, kc=CC.find(r=>r.country===KR), SG=D.solar_growth, ks=SG.find(r=>r.country===KR);
+document.getElementById('lede').innerHTML=`석탄이 절반 가까이 차지하던 한국 발전 구성이 ${LY}년까지 어떻게 바뀌었는지, 그 속도가 다른 나라와 비교해 어떤지, 태양광이 1년 안에서 언제 많이 나오는지를 공개 자료 두 가지로 확인했습니다. 질문마다 SQL 쿼리 하나로 답했습니다.`;
+document.getElementById('meta').textContent=`연간 자료 ${LY}년까지 · 월별 자료 ${D.meta.ember_last_month.slice(0,7)}까지 · 생성 ${D.meta.generated} UTC`;
+const tiles=[
+  ['var(--coal)','석탄 비중',`${nf(last.coal,1)}%`,`${peakCoal.year}년 ${nf(peakCoal.coal,1)}%에서 ${nf(last.coal-peakCoal.coal,1)}%p`],
+  ['var(--nuclear)','저탄소 비중 (원자력+재생)',`${nf(kc.low_carbon_last,1)}%`,`2015년 ${nf(kc.low_carbon_2015,1)}%`],
+  ['var(--solar)','태양광 비중',`${nf(last.solar,1)}%`,`${ks.first_1pct}년 1% → ${ks.first_5pct}년 5%`],
+  ['var(--s1)','탄소 집약도',`${nf(last.intensity)} g`,`kWh당 · ${peakInt.year}년 ${nf(peakInt.intensity)} g에서 ${nf((last.intensity/peakInt.intensity-1)*100,0)}%`]];
+document.getElementById('tiles').innerHTML=tiles.map(t=>`<div class="tile"><span class="k">${sw(t[0])}${t[1]} · ${LY}</span><b>${t[2]}</b><small>${t[3]}</small></div>`).join('');
+
+// ---------- 질문 1: 쌓은 면적
+let mixMode='share';
+function q1(){
+  const keys=['coal','nuclear','gas','other','wind','solar'],data=MY.map(r=>{const o={year:r.year};keys.forEach(k=>o[k]=mixMode==='share'?r[k]:r[k]*r.generation_twh/100);return o});
+  const w=W(),h=Math.max(280,Math.round(w*.42)+40),m={l:46,r:74,t:10,b:28},{svg,g,iw,ih}=frame(document.getElementById('c1'),w,h,m);
+  const st=d3.stack().keys(keys)(data),x=d3.scaleLinear().domain(d3.extent(data,d=>d.year)).range([0,iw]),y=d3.scaleLinear().domain([0,mixMode==='share'?100:d3.max(st[st.length-1],d=>d[1])]).nice().range([ih,0]);
+  yAxis(g,y,iw,v=>mixMode==='share'?v+'%':nf(v));xTicks(g,x,ih,[2000,2005,2010,2015,2020,LY],v=>v);
+  const area=d3.area().x(d=>x(d.data.year)).y0(d=>y(d[0])).y1(d=>y(d[1])).curve(d3.curveMonotoneX);
+  g.selectAll('path.a').data(st).join('path').attr('d',area).attr('fill',(d,i)=>col(G[i])).attr('stroke','var(--surface)').attr('stroke-width',1.5);
+  st.forEach((s,i)=>{const e=s[s.length-1],mid=(y(e[0])+y(e[1]))/2;if(y(e[0])-y(e[1])>11)g.append('text').attr('x',iw+6).attr('y',mid+4).attr('class','ink2').style('font-weight',600).text(`${G[i]} ${nf(mixMode==='share'?MY[MY.length-1][keys[i]]:e[1]-e[0],mixMode==='share'?1:0)}`)});
+  const ch=g.append('line').attr('y1',0).attr('y2',ih).attr('stroke','var(--ink)').attr('stroke-width',1).attr('opacity',0);
+  g.append('rect').attr('width',iw).attr('height',ih).attr('fill','transparent').on('pointermove',e=>{const yr=Math.round(x.invert(d3.pointer(e)[0])),r=MY.find(d=>d.year===yr);if(!r)return;ch.attr('x1',x(yr)).attr('x2',x(yr)).attr('opacity',.35);
+    showTip(e,`<b>${yr}년</b> · 발전량 ${nf(r.generation_twh)} TWh<br>`+keys.slice().reverse().map(k=>`${sw(col(G[keys.indexOf(k)]))}${G[keys.indexOf(k)]} ${nf(mixMode==='share'?r[k]:r[k]*r.generation_twh/100,1)}${mixMode==='share'?'%':' TWh'}`).join('<br>'))}).on('pointerleave',()=>{ch.attr('opacity',0);hideTip()});
+  svg.attr('aria-label','한국 발전 구성 변화 '+(mixMode==='share'?'비중':'발전량'))}
+document.getElementById('lg1').innerHTML=G.map(g=>`<span>${sw(col(g))}${g}</span>`).join('');
+seg(document.getElementById('mixmode'),v=>{mixMode=v;q1()});
+const cTwh=yr=>{const r=MY.find(d=>d.year===yr);return r?nf(r.coal*r.generation_twh/100):'–'};
+document.getElementById('a1').innerHTML=`석탄 비중은 <b>${peakCoal.year}년 ${nf(peakCoal.coal,1)}%</b>로 가장 높았고 ${LY}년 <b>${nf(last.coal,1)}%</b>까지 내려왔습니다. 그 자리를 주로 <b>가스</b>(${MY[0].year}년 ${nf(MY[0].gas,1)}% → ${nf(last.gas,1)}%)와 <b>태양광</b>(${nf(last.solar,1)}%)이 채웠습니다. 원자력은 30% 안팎을 오르내렸고, 발전량 자체는 ${MY[0].year}년 ${nf(MY[0].generation_twh)} TWh에서 ${nf(last.generation_twh)} TWh로 두 배 넘게 늘었습니다. 위의 '발전량' 버튼으로 바꿔 보면 다른 모습이 보입니다. 석탄 발전량은 ${cTwh(2010)} TWh(2010) → ${cTwh(2017)} TWh(2017)로 2010년대에 오히려 늘었고, ${LY}년에는 ${cTwh(LY)} TWh입니다. 비중이 줄어든 데에는 전체 발전량이 늘어난 몫도 있습니다.`;
+document.getElementById('t1').innerHTML=`<table><tr><th>연도</th>${G.map(g=>`<th class="n">${g}</th>`).join('')}<th class="n">발전량 TWh</th><th class="n">g/kWh</th></tr>${MY.slice().reverse().map(r=>`<tr><td>${r.year}</td>${['coal','nuclear','gas','other','wind','solar'].map(k=>`<td class="n">${nf(r[k],1)}</td>`).join('')}<td class="n">${nf(r.generation_twh)}</td><td class="n">${nf(r.intensity)}</td></tr>`).join('')}</table>`;
+
+// ---------- 질문 2: 기울기 그래프
+function q2(){
+  const rows=CC.filter(r=>r.coal_2015!=null&&r.coal_last!=null),w=Math.min(W(),620),h=420,m={l:40,r:110,t:24,b:20},{svg,g,iw,ih}=frame(document.getElementById('c2'),w,h,m);
+  const y=d3.scaleLinear().domain([0,80]).range([ih,0]),x0=0,x1=iw;yAxis(g,y,iw,v=>v+'%',4);
+  g.append('text').attr('x',x0).attr('y',-8).attr('class','ink2').style('font-weight',700).text('2015');g.append('text').attr('x',x1).attr('y',-8).attr('text-anchor','end').attr('class','ink2').style('font-weight',700).text(LY);
+  // 오른쪽 이름표가 겹치지 않게 아래로 밀기
+  const lab=rows.map(r=>({r,y:y(r.coal_last)})).sort((a,b)=>a.y-b.y);for(let i=1;i<lab.length;i++)if(lab[i].y-lab[i-1].y<13)lab[i].y=lab[i-1].y+13;const LY2=new Map(lab.map(l=>[l.r.country,l.y]));
+  const draw=hl=>{g.selectAll('.sl').remove();rows.slice().sort((a,b)=>(a.country===hl||a.country===KR)-(b.country===hl||b.country===KR)).forEach(r=>{const on=r.country===KR,h2=r.country===hl&&!on,c=on?'var(--s1)':h2?'var(--s2)':'var(--dim)';
+    const gg=g.append('g').attr('class','sl');gg.append('line').attr('x1',x0).attr('x2',x1).attr('y1',y(r.coal_2015)).attr('y2',y(r.coal_last)).attr('stroke',c).attr('stroke-width',on||h2?3:1.5);
+    [[x0,r.coal_2015],[x1,r.coal_last]].forEach(([xx,v])=>gg.append('circle').attr('cx',xx).attr('cy',y(v)).attr('r',on||h2?5:3.5).attr('fill',c).attr('stroke','var(--surface)').attr('stroke-width',2));
+    gg.append('text').attr('x',x1+10).attr('y',LY2.get(r.country)+4).attr('class',on||h2?'ink':'').style('font-weight',on||h2?700:400).text(`${r.country} ${nf(r.coal_last,0)}%`);
+    gg.append('line').attr('x1',x0).attr('x2',x1).attr('y1',y(r.coal_2015)).attr('y2',y(r.coal_last)).attr('stroke','transparent').attr('stroke-width',14).style('cursor','pointer')
+      .on('pointerenter',()=>{if(r.country!==hl)draw(r.country)}).on('pointermove',e=>showTip(e,`<b>${r.country}</b><br>석탄 2015년 ${nf(r.coal_2015,1)}% → ${LY}년 ${nf(r.coal_last,1)}% (${nf(r.coal_last-r.coal_2015,1)}%p)<br>가장 높았던 해 ${r.coal_peak_year}년 ${nf(r.coal_peak,1)}%`)).on('pointerleave',hideTip)})};
+  draw(null);svg.on('pointerleave',()=>draw(null)).attr('aria-label','나라별 석탄 비중 2015년과 최근 연도 비교')}
+document.querySelectorAll('.ly').forEach(e=>e.textContent=LY);
+const ranked=CC.filter(r=>r.coal_2015!=null).map(r=>({...r,d:r.coal_last-r.coal_2015})).sort((a,b)=>a.d-b.d),kRank=ranked.findIndex(r=>r.country===KR)+1;
+document.getElementById('a2').innerHTML=`한국 석탄 비중은 2015년 ${nf(kc.coal_2015,1)}%에서 ${LY}년 ${nf(kc.coal_last,1)}%로 <b>${nf(-(kc.coal_last-kc.coal_2015),1)}%p</b> 줄었습니다. 비교한 ${ranked.length}곳 가운데 <b>${kRank}번째</b>로 많이 줄었습니다. 영국은 ${nf(ranked.find(r=>r.country==='영국')?.coal_2015,0)}%에서 거의 0%가 됐고, 독일은 절반으로 줄었습니다. 일본(${nf(CC.find(r=>r.country==='일본')?.coal_last,0)}%)과 대만(${nf(CC.find(r=>r.country==='대만')?.coal_last,0)}%)처럼 석탄 비중이 한국과 비슷하게 남은 이웃도 있습니다. 대만은 같은 기간 저탄소 비중이 오히려 줄었습니다(원자력 축소).`;
+document.getElementById('t2').innerHTML=`<table><tr><th>나라</th><th class="n">석탄 2015</th><th class="n">${LY}</th><th class="n">변화</th><th class="n">저탄소 ${LY}</th></tr>${ranked.map(r=>`<tr${r.country===KR?' style="font-weight:700"':''}><td>${r.country}</td><td class="n">${nf(r.coal_2015,1)}</td><td class="n">${nf(r.coal_last,1)}</td><td class="n">${nf(r.d,1)}%p</td><td class="n">${nf(r.low_carbon_last,1)}%</td></tr>`).join('')}</table>`;
+
+// ---------- 질문 3: 태양광 선
+let pick3='독일';
+function q3(){
+  const w=W(),h=Math.max(280,Math.round(w*.4)+40),m={l:40,r:84,t:10,b:28},{svg,g,iw,ih}=frame(document.getElementById('c3'),w,h,m);
+  const all=SG.map(s=>({c:s.country,pts:s.series.filter(p=>p.year>=2008&&p.solar!=null)})),x=d3.scaleLinear().domain([2008,LY]).range([0,iw]),y=d3.scaleLinear().domain([0,d3.max(all,s=>d3.max(s.pts,p=>p.solar))]).nice(5).range([ih,0]);
+  yAxis(g,y,iw,v=>v+'%');xTicks(g,x,ih,[2008,2012,2016,2020,LY],v=>v);
+  [1,5].forEach(v=>{g.append('line').attr('x1',0).attr('x2',iw).attr('y1',y(v)).attr('y2',y(v)).attr('stroke','var(--axis)').attr('stroke-dasharray','3 4')});
+  const line=d3.line().x(p=>x(p.year)).y(p=>y(p.solar)).curve(d3.curveMonotoneX);
+  const ord=all.slice().sort((a,b)=>(a.c===KR?2:a.c===pick3?1:0)-(b.c===KR?2:b.c===pick3?1:0));
+  ord.forEach(s=>{const on=s.c===KR,h2=s.c===pick3,c=on?'var(--s1)':h2?'var(--s2)':'var(--dim)';g.append('path').attr('d',line(s.pts)).attr('fill','none').attr('stroke',c).attr('stroke-width',on||h2?2.5:1.25);
+    const e=s.pts[s.pts.length-1];if(on||h2){g.append('circle').attr('cx',x(e.year)).attr('cy',y(e.solar)).attr('r',4.5).attr('fill',c).attr('stroke','var(--surface)').attr('stroke-width',2);g.append('text').attr('x',iw+8).attr('y',y(e.solar)+(on&&Math.abs(y(e.solar)-y(all.find(a=>a.c===pick3).pts.slice(-1)[0].solar))<14?12:4)).attr('class','ink').style('font-weight',700).text(`${s.c} ${nf(e.solar,1)}%`)}});
+  const kk=SG.find(s=>s.country===KR);[[kk.first_1pct,'1%'],[kk.first_5pct,'5%']].forEach(([yr,l])=>{if(!yr)return;const p=kk.series.find(q=>q.year===yr);g.append('text').attr('x',x(yr)-6).attr('y',y(p.solar)-9).attr('text-anchor','end').attr('class','ink2').style('font-weight',600).text(`한국 ${l} · ${yr}`)});
+  const ch=g.append('line').attr('y1',0).attr('y2',ih).attr('stroke','var(--ink)').attr('opacity',0);
+  g.append('rect').attr('width',iw).attr('height',ih).attr('fill','transparent').on('pointermove',e=>{const yr=Math.round(x.invert(d3.pointer(e)[0]));ch.attr('x1',x(yr)).attr('x2',x(yr)).attr('opacity',.3);
+    const vals=all.map(s=>({c:s.c,v:(s.pts.find(p=>p.year===yr)||{}).solar})).filter(v=>v.v!=null).sort((a,b)=>b.v-a.v);showTip(e,`<b>${yr}년 태양광 비중</b><br>`+vals.map(v=>`${v.c===KR||v.c===pick3?'<b>':''}${v.c} ${nf(v.v,1)}%${v.c===KR||v.c===pick3?'</b>':''}`).join('<br>'))}).on('pointerleave',()=>{ch.attr('opacity',0);hideTip()});
+  document.getElementById('lg3').innerHTML=`<span><i class="ln" style="background:var(--s1)"></i>한국</span><span><i class="ln" style="background:var(--s2)"></i>${pick3}</span><span><i class="ln" style="background:var(--dim)"></i>그 밖의 나라</span><span style="color:var(--muted)">점선 = 1%, 5%</span>`;
+  svg.attr('aria-label','나라별 태양광 발전 비중 추이')}
+document.getElementById('pick3').innerHTML=SG.map(s=>s.country).filter(c=>c!==KR).map(c=>`<button type="button" class="chip" data-v="${c}" aria-pressed="${c===pick3}">${c}</button>`).join('');
+document.getElementById('pick3').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;pick3=b.dataset.v;document.querySelectorAll('#pick3 .chip').forEach(x=>x.setAttribute('aria-pressed',x===b));q3()});
+const yrsTo5=SG.filter(s=>s.first_1pct&&s.first_5pct).map(s=>({c:s.country,n:s.first_5pct-s.first_1pct})).sort((a,b)=>a.n-b.n);
+document.getElementById('a3').innerHTML=`한국 태양광은 <b>${ks.first_1pct}년에 1%</b>, <b>${ks.first_5pct}년에 5%</b>를 넘었고 ${LY}년 ${nf(ks.solar_last,1)}%입니다. 1%에서 5%까지 ${ks.first_5pct-ks.first_1pct}년이 걸렸는데, 같은 구간을 지난 나라들(${yrsTo5.length}곳)은 ${yrsTo5[0].n}~${yrsTo5[yrsTo5.length-1].n}년이 걸렸습니다. 출발이 늦었을 뿐 속도는 비슷합니다. 다만 ${LY}년 비중은 스페인(${nf(SG.find(s=>s.country==='스페인')?.solar_last,0)}%)·호주(${nf(SG.find(s=>s.country==='호주')?.solar_last,0)}%)·독일(${nf(SG.find(s=>s.country==='독일')?.solar_last,0)}%)과 아직 차이가 큽니다. 칩을 눌러 비교 나라를 바꿔 볼 수 있습니다.`;
+document.getElementById('t3').innerHTML=`<table><tr><th>나라</th><th class="n">1%</th><th class="n">5%</th><th class="n">10%</th><th class="n">1%→5%</th><th class="n">${LY}</th></tr>${SG.slice().sort((a,b)=>b.solar_last-a.solar_last).map(s=>`<tr${s.country===KR?' style="font-weight:700"':''}><td>${s.country}</td><td class="n">${s.first_1pct||'–'}</td><td class="n">${s.first_5pct||'–'}</td><td class="n">${s.first_10pct||'–'}</td><td class="n">${s.first_1pct&&s.first_5pct?(s.first_5pct-s.first_1pct)+'년':'–'}</td><td class="n">${nf(s.solar_last,1)}%</td></tr>`).join('')}</table>`;
+
+// ---------- 질문 4: 연×월 열지도 + 달별 평균
+const SS=D.solar_seasonal, MM=D.mix_monthly, fy=MM[0]?.from_year, ty=MM[0]?.to_year;
+const monAvg=d3.range(1,13).map(mo=>({mo,v:d3.mean(SS.filter(r=>r.mon===mo&&r.year>=fy&&r.year<=ty),r=>r.solar_share)}));
+function q4(){
+  const years=[...new Set(SS.map(r=>r.year))].sort(),w=innerWidth<860?W():Math.min(W()*.62,660),cw=(w-40)/12,chh=Math.max(16,Math.min(24,cw*.55)),h=years.length*chh+26,m={l:40,r:0,t:20,b:6},{svg,g}=frame(document.getElementById('c4'),w,h,m);
+  const mx=d3.max(SS,r=>r.solar_share),q=v=>Math.min(7,1+Math.floor(v/mx*7));
+  d3.range(1,13).forEach(mo=>g.append('text').attr('x',(mo-.5)*cw).attr('y',-6).attr('text-anchor','middle').text(mo+'월'));
+  years.forEach((yr,i)=>g.append('text').attr('x',-8).attr('y',i*chh+chh/2+4).attr('text-anchor','end').text(yr));
+  SS.forEach(r=>{const i=years.indexOf(r.year);g.append('rect').attr('x',(r.mon-1)*cw+1).attr('y',i*chh+1).attr('width',cw-2).attr('height',chh-2).attr('rx',3).attr('fill',`var(--q${q(r.solar_share)})`)
+    .on('pointermove',e=>showTip(e,`<b>${r.year}년 ${r.mon}월</b><br>태양광 ${nf(r.solar_share,1)}% · ${nf(r.solar_twh,2)} TWh`)).on('pointerleave',hideTip)});
+  document.getElementById('ramp4').innerHTML=`<div style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);margin-top:8px"><span>0%</span>${d3.range(1,8).map(i=>`<i style="display:inline-block;width:22px;height:10px;border-radius:2px;background:var(--q${i})"></i>`).join('')}<span>${nf(mx,1)}%</span></div>`;
+  svg.attr('aria-label','한국 태양광 비중 연도별 월별 열지도');
+  // 달별 평균 막대
+  const w2=innerWidth<860?W():Math.min(W()*.36,380),h2=230,m2={l:34,r:6,t:14,b:24},F=frame(document.getElementById('c4b'),w2,h2,m2),x=d3.scaleBand().domain(d3.range(1,13)).range([0,F.iw]).padding(.18),y=d3.scaleLinear().domain([0,d3.max(monAvg,d=>d.v)]).nice().range([F.ih,0]);
+  yAxis(F.g,y,F.iw,v=>v+'%',4);const top=monAvg.reduce((a,b)=>b.v>a.v?b:a);
+  monAvg.forEach(d=>{const bw=x.bandwidth(),r=Math.min(4,bw/2),yy=y(d.v),hh=F.ih-yy;F.g.append('path').attr('d',`M${x(d.mo)},${F.ih}v${-(hh-r)}q0,${-r} ${r},${-r}h${bw-2*r}q${r},0 ${r},${r}v${hh-r}z`).attr('fill',d.mo===top.mo?'var(--solar)':'var(--q3)')
+    .on('pointermove',e=>showTip(e,`<b>${d.mo}월</b> 평균 ${nf(d.v,2)}% (${fy}~${ty})`)).on('pointerleave',hideTip);if(d.mo%2===1||d.mo===top.mo)F.g.append('text').attr('x',x(d.mo)+bw/2).attr('y',F.ih+16).attr('text-anchor','middle').text(d.mo)});
+  F.g.append('text').attr('x',x(top.mo)+x.bandwidth()/2).attr('y',y(top.v)-6).attr('text-anchor','middle').attr('class','ink').style('font-weight',700).text(nf(top.v,1)+'%')}
+{const top=monAvg.reduce((a,b)=>b.v>a.v?b:a),low=monAvg.reduce((a,b)=>b.v<a.v?b:a);
+ document.getElementById('a4').innerHTML=`${fy}~${ty}년 평균으로 태양광 비중은 <b>${top.mo}월 ${nf(top.v,1)}%</b>가 가장 높고 <b>${low.mo}월 ${nf(low.v,1)}%</b>가 가장 낮습니다. 해가 가장 긴 6~7월이 아니라 4~5월이 정점인 것은, 장마로 흐린 날이 많고 기온이 높으면 패널 효율이 떨어지는 데다, 봄에는 냉난방 수요가 적어 전체 발전량이 작기 때문으로 봅니다. 비중은 '태양광 발전량 ÷ 전체 발전량'이라 분모가 작은 계절에 커집니다.`}
+
+// ---------- 질문 5: 달별 100% 막대
+function q5(){
+  const w=W(),h=300,m={l:36,r:8,t:8,b:26},{svg,g,iw,ih}=frame(document.getElementById('c5'),w,h,m);
+  const data=d3.range(1,13).map(mo=>{const o={mo};G.forEach(gr=>o[gr]=(MM.find(r=>r.mon===mo&&r.grp===gr)||{}).share||0);const s=G.reduce((a,gr)=>a+o[gr],0);G.forEach(gr=>o[gr]=o[gr]/s*100);return o});
+  const x=d3.scaleBand().domain(d3.range(1,13)).range([0,iw]).padding(.16),y=d3.scaleLinear().domain([0,100]).range([ih,0]);yAxis(g,y,iw,v=>v+'%',4);
+  d3.stack().keys(G)(data).forEach((s,i)=>s.forEach(d=>{const y0=y(d[0]),y1=y(d[1]),hh=Math.max(0,y0-y1-2);g.append('rect').attr('x',x(d.data.mo)).attr('y',y1+(i?0:0)).attr('width',x.bandwidth()).attr('height',hh).attr('rx',i===G.length-1?3:0).attr('fill',col(G[i]))
+    .on('pointermove',e=>showTip(e,`<b>${d.data.mo}월</b> (${fy}~${ty} 평균)<br>`+G.slice().reverse().map(gr=>`${sw(col(gr))}${gr} ${nf(d.data[gr],1)}%`).join('<br>'))).on('pointerleave',hideTip)}));
+  d3.range(1,13).forEach(mo=>g.append('text').attr('x',x(mo)+x.bandwidth()/2).attr('y',ih+17).attr('text-anchor','middle').text(mo+'월'));
+  svg.attr('aria-label','한국 달별 발전 구성')}
+document.getElementById('lg5').innerHTML=G.slice().reverse().map(g=>`<span>${sw(col(g))}${g}</span>`).join('');
+{const by=gr=>d3.range(1,13).map(mo=>({mo,v:(MM.find(r=>r.mon===mo&&r.grp===gr)||{}).share})),mn=a=>a.reduce((p,c)=>c.v<p.v?c:p),mx=a=>a.reduce((p,c)=>c.v>p.v?c:p),co=by('석탄'),ga=by('가스'),nu=by('원자력');
+ document.getElementById('a5').innerHTML=`네, 꽤 바뀝니다. 석탄은 <b>${mn(co).mo}월 ${nf(mn(co).v,1)}%</b>로 가장 낮고 <b>${mx(co).mo}월 ${nf(mx(co).v,1)}%</b>로 가장 높습니다. 가스는 <b>${mx(ga).mo}월(${nf(mx(ga).v,1)}%)</b>에 가장 많이 씁니다. 원자력은 비중이 ${nf(mn(nu).v,0)}~${nf(mx(nu).v,0)}%로 움직이지만, 발전량으로 보면 달마다 거의 같습니다. 늘 비슷하게 돌기 때문에 전체 발전량이 작은 봄·가을에 비중이 올라갈 뿐입니다. 수요가 큰 여름·겨울의 차이는 주로 석탄과 가스가 메웁니다. 3월에 석탄이 가장 적고 가스가 가장 많은 데에는 12~3월 미세먼지 계절관리제(석탄발전 가동 제한)가 영향을 줬을 수 있지만, 이 자료만으로 그 효과를 따로 떼어 내지는 못했습니다.`}
+
+// ---------- 질문 6: 탄소 집약도 선
+const IM=D.intensity_monthly,AR=['한국','일본','독일'],AC={'한국':'var(--s1)','일본':'var(--s2)','독일':'var(--s3)'};
+function q6(){
+  const w=W(),h=Math.max(260,Math.round(w*.36)+40),m={l:44,r:70,t:10,b:28},{svg,g,iw,ih}=frame(document.getElementById('c6'),w,h,m);
+  const pd=d3.timeParse('%Y-%m-%d'),S=AR.map(a=>({a,pts:IM.filter(r=>r.area===a&&r.intensity!=null).map(r=>({t:pd(r.month),v:r.intensity,m:r.months_in_window>=12?r.intensity_12m:null,raw:r}))}));
+  const x=d3.scaleTime().domain(d3.extent(S.flatMap(s=>s.pts),p=>p.t)).range([0,iw]),y=d3.scaleLinear().domain([d3.min(S.flatMap(s=>s.pts),p=>p.v)*.9,d3.max(S.flatMap(s=>s.pts),p=>p.v)]).nice().range([ih,0]);
+  yAxis(g,y,iw,v=>nf(v));x.ticks(d3.timeYear.every(2)).forEach(t=>g.append('text').attr('x',x(t)).attr('y',ih+18).attr('text-anchor','middle').text(t.getFullYear()));
+  S.forEach(s=>{g.append('path').attr('d',d3.line().x(p=>x(p.t)).y(p=>y(p.v))(s.pts)).attr('fill','none').attr('stroke',AC[s.a]).attr('stroke-width',1).attr('opacity',.28);
+    g.append('path').attr('d',d3.line().defined(p=>p.m!=null).x(p=>x(p.t)).y(p=>y(p.m)).curve(d3.curveMonotoneX)(s.pts)).attr('fill','none').attr('stroke',AC[s.a]).attr('stroke-width',2.5);
+    const e=s.pts.filter(p=>p.m!=null).slice(-1)[0];if(e)g.append('text').attr('x',iw+8).attr('y',y(e.m)+4).attr('class','ink').style('font-weight',700).text(`${s.a} ${nf(e.m)}`)});
+  const ch=g.append('line').attr('y1',0).attr('y2',ih).attr('stroke','var(--ink)').attr('opacity',0),dots=S.map(s=>g.append('circle').attr('r',4.5).attr('fill',AC[s.a]).attr('stroke','var(--surface)').attr('stroke-width',2).attr('opacity',0));
+  g.append('rect').attr('width',iw).attr('height',ih).attr('fill','transparent').on('pointermove',e=>{const t=x.invert(d3.pointer(e)[0]);const key=d3.timeFormat('%Y-%m')(t);ch.attr('x1',x(d3.timeMonth.floor(t))).attr('x2',x(d3.timeMonth.floor(t))).attr('opacity',.3);
+    const ln=S.map((s,i)=>{const p=s.pts.find(p=>d3.timeFormat('%Y-%m')(p.t)===key);if(p){dots[i].attr('cx',x(p.t)).attr('cy',y(p.m??p.v)).attr('opacity',1)}else dots[i].attr('opacity',0);return p?`${sw(AC[s.a])}${s.a} ${nf(p.v)} g${p.m?` (12개월 평균 ${nf(p.m)})`:''}`:''}).filter(Boolean);showTip(e,`<b>${key}</b><br>`+ln.join('<br>'))})
+    .on('pointerleave',()=>{ch.attr('opacity',0);dots.forEach(d=>d.attr('opacity',0));hideTip()});
+  svg.attr('aria-label','월별 전력 탄소 집약도')}
+document.getElementById('lg6').innerHTML=AR.map(a=>`<span><i class="ln" style="background:${AC[a]}"></i>${a}</span>`).join('');
+{const k=IM.filter(r=>r.area===KR&&r.months_in_window>=12),l=k[k.length-1],mxk=k.reduce((a,b)=>b.intensity_12m>a.intensity_12m?b:a),aft=k.filter(r=>r.month>mxk.month),mnk=aft.reduce((a,b)=>b.intensity_12m<a.intensity_12m?b:a,aft[0]||l),jp=IM.filter(r=>r.area==='일본'&&r.months_in_window>=12).slice(-1)[0],de=IM.filter(r=>r.area==='독일'&&r.months_in_window>=12).slice(-1)[0];
+ const up=l.intensity_12m-mnk.intensity_12m>5;
+ document.getElementById('a6').innerHTML=`길게 보면 줄었지만 곧게 줄지는 않았습니다. 한국의 12개월 평균 탄소 집약도는 <b>${mxk.month.slice(0,7)} ${nf(mxk.intensity_12m)} g</b>에서 <b>${mnk.month.slice(0,7)} ${nf(mnk.intensity_12m)} g</b>까지 내려갔고${up?`, 그 뒤 다시 올라 <b>${l.month.slice(0,7)} ${nf(l.intensity_12m)} g</b>입니다. 최근의 반등이 일시적인지는 몇 달 더 봐야 합니다`:`, ${l.month.slice(0,7)} ${nf(l.intensity_12m)} g입니다`}. 옅은 선을 보면 해마다 봄에 내려갔다가 여름·겨울에 올라가는데, 질문 5에서 본 석탄 비중의 계절 변화와 같은 모양입니다. 같은 시점 일본은 ${jp?nf(jp.intensity_12m):'–'} g으로 한국보다 조금 높고, 독일은 ${de?nf(de.intensity_12m):'–'} g으로 더 낮습니다.`}
+
+// ---------- 질문 7: 연도 재생 산점도
+const SC=D.scatter_yearly,YRS=[...new Set(SC.map(r=>r.year))].sort(),yr=document.getElementById('yr');yr.min=YRS[0];yr.max=YRS[YRS.length-1];yr.value=yr.max;
+let S7=null;
+function q7setup(){
+  const w=W(),h=Math.max(380,Math.round(Math.min(560,w*.58))),m={l:50,r:20,t:14,b:40},{svg,g,iw,ih}=frame(document.getElementById('c7'),w,h,m);
+  const x=d3.scaleLinear().domain([0,100]).range([0,iw]),y=d3.scaleLinear().domain([0,d3.max(SC,r=>r.intensity)]).nice().range([ih,0]),rr=d3.scaleSqrt().domain([0,d3.max(SC,r=>r.generation_twh)]).range([3,34]);
+  yAxis(g,y,iw,v=>nf(v));[0,20,40,60,80,100].forEach(v=>g.append('text').attr('x',x(v)).attr('y',ih+18).attr('text-anchor','middle').text(v+'%'));
+  g.append('text').attr('x',iw).attr('y',ih+34).attr('text-anchor','end').text('저탄소 발전 비중 →');g.append('text').attr('x',0).attr('y',-4).text('↑ gCO₂/kWh');
+  const trail=g.append('path').attr('fill','none').attr('stroke','var(--s1)').attr('stroke-width',1.5).attr('opacity',.45);
+  const layer=g.append('g'),labels=g.append('g'),bigYear=g.append('text').attr('x',iw-4).attr('y',52).attr('text-anchor','end').style('font-size','52px').style('font-weight','800').style('fill','var(--grid)');
+  S7={x,y,rr,trail,layer,labels,bigYear,iw,ih};svg.attr('aria-label','나라별 저탄소 비중과 탄소 집약도')}
+function q7(year,anim){
+  const {x,y,rr,trail,layer,labels,bigYear}=S7,rows=SC.filter(r=>r.year===year).sort((a,b)=>(a.country===KR)-(b.country===KR)||b.generation_twh-a.generation_twh),t=anim?d3.transition().duration(450).ease(d3.easeCubicOut):d3.transition().duration(0);
+  bigYear.text(year);document.getElementById('yrv').textContent=year+'년';
+  const kpath=SC.filter(r=>r.country===KR&&r.year<=year);trail.transition(t).attr('d',d3.line().x(r=>x(r.low_carbon)).y(r=>y(r.intensity))(kpath));
+  layer.selectAll('circle').data(rows,d=>d.country).join(en=>en.append('circle').attr('cx',d=>x(d.low_carbon)).attr('cy',d=>y(d.intensity)).attr('r',d=>rr(d.generation_twh)),up=>up,ex=>ex.remove())
+    .attr('fill',d=>d.country===KR?'var(--s1)':'var(--dim)').attr('fill-opacity',d=>d.country===KR?.9:.55).attr('stroke','var(--surface)').attr('stroke-width',2)
+    .on('pointermove',(e,d)=>showTip(e,`<b>${d.country} · ${d.year}</b><br>저탄소 ${nf(d.low_carbon,1)}%<br>탄소 집약도 ${nf(d.intensity)} g/kWh<br>1인당 ${nf(d.per_capita_kwh)} kWh · 발전량 ${nf(d.generation_twh)} TWh`)).on('pointerleave',hideTip)
+    .transition(t).attr('cx',d=>x(d.low_carbon)).attr('cy',d=>y(d.intensity)).attr('r',d=>rr(d.generation_twh));
+  labels.selectAll('text').data(rows,d=>d.country).join(en=>en.append('text').attr('x',d=>x(d.low_carbon)).attr('y',d=>y(d.intensity)),up=>up,ex=>ex.remove())
+    .attr('class',d=>d.country===KR?'ink':'ink2').style('font-weight',d=>d.country===KR?800:500).attr('text-anchor','middle').style('pointer-events','none').text(d=>d.country)
+    .transition(t).attr('x',d=>x(d.low_carbon)).attr('y',d=>y(d.intensity)-rr(d.generation_twh)-5)}
+let timer=null;const playBtn=document.getElementById('play');
+function stop(){clearInterval(timer);timer=null;playBtn.textContent='▶ 재생'}
+playBtn.onclick=()=>{if(timer)return stop();if(+yr.value>=+yr.max)yr.value=yr.min;playBtn.textContent='❚❚ 멈춤';q7(+yr.value,false);timer=setInterval(()=>{if(+yr.value>=+yr.max)return stop();yr.value=+yr.value+1;q7(+yr.value,true)},620)};
+yr.oninput=()=>{stop();q7(+yr.value,false)};
+{const a=SC.filter(r=>r.country===KR),f=a[0],l=a[a.length-1],lo=a.reduce((p,c)=>c.low_carbon<p.low_carbon?c:p),fr=SC.find(r=>r.country==='프랑스'&&r.year===l.year);
+ document.getElementById('a7').innerHTML=`${f.year}년 한국은 저탄소 ${nf(f.low_carbon,0)}%·${nf(f.intensity)} g이었고, ${l.year}년 <b>저탄소 ${nf(l.low_carbon,0)}%·${nf(l.intensity)} g</b>입니다. 25년 동안 제자리로 돌아온 것처럼 보이지만, 재생 버튼을 누르면 길이 보입니다. 원자력 비중이 줄면서 <b>${lo.year}년 저탄소 ${nf(lo.low_carbon,0)}%·${nf(lo.intensity)} g</b>까지 왼쪽 위로 갔다가, 그 뒤 원자력 회복과 태양광으로 오른쪽 아래로 돌아왔습니다. 원자력 비중이 큰 프랑스(${fr?nf(fr.intensity):'–'} g)는 처음부터 오른쪽 아래에 있고, 영국·독일·스페인은 오른쪽 아래로 크게 이동했습니다. 원 크기는 발전량이라 중국·미국·인도가 같은 비율로 움직일 때 세계 평균에 주는 영향이 큽니다.`}
+
+// ---------- 그리기 (너비가 바뀌면 다시)
+function all(){q1();q2();q3();q4();q5();q6();q7setup();q7(+yr.value,false)}
+all();let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(all,200)});
+</script></body></html>
