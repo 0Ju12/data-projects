@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-20T09:08:12.886016+00:00",
+  "last_check_at": "2026-11-20T11:53:42.174714+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.803901+00:00",
-        "duration_ms": 436.97
+        "checked_at": "2026-11-20T11:53:42.034304+00:00",
+        "duration_ms": 726.0
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.807419+00:00",
-        "duration_ms": 95.7
+        "checked_at": "2026-11-20T11:53:42.036985+00:00",
+        "duration_ms": 94.48
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.809979+00:00",
-        "duration_ms": 388.72
+        "checked_at": "2026-11-20T11:53:42.038839+00:00",
+        "duration_ms": 1013.08
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.812462+00:00",
-        "duration_ms": 257.6
+        "checked_at": "2026-11-20T11:53:42.040654+00:00",
+        "duration_ms": 373.13
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.814709+00:00",
-        "duration_ms": 64.0
+        "checked_at": "2026-11-20T11:53:42.042056+00:00",
+        "duration_ms": 107.72
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.817612+00:00",
-        "duration_ms": 319.36
+        "checked_at": "2026-11-20T11:53:42.043676+00:00",
+        "duration_ms": 419.59
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.820084+00:00",
-        "duration_ms": 1678.07
+        "checked_at": "2026-11-20T11:53:42.045371+00:00",
+        "duration_ms": 2261.62
       }
     },
     {
@@ -109,9 +109,9 @@
         "docs": "https://docs.github.com/en/rest/repos/repos#get-a-repository"
       },
       "last_run": {
-        "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.822553+00:00",
-        "duration_ms": 155.08
+        "status": "warning",
+        "checked_at": "2026-11-20T11:53:42.046929+00:00",
+        "duration_ms": 44.25
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.825824+00:00",
-        "duration_ms": 127.71
+        "checked_at": "2026-11-20T11:53:42.049165+00:00",
+        "duration_ms": 151.91
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.829530+00:00",
-        "duration_ms": 26.21
+        "checked_at": "2026-11-20T11:53:42.051363+00:00",
+        "duration_ms": 100.5
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.831944+00:00",
-        "duration_ms": 379.08
+        "checked_at": "2026-11-20T11:53:42.052796+00:00",
+        "duration_ms": 720.31
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.834176+00:00",
-        "duration_ms": 847.61
+        "checked_at": "2026-11-20T11:53:42.054409+00:00",
+        "duration_ms": 680.98
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.836631+00:00",
-        "duration_ms": 114.63
+        "checked_at": "2026-11-20T11:53:42.055715+00:00",
+        "duration_ms": 89.0
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.839266+00:00",
-        "duration_ms": 41.14
+        "checked_at": "2026-11-20T11:53:42.057252+00:00",
+        "duration_ms": 36.62
       }
     },
     {
@@ -208,8 +208,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.842307+00:00",
-        "duration_ms": 2579.22
+        "checked_at": "2026-11-20T11:53:42.059113+00:00",
+        "duration_ms": 224.86
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.844459+00:00",
-        "duration_ms": 91.12
+        "checked_at": "2026-11-20T11:53:42.060819+00:00",
+        "duration_ms": 267.0
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.846776+00:00",
-        "duration_ms": 68.22
+        "checked_at": "2026-11-20T11:53:42.062327+00:00",
+        "duration_ms": 175.94
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.858153+00:00",
-        "duration_ms": 38.15
+        "checked_at": "2026-11-20T11:53:42.156170+00:00",
+        "duration_ms": 90.53
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.869219+00:00",
-        "duration_ms": 12.51
+        "checked_at": "2026-11-20T11:53:42.164019+00:00",
+        "duration_ms": 48.84
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-20T09:08:12.875214+00:00",
-        "duration_ms": 118.66
+        "checked_at": "2026-11-20T11:53:42.167807+00:00",
+        "duration_ms": 153.0
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.878986+00:00",
-        "duration_ms": 108.36
+        "checked_at": "2026-11-20T11:53:42.170402+00:00",
+        "duration_ms": 57.8
       }
     },
     {
@@ -306,12 +306,24 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T09:08:12.886016+00:00",
-        "duration_ms": 122.07
+        "checked_at": "2026-11-20T11:53:42.174714+00:00",
+        "duration_ms": 22.73
       }
     }
   ],
   "incidents": [
+    {
+      "id": 14,
+      "target": "github-catalog",
+      "key": "availability",
+      "kind": "availability",
+      "severity": "warning",
+      "message": "HTTP 403",
+      "opened_at": "2026-11-20T11:53:42.046929+00:00",
+      "last_seen_at": "2026-11-20T11:53:42.046929+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    },
     {
       "id": 13,
       "target": "rest-countries",
@@ -320,9 +332,9 @@
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-20T09:08:12.875214+00:00",
+      "last_seen_at": "2026-11-20T11:53:42.167807+00:00",
       "resolved_at": null,
-      "occurrences": 21
+      "occurrences": 22
     }
   ],
   "ai_latest": {
