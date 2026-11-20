@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-20T00:54:14.921484+00:00",
+  "last_check_at": "2026-11-20T01:08:54.364195+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.836892+00:00",
-        "duration_ms": 623.76
+        "checked_at": "2026-11-20T01:08:54.280840+00:00",
+        "duration_ms": 583.47
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.840049+00:00",
-        "duration_ms": 62.47
+        "checked_at": "2026-11-20T01:08:54.285230+00:00",
+        "duration_ms": 192.72
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.842429+00:00",
-        "duration_ms": 340.27
+        "checked_at": "2026-11-20T01:08:54.287897+00:00",
+        "duration_ms": 309.43
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.844658+00:00",
-        "duration_ms": 266.1
+        "checked_at": "2026-11-20T01:08:54.290430+00:00",
+        "duration_ms": 229.89
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.846476+00:00",
-        "duration_ms": 102.09
+        "checked_at": "2026-11-20T01:08:54.293038+00:00",
+        "duration_ms": 102.25
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.848565+00:00",
-        "duration_ms": 439.83
+        "checked_at": "2026-11-20T01:08:54.295623+00:00",
+        "duration_ms": 274.55
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.850819+00:00",
-        "duration_ms": 1782.3
+        "checked_at": "2026-11-20T01:08:54.298129+00:00",
+        "duration_ms": 1618.82
       }
     },
     {
@@ -110,8 +110,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.852795+00:00",
-        "duration_ms": 171.84
+        "checked_at": "2026-11-20T01:08:54.300586+00:00",
+        "duration_ms": 290.07
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.855335+00:00",
-        "duration_ms": 197.9
+        "checked_at": "2026-11-20T01:08:54.303625+00:00",
+        "duration_ms": 139.19
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.858179+00:00",
-        "duration_ms": 145.56
+        "checked_at": "2026-11-20T01:08:54.307198+00:00",
+        "duration_ms": 119.41
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.860186+00:00",
-        "duration_ms": 617.83
+        "checked_at": "2026-11-20T01:08:54.309594+00:00",
+        "duration_ms": 568.2
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.864392+00:00",
-        "duration_ms": 242.24
+        "checked_at": "2026-11-20T01:08:54.311868+00:00",
+        "duration_ms": 344.35
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.867179+00:00",
-        "duration_ms": 236.62
+        "checked_at": "2026-11-20T01:08:54.314155+00:00",
+        "duration_ms": 269.19
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.869225+00:00",
-        "duration_ms": 49.56
+        "checked_at": "2026-11-20T01:08:54.316243+00:00",
+        "duration_ms": 57.76
       }
     },
     {
@@ -208,8 +208,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.871856+00:00",
-        "duration_ms": 569.64
+        "checked_at": "2026-11-20T01:08:54.319418+00:00",
+        "duration_ms": 181.68
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.873723+00:00",
-        "duration_ms": 297.07
+        "checked_at": "2026-11-20T01:08:54.321572+00:00",
+        "duration_ms": 306.88
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.875737+00:00",
-        "duration_ms": 182.48
+        "checked_at": "2026-11-20T01:08:54.324226+00:00",
+        "duration_ms": 220.29
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.898803+00:00",
-        "duration_ms": 105.32
+        "checked_at": "2026-11-20T01:08:54.335551+00:00",
+        "duration_ms": 238.76
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.908554+00:00",
-        "duration_ms": 44.92
+        "checked_at": "2026-11-20T01:08:54.346628+00:00",
+        "duration_ms": 61.06
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-20T00:54:14.913415+00:00",
-        "duration_ms": 229.86
+        "checked_at": "2026-11-20T01:08:54.352207+00:00",
+        "duration_ms": 368.92
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.916863+00:00",
-        "duration_ms": 359.47
+        "checked_at": "2026-11-20T01:08:54.358095+00:00",
+        "duration_ms": 30.33
       }
     },
     {
@@ -305,13 +305,25 @@
         "docs": "https://open-meteo.com/en/docs"
       },
       "last_run": {
-        "status": "healthy",
-        "checked_at": "2026-11-20T00:54:14.921484+00:00",
-        "duration_ms": 504.34
+        "status": "warning",
+        "checked_at": "2026-11-20T01:08:54.364195+00:00",
+        "duration_ms": 12176.94
       }
     }
   ],
   "incidents": [
+    {
+      "id": 13,
+      "target": "weather",
+      "key": "availability",
+      "kind": "availability",
+      "severity": "warning",
+      "message": "URLError · 응답을 읽지 못했습니다.",
+      "opened_at": "2026-11-20T01:08:54.364195+00:00",
+      "last_seen_at": "2026-11-20T01:08:54.364195+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    },
     {
       "id": 12,
       "target": "rest-countries",
@@ -320,9 +332,9 @@
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-20T00:54:14.913415+00:00",
+      "last_seen_at": "2026-11-20T01:08:54.352207+00:00",
       "resolved_at": null,
-      "occurrences": 19
+      "occurrences": 20
     }
   ],
   "ai_latest": {
@@ -732,9 +744,9 @@
   "portfolio": {
     "schema_version": 1,
     "source_repository": "0Ju12/0Ju12.github.io",
-    "source_sha": "64b77f0a57577f5c7c464c4ab52aa5ac9b38332c",
-    "source_updated_at": "2026-11-19T10:00:02Z",
-    "synced_at": "2026-11-19T18:38:59.675808+00:00",
+    "source_sha": "44bf792b61aeb604295258513598852f7ae07f8f",
+    "source_updated_at": "2026-11-20T00:59:22Z",
+    "synced_at": "2026-11-20T01:08:40.707080+00:00",
     "links": {
       "preparation": "https://0ju12.github.io/study/index.html",
       "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -888,6 +900,20 @@
           "https://doi.org/10.2118/236968-PA"
         ],
         "activity_id": "calgary-2024"
+      },
+      {
+        "id": "hankki",
+        "title": "한끼 — 냉장고 재고 기반 식단·운동 코치 Agent (LangGraph · FastAPI · Android)",
+        "summary": "냉장고 재고(중량·소비기한)를 기준으로 메뉴·부족한 재료·조리 후 남는 시간을 계산하고, 상황 문장 하나로 추천부터 장바구니·조리 모드까지 이어 주는 한국어 웹·Android 앱",
+        "url": "https://0ju12.github.io/projects/hankki.html",
+        "repository": "https://github.com/0Ju12/ai-agents",
+        "stack": [],
+        "links": [
+          "https://github.com/0Ju12/ai-agents",
+          "https://github.com/0Ju12/ai-agents/blob/main/fridge_agent/docs/validation.md",
+          "https://github.com/0Ju12/ai-agents/blob/main/fridge_agent/docs/design.md"
+        ],
+        "activity_id": "hankki"
       },
       {
         "id": "data-projects",

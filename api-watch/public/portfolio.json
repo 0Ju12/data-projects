@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_repository": "0Ju12/0Ju12.github.io",
-  "source_sha": "64b77f0a57577f5c7c464c4ab52aa5ac9b38332c",
-  "source_updated_at": "2026-11-19T10:00:02Z",
-  "synced_at": "2026-11-19T18:38:59.675808+00:00",
+  "source_sha": "44bf792b61aeb604295258513598852f7ae07f8f",
+  "source_updated_at": "2026-11-20T00:59:22Z",
+  "synced_at": "2026-11-20T01:08:40.707080+00:00",
   "links": {
     "preparation": "https://0ju12.github.io/study/index.html",
     "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -157,6 +157,20 @@
         "https://doi.org/10.2118/236968-PA"
       ],
       "activity_id": "calgary-2024"
+    },
+    {
+      "id": "hankki",
+      "title": "한끼 — 냉장고 재고 기반 식단·운동 코치 Agent (LangGraph · FastAPI · Android)",
+      "summary": "냉장고 재고(중량·소비기한)를 기준으로 메뉴·부족한 재료·조리 후 남는 시간을 계산하고, 상황 문장 하나로 추천부터 장바구니·조리 모드까지 이어 주는 한국어 웹·Android 앱",
+      "url": "https://0ju12.github.io/projects/hankki.html",
+      "repository": "https://github.com/0Ju12/ai-agents",
+      "stack": [],
+      "links": [
+        "https://github.com/0Ju12/ai-agents",
+        "https://github.com/0Ju12/ai-agents/blob/main/fridge_agent/docs/validation.md",
+        "https://github.com/0Ju12/ai-agents/blob/main/fridge_agent/docs/design.md"
+      ],
+      "activity_id": "hankki"
     },
     {
       "id": "data-projects",
