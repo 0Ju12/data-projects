@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-20T11:53:42.174714+00:00",
+  "last_check_at": "2026-11-20T17:59:17.730968+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.034304+00:00",
-        "duration_ms": 726.0
+        "checked_at": "2026-11-20T17:59:17.651105+00:00",
+        "duration_ms": 431.05
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.036985+00:00",
-        "duration_ms": 94.48
+        "checked_at": "2026-11-20T17:59:17.654430+00:00",
+        "duration_ms": 90.05
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.038839+00:00",
-        "duration_ms": 1013.08
+        "checked_at": "2026-11-20T17:59:17.657315+00:00",
+        "duration_ms": 285.71
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.040654+00:00",
-        "duration_ms": 373.13
+        "checked_at": "2026-11-20T17:59:17.660092+00:00",
+        "duration_ms": 301.09
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.042056+00:00",
-        "duration_ms": 107.72
+        "checked_at": "2026-11-20T17:59:17.662188+00:00",
+        "duration_ms": 51.27
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.043676+00:00",
-        "duration_ms": 419.59
+        "checked_at": "2026-11-20T17:59:17.664751+00:00",
+        "duration_ms": 324.24
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.045371+00:00",
-        "duration_ms": 2261.62
+        "checked_at": "2026-11-20T17:59:17.667167+00:00",
+        "duration_ms": 1665.77
       }
     },
     {
@@ -109,9 +109,9 @@
         "docs": "https://docs.github.com/en/rest/repos/repos#get-a-repository"
       },
       "last_run": {
-        "status": "warning",
-        "checked_at": "2026-11-20T11:53:42.046929+00:00",
-        "duration_ms": 44.25
+        "status": "healthy",
+        "checked_at": "2026-11-20T17:59:17.669519+00:00",
+        "duration_ms": 173.17
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.049165+00:00",
-        "duration_ms": 151.91
+        "checked_at": "2026-11-20T17:59:17.672626+00:00",
+        "duration_ms": 104.03
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.051363+00:00",
-        "duration_ms": 100.5
+        "checked_at": "2026-11-20T17:59:17.676063+00:00",
+        "duration_ms": 27.1
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.052796+00:00",
-        "duration_ms": 720.31
+        "checked_at": "2026-11-20T17:59:17.678440+00:00",
+        "duration_ms": 418.98
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.054409+00:00",
-        "duration_ms": 680.98
+        "checked_at": "2026-11-20T17:59:17.680469+00:00",
+        "duration_ms": 407.43
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.055715+00:00",
-        "duration_ms": 89.0
+        "checked_at": "2026-11-20T17:59:17.682885+00:00",
+        "duration_ms": 128.97
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.057252+00:00",
-        "duration_ms": 36.62
+        "checked_at": "2026-11-20T17:59:17.684908+00:00",
+        "duration_ms": 40.54
       }
     },
     {
@@ -208,8 +208,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.059113+00:00",
-        "duration_ms": 224.86
+        "checked_at": "2026-11-20T17:59:17.688215+00:00",
+        "duration_ms": 871.36
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.060819+00:00",
-        "duration_ms": 267.0
+        "checked_at": "2026-11-20T17:59:17.690348+00:00",
+        "duration_ms": 1168.2
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.062327+00:00",
-        "duration_ms": 175.94
+        "checked_at": "2026-11-20T17:59:17.692849+00:00",
+        "duration_ms": 100.68
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.156170+00:00",
-        "duration_ms": 90.53
+        "checked_at": "2026-11-20T17:59:17.703712+00:00",
+        "duration_ms": 36.05
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.164019+00:00",
-        "duration_ms": 48.84
+        "checked_at": "2026-11-20T17:59:17.715469+00:00",
+        "duration_ms": 20.86
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-20T11:53:42.167807+00:00",
-        "duration_ms": 153.0
+        "checked_at": "2026-11-20T17:59:17.720843+00:00",
+        "duration_ms": 117.07
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.170402+00:00",
-        "duration_ms": 57.8
+        "checked_at": "2026-11-20T17:59:17.724759+00:00",
+        "duration_ms": 29.85
       }
     },
     {
@@ -306,95 +306,71 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-20T11:53:42.174714+00:00",
-        "duration_ms": 22.73
+        "checked_at": "2026-11-20T17:59:17.730968+00:00",
+        "duration_ms": 125.46
       }
     }
   ],
   "incidents": [
     {
       "id": 14,
-      "target": "github-catalog",
-      "key": "availability",
-      "kind": "availability",
-      "severity": "warning",
-      "message": "HTTP 403",
-      "opened_at": "2026-11-20T11:53:42.046929+00:00",
-      "last_seen_at": "2026-11-20T11:53:42.046929+00:00",
-      "resolved_at": null,
-      "occurrences": 1
-    },
-    {
-      "id": 13,
       "target": "rest-countries",
       "key": "json",
       "kind": "format",
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-20T11:53:42.167807+00:00",
+      "last_seen_at": "2026-11-20T17:59:17.720843+00:00",
       "resolved_at": null,
-      "occurrences": 22
+      "occurrences": 23
     }
   ],
   "ai_latest": {
-    "date": "2026-11-20",
-    "item_id": "model:Qwen/Qwen3.8-27B",
-    "created_at": "2026-11-19T18:39:06.372464+00:00",
-    "kind": "model",
-    "label": "공개 모델 저장소 업데이트 · 최초 발표일과 구분",
-    "title": "Qwen/Qwen3.8-27B",
-    "technology": "Qwen/Qwen3.8-27B",
-    "official_published_at": null,
-    "collected_at": "2026-11-19T18:39:06.372464+00:00",
-    "what": "Hugging Face에 공개된 모델 저장소입니다. 메타데이터의 작업 유형은 image-text-to-text이며, 실제 지원 입력·출력과 사용 조건은 모델 카드에서 확인해야 합니다.",
-    "why_for_you": "본인의 VQA·교정 모델·RAG 실험에서 같은 평가 입력과 기준선을 고정해 비교하는 후보로 검토할 수 있습니다. 최근 수정이나 다운로드 수만으로 더 우수하다고 판단하지 않습니다.",
+    "date": "2026-11-21",
+    "item_id": "langchain-ai/langgraph:452145289",
+    "created_at": "2026-11-20T17:59:17.734457+00:00",
+    "kind": "release",
+    "label": "관심 저장소의 공식 릴리스",
+    "title": "LangGraph · langgraph==1.2.24",
+    "technology": "LangGraph",
+    "official_published_at": "2026-11-20T01:10:26Z",
+    "collected_at": "2026-11-20T17:59:17.734457+00:00",
+    "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+    "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
     "flow": [
-      "모델 카드·라이선스 확인",
-      "작업·입출력 확인",
-      "기준선과 평가 설계",
-      "자원·오류 유형 비교"
+      "상태 입력",
+      "검색·도구 노드",
+      "검증·분기",
+      "최종 응답"
     ],
-    "release_excerpt": "모델을 다운로드하거나 실행하지 않고 공개 메타데이터를 읽어 구성한 학습 노트입니다.",
+    "release_excerpt": "Changes since 1.2.23 * release(langgraph): 1.2.24 (#9752) * fix(langgraph): handle `REMOVE_ALL_MESSAGES` in `_messages_delta_reducer` and `None` checkpoints in `DeltaChannel` (#9735)",
     "facts": [
       {
-        "label": "모델 ID",
-        "value": "Qwen/Qwen3.8-27B"
+        "label": "공식 발표일",
+        "value": "2026-11-20T01:10:26Z"
       },
       {
-        "label": "작업 유형",
-        "value": "image-text-to-text"
+        "label": "버전",
+        "value": "1.2.24"
       },
       {
-        "label": "저장소 최근 수정일",
-        "value": "2026-11-07T04:42:17.000Z"
-      },
-      {
-        "label": "라이브러리",
-        "value": "transformers"
-      },
-      {
-        "label": "라이선스",
-        "value": "모델 카드 원문 확인 필요"
-      },
-      {
-        "label": "접근 제한",
-        "value": "False"
+        "label": "저장소",
+        "value": "langchain-ai/langgraph"
       }
     ],
     "limits": [
-      "저장소 수정일은 신규 모델의 최초 발표일과 다를 수 있습니다.",
-      "메타데이터만으로 성능·메모리·라이선스 적합성을 검증하지 않았습니다."
+      "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+      "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
     ],
-    "question": "이 모델을 내 프로젝트의 기준선과 비교할 때 데이터·프롬프트·평가 조건을 어떻게 고정할까요?",
+    "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
     "sources": [
       {
-        "title": "모델 카드",
-        "url": "https://huggingface.co/Qwen/Qwen3.8-27B"
+        "title": "공식 릴리스 또는 프로젝트 원문",
+        "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.24"
       },
       {
-        "title": "모델 메타데이터 원문",
-        "url": "https://huggingface.co/api/models/Qwen/Qwen3.8-27B"
+        "title": "공식 저장소",
+        "url": "https://github.com/langchain-ai/langgraph"
       }
     ],
     "exercise": {
@@ -411,6 +387,67 @@
     "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
   },
   "ai_archive": [
+    {
+      "date": "2026-11-21",
+      "item_id": "langchain-ai/langgraph:452145289",
+      "created_at": "2026-11-20T17:59:17.734457+00:00",
+      "kind": "release",
+      "label": "관심 저장소의 공식 릴리스",
+      "title": "LangGraph · langgraph==1.2.24",
+      "technology": "LangGraph",
+      "official_published_at": "2026-11-20T01:10:26Z",
+      "collected_at": "2026-11-20T17:59:17.734457+00:00",
+      "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+      "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+      "flow": [
+        "상태 입력",
+        "검색·도구 노드",
+        "검증·분기",
+        "최종 응답"
+      ],
+      "release_excerpt": "Changes since 1.2.23 * release(langgraph): 1.2.24 (#9752) * fix(langgraph): handle `REMOVE_ALL_MESSAGES` in `_messages_delta_reducer` and `None` checkpoints in `DeltaChannel` (#9735)",
+      "facts": [
+        {
+          "label": "공식 발표일",
+          "value": "2026-11-20T01:10:26Z"
+        },
+        {
+          "label": "버전",
+          "value": "1.2.24"
+        },
+        {
+          "label": "저장소",
+          "value": "langchain-ai/langgraph"
+        }
+      ],
+      "limits": [
+        "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+        "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+      ],
+      "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+      "sources": [
+        {
+          "title": "공식 릴리스 또는 프로젝트 원문",
+          "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.24"
+        },
+        {
+          "title": "공식 저장소",
+          "url": "https://github.com/langchain-ai/langgraph"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    },
     {
       "date": "2026-11-20",
       "item_id": "model:Qwen/Qwen3.8-27B",
@@ -744,9 +781,9 @@
   "portfolio": {
     "schema_version": 1,
     "source_repository": "0Ju12/0Ju12.github.io",
-    "source_sha": "e49418a2ff5df673f1682a8b363ff06dfe216fcf",
-    "source_updated_at": "2026-11-20T08:34:21Z",
-    "synced_at": "2026-11-20T09:08:09.248236+00:00",
+    "source_sha": "f7eede7726ed82f7af90e8250e8f07fab6c1a805",
+    "source_updated_at": "2026-11-20T12:16:41Z",
+    "synced_at": "2026-11-20T17:59:15.421074+00:00",
     "links": {
       "preparation": "https://0ju12.github.io/study/index.html",
       "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -909,6 +946,7 @@
           "https://0ju12.github.io/data-projects/fire/",
           "https://github.com/0Ju12/data-projects/tree/main/data-agent",
           "https://0ju12.github.io/data-projects/warehouse/",
+          "https://0ju12.github.io/data-projects/energy/",
           "https://0ju12.github.io/data-projects/api-watch/",
           "https://github.com/0Ju12/data-projects/tree/main/warehouse"
         ],
