@@ -61,11 +61,11 @@ details{margin-top:10px}summary{cursor:pointer;font-size:12.5px;color:var(--text
 </style></head><body>
 <header><div class="hd"><h1>웨어하우스 대시보드</h1><span class="gen" id="gen"></span></div>
 <nav role="tablist" aria-label="화면">
-<button role="tab" data-t="home" aria-selected="true">개요</button><button role="tab" data-t="mkt" aria-selected="false">시세·환율</button><button role="tab" data-t="jobs" aria-selected="false">채용·도구</button><button role="tab" data-t="pwr" aria-selected="false">전력</button><button role="tab" data-t="eq" aria-selected="false">지진·재해</button><button role="tab" data-t="qa" aria-selected="false">품질</button>
+<button role="tab" data-t="home" aria-selected="true">개요</button><button role="tab" data-t="pwr" aria-selected="false">전력</button><button role="tab" data-t="eq" aria-selected="false">지진·재해</button><button role="tab" data-t="jobs" aria-selected="false">채용 공고</button><button role="tab" data-t="qa" aria-selected="false">품질</button><button role="tab" data-t="mkt" aria-selected="false">부가 실험</button>
 </nav></header>
 <main>
 <section id="home" class="on"><div class="grid" id="home-g"></div></section>
-<section id="mkt"><div class="filters"><span class="fl">자산</span><span class="seg" id="f-asset"></span><span class="fl">기간</span><span class="seg" id="f-range"></span></div><div class="grid" id="mkt-g"></div></section>
+<section id="mkt"><div class="grid" id="x-note"></div><div class="filters"><span class="fl">자산</span><span class="seg" id="f-asset"></span><span class="fl">기간</span><span class="seg" id="f-range"></span></div><div class="grid" id="mkt-g"></div><div class="grid" id="pkg-g" style="margin-top:14px"></div></section>
 <section id="jobs"><div class="filters"><span class="fl">분류</span><span class="seg" id="f-cat"></span></div><div class="grid" id="jobs-g"></div></section>
 <section id="pwr"><div class="grid" id="pwr-g"></div></section>
 <section id="eq"><div class="grid" id="eq-g"></div></section>
@@ -119,19 +119,19 @@ function home(){const g=$('#home-g'),T=D.tests||[],pass=T.filter(t=>t[1]==='pass
   g.append(k('c3',D.models??'–','모델·변경 이력','원본 → 정제 → 집계','qa'),
     k('c3',`${pass} / ${T.length}`,'품질 테스트 통과',warn?`경고 ${warn}건`:(T.length-pass?`실패 ${T.length-pass}건`:'모두 통과'),'qa'),
     k('c3',`${ok} / ${H.length}`,'기록된 매일 실행 중 성공',last.logical_date?`마지막 ${last.logical_date} · ${last.seconds}초`:'아직 기록 없음','qa'),
-    k('c3',nf((+last.rows_quakes||0)+(+last.rows_demand_hourly||0)+(+last.rows_jobs||0)+(+last.rows_candles||0)+(+last.rows_pkg||0)+(+last.rows_disasters||0)),'정리된 원본 행','지진·수요·공고·일봉·내려받기·재해 합계','qa'));
-  const P=D.premium&&D.premium.BTC;if(P&&P.length){const l=P[P.length-1],v=P.slice(-90).map(r=>r[1]);g.append(k('c3',`${l[1]>0?'+':''}${nf(l[1],2)}%`,'비트코인 원화 프리미엄',`${l[0]} · 최근 90일 ${nf(Math.min(...v),1)}% ~ ${nf(Math.max(...v),1)}%`,'mkt',spark(v)))}
-  const F=D.fx;if(F&&F.length){const l=F[F.length-1],v=F.slice(-90).map(r=>r[1]);g.append(k('c3',nf(l[1],1)+'원','달러 환율 (기준환율)',`${l[0]} 고시`,'mkt',spark(v)))}
+    k('c3',nf((+last.rows_quakes||0)+(+last.rows_demand_hourly||0)+(+last.rows_jobs||0)+(+last.rows_disasters||0)),'정리된 원본 행','지진·수요·공고·재해 (부가 실험 제외)','qa'));
+  const DDk=D.demand_daily;if(DDk&&DDk.length){const mx=DDk.reduce((a,b)=>b[1]>a[1]?b:a);g.append(k('c3',nf(mx[1])+' MW','2025년 하루 최대 전력 수요',`${mx[0]} · 그날 평균 기온 ${nf(mx[5],1)}℃`,'pwr',spark(DDk.slice(-120).map(r=>r[1]))))}
+  const DEk=D.dis_events||[];if(DEk.length){g.append(k('c3',nf(DEk.length)+'건','최근 90일 재해 경보 (지진 외)',`주황·빨강 ${nf(DEk.filter(r=>r[5]>=2).length)}건 · 태풍·홍수·화산·가뭄`,'eq'))}
   const S=(D.skills||[]).filter(s=>s[1]!=='role');if(S.length){g.append(k('c3',esc(S[0][0]),'공고에서 가장 많이 언급된 기술',`최근 4주 기술 공고의 ${S[0][3]}% · 다음 ${esc(S[1]?.[0]||'')}`,'jobs',spark((D.jobs_daily||[]).map(r=>r[3]))))}
   const Q=D.quakes_monthly;if(Q&&Q.length){const l=Q[Q.length-1];g.append(k('c3',nf(l[1])+'건',`지진 (${ym(l[0])}월, 진행 중)`,`그달 최대 규모 ${nf(l[2],1)}`,'eq',spark(Q.slice(-24).map(r=>r[1]))))}
   const DD=D.demand_daily;if(DD&&DD.length){const mx=DD.reduce((a,b)=>b[1]>a[1]?b:a);const c=card('c8',`<h2>2025년 하루 최대 전력 수요</h2><p class="sub">가장 높았던 날은 ${mx[0]} (${nf(mx[1])} MW). 여름과 겨울에 솟고 봄·가을에 낮습니다.</p><div class="chart" id="h-pwr"></div>`);g.append(c);
     line(c.querySelector('#h-pwr'),[{name:'최대 수요',color:'var(--s1)',pts:DD.map(r=>[r[0],r[1]])}],{h:210,unit:'',label:'하루 최대 전력 수요',tip:(i,s)=>`<b>${DD[i][0]}${DD[i][4]?' (주말)':''}</b><br>최대 ${nf(DD[i][1])} MW<br>평균 ${nf(DD[i][2])} MW<br>평균 기온 ${nf(DD[i][5],1)}℃`})}
-  const J=D.jobs_total;g.append(card('c4',`<h2>이 화면에 대해</h2><p class="sub" style="margin-bottom:0">공개 자료 여섯 갈래(지진·전력 수요·채용 공고·거래소 시세와 환율·패키지 내려받기·재해 경보)를 매일 받아 dbt 로 정리한 결과입니다. 숫자를 누르면 해당 탭으로 갑니다.<br><br>${J?`채용 공고 ${nf(J[0])}건(${J[3]} ~ ${J[4]}), `:''}${P?`일봉 ${nf(Object.values(D.premium).reduce((a,b)=>a+b.length,0)*2)}개, `:''}${DD?`시간별 수요 ${nf(DD.length*24)}행`:''}.<br><br>자료가 작아 처리 성능을 보여 주는 화면은 아닙니다. 품질 검사와 재실행 안전성을 확인하는 용도입니다.</p>`));
+  const J=D.jobs_total;g.append(card('c4',`<h2>이 화면에 대해</h2><p class="sub" style="margin-bottom:0">에너지·자원 쪽 공개 자료(전력 수요·기온·지진·재해 경보)와 데이터 직무 채용 공고를 매일 받아 dbt 로 정리한 결과입니다. 숫자를 누르면 해당 탭으로 갑니다.<br><br>${J?`채용 공고 ${nf(J[0])}건(${J[3]} ~ ${J[4]}), `:''}${DD?`시간별 수요 ${nf(DD.length*24)}행`:''}.<br><br>자료가 작아 처리 성능을 보여 주는 화면은 아닙니다. 품질 검사와 재실행 안전성을 확인하는 용도입니다. 거래소 시세와 패키지 내려받기는 '부가 실험' 탭에 따로 두었습니다.</p>`));
   g.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go))}
 
 // ================= 시세·환율
 let asset='BTC',range=365;
-function mkt(){const g=$('#mkt-g');if(!D.premium){g.innerHTML='<p class="empty c12">시세 자료가 없습니다.</p>';return}
+function mkt(){$('#x-note').append(card('c12',`<h2>부가 실험</h2><p class="sub" style="margin-bottom:0">웨어하우스의 본체는 전력 수요·기온·지진·재해 경보와 데이터 직무 채용 공고입니다. 아래 두 가지는 같은 구조(수집 → 정제 → 집계 → 품질 테스트)를 다른 성격의 자료에 적용해 본 실험입니다. 하루 경계가 다른 거래소 일봉, 영업일에만 고시되는 환율, 늦게 확정되는 내려받기 통계처럼 시간 처리가 까다로운 자료를 골랐습니다.</p>`));try{pkgs()}catch(e){}const g=$('#mkt-g');if(!D.premium){g.innerHTML='<p class="empty c12">시세 자료가 없습니다.</p>';return}
   seg($('#f-asset'),Object.keys(D.premium).map(a=>[a,a]),asset,v=>{asset=v;draw()});seg($('#f-range'),[['90','90일'],['365','1년'],['730','2년']],String(range),v=>{range=+v;draw()});
   function draw(){const A=D.premium[asset].slice(-range),l=A[A.length-1],v=A.map(r=>r[1]),avg=v.reduce((a,b)=>a+b,0)/v.length,hi=A.reduce((a,b)=>b[1]>a[1]?b:a),lo=A.reduce((a,b)=>b[1]<a[1]?b:a),neg=v.filter(x=>x<0).length;
     g.innerHTML='';const K=(b,s,sm)=>card('kpi c3',`<span>${s}</span><b>${b}</b><small>${sm}</small>`);
@@ -145,6 +145,15 @@ function mkt(){const g=$('#mkt-g');if(!D.premium){g.innerHTML='<p class="empty c
     g.append(el(`<p class="note c12" style="grid-column:span 12">출처: 업비트·코인베이스 공개 시세, Frankfurter(유럽중앙은행 기준환율). 두 거래소 모두 하루를 UTC 0시에 끊습니다. 일 종가 한 점끼리의 비교라 장중 차이는 보이지 않고, 기준환율은 실제 거래 환율과 다릅니다. 투자 판단용 자료가 아닙니다.</p>`))}
   draw()}
 
+// ================= 부가 실험: 패키지 내려받기
+function pkgs(){const g=$('#pkg-g');
+    const SP=(D.supply||[]),PW=D.pkg_weekly||{},PD=D.pkg_dim||[];
+    if(SP.length){g.append(card('c12',`<h2>같은 기술을 두 각도에서 — 공고 언급과 패키지 내려받기</h2><p class="sub">공고는 최근 4주 언급 수, 내려받기는 짝지은 패키지의 최근 4주 합계와 그 전 4주 대비 변화. 두 값은 단위도 모집단도 달라 서로 나눌 수 없습니다.</p><div class="sc" style="max-height:330px;overflow-y:auto"><table><tr><th>기술</th><th>짝지은 패키지</th><th class="n">공고 언급</th><th class="n">내려받기 (4주)</th><th class="n">전 4주 대비</th></tr>${SP.map(r=>`<tr><td>${esc(r[0])}</td><td class="w" style="color:var(--muted)">${esc(r[6])}</td><td class="n">${nf(r[2])}</td><td class="n">${nf(r[3])}</td><td class="n">${r[5]==null?'–':(r[5]>0?'▲ +':'▼ ')+nf(r[5],1)+'%'}</td></tr>`).join('')}</table></div>`));
+      const names=PD.map(r=>r[0]),cur=names.includes('dbt-core')?'dbt-core':names[0];
+      const c3=card('c12',`<h2>패키지 주간 내려받기</h2><p class="sub">7일이 다 찬 주만 그립니다. 패키지마다 규모가 크게 달라 한 번에 하나씩 봅니다.</p><div class="filters" style="margin-bottom:8px"><label class="fl" for="pk">패키지</label><select id="pk" style="font:inherit;font-size:13px;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text)">${PD.map(r=>`<option value="${esc(r[0])}"${r[0]===cur?' selected':''}>${esc(r[0])} (${r[1]} · ${esc(r[2])})</option>`).join('')}</select></div><div class="chart" id="j3"></div>`);g.append(c3);
+      const dp=n=>{const W=PW[n]||[];line(c3.querySelector('#j3'),[{name:n,color:'var(--s1)',pts:W.map(r=>[r[0],r[1]])}],{h:220,zero:true,label:n+' 주간 내려받기',xfmt:ym,tip:i=>`<b>${W[i][0]} 주</b><br>${nf(W[i][1])}회`})};dp(cur);c3.querySelector('#pk').onchange=e=>dp(e.target.value)}
+}
+
 // ================= 채용
 let cat='tech';
 function jobs(){const g=$('#jobs-g'),S=D.skills,J=D.jobs_total;if(!S||!J){g.innerHTML='<p class="empty">채용 자료가 없습니다.</p>';return}
@@ -155,11 +164,6 @@ function jobs(){const g=$('#jobs-g'),S=D.skills,J=D.jobs_total;if(!S||!J){g.inne
     const c=card('c7',`<h2>최근 4주, 많이 언급된 기술</h2><p class="sub">기술 이름이 하나라도 나온 공고 가운데 그 기술을 언급한 비율</p><div class="hb">${rows.map(r=>`<div class="nm" title="${esc(r[0])}">${esc(r[0])}<span class="cat">${esc(r[1])}</span></div><div><div class="bar" style="width:${r[2]/mx*100}%"></div></div><div class="v">${nf(r[2])}</div><div class="p">${r[3]}%</div>`).join('')||'<p class="empty">이 분류에 해당하는 공고가 없습니다.</p>'}</div>`);g.append(c);
     const JD=D.jobs_daily||[];const c2=card('c5',`<h2>하루에 게시된 공고</h2><p class="sub">최근 45일, 출처별</p><div class="lg"><span><i style="background:var(--s1)"></i>Arbeitnow</span><span><i style="background:var(--s2)"></i>Remote OK</span></div><div class="chart" id="j2"></div>`);g.append(c2);
     bars(c2.querySelector('#j2'),JD.map(r=>[r[0],r[1]||0,r[2]||0,r[3]]),[{name:'Arbeitnow',color:'var(--s1)'},{name:'Remote OK',color:'var(--s2)'}],{h:250,label:'하루에 게시된 공고',tip:r=>`<b>${r[0]}</b><br>Arbeitnow ${nf(r[1])}<br>Remote OK ${nf(r[2])}<br>그중 기술 공고 ${nf(r[3])}`});
-    const SP=(D.supply||[]),PW=D.pkg_weekly||{},PD=D.pkg_dim||[];
-    if(SP.length){g.append(card('c12',`<h2>같은 기술을 두 각도에서 — 공고 언급과 패키지 내려받기</h2><p class="sub">공고는 최근 4주 언급 수, 내려받기는 짝지은 패키지의 최근 4주 합계와 그 전 4주 대비 변화. 두 값은 단위도 모집단도 달라 서로 나눌 수 없습니다.</p><div class="sc" style="max-height:330px;overflow-y:auto"><table><tr><th>기술</th><th>짝지은 패키지</th><th class="n">공고 언급</th><th class="n">내려받기 (4주)</th><th class="n">전 4주 대비</th></tr>${SP.map(r=>`<tr><td>${esc(r[0])}</td><td class="w" style="color:var(--muted)">${esc(r[6])}</td><td class="n">${nf(r[2])}</td><td class="n">${nf(r[3])}</td><td class="n">${r[5]==null?'–':(r[5]>0?'▲ +':'▼ ')+nf(r[5],1)+'%'}</td></tr>`).join('')}</table></div>`));
-      const names=PD.map(r=>r[0]),cur=names.includes('dbt-core')?'dbt-core':names[0];
-      const c3=card('c12',`<h2>패키지 주간 내려받기</h2><p class="sub">7일이 다 찬 주만 그립니다. 패키지마다 규모가 크게 달라 한 번에 하나씩 봅니다.</p><div class="filters" style="margin-bottom:8px"><label class="fl" for="pk">패키지</label><select id="pk" style="font:inherit;font-size:13px;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text)">${PD.map(r=>`<option value="${esc(r[0])}"${r[0]===cur?' selected':''}>${esc(r[0])} (${r[1]} · ${esc(r[2])})</option>`).join('')}</select></div><div class="chart" id="j3"></div>`);g.append(c3);
-      const dp=n=>{const W=PW[n]||[];line(c3.querySelector('#j3'),[{name:n,color:'var(--s1)',pts:W.map(r=>[r[0],r[1]])}],{h:220,zero:true,label:n+' 주간 내려받기',xfmt:ym,tip:i=>`<b>${W[i][0]} 주</b><br>${nf(W[i][1])}회`})};dp(cur);c3.querySelector('#pk').onchange=e=>dp(e.target.value)}
     g.append(card('c12',`<h2>수집 현황</h2><div class="sc"><table><tr><th>출처</th><th>마지막 수집</th><th class="n">누적 새 공고</th><th class="n">빈틈·실패한 날</th></tr>${(D.jobs_feed||[]).map(r=>`<tr><td>${esc(r[0])}</td><td>${r[1]}</td><td class="n">${nf(r[2])}</td><td class="n">${r[3]?badge('warn')+' '+r[3]+'일':badge('pass')+' 0일'}</td></tr>`).join('')}</table></div>
     <p class="note">출처: <a href="https://remoteok.com">Remote OK</a> · <a href="https://www.arbeitnow.com">Arbeitnow</a> 공개 피드. 해외 원격·유럽 공고이며 국내 채용 시장을 말해 주지 않습니다. 공고 본문은 저장하지 않고, 받을 때 기술 사전에 있는 이름이 제목·본문에 나오는지만 봅니다. "우대"와 "필수"는 구분하지 못하고, 본문에 흔한 낱말은 실제보다 많이 잡힐 수 있습니다. 이제 막 모으기 시작해 추세를 말하기엔 이릅니다.<br>내려받기 수 출처: pypistats.org(PyPI, 미러 제외) · npm 레지스트리. 내려받기에는 자동 빌드(CI)가 많이 섞여 있어 사용자 수를 뜻하지 않습니다. PyPI 는 최근 180일만 제공돼 그 전 기록은 수집을 시작한 날부터 쌓입니다.</p>`))}
   draw()}
