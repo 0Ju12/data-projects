@@ -1,0 +1,41 @@
+version: 2
+# 분석 표 — 대시보드 '전력 분석'·'채용 공고 분석'과 README 의 수치는 모두 이 표에서 나옵니다.
+models:
+  - name: ana_demand_by_daytype
+    columns:
+      - name: day_type
+        data_tests: [unique, not_null]
+  - name: ana_demand_temp_bins
+    columns:
+      - name: days
+        data_tests: [{accepted_range: {arguments: {min_value: 1}}}]
+  - name: ana_demand_hour_profile
+    columns:
+      - name: hour_start
+        data_tests: [{accepted_range: {arguments: {min_value: 0, max_value: 23}}}]
+  - name: ana_peak_hour_by_month
+    columns:
+      - name: month
+        data_tests: [unique, not_null]
+  - name: ana_peak_days
+    columns:
+      - name: peak_rank
+        data_tests: [unique, not_null, {accepted_range: {arguments: {min_value: 1, max_value: 10}}}]
+  - name: ana_holiday_effect
+    columns:
+      - name: period_name
+        data_tests: [unique, not_null]
+      - name: holiday_days
+        data_tests: [{accepted_range: {arguments: {min_value: 5, max_value: 10}}}]
+  - name: ana_noon_dip_monthly
+    columns:
+      - name: month
+        data_tests: [unique, not_null]
+  - name: ana_role_summary
+    columns:
+      - name: role
+        data_tests: [unique, not_null]
+  - name: ana_role_skills
+    columns:
+      - name: share_pct
+        data_tests: [not_null, {accepted_range: {arguments: {min_value: 0, max_value: 100}}}]

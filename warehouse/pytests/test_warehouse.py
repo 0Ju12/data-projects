@@ -616,3 +616,31 @@ def test_collect_packages_and_disasters(tmp_path):
     rows = M._load(dp, lambda r: r["event_key"])
     assert rows["FL-10"]["lon"] == "10.0" and rows["FL-10"]["alert_level"] == "Green"
     assert X.collect_disasters("2025-03-12", dp, get, pause=0)["new"] == 0
+
+
+# ---- 분석: 수요-기온 두 구간 모형 (wh/analysis.py)
+def test_temperature_fit_recovers_known_breaks_and_slopes():
+    from wh.analysis import fit_temperature
+    temps = [t / 2 for t in range(-20, 71)]               # -10 ~ 35°C
+    ys = [60000 + 1000 * max(12 - t, 0) + 2000 * max(t - 20, 0) for t in temps]
+    r = fit_temperature(temps, ys)
+    assert (r["heat_below"], r["cool_above"]) == (12.0, 20.0)
+    assert (r["heat_mw_per_c"], r["cool_mw_per_c"], r["base_mw"]) == (1000, 2000, 60000)
+    assert r["r2"] == 1.0
+
+
+def test_temperature_fit_refuses_tiny_samples():
+    from wh.analysis import fit_temperature
+    assert fit_temperature([1.0, 2.0, 3.0], [1.0, 2.0, 3.0]) is None
+
+
+def test_holidays_override_weekday_and_analysis_tables_build(src):
+    """가짜 자료 3/1(토·삼일절)·3/2(일)·3/3(월·대체공휴일) — 공휴일은 요일과 상관없이 sun_holiday"""
+    p = build(src)
+    assert p.returncode == 0, p.stdout[-2000:]
+    rows = q(src, "select date_day, day_type, holiday_name from dim_date order by 1")
+    assert [r[1] for r in rows] == ["sun_holiday"] * 3
+    assert rows[2][2] == "대체공휴일"
+    assert q(src, "select day_type, days from ana_demand_by_daytype") == [("sun_holiday", 3)]
+    # 시간대 분석표는 (계절, 날 종류)마다 24시각 — singular 테스트가 지키지만 값도 한 번 확인
+    assert q(src, "select count(*), min(hour_start), max(hour_start) from ana_demand_hour_profile")[0] == (24, 0, 23)

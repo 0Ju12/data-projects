@@ -3,6 +3,7 @@ select
     f.demand_date,
     d.is_weekend,
     d.season,
+    d.day_type,
     max(f.demand_mw)                              as peak_mw,
     min(f.demand_mw)                              as min_mw,
     round(avg(f.demand_mw), 1)                    as mean_mw,
@@ -12,4 +13,4 @@ select
     count(*)                                      as hours
 from {{ ref('fct_demand_hourly') }} f
 join {{ ref('dim_date') }} d on d.date_day = f.demand_date
-group by 1, 2, 3
+group by 1, 2, 3, 4

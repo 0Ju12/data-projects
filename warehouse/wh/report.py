@@ -1,7 +1,7 @@
 """dbt 산출물과 웨어하우스 표로 대시보드(docs/index.html)를 만듭니다.
 
 자료는 한 번에 JSON 으로 뽑아 화면 틀(wh/dashboard.html)에 넣습니다 — 서버 없이 정적 페이지 하나로 열립니다.
-탭: 개요 · 전력 · 지진·재해 · 채용 공고 · 품질(계보·테스트·실행 기록) · 부가 실험(시세·환율, 패키지 내려받기)
+탭: 분석 요약 · 전력 분석 · 채용 공고 분석 · 데이터 품질(계보·테스트·실행 기록) · 부가 자료(지진·재해, 시세·환율, 패키지 내려받기)
 """
 from __future__ import annotations
 
@@ -10,11 +10,13 @@ import html
 import json
 from pathlib import Path
 
+from .analysis import temperature_analysis
+
 ROOT = Path(__file__).resolve().parent.parent
 import re
 
-LAYER = {"staging": 0, "intermediate": 1, "marts": 2, "snapshot": 2}
-COLOR = {"staging": "#5b6cff", "intermediate": "#16a34a", "marts": "#ea7a0c", "snapshot": "#c0338a", "source": "#6b7280", "seed": "#0e9aa7"}
+LAYER = {"staging": 0, "intermediate": 1, "marts": 2, "snapshot": 2, "analysis": 3}
+COLOR = {"staging": "#5b6cff", "intermediate": "#16a34a", "marts": "#ea7a0c", "snapshot": "#c0338a", "analysis": "#7c3aed", "source": "#6b7280", "seed": "#0e9aa7"}
 VAR_CSV = re.compile(r'var\("(\w+_csv)"\)')
 
 
@@ -132,6 +134,16 @@ def collect_data(db: Path) -> dict:
                                                duration_days, is_current, lon, lat from fct_disaster_events order by alert_rank desc, from_at desc"""))
         part("dis_monthly", lambda: R("select month, event_type, events, orange_or_red from fct_disasters_monthly where month >= (select max(month) from fct_disasters_monthly) - interval 5 month order by 1, 2"))
         part("dis_changes", lambda: R("select c.event_key, e.name, c.prev_level, c.new_level, c.changed_at::date from fct_alert_changes c join fct_disaster_events e using (event_key) order by 5 desc limit 20"))
+        # ---- 분석 표 (models/analysis) — 대시보드 '분석 요약'·'전력 분석'·'채용 공고 분석'
+        part("ana_daytype", lambda: R("select day_type, days, mean_mw, peak_mw, mean_vs_weekday_pct, peak_vs_weekday_pct from ana_demand_by_daytype order by mean_mw desc"))
+        part("ana_temp", lambda: temperature_analysis(con))
+        part("ana_hours", lambda: R("select season, hour_start, demand_mw from ana_demand_hour_profile where day_type = 'weekday' order by 1, 2"))
+        part("ana_peakhour", lambda: R("select month, usual_peak_hour_start, avg_peak_mw, max_peak_mw, avg_temp, weekdays from ana_peak_hour_by_month order by 1"))
+        part("ana_peakdays", lambda: R("select peak_rank, demand_date, iso_dow, peak_mw, peak_hour_start, temp_mean from ana_peak_days order by 1"))
+        part("ana_holiday", lambda: R("select period_name, start_date, end_date, holiday_days, holiday_mean_mw, near_weekday_mean_mw, near_offday_mean_mw, vs_weekday_pct, vs_offday_pct from ana_holiday_effect order by start_date"))
+        part("ana_noon", lambda: R("select month, weekdays, dip_days, noon_vs_night_pct from ana_noon_dip_monthly order by 1"))
+        part("ana_roles", lambda: R("select role, postings, avg_skills, remote_postings, salary_postings, first_seen, last_seen from ana_role_summary order by postings desc"))
+        part("ana_role_skills", lambda: R("select role, skill, category, share_pct, mentions, postings from ana_role_skills order by role, share_pct desc, skill"))
         part("quake_total", lambda: R("select count(*), max(mag), max(occurred_at_utc)::date, (select count(*) from snap_quakes), (select count(*) from snap_quakes where dbt_valid_to is not null) from stg_quakes")[0])
     finally:
         con.close()

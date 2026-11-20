@@ -27,6 +27,7 @@ models:
     staging:      {+materialized: view}
     intermediate: {+materialized: view}
     marts:        {+materialized: table}
+    analysis:     {+materialized: table}   # 분석 질문 하나 = 표 하나 (대시보드·README 수치의 출처)
 
 seeds:
   warehouse:
@@ -34,3 +35,5 @@ seeds:
       +column_types: {skill: varchar, category: varchar, scope: varchar, pattern: varchar}
     packages:
       +column_types: {registry: varchar, package: varchar, skill: varchar}
+    holidays_kr:
+      +column_types: {holiday_date: date, holiday_name: varchar}

@@ -4,6 +4,11 @@ models:
     columns:
       - name: date_day
         data_tests: [unique, not_null]
+      - name: day_type
+        description: "weekday · saturday · sun_holiday (공휴일은 요일과 상관없이 sun_holiday)"
+        data_tests:
+          - not_null
+          - accepted_values: {arguments: {values: [weekday, saturday, sun_holiday]}}
   - name: fct_demand_hourly
     description: "한 행 = 한 시간. 키는 그 시간의 시작 시각(KST)"
     columns:
