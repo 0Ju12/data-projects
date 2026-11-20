@@ -1,8 +1,8 @@
 {
  "updated": "2026-11-20",
- "detections": 642,
- "static_detections": 583,
- "fire_detections": 59,
+ "detections": 654,
+ "static_detections": 588,
+ "fire_detections": 66,
  "fire_detections_on_land": 23,
  "static_sources": 50,
  "detection_days": [
@@ -21,10 +21,10 @@
   "mean_ffwi_neg": 13.2
  },
  "fetch": {
-  "N20": 96,
-  "N21": 92,
+  "N20": 90,
+  "N21": 61,
   "SNPP": 0,
-  "new": 44,
+  "new": 12,
   "weather": "ok"
  }
 }
