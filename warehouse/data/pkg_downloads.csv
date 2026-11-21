@@ -372,6 +372,7 @@ npm,@angular/core,2026-11-15,484591
 npm,@angular/core,2026-11-16,1470963
 npm,@angular/core,2026-11-17,1547365
 npm,@angular/core,2026-11-18,1570690
+npm,@angular/core,2026-11-19,1565233
 npm,express,2025-11-11,8629201
 npm,express,2025-11-12,9367046
 npm,express,2025-11-13,9263125
@@ -745,6 +746,7 @@ npm,express,2026-11-15,16782627
 npm,express,2026-11-16,33657050
 npm,express,2026-11-17,35810643
 npm,express,2026-11-18,36981046
+npm,express,2026-11-19,36332527
 npm,react,2025-11-11,8324250
 npm,react,2025-11-12,9096063
 npm,react,2025-11-13,9010510
@@ -1118,6 +1120,7 @@ npm,react,2026-11-15,25464393
 npm,react,2026-11-16,44243682
 npm,react,2026-11-17,46672963
 npm,react,2026-11-18,46712767
+npm,react,2026-11-19,45294108
 npm,typescript,2025-11-11,16834198
 npm,typescript,2025-11-12,18673205
 npm,typescript,2025-11-13,18408951
@@ -1491,6 +1494,7 @@ npm,typescript,2026-11-15,39177191
 npm,typescript,2026-11-16,73032060
 npm,typescript,2026-11-17,77114883
 npm,typescript,2026-11-18,77561364
+npm,typescript,2026-11-19,75668900
 npm,vue,2025-11-11,1256803
 npm,vue,2025-11-12,1376579
 npm,vue,2025-11-13,1350315
@@ -1864,6 +1868,7 @@ npm,vue,2026-11-15,2053217
 npm,vue,2026-11-16,4478839
 npm,vue,2026-11-17,4764192
 npm,vue,2026-11-18,4619826
+npm,vue,2026-11-19,4589274
 pypi,apache-airflow,2026-05-16,597020
 pypi,apache-airflow,2026-05-17,572080
 pypi,apache-airflow,2026-05-18,812338
@@ -2051,6 +2056,7 @@ pypi,apache-airflow,2026-11-15,129618
 pypi,apache-airflow,2026-11-16,249839
 pypi,apache-airflow,2026-11-17,251973
 pypi,apache-airflow,2026-11-18,244758
+pypi,apache-airflow,2026-11-19,212430
 pypi,azure-core,2026-05-16,5261221
 pypi,azure-core,2026-05-17,5115781
 pypi,azure-core,2026-05-18,7614311
@@ -2238,6 +2244,7 @@ pypi,azure-core,2026-11-15,4225084
 pypi,azure-core,2026-11-16,6961984
 pypi,azure-core,2026-11-17,7435765
 pypi,azure-core,2026-11-18,7496986
+pypi,azure-core,2026-11-19,7397388
 pypi,boto3,2026-05-16,91640453
 pypi,boto3,2026-05-17,92320929
 pypi,boto3,2026-05-18,113751521
@@ -2425,6 +2432,7 @@ pypi,boto3,2026-11-15,66488803
 pypi,boto3,2026-11-16,81109183
 pypi,boto3,2026-11-17,80891884
 pypi,boto3,2026-11-18,80885138
+pypi,boto3,2026-11-19,83792906
 pypi,confluent-kafka,2026-05-16,1508983
 pypi,confluent-kafka,2026-05-17,1453668
 pypi,confluent-kafka,2026-05-18,2061519
@@ -2612,6 +2620,7 @@ pypi,confluent-kafka,2026-11-15,1076620
 pypi,confluent-kafka,2026-11-16,1655703
 pypi,confluent-kafka,2026-11-17,1790885
 pypi,confluent-kafka,2026-11-18,1874746
+pypi,confluent-kafka,2026-11-19,1889828
 pypi,databricks-sdk,2026-05-16,3408487
 pypi,databricks-sdk,2026-05-17,2954645
 pypi,databricks-sdk,2026-05-18,4508000
@@ -2799,6 +2808,7 @@ pypi,databricks-sdk,2026-11-15,1990609
 pypi,databricks-sdk,2026-11-16,3004739
 pypi,databricks-sdk,2026-11-17,3318021
 pypi,databricks-sdk,2026-11-18,3250087
+pypi,databricks-sdk,2026-11-19,3341906
 pypi,dbt-core,2026-05-16,3253695
 pypi,dbt-core,2026-05-17,3171845
 pypi,dbt-core,2026-05-18,4291477
@@ -2986,6 +2996,7 @@ pypi,dbt-core,2026-11-15,470872
 pypi,dbt-core,2026-11-16,924273
 pypi,dbt-core,2026-11-17,1053795
 pypi,dbt-core,2026-11-18,1030442
+pypi,dbt-core,2026-11-19,1002685
 pypi,django,2026-05-16,824092
 pypi,django,2026-05-17,803784
 pypi,django,2026-05-18,1722892
@@ -3173,6 +3184,7 @@ pypi,django,2026-11-15,933177
 pypi,django,2026-11-16,1998931
 pypi,django,2026-11-17,2149398
 pypi,django,2026-11-18,2095697
+pypi,django,2026-11-19,2043500
 pypi,docker,2026-05-16,6024554
 pypi,docker,2026-05-17,6103480
 pypi,docker,2026-05-18,8932458
@@ -3360,6 +3372,7 @@ pypi,docker,2026-11-15,3375527
 pypi,docker,2026-11-16,5818942
 pypi,docker,2026-11-17,6388646
 pypi,docker,2026-11-18,6548609
+pypi,docker,2026-11-19,6684746
 pypi,google-cloud-bigquery,2026-05-16,3230711
 pypi,google-cloud-bigquery,2026-05-17,3224541
 pypi,google-cloud-bigquery,2026-05-18,4796519
@@ -3547,6 +3560,7 @@ pypi,google-cloud-bigquery,2026-11-15,4239523
 pypi,google-cloud-bigquery,2026-11-16,5835713
 pypi,google-cloud-bigquery,2026-11-17,6211952
 pypi,google-cloud-bigquery,2026-11-18,6249382
+pypi,google-cloud-bigquery,2026-11-19,6119717
 pypi,kubernetes,2026-05-16,5322191
 pypi,kubernetes,2026-05-17,5445569
 pypi,kubernetes,2026-05-18,7151774
@@ -3734,6 +3748,7 @@ pypi,kubernetes,2026-11-15,1821481
 pypi,kubernetes,2026-11-16,3062837
 pypi,kubernetes,2026-11-17,3298267
 pypi,kubernetes,2026-11-18,3366935
+pypi,kubernetes,2026-11-19,3244991
 pypi,langchain,2026-05-16,7361255
 pypi,langchain,2026-05-17,7085551
 pypi,langchain,2026-05-18,9022728
@@ -3921,6 +3936,7 @@ pypi,langchain,2026-11-15,4743895
 pypi,langchain,2026-11-16,5654525
 pypi,langchain,2026-11-17,5655204
 pypi,langchain,2026-11-18,5739017
+pypi,langchain,2026-11-19,5709770
 pypi,openai,2026-05-16,7524295
 pypi,openai,2026-05-17,7408476
 pypi,openai,2026-05-18,11552271
@@ -4108,6 +4124,7 @@ pypi,openai,2026-11-15,9139365
 pypi,openai,2026-11-16,14401392
 pypi,openai,2026-11-17,15727031
 pypi,openai,2026-11-18,15162845
+pypi,openai,2026-11-19,14773010
 pypi,psycopg2-binary,2026-05-16,5744747
 pypi,psycopg2-binary,2026-05-17,5785842
 pypi,psycopg2-binary,2026-05-18,9059179
@@ -4295,6 +4312,7 @@ pypi,psycopg2-binary,2026-11-15,5466684
 pypi,psycopg2-binary,2026-11-16,8729974
 pypi,psycopg2-binary,2026-11-17,9316580
 pypi,psycopg2-binary,2026-11-18,9278034
+pypi,psycopg2-binary,2026-11-19,9134882
 pypi,pyspark,2026-05-16,1340354
 pypi,pyspark,2026-05-17,1320850
 pypi,pyspark,2026-05-18,1747987
@@ -4482,6 +4500,7 @@ pypi,pyspark,2026-11-15,1244760
 pypi,pyspark,2026-11-16,1686302
 pypi,pyspark,2026-11-17,1791998
 pypi,pyspark,2026-11-18,1831758
+pypi,pyspark,2026-11-19,1750245
 pypi,scikit-learn,2026-05-16,4938879
 pypi,scikit-learn,2026-05-17,4951107
 pypi,scikit-learn,2026-05-18,7132725
@@ -4669,6 +4688,7 @@ pypi,scikit-learn,2026-11-15,5631532
 pypi,scikit-learn,2026-11-16,7840589
 pypi,scikit-learn,2026-11-17,8554525
 pypi,scikit-learn,2026-11-18,8512567
+pypi,scikit-learn,2026-11-19,8436395
 pypi,snowflake-connector-python,2026-05-16,4610774
 pypi,snowflake-connector-python,2026-05-17,4493798
 pypi,snowflake-connector-python,2026-05-18,6175639
@@ -4856,6 +4876,7 @@ pypi,snowflake-connector-python,2026-11-15,2422374
 pypi,snowflake-connector-python,2026-11-16,3879787
 pypi,snowflake-connector-python,2026-11-17,4103754
 pypi,snowflake-connector-python,2026-11-18,4137709
+pypi,snowflake-connector-python,2026-11-19,4043503
 pypi,torch,2026-05-16,2296146
 pypi,torch,2026-05-17,2317587
 pypi,torch,2026-05-18,3018122
@@ -5043,3 +5064,4 @@ pypi,torch,2026-11-15,1384538
 pypi,torch,2026-11-16,1819415
 pypi,torch,2026-11-17,1934194
 pypi,torch,2026-11-18,1982500
+pypi,torch,2026-11-19,1923256
