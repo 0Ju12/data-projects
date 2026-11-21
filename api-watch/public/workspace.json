@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-21T07:39:53.237077+00:00",
+  "last_check_at": "2026-11-21T15:36:19.954654+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.168463+00:00",
-        "duration_ms": 508.13
+        "checked_at": "2026-11-21T15:36:19.877339+00:00",
+        "duration_ms": 489.98
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.176876+00:00",
-        "duration_ms": 73.25
+        "checked_at": "2026-11-21T15:36:19.880531+00:00",
+        "duration_ms": 113.48
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.178934+00:00",
-        "duration_ms": 347.39
+        "checked_at": "2026-11-21T15:36:19.882771+00:00",
+        "duration_ms": 279.78
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.180932+00:00",
-        "duration_ms": 436.3
+        "checked_at": "2026-11-21T15:36:19.885119+00:00",
+        "duration_ms": 458.94
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.182671+00:00",
-        "duration_ms": 63.67
+        "checked_at": "2026-11-21T15:36:19.887022+00:00",
+        "duration_ms": 94.5
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.184730+00:00",
-        "duration_ms": 355.22
+        "checked_at": "2026-11-21T15:36:19.889151+00:00",
+        "duration_ms": 251.86
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.186718+00:00",
-        "duration_ms": 1917.4
+        "checked_at": "2026-11-21T15:36:19.891210+00:00",
+        "duration_ms": 1757.51
       }
     },
     {
@@ -110,8 +110,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.188615+00:00",
-        "duration_ms": 197.79
+        "checked_at": "2026-11-21T15:36:19.893178+00:00",
+        "duration_ms": 226.38
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.191053+00:00",
-        "duration_ms": 189.18
+        "checked_at": "2026-11-21T15:36:19.895475+00:00",
+        "duration_ms": 212.98
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.193765+00:00",
-        "duration_ms": 105.24
+        "checked_at": "2026-11-21T15:36:19.898542+00:00",
+        "duration_ms": 109.3
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.195619+00:00",
-        "duration_ms": 488.25
+        "checked_at": "2026-11-21T15:36:19.900503+00:00",
+        "duration_ms": 512.15
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.197312+00:00",
-        "duration_ms": 360.47
+        "checked_at": "2026-11-21T15:36:19.902243+00:00",
+        "duration_ms": 392.95
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.199097+00:00",
-        "duration_ms": 168.0
+        "checked_at": "2026-11-21T15:36:19.904056+00:00",
+        "duration_ms": 176.48
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.200754+00:00",
-        "duration_ms": 120.57
+        "checked_at": "2026-11-21T15:36:19.905680+00:00",
+        "duration_ms": 45.93
       }
     },
     {
@@ -208,8 +208,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.203043+00:00",
-        "duration_ms": 293.27
+        "checked_at": "2026-11-21T15:36:19.907917+00:00",
+        "duration_ms": 608.36
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.204702+00:00",
-        "duration_ms": 205.92
+        "checked_at": "2026-11-21T15:36:19.909474+00:00",
+        "duration_ms": 236.77
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.206806+00:00",
-        "duration_ms": 169.78
+        "checked_at": "2026-11-21T15:36:19.911396+00:00",
+        "duration_ms": 163.36
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.215899+00:00",
-        "duration_ms": 89.94
+        "checked_at": "2026-11-21T15:36:19.934773+00:00",
+        "duration_ms": 86.99
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.224434+00:00",
-        "duration_ms": 99.69
+        "checked_at": "2026-11-21T15:36:19.942768+00:00",
+        "duration_ms": 67.44
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-21T07:39:53.228917+00:00",
-        "duration_ms": 120.33
+        "checked_at": "2026-11-21T15:36:19.947042+00:00",
+        "duration_ms": 157.3
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.232263+00:00",
-        "duration_ms": 150.94
+        "checked_at": "2026-11-21T15:36:19.950244+00:00",
+        "duration_ms": 100.22
       }
     },
     {
@@ -306,8 +306,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T07:39:53.237077+00:00",
-        "duration_ms": 169.23
+        "checked_at": "2026-11-21T15:36:19.954654+00:00",
+        "duration_ms": 266.3
       }
     }
   ],
@@ -320,57 +320,57 @@
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-21T07:39:53.228917+00:00",
+      "last_seen_at": "2026-11-21T15:36:19.947042+00:00",
       "resolved_at": null,
-      "occurrences": 25
+      "occurrences": 26
     }
   ],
   "ai_latest": {
-    "date": "2026-11-21",
-    "item_id": "langchain-ai/langgraph:452145289",
-    "created_at": "2026-11-20T17:59:17.734457+00:00",
+    "date": "2026-11-22",
+    "item_id": "huggingface/transformers:453665914",
+    "created_at": "2026-11-21T15:36:19.957565+00:00",
     "kind": "release",
     "label": "관심 저장소의 공식 릴리스",
-    "title": "LangGraph · langgraph==1.2.24",
-    "technology": "LangGraph",
-    "official_published_at": "2026-11-20T01:10:26Z",
-    "collected_at": "2026-11-20T17:59:17.734457+00:00",
-    "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
-    "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+    "title": "Transformers · Release v5.24.0",
+    "technology": "Transformers",
+    "official_published_at": "2026-11-21T12:28:26Z",
+    "collected_at": "2026-11-21T15:36:19.957565+00:00",
+    "what": "여러 모델의 토크나이저·모델 로딩·추론 인터페이스를 제공하는 라이브러리입니다.",
+    "why_for_you": "POSPEAK의 모델 실험과 VQA 작업에서 모델·토크나이저·버전 호환성을 확인하는 데 연결할 수 있습니다.",
     "flow": [
-      "상태 입력",
-      "검색·도구 노드",
-      "검증·분기",
-      "최종 응답"
+      "모델·토크나이저 선택",
+      "입력 전처리",
+      "모델 추론",
+      "출력·평가"
     ],
-    "release_excerpt": "Changes since 1.2.23 * release(langgraph): 1.2.24 (#9752) * fix(langgraph): handle `REMOVE_ALL_MESSAGES` in `_messages_delta_reducer` and `None` checkpoints in `DeltaChannel` (#9735)",
+    "release_excerpt": "# Release v5.24.0 ## New Model additions ### Inkling 2 Mini Inkling 2 Mini is a multimodal model from Thinking Machines Lab that accepts text and image inputs and generates text outputs. It is a smaller sibling of Inkling 2 Small, added in v5.23.0. It has 24 decoder layers instead of 48, and compensates with a looping mechanism in which layers 6 to 17 run three times. A learned message-passing mechanism mixes the residuals of the previous pass into the attention and mixture-of-experts inputs of each loop layer. The",
     "facts": [
       {
         "label": "공식 발표일",
-        "value": "2026-11-20T01:10:26Z"
+        "value": "2026-11-21T12:28:26Z"
       },
       {
         "label": "버전",
-        "value": "1.2.24"
+        "value": "v5.24.0"
       },
       {
         "label": "저장소",
-        "value": "langchain-ai/langgraph"
+        "value": "huggingface/transformers"
       }
     ],
     "limits": [
-      "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
-      "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+      "라이브러리 업데이트와 새 모델의 성능 개선은 같은 주장이 아닙니다.",
+      "지원 모델·설치 조건·라이선스는 해당 버전 문서에서 확인해야 합니다."
     ],
-    "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+    "question": "라이브러리 버전을 바꿨을 때 동일 입력의 결과가 달라졌는지 어떻게 검증할까요?",
     "sources": [
       {
         "title": "공식 릴리스 또는 프로젝트 원문",
-        "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.24"
+        "url": "https://github.com/huggingface/transformers/releases/tag/v5.24.0"
       },
       {
         "title": "공식 저장소",
-        "url": "https://github.com/langchain-ai/langgraph"
+        "url": "https://github.com/huggingface/transformers"
       }
     ],
     "exercise": {
@@ -387,6 +387,67 @@
     "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
   },
   "ai_archive": [
+    {
+      "date": "2026-11-22",
+      "item_id": "huggingface/transformers:453665914",
+      "created_at": "2026-11-21T15:36:19.957565+00:00",
+      "kind": "release",
+      "label": "관심 저장소의 공식 릴리스",
+      "title": "Transformers · Release v5.24.0",
+      "technology": "Transformers",
+      "official_published_at": "2026-11-21T12:28:26Z",
+      "collected_at": "2026-11-21T15:36:19.957565+00:00",
+      "what": "여러 모델의 토크나이저·모델 로딩·추론 인터페이스를 제공하는 라이브러리입니다.",
+      "why_for_you": "POSPEAK의 모델 실험과 VQA 작업에서 모델·토크나이저·버전 호환성을 확인하는 데 연결할 수 있습니다.",
+      "flow": [
+        "모델·토크나이저 선택",
+        "입력 전처리",
+        "모델 추론",
+        "출력·평가"
+      ],
+      "release_excerpt": "# Release v5.24.0 ## New Model additions ### Inkling 2 Mini Inkling 2 Mini is a multimodal model from Thinking Machines Lab that accepts text and image inputs and generates text outputs. It is a smaller sibling of Inkling 2 Small, added in v5.23.0. It has 24 decoder layers instead of 48, and compensates with a looping mechanism in which layers 6 to 17 run three times. A learned message-passing mechanism mixes the residuals of the previous pass into the attention and mixture-of-experts inputs of each loop layer. The",
+      "facts": [
+        {
+          "label": "공식 발표일",
+          "value": "2026-11-21T12:28:26Z"
+        },
+        {
+          "label": "버전",
+          "value": "v5.24.0"
+        },
+        {
+          "label": "저장소",
+          "value": "huggingface/transformers"
+        }
+      ],
+      "limits": [
+        "라이브러리 업데이트와 새 모델의 성능 개선은 같은 주장이 아닙니다.",
+        "지원 모델·설치 조건·라이선스는 해당 버전 문서에서 확인해야 합니다."
+      ],
+      "question": "라이브러리 버전을 바꿨을 때 동일 입력의 결과가 달라졌는지 어떻게 검증할까요?",
+      "sources": [
+        {
+          "title": "공식 릴리스 또는 프로젝트 원문",
+          "url": "https://github.com/huggingface/transformers/releases/tag/v5.24.0"
+        },
+        {
+          "title": "공식 저장소",
+          "url": "https://github.com/huggingface/transformers"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    },
     {
       "date": "2026-11-21",
       "item_id": "langchain-ai/langgraph:452145289",
