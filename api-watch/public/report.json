@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-20T17:59:19.619164+00:00",
-  "last_check_at": "2026-11-20T17:59:17.730968+00:00",
+  "generated_at": "2026-11-21T00:11:13.524397+00:00",
+  "last_check_at": "2026-11-21T00:11:13.495934+00:00",
   "expected_interval_seconds": 3600,
   "targets": [
     {
@@ -41,13 +41,13 @@
         "warning_latency_ms": 3000
       },
       "last_run": {
-        "id": 497,
+        "id": 519,
         "target": "air-quality",
-        "checked_at": "2026-11-20T17:59:17.651105+00:00",
+        "checked_at": "2026-11-21T00:11:13.440526+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 431.05,
-        "data_at": "2026-11-20T17:00:00+00:00",
+        "duration_ms": 395.65,
+        "data_at": "2026-11-21T00:00:00+00:00",
         "record_count": null,
         "checks": [
           {
@@ -62,7 +62,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "431 ms · 기준 3000 ms",
+            "detail": "396 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -110,7 +110,7 @@
             "key": "range:current.pm10",
             "label": "값 범위 · current.pm10",
             "ok": true,
-            "detail": "허용 0~5000 · 실제 20.0",
+            "detail": "허용 0~5000 · 실제 19.2",
             "group": "quality",
             "severity": "error"
           },
@@ -118,7 +118,7 @@
             "key": "range:current.pm2_5",
             "label": "값 범위 · current.pm2_5",
             "ok": true,
-            "detail": "허용 0~5000 · 실제 17.2",
+            "detail": "허용 0~5000 · 실제 15.1",
             "group": "quality",
             "severity": "error"
           },
@@ -126,7 +126,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 3558초 전",
+            "detail": "현재 대비 673초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -134,7 +134,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "59.3분 경과 · 허용 180분",
+            "detail": "11.2분 경과 · 허용 180분",
             "group": "freshness",
             "severity": "error"
           }
@@ -143,7 +143,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.651105+00:00",
+      "last_success": "2026-11-21T00:11:13.440526+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 18
     },
@@ -180,13 +180,13 @@
         "warning_latency_ms": 3000
       },
       "last_run": {
-        "id": 498,
+        "id": 520,
         "target": "coingecko",
-        "checked_at": "2026-11-20T17:59:17.654430+00:00",
+        "checked_at": "2026-11-21T00:11:13.443285+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 90.05,
-        "data_at": "2026-11-20T17:57:55+00:00",
+        "duration_ms": 62.44,
+        "data_at": "2026-11-21T00:10:15+00:00",
         "record_count": null,
         "checks": [
           {
@@ -201,7 +201,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "90 ms · 기준 3000 ms",
+            "detail": "62 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -249,7 +249,7 @@
             "key": "range:bitcoin.usd",
             "label": "값 범위 · bitcoin.usd",
             "ok": true,
-            "detail": "허용 0~100000000 · 실제 58984",
+            "detail": "허용 0~100000000 · 실제 58847",
             "group": "quality",
             "severity": "error"
           },
@@ -257,7 +257,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 83초 전",
+            "detail": "현재 대비 58초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -265,7 +265,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "1.4분 경과 · 허용 60분",
+            "detail": "1.0분 경과 · 허용 60분",
             "group": "freshness",
             "severity": "error"
           }
@@ -274,7 +274,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.654430+00:00",
+      "last_success": "2026-11-21T00:11:13.443285+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 7
     },
@@ -315,12 +315,12 @@
         ]
       },
       "last_run": {
-        "id": 499,
+        "id": 521,
         "target": "crossref",
-        "checked_at": "2026-11-20T17:59:17.657315+00:00",
+        "checked_at": "2026-11-21T00:11:13.445070+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 285.71,
+        "duration_ms": 1782.49,
         "data_at": null,
         "record_count": 3,
         "checks": [
@@ -336,7 +336,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "286 ms · 기준 3000 ms",
+            "detail": "1782 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -417,7 +417,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.657315+00:00",
+      "last_success": "2026-11-21T00:11:13.445070+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 11
     },
@@ -451,12 +451,12 @@
         }
       },
       "last_run": {
-        "id": 500,
+        "id": 522,
         "target": "dog-ceo",
-        "checked_at": "2026-11-20T17:59:17.660092+00:00",
+        "checked_at": "2026-11-21T00:11:13.446765+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 301.09,
+        "duration_ms": 125.7,
         "data_at": null,
         "record_count": null,
         "checks": [
@@ -472,7 +472,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "301 ms · 기준 3000 ms",
+            "detail": "126 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -521,7 +521,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.660092+00:00",
+      "last_success": "2026-11-21T00:11:13.446765+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 3
     },
@@ -559,12 +559,12 @@
         ]
       },
       "last_run": {
-        "id": 501,
+        "id": 523,
         "target": "exchange-rates",
-        "checked_at": "2026-11-20T17:59:17.662188+00:00",
+        "checked_at": "2026-11-21T00:11:13.448078+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 51.27,
+        "duration_ms": 31.75,
         "data_at": "2026-11-20T00:02:32+00:00",
         "record_count": null,
         "checks": [
@@ -580,7 +580,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "51 ms · 기준 3000 ms",
+            "detail": "32 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -636,7 +636,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 64606초 전",
+            "detail": "현재 대비 86921초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -644,7 +644,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "1076.8분 경과 · 허용 2880분",
+            "detail": "1448.7분 경과 · 허용 2880분",
             "group": "freshness",
             "severity": "error"
           }
@@ -653,7 +653,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.662188+00:00",
+      "last_success": "2026-11-21T00:11:13.448078+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 11
     },
@@ -692,12 +692,12 @@
         "warning_latency_ms": 3000
       },
       "last_run": {
-        "id": 502,
+        "id": 524,
         "target": "frankfurter",
-        "checked_at": "2026-11-20T17:59:17.664751+00:00",
+        "checked_at": "2026-11-21T00:11:13.449757+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 324.24,
+        "duration_ms": 259.65,
         "data_at": "2026-11-20T00:00:00+00:00",
         "record_count": null,
         "checks": [
@@ -713,7 +713,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "324 ms · 기준 3000 ms",
+            "detail": "260 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -785,7 +785,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 64758초 전",
+            "detail": "현재 대비 87073초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -793,7 +793,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "1079.3분 경과 · 허용 7200분",
+            "detail": "1451.2분 경과 · 허용 7200분",
             "group": "freshness",
             "severity": "error"
           }
@@ -802,7 +802,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.664751+00:00",
+      "last_success": "2026-11-21T00:11:13.449757+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 8
     },
@@ -839,12 +839,12 @@
         ]
       },
       "last_run": {
-        "id": 503,
+        "id": 525,
         "target": "gbif",
-        "checked_at": "2026-11-20T17:59:17.667167+00:00",
+        "checked_at": "2026-11-21T00:11:13.451389+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 1665.77,
+        "duration_ms": 1463.47,
         "data_at": null,
         "record_count": 3,
         "checks": [
@@ -860,7 +860,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "1666 ms · 기준 3000 ms",
+            "detail": "1463 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -925,7 +925,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.667167+00:00",
+      "last_success": "2026-11-21T00:11:13.451389+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 6
     },
@@ -964,86 +964,30 @@
         ]
       },
       "last_run": {
-        "id": 504,
+        "id": 526,
         "target": "github-catalog",
-        "checked_at": "2026-11-20T17:59:17.669519+00:00",
-        "status": "healthy",
-        "http_status": 200,
-        "duration_ms": 173.17,
+        "checked_at": "2026-11-21T00:11:13.452945+00:00",
+        "status": "warning",
+        "http_status": 403,
+        "duration_ms": 9.13,
         "data_at": null,
         "record_count": null,
         "checks": [
           {
             "key": "availability",
             "label": "HTTP 응답",
-            "ok": true,
-            "detail": "HTTP 200",
+            "ok": false,
+            "detail": "HTTP 403",
             "group": "availability",
-            "severity": "error"
-          },
-          {
-            "key": "latency",
-            "label": "응답 시간",
-            "ok": true,
-            "detail": "173 ms · 기준 3000 ms",
-            "group": "latency",
-            "severity": "warning"
-          },
-          {
-            "key": "json",
-            "label": "JSON 해석",
-            "ok": true,
-            "detail": "JSON object 응답",
-            "group": "format",
-            "severity": "error"
-          },
-          {
-            "key": "field:id",
-            "label": "필수 필드 · id",
-            "ok": true,
-            "detail": "기대 number · 실제 number",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "field:full_name",
-            "label": "필수 필드 · full_name",
-            "ok": true,
-            "detail": "기대 string · 실제 string",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "field:stargazers_count",
-            "label": "필수 필드 · stargazers_count",
-            "ok": true,
-            "detail": "기대 number · 실제 number",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "value:full_name",
-            "label": "응답 의미 · full_name",
-            "ok": true,
-            "detail": "기대 yybmion/public-apis-4Kr · 실제 yybmion/public-apis-4Kr",
-            "group": "quality",
-            "severity": "error"
-          },
-          {
-            "key": "schema-drift",
-            "label": "이전 승인 구조와 비교",
-            "ok": true,
-            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
-            "group": "schema",
             "severity": "error"
           }
         ],
         "schema_diff": [],
-        "error": "",
+        "error": "HTTP 403",
         "source": "live"
       },
       "last_success": "2026-11-20T17:59:17.669519+00:00",
-      "consecutive_failures": 0,
+      "consecutive_failures": 1,
       "baseline_fields": 84
     },
     {
@@ -1076,12 +1020,12 @@
         "id_path": "$"
       },
       "last_run": {
-        "id": 505,
+        "id": 527,
         "target": "hacker-news",
-        "checked_at": "2026-11-20T17:59:17.672626+00:00",
+        "checked_at": "2026-11-21T00:11:13.455150+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 104.03,
+        "duration_ms": 74.47,
         "data_at": null,
         "record_count": 500,
         "checks": [
@@ -1097,7 +1041,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "104 ms · 기준 3000 ms",
+            "detail": "74 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1154,7 +1098,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.672626+00:00",
+      "last_success": "2026-11-21T00:11:13.455150+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 2
     },
@@ -1192,12 +1136,12 @@
         ]
       },
       "last_run": {
-        "id": 506,
+        "id": 528,
         "target": "huggingface",
-        "checked_at": "2026-11-20T17:59:17.676063+00:00",
+        "checked_at": "2026-11-21T00:11:13.457418+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 27.1,
+        "duration_ms": 20.0,
         "data_at": null,
         "record_count": 5,
         "checks": [
@@ -1213,7 +1157,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "27 ms · 기준 3000 ms",
+            "detail": "20 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1278,7 +1222,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.676063+00:00",
+      "last_success": "2026-11-21T00:11:13.457418+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 1
     },
@@ -1314,13 +1258,13 @@
         "warning_latency_ms": 3000
       },
       "last_run": {
-        "id": 507,
+        "id": 529,
         "target": "marine",
-        "checked_at": "2026-11-20T17:59:17.678440+00:00",
+        "checked_at": "2026-11-21T00:11:13.458747+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 418.98,
-        "data_at": "2026-11-20T17:45:00+00:00",
+        "duration_ms": 373.59,
+        "data_at": "2026-11-21T00:00:00+00:00",
         "record_count": null,
         "checks": [
           {
@@ -1335,7 +1279,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "419 ms · 기준 3000 ms",
+            "detail": "374 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1383,7 +1327,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 858초 전",
+            "detail": "현재 대비 673초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -1391,7 +1335,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "14.3분 경과 · 허용 180분",
+            "detail": "11.2분 경과 · 허용 180분",
             "group": "freshness",
             "severity": "error"
           }
@@ -1400,7 +1344,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.678440+00:00",
+      "last_success": "2026-11-21T00:11:13.458747+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 16
     },
@@ -1438,12 +1382,12 @@
         "warning_latency_ms": 3000
       },
       "last_run": {
-        "id": 508,
+        "id": 530,
         "target": "mempool",
-        "checked_at": "2026-11-20T17:59:17.680469+00:00",
+        "checked_at": "2026-11-21T00:11:13.460327+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 407.43,
+        "duration_ms": 812.66,
         "data_at": null,
         "record_count": null,
         "checks": [
@@ -1459,7 +1403,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "407 ms · 기준 3000 ms",
+            "detail": "813 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1515,7 +1459,7 @@
             "key": "range:fastestFee",
             "label": "값 범위 · fastestFee",
             "ok": true,
-            "detail": "허용 0~100000 · 실제 2",
+            "detail": "허용 0~100000 · 실제 1",
             "group": "quality",
             "severity": "error"
           }
@@ -1524,7 +1468,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.680469+00:00",
+      "last_success": "2026-11-21T00:11:13.460327+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 6
     },
@@ -1562,12 +1506,12 @@
         ]
       },
       "last_run": {
-        "id": 509,
+        "id": 531,
         "target": "nager-holidays",
-        "checked_at": "2026-11-20T17:59:17.682885+00:00",
+        "checked_at": "2026-11-21T00:11:13.461704+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 128.97,
+        "duration_ms": 21.58,
         "data_at": null,
         "record_count": 18,
         "checks": [
@@ -1583,7 +1527,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "129 ms · 기준 3000 ms",
+            "detail": "22 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1648,7 +1592,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.682885+00:00",
+      "last_success": "2026-11-21T00:11:13.461704+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 1
     },
@@ -1688,12 +1632,12 @@
         ]
       },
       "last_run": {
-        "id": 510,
+        "id": 532,
         "target": "npm-typescript",
-        "checked_at": "2026-11-20T17:59:17.684908+00:00",
+        "checked_at": "2026-11-21T00:11:13.463249+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 40.54,
+        "duration_ms": 21.96,
         "data_at": null,
         "record_count": null,
         "checks": [
@@ -1709,7 +1653,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "41 ms · 기준 3000 ms",
+            "detail": "22 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1766,7 +1710,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.684908+00:00",
+      "last_success": "2026-11-21T00:11:13.463249+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 95
     },
@@ -1804,12 +1748,12 @@
         ]
       },
       "last_run": {
-        "id": 511,
+        "id": 533,
         "target": "open-library",
-        "checked_at": "2026-11-20T17:59:17.688215+00:00",
+        "checked_at": "2026-11-21T00:11:13.465020+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 871.36,
+        "duration_ms": 1141.44,
         "data_at": null,
         "record_count": 3,
         "checks": [
@@ -1825,7 +1769,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "871 ms · 기준 3000 ms",
+            "detail": "1141 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -1898,7 +1842,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.688215+00:00",
+      "last_success": "2026-11-21T00:11:13.465020+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 8
     },
@@ -1939,110 +1883,30 @@
         ]
       },
       "last_run": {
-        "id": 512,
+        "id": 534,
         "target": "open-trivia",
-        "checked_at": "2026-11-20T17:59:17.690348+00:00",
-        "status": "healthy",
-        "http_status": 200,
-        "duration_ms": 1168.2,
+        "checked_at": "2026-11-21T00:11:13.466583+00:00",
+        "status": "warning",
+        "http_status": null,
+        "duration_ms": 12091.56,
         "data_at": null,
-        "record_count": 3,
+        "record_count": null,
         "checks": [
           {
             "key": "availability",
             "label": "HTTP 응답",
-            "ok": true,
-            "detail": "HTTP 200",
+            "ok": false,
+            "detail": "URLError · 응답을 읽지 못했습니다.",
             "group": "availability",
-            "severity": "error"
-          },
-          {
-            "key": "latency",
-            "label": "응답 시간",
-            "ok": true,
-            "detail": "1168 ms · 기준 3000 ms",
-            "group": "latency",
-            "severity": "warning"
-          },
-          {
-            "key": "json",
-            "label": "JSON 해석",
-            "ok": true,
-            "detail": "JSON object 응답",
-            "group": "format",
-            "severity": "error"
-          },
-          {
-            "key": "field:response_code",
-            "label": "필수 필드 · response_code",
-            "ok": true,
-            "detail": "기대 number · 실제 number",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "field:results",
-            "label": "필수 필드 · results",
-            "ok": true,
-            "detail": "기대 array · 실제 array",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "value:response_code",
-            "label": "응답 의미 · response_code",
-            "ok": true,
-            "detail": "기대 0 · 실제 0",
-            "group": "quality",
-            "severity": "error"
-          },
-          {
-            "key": "schema-drift",
-            "label": "이전 승인 구조와 비교",
-            "ok": true,
-            "detail": "변경 0개 · 추가 필드는 정보로만 표시",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "count",
-            "label": "결과 건수",
-            "ok": true,
-            "detail": "3건 · 최소 1",
-            "group": "quality",
-            "severity": "error"
-          },
-          {
-            "key": "record:question",
-            "label": "항목 필드 · question",
-            "ok": true,
-            "detail": "3건 중 누락·자료형 오류 0건",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "record:correct_answer",
-            "label": "항목 필드 · correct_answer",
-            "ok": true,
-            "detail": "3건 중 누락·자료형 오류 0건",
-            "group": "schema",
-            "severity": "error"
-          },
-          {
-            "key": "record:incorrect_answers",
-            "label": "항목 필드 · incorrect_answers",
-            "ok": true,
-            "detail": "3건 중 누락·자료형 오류 0건",
-            "group": "schema",
             "severity": "error"
           }
         ],
         "schema_diff": [],
-        "error": "",
+        "error": "URLError · 응답을 읽지 못했습니다.",
         "source": "live"
       },
       "last_success": "2026-11-20T17:59:17.690348+00:00",
-      "consecutive_failures": 0,
+      "consecutive_failures": 1,
       "baseline_fields": 2
     },
     {
@@ -2085,12 +1949,12 @@
         "category": "내 파이프라인"
       },
       "last_run": {
-        "id": 513,
+        "id": 535,
         "target": "own-pipeline",
-        "checked_at": "2026-11-20T17:59:17.692849+00:00",
+        "checked_at": "2026-11-21T00:11:13.468460+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 100.68,
+        "duration_ms": 103.94,
         "data_at": "2026-11-20T12:17:00+00:00",
         "record_count": 3,
         "checks": [
@@ -2106,7 +1970,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "101 ms · 기준 3000 ms",
+            "detail": "104 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -2194,7 +2058,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 20538초 전",
+            "detail": "현재 대비 42853초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -2202,7 +2066,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "342.3분 경과 · 허용 2160분",
+            "detail": "714.2분 경과 · 허용 2160분",
             "group": "freshness",
             "severity": "error"
           }
@@ -2211,7 +2075,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.692849+00:00",
+      "last_success": "2026-11-21T00:11:13.468460+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 46
     },
@@ -2249,12 +2113,12 @@
         }
       },
       "last_run": {
-        "id": 514,
+        "id": 536,
         "target": "pokeapi",
-        "checked_at": "2026-11-20T17:59:17.703712+00:00",
+        "checked_at": "2026-11-21T00:11:13.476995+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 36.05,
+        "duration_ms": 24.38,
         "data_at": null,
         "record_count": 6,
         "checks": [
@@ -2270,7 +2134,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "36 ms · 기준 3000 ms",
+            "detail": "24 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -2362,7 +2226,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.703712+00:00",
+      "last_success": "2026-11-21T00:11:13.476995+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 405
     },
@@ -2403,12 +2267,12 @@
         ]
       },
       "last_run": {
-        "id": 515,
+        "id": 537,
         "target": "pypi-django",
-        "checked_at": "2026-11-20T17:59:17.715469+00:00",
+        "checked_at": "2026-11-21T00:11:13.485066+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 20.86,
+        "duration_ms": 67.79,
         "data_at": null,
         "record_count": null,
         "checks": [
@@ -2424,7 +2288,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "21 ms · 기준 3000 ms",
+            "detail": "68 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -2481,7 +2345,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.715469+00:00",
+      "last_success": "2026-11-21T00:11:13.485066+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 47
     },
@@ -2518,12 +2382,12 @@
         ]
       },
       "last_run": {
-        "id": 516,
+        "id": 538,
         "target": "rest-countries",
-        "checked_at": "2026-11-20T17:59:17.720843+00:00",
+        "checked_at": "2026-11-21T00:11:13.488902+00:00",
         "status": "critical",
         "http_status": 200,
-        "duration_ms": 117.07,
+        "duration_ms": 61.7,
         "data_at": null,
         "record_count": null,
         "checks": [
@@ -2539,7 +2403,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "117 ms · 기준 3000 ms",
+            "detail": "62 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -2594,14 +2458,14 @@
         "category": "지구·환경"
       },
       "last_run": {
-        "id": 517,
+        "id": 539,
         "target": "usgs",
-        "checked_at": "2026-11-20T17:59:17.724759+00:00",
+        "checked_at": "2026-11-21T00:11:13.491536+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 29.85,
-        "data_at": "2026-11-20T17:59:01+00:00",
-        "record_count": 281,
+        "duration_ms": 20.71,
+        "data_at": "2026-11-21T00:10:20+00:00",
+        "record_count": 288,
         "checks": [
           {
             "key": "availability",
@@ -2615,7 +2479,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "30 ms · 기준 3000 ms",
+            "detail": "21 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -2671,7 +2535,7 @@
             "key": "count",
             "label": "결과 건수",
             "ok": true,
-            "detail": "281건 · 최소 1",
+            "detail": "288건 · 최소 1",
             "group": "quality",
             "severity": "error"
           },
@@ -2679,7 +2543,7 @@
             "key": "record:id",
             "label": "항목 필드 · id",
             "ok": true,
-            "detail": "281건 중 누락·자료형 오류 0건",
+            "detail": "288건 중 누락·자료형 오류 0건",
             "group": "schema",
             "severity": "error"
           },
@@ -2687,7 +2551,7 @@
             "key": "record:properties",
             "label": "항목 필드 · properties",
             "ok": true,
-            "detail": "281건 중 누락·자료형 오류 0건",
+            "detail": "288건 중 누락·자료형 오류 0건",
             "group": "schema",
             "severity": "error"
           },
@@ -2695,7 +2559,7 @@
             "key": "record:geometry",
             "label": "항목 필드 · geometry",
             "ok": true,
-            "detail": "281건 중 누락·자료형 오류 0건",
+            "detail": "288건 중 누락·자료형 오류 0건",
             "group": "schema",
             "severity": "error"
           },
@@ -2711,7 +2575,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 17초 전",
+            "detail": "현재 대비 53초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -2719,7 +2583,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "0.3분 경과 · 허용 20분",
+            "detail": "0.9분 경과 · 허용 20분",
             "group": "freshness",
             "severity": "error"
           }
@@ -2728,7 +2592,7 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.724759+00:00",
+      "last_success": "2026-11-21T00:11:13.491536+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 46
     },
@@ -2776,13 +2640,13 @@
         "category": "지구·환경"
       },
       "last_run": {
-        "id": 518,
+        "id": 540,
         "target": "weather",
-        "checked_at": "2026-11-20T17:59:17.730968+00:00",
+        "checked_at": "2026-11-21T00:11:13.495934+00:00",
         "status": "healthy",
         "http_status": 200,
-        "duration_ms": 125.46,
-        "data_at": "2026-11-20T17:45:00+00:00",
+        "duration_ms": 62.25,
+        "data_at": "2026-11-21T00:00:00+00:00",
         "record_count": null,
         "checks": [
           {
@@ -2797,7 +2661,7 @@
             "key": "latency",
             "label": "응답 시간",
             "ok": true,
-            "detail": "125 ms · 기준 3000 ms",
+            "detail": "62 ms · 기준 3000 ms",
             "group": "latency",
             "severity": "warning"
           },
@@ -2869,7 +2733,7 @@
             "key": "range:current.temperature_2m",
             "label": "값 범위 · current.temperature_2m",
             "ok": true,
-            "detail": "허용 -80~65 · 실제 -2.9",
+            "detail": "허용 -80~65 · 실제 -3.0",
             "group": "quality",
             "severity": "error"
           },
@@ -2877,7 +2741,7 @@
             "key": "range:current.relative_humidity_2m",
             "label": "값 범위 · current.relative_humidity_2m",
             "ok": true,
-            "detail": "허용 0~100 · 실제 41",
+            "detail": "허용 0~100 · 실제 33",
             "group": "quality",
             "severity": "error"
           },
@@ -2885,7 +2749,7 @@
             "key": "range:current.wind_speed_10m",
             "label": "값 범위 · current.wind_speed_10m",
             "ok": true,
-            "detail": "허용 0~500 · 실제 5.1",
+            "detail": "허용 0~500 · 실제 6.3",
             "group": "quality",
             "severity": "error"
           },
@@ -2893,7 +2757,7 @@
             "key": "future-time",
             "label": "미래 시각 검사",
             "ok": true,
-            "detail": "현재 대비 858초 전",
+            "detail": "현재 대비 673초 전",
             "group": "freshness",
             "severity": "error"
           },
@@ -2901,7 +2765,7 @@
             "key": "freshness",
             "label": "데이터 최신성",
             "ok": true,
-            "detail": "14.3분 경과 · 허용 90분",
+            "detail": "11.2분 경과 · 허용 90분",
             "group": "freshness",
             "severity": "error"
           }
@@ -2910,14 +2774,1955 @@
         "error": "",
         "source": "live"
       },
-      "last_success": "2026-11-20T17:59:17.730968+00:00",
+      "last_success": "2026-11-21T00:11:13.495934+00:00",
       "consecutive_failures": 0,
       "baseline_fields": 20
     }
   ],
   "history": [
     {
-      "id": 518,
+      "id": 540,
+      "target": "weather",
+      "checked_at": "2026-11-21T00:11:13.495934+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 62.25,
+      "data_at": "2026-11-21T00:00:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "62 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:current",
+          "label": "필수 필드 · current",
+          "ok": true,
+          "detail": "기대 object · 실제 object",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.time",
+          "label": "필수 필드 · current.time",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.temperature_2m",
+          "label": "필수 필드 · current.temperature_2m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.relative_humidity_2m",
+          "label": "필수 필드 · current.relative_humidity_2m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.wind_speed_10m",
+          "label": "필수 필드 · current.wind_speed_10m",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:utc_offset_seconds",
+          "label": "필수 필드 · utc_offset_seconds",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.temperature_2m",
+          "label": "값 범위 · current.temperature_2m",
+          "ok": true,
+          "detail": "허용 -80~65 · 실제 -3.0",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.relative_humidity_2m",
+          "label": "값 범위 · current.relative_humidity_2m",
+          "ok": true,
+          "detail": "허용 0~100 · 실제 33",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.wind_speed_10m",
+          "label": "값 범위 · current.wind_speed_10m",
+          "ok": true,
+          "detail": "허용 0~500 · 실제 6.3",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 673초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "11.2분 경과 · 허용 90분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 539,
+      "target": "usgs",
+      "checked_at": "2026-11-21T00:11:13.491536+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 20.71,
+      "data_at": "2026-11-21T00:10:20+00:00",
+      "record_count": 288,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "21 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:type",
+          "label": "필수 필드 · type",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:metadata.generated",
+          "label": "필수 필드 · metadata.generated",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:metadata.count",
+          "label": "필수 필드 · metadata.count",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:features",
+          "label": "필수 필드 · features",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "288건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "288건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:properties",
+          "label": "항목 필드 · properties",
+          "ok": true,
+          "detail": "288건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:geometry",
+          "label": "항목 필드 · geometry",
+          "ok": true,
+          "detail": "288건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 53초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "0.9분 경과 · 허용 20분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 538,
+      "target": "rest-countries",
+      "checked_at": "2026-11-21T00:11:13.488902+00:00",
+      "status": "critical",
+      "http_status": 200,
+      "duration_ms": 61.7,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "62 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": false,
+          "detail": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
+          "group": "format",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 537,
+      "target": "pypi-django",
+      "checked_at": "2026-11-21T00:11:13.485066+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 67.79,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "68 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:info.name",
+          "label": "필수 필드 · info.name",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:info.version",
+          "label": "필수 필드 · info.version",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:releases",
+          "label": "필수 필드 · releases",
+          "ok": true,
+          "detail": "기대 object · 실제 object",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:info.name",
+          "label": "응답 의미 · info.name",
+          "ok": true,
+          "detail": "기대 Django · 실제 Django",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 536,
+      "target": "pokeapi",
+      "checked_at": "2026-11-21T00:11:13.476995+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 24.38,
+      "data_at": null,
+      "record_count": 6,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "24 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:id",
+          "label": "필수 필드 · id",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:name",
+          "label": "필수 필드 · name",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:stats",
+          "label": "필수 필드 · stats",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:name",
+          "label": "응답 의미 · name",
+          "ok": true,
+          "detail": "기대 pikachu · 실제 pikachu",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 1개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "6건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:base_stat",
+          "label": "항목 필드 · base_stat",
+          "ok": true,
+          "detail": "6건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:stat.name",
+          "label": "항목 필드 · stat.name",
+          "ok": true,
+          "detail": "6건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [
+        {
+          "path": "$.moves[].version_group_details[].enhancement_level",
+          "change": "added",
+          "before": [],
+          "after": [
+            "null",
+            "number"
+          ],
+          "breaking": false
+        }
+      ],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 535,
+      "target": "own-pipeline",
+      "checked_at": "2026-11-21T00:11:13.468460+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 103.94,
+      "data_at": "2026-11-20T12:17:00+00:00",
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "104 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:updated",
+          "label": "필수 필드 · updated",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:quality.kept",
+          "label": "필수 필드 · quality.kept",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:regions",
+          "label": "필수 필드 · regions",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:region",
+          "label": "항목 필드 · region",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:n",
+          "label": "항목 필드 · n",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:quality.kept",
+          "label": "값 범위 · quality.kept",
+          "ok": true,
+          "detail": "허용 0~10000000 · 실제 2486",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 42853초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "714.2분 경과 · 허용 2160분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 534,
+      "target": "open-trivia",
+      "checked_at": "2026-11-21T00:11:13.466583+00:00",
+      "status": "warning",
+      "http_status": null,
+      "duration_ms": 12091.56,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": false,
+          "detail": "URLError · 응답을 읽지 못했습니다.",
+          "group": "availability",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "URLError · 응답을 읽지 못했습니다.",
+      "source": "live"
+    },
+    {
+      "id": 533,
+      "target": "open-library",
+      "checked_at": "2026-11-21T00:11:13.465020+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 1141.44,
+      "data_at": null,
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "1141 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:docs",
+          "label": "필수 필드 · docs",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:numFound",
+          "label": "필수 필드 · numFound",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:key",
+          "label": "항목 필드 · key",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:title",
+          "label": "항목 필드 · title",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 532,
+      "target": "npm-typescript",
+      "checked_at": "2026-11-21T00:11:13.463249+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 21.96,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "22 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:name",
+          "label": "필수 필드 · name",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:version",
+          "label": "필수 필드 · version",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:dist.tarball",
+          "label": "필수 필드 · dist.tarball",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:name",
+          "label": "응답 의미 · name",
+          "ok": true,
+          "detail": "기대 typescript · 실제 typescript",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 531,
+      "target": "nager-holidays",
+      "checked_at": "2026-11-21T00:11:13.461704+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 21.58,
+      "data_at": null,
+      "record_count": 18,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "22 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON array 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:$",
+          "label": "필수 필드 · $",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "18건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:date",
+          "label": "항목 필드 · date",
+          "ok": true,
+          "detail": "18건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:localName",
+          "label": "항목 필드 · localName",
+          "ok": true,
+          "detail": "18건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:countryCode",
+          "label": "항목 필드 · countryCode",
+          "ok": true,
+          "detail": "18건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 530,
+      "target": "mempool",
+      "checked_at": "2026-11-21T00:11:13.460327+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 812.66,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "813 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:fastestFee",
+          "label": "필수 필드 · fastestFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:halfHourFee",
+          "label": "필수 필드 · halfHourFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:hourFee",
+          "label": "필수 필드 · hourFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:minimumFee",
+          "label": "필수 필드 · minimumFee",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:fastestFee",
+          "label": "값 범위 · fastestFee",
+          "ok": true,
+          "detail": "허용 0~100000 · 실제 1",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 529,
+      "target": "marine",
+      "checked_at": "2026-11-21T00:11:13.458747+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 373.59,
+      "data_at": "2026-11-21T00:00:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "374 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.time",
+          "label": "필수 필드 · current.time",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.wave_height",
+          "label": "필수 필드 · current.wave_height",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.wave_height",
+          "label": "값 범위 · current.wave_height",
+          "ok": true,
+          "detail": "허용 0~50 · 실제 0.3",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 673초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "11.2분 경과 · 허용 180분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 528,
+      "target": "huggingface",
+      "checked_at": "2026-11-21T00:11:13.457418+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 20.0,
+      "data_at": null,
+      "record_count": 5,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "20 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON array 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:$",
+          "label": "필수 필드 · $",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "5건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:id",
+          "label": "항목 필드 · id",
+          "ok": true,
+          "detail": "5건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:downloads",
+          "label": "항목 필드 · downloads",
+          "ok": true,
+          "detail": "5건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 527,
+      "target": "hacker-news",
+      "checked_at": "2026-11-21T00:11:13.455150+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 74.47,
+      "data_at": null,
+      "record_count": 500,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "74 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON array 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:$",
+          "label": "필수 필드 · $",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "500건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:$",
+          "label": "항목 필드 · $",
+          "ok": true,
+          "detail": "500건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 526,
+      "target": "github-catalog",
+      "checked_at": "2026-11-21T00:11:13.452945+00:00",
+      "status": "warning",
+      "http_status": 403,
+      "duration_ms": 9.13,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": false,
+          "detail": "HTTP 403",
+          "group": "availability",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "HTTP 403",
+      "source": "live"
+    },
+    {
+      "id": 525,
+      "target": "gbif",
+      "checked_at": "2026-11-21T00:11:13.451389+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 1463.47,
+      "data_at": null,
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "1463 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:count",
+          "label": "필수 필드 · count",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:results",
+          "label": "필수 필드 · results",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:key",
+          "label": "항목 필드 · key",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 524,
+      "target": "frankfurter",
+      "checked_at": "2026-11-21T00:11:13.449757+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 259.65,
+      "data_at": "2026-11-20T00:00:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "260 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:date",
+          "label": "필수 필드 · date",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:base",
+          "label": "필수 필드 · base",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.KRW",
+          "label": "필수 필드 · rates.KRW",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.EUR",
+          "label": "필수 필드 · rates.EUR",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.JPY",
+          "label": "필수 필드 · rates.JPY",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:rates.KRW",
+          "label": "값 범위 · rates.KRW",
+          "ok": true,
+          "detail": "허용 1~10000 · 실제 1339.44",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 87073초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "1451.2분 경과 · 허용 7200분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 523,
+      "target": "exchange-rates",
+      "checked_at": "2026-11-21T00:11:13.448078+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 31.75,
+      "data_at": "2026-11-20T00:02:32+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "32 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:result",
+          "label": "필수 필드 · result",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:time_last_update_unix",
+          "label": "필수 필드 · time_last_update_unix",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:rates.KRW",
+          "label": "필수 필드 · rates.KRW",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:result",
+          "label": "응답 의미 · result",
+          "ok": true,
+          "detail": "기대 success · 실제 success",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 86921초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "1448.7분 경과 · 허용 2880분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 522,
+      "target": "dog-ceo",
+      "checked_at": "2026-11-21T00:11:13.446765+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 125.7,
+      "data_at": null,
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "126 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:status",
+          "label": "필수 필드 · status",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:message",
+          "label": "필수 필드 · message",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:status",
+          "label": "응답 의미 · status",
+          "ok": true,
+          "detail": "기대 success · 실제 success",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 521,
+      "target": "crossref",
+      "checked_at": "2026-11-21T00:11:13.445070+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 1782.49,
+      "data_at": null,
+      "record_count": 3,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "1782 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:status",
+          "label": "필수 필드 · status",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:message.items",
+          "label": "필수 필드 · message.items",
+          "ok": true,
+          "detail": "기대 array · 실제 array",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "value:status",
+          "label": "응답 의미 · status",
+          "ok": true,
+          "detail": "기대 ok · 실제 ok",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "count",
+          "label": "결과 건수",
+          "ok": true,
+          "detail": "3건 · 최소 1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "record:DOI",
+          "label": "항목 필드 · DOI",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "record:title",
+          "label": "항목 필드 · title",
+          "ok": true,
+          "detail": "3건 중 누락·자료형 오류 0건",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "duplicates",
+          "label": "식별자 중복",
+          "ok": true,
+          "detail": "중복 0건 · 식별자 없음 0건",
+          "group": "quality",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 520,
+      "target": "coingecko",
+      "checked_at": "2026-11-21T00:11:13.443285+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 62.44,
+      "data_at": "2026-11-21T00:10:15+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "62 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:bitcoin.usd",
+          "label": "필수 필드 · bitcoin.usd",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:bitcoin.last_updated_at",
+          "label": "필수 필드 · bitcoin.last_updated_at",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:ethereum.usd",
+          "label": "필수 필드 · ethereum.usd",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:bitcoin.usd",
+          "label": "값 범위 · bitcoin.usd",
+          "ok": true,
+          "detail": "허용 0~100000000 · 실제 58847",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 58초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "1.0분 경과 · 허용 60분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 519,
+      "target": "air-quality",
+      "checked_at": "2026-11-21T00:11:13.440526+00:00",
+      "status": "healthy",
+      "http_status": 200,
+      "duration_ms": 395.65,
+      "data_at": "2026-11-21T00:00:00+00:00",
+      "record_count": null,
+      "checks": [
+        {
+          "key": "availability",
+          "label": "HTTP 응답",
+          "ok": true,
+          "detail": "HTTP 200",
+          "group": "availability",
+          "severity": "error"
+        },
+        {
+          "key": "latency",
+          "label": "응답 시간",
+          "ok": true,
+          "detail": "396 ms · 기준 3000 ms",
+          "group": "latency",
+          "severity": "warning"
+        },
+        {
+          "key": "json",
+          "label": "JSON 해석",
+          "ok": true,
+          "detail": "JSON object 응답",
+          "group": "format",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.time",
+          "label": "필수 필드 · current.time",
+          "ok": true,
+          "detail": "기대 string · 실제 string",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.pm10",
+          "label": "필수 필드 · current.pm10",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "field:current.pm2_5",
+          "label": "필수 필드 · current.pm2_5",
+          "ok": true,
+          "detail": "기대 number · 실제 number",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "schema-drift",
+          "label": "이전 승인 구조와 비교",
+          "ok": true,
+          "detail": "변경 0개 · 추가 필드는 정보로만 표시",
+          "group": "schema",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.pm10",
+          "label": "값 범위 · current.pm10",
+          "ok": true,
+          "detail": "허용 0~5000 · 실제 19.2",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "range:current.pm2_5",
+          "label": "값 범위 · current.pm2_5",
+          "ok": true,
+          "detail": "허용 0~5000 · 실제 15.1",
+          "group": "quality",
+          "severity": "error"
+        },
+        {
+          "key": "future-time",
+          "label": "미래 시각 검사",
+          "ok": true,
+          "detail": "현재 대비 673초 전",
+          "group": "freshness",
+          "severity": "error"
+        },
+        {
+          "key": "freshness",
+          "label": "데이터 최신성",
+          "ok": true,
+          "detail": "11.2분 경과 · 허용 180분",
+          "group": "freshness",
+          "severity": "error"
+        }
+      ],
+      "schema_diff": [],
+      "error": "",
+      "source": "live"
+    },
+    {
+      "id": 1,
       "target": "weather",
       "checked_at": "2026-11-20T17:59:17.730968+00:00",
       "status": "healthy",
@@ -3052,7 +4857,7 @@
       "source": "live"
     },
     {
-      "id": 517,
+      "id": 2,
       "target": "usgs",
       "checked_at": "2026-11-20T17:59:17.724759+00:00",
       "status": "healthy",
@@ -3187,7 +4992,7 @@
       "source": "live"
     },
     {
-      "id": 516,
+      "id": 3,
       "target": "rest-countries",
       "checked_at": "2026-11-20T17:59:17.720843+00:00",
       "status": "critical",
@@ -3226,7 +5031,7 @@
       "source": "live"
     },
     {
-      "id": 515,
+      "id": 4,
       "target": "pypi-django",
       "checked_at": "2026-11-20T17:59:17.715469+00:00",
       "status": "healthy",
@@ -3305,7 +5110,7 @@
       "source": "live"
     },
     {
-      "id": 514,
+      "id": 5,
       "target": "pokeapi",
       "checked_at": "2026-11-20T17:59:17.703712+00:00",
       "status": "healthy",
@@ -3419,7 +5224,7 @@
       "source": "live"
     },
     {
-      "id": 513,
+      "id": 6,
       "target": "own-pipeline",
       "checked_at": "2026-11-20T17:59:17.692849+00:00",
       "status": "healthy",
@@ -3546,7 +5351,7 @@
       "source": "live"
     },
     {
-      "id": 512,
+      "id": 7,
       "target": "open-trivia",
       "checked_at": "2026-11-20T17:59:17.690348+00:00",
       "status": "healthy",
@@ -3649,7 +5454,7 @@
       "source": "live"
     },
     {
-      "id": 511,
+      "id": 8,
       "target": "open-library",
       "checked_at": "2026-11-20T17:59:17.688215+00:00",
       "status": "healthy",
@@ -3744,7 +5549,7 @@
       "source": "live"
     },
     {
-      "id": 510,
+      "id": 9,
       "target": "npm-typescript",
       "checked_at": "2026-11-20T17:59:17.684908+00:00",
       "status": "healthy",
@@ -3823,7 +5628,7 @@
       "source": "live"
     },
     {
-      "id": 509,
+      "id": 10,
       "target": "nager-holidays",
       "checked_at": "2026-11-20T17:59:17.682885+00:00",
       "status": "healthy",
@@ -3910,7 +5715,7 @@
       "source": "live"
     },
     {
-      "id": 508,
+      "id": 11,
       "target": "mempool",
       "checked_at": "2026-11-20T17:59:17.680469+00:00",
       "status": "healthy",
@@ -3997,7 +5802,7 @@
       "source": "live"
     },
     {
-      "id": 507,
+      "id": 12,
       "target": "marine",
       "checked_at": "2026-11-20T17:59:17.678440+00:00",
       "status": "healthy",
@@ -4084,7 +5889,7 @@
       "source": "live"
     },
     {
-      "id": 506,
+      "id": 13,
       "target": "huggingface",
       "checked_at": "2026-11-20T17:59:17.676063+00:00",
       "status": "healthy",
@@ -4171,7 +5976,7 @@
       "source": "live"
     },
     {
-      "id": 505,
+      "id": 14,
       "target": "hacker-news",
       "checked_at": "2026-11-20T17:59:17.672626+00:00",
       "status": "healthy",
@@ -4250,7 +6055,7 @@
       "source": "live"
     },
     {
-      "id": 504,
+      "id": 15,
       "target": "github-catalog",
       "checked_at": "2026-11-20T17:59:17.669519+00:00",
       "status": "healthy",
@@ -4329,7 +6134,7 @@
       "source": "live"
     },
     {
-      "id": 503,
+      "id": 16,
       "target": "gbif",
       "checked_at": "2026-11-20T17:59:17.667167+00:00",
       "status": "healthy",
@@ -4416,7 +6221,7 @@
       "source": "live"
     },
     {
-      "id": 502,
+      "id": 17,
       "target": "frankfurter",
       "checked_at": "2026-11-20T17:59:17.664751+00:00",
       "status": "healthy",
@@ -4527,7 +6332,7 @@
       "source": "live"
     },
     {
-      "id": 501,
+      "id": 18,
       "target": "exchange-rates",
       "checked_at": "2026-11-20T17:59:17.662188+00:00",
       "status": "healthy",
@@ -4622,7 +6427,7 @@
       "source": "live"
     },
     {
-      "id": 500,
+      "id": 19,
       "target": "dog-ceo",
       "checked_at": "2026-11-20T17:59:17.660092+00:00",
       "status": "healthy",
@@ -4693,7 +6498,7 @@
       "source": "live"
     },
     {
-      "id": 499,
+      "id": 20,
       "target": "crossref",
       "checked_at": "2026-11-20T17:59:17.657315+00:00",
       "status": "healthy",
@@ -4796,7 +6601,7 @@
       "source": "live"
     },
     {
-      "id": 498,
+      "id": 21,
       "target": "coingecko",
       "checked_at": "2026-11-20T17:59:17.654430+00:00",
       "status": "healthy",
@@ -4891,7 +6696,7 @@
       "source": "live"
     },
     {
-      "id": 497,
+      "id": 22,
       "target": "air-quality",
       "checked_at": "2026-11-20T17:59:17.651105+00:00",
       "status": "healthy",
@@ -4994,7 +6799,7 @@
       "source": "live"
     },
     {
-      "id": 1,
+      "id": 23,
       "target": "weather",
       "checked_at": "2026-11-20T11:53:42.174714+00:00",
       "status": "healthy",
@@ -5129,7 +6934,7 @@
       "source": "live"
     },
     {
-      "id": 2,
+      "id": 24,
       "target": "usgs",
       "checked_at": "2026-11-20T11:53:42.170402+00:00",
       "status": "healthy",
@@ -5264,7 +7069,7 @@
       "source": "live"
     },
     {
-      "id": 3,
+      "id": 25,
       "target": "rest-countries",
       "checked_at": "2026-11-20T11:53:42.167807+00:00",
       "status": "critical",
@@ -5303,7 +7108,7 @@
       "source": "live"
     },
     {
-      "id": 4,
+      "id": 26,
       "target": "pypi-django",
       "checked_at": "2026-11-20T11:53:42.164019+00:00",
       "status": "healthy",
@@ -5382,7 +7187,7 @@
       "source": "live"
     },
     {
-      "id": 5,
+      "id": 27,
       "target": "pokeapi",
       "checked_at": "2026-11-20T11:53:42.156170+00:00",
       "status": "healthy",
@@ -5496,7 +7301,7 @@
       "source": "live"
     },
     {
-      "id": 6,
+      "id": 28,
       "target": "own-pipeline",
       "checked_at": "2026-11-20T11:53:42.062327+00:00",
       "status": "healthy",
@@ -5623,7 +7428,7 @@
       "source": "live"
     },
     {
-      "id": 7,
+      "id": 29,
       "target": "open-trivia",
       "checked_at": "2026-11-20T11:53:42.060819+00:00",
       "status": "healthy",
@@ -5726,7 +7531,7 @@
       "source": "live"
     },
     {
-      "id": 8,
+      "id": 30,
       "target": "open-library",
       "checked_at": "2026-11-20T11:53:42.059113+00:00",
       "status": "healthy",
@@ -5821,7 +7626,7 @@
       "source": "live"
     },
     {
-      "id": 9,
+      "id": 31,
       "target": "npm-typescript",
       "checked_at": "2026-11-20T11:53:42.057252+00:00",
       "status": "healthy",
@@ -5900,7 +7705,7 @@
       "source": "live"
     },
     {
-      "id": 10,
+      "id": 32,
       "target": "nager-holidays",
       "checked_at": "2026-11-20T11:53:42.055715+00:00",
       "status": "healthy",
@@ -5987,7 +7792,7 @@
       "source": "live"
     },
     {
-      "id": 11,
+      "id": 33,
       "target": "mempool",
       "checked_at": "2026-11-20T11:53:42.054409+00:00",
       "status": "healthy",
@@ -6074,7 +7879,7 @@
       "source": "live"
     },
     {
-      "id": 12,
+      "id": 34,
       "target": "marine",
       "checked_at": "2026-11-20T11:53:42.052796+00:00",
       "status": "healthy",
@@ -6161,7 +7966,7 @@
       "source": "live"
     },
     {
-      "id": 13,
+      "id": 35,
       "target": "huggingface",
       "checked_at": "2026-11-20T11:53:42.051363+00:00",
       "status": "healthy",
@@ -6248,7 +8053,7 @@
       "source": "live"
     },
     {
-      "id": 14,
+      "id": 36,
       "target": "hacker-news",
       "checked_at": "2026-11-20T11:53:42.049165+00:00",
       "status": "healthy",
@@ -6327,7 +8132,7 @@
       "source": "live"
     },
     {
-      "id": 15,
+      "id": 37,
       "target": "github-catalog",
       "checked_at": "2026-11-20T11:53:42.046929+00:00",
       "status": "warning",
@@ -6350,7 +8155,7 @@
       "source": "live"
     },
     {
-      "id": 16,
+      "id": 38,
       "target": "gbif",
       "checked_at": "2026-11-20T11:53:42.045371+00:00",
       "status": "healthy",
@@ -6437,7 +8242,7 @@
       "source": "live"
     },
     {
-      "id": 17,
+      "id": 39,
       "target": "frankfurter",
       "checked_at": "2026-11-20T11:53:42.043676+00:00",
       "status": "healthy",
@@ -6548,7 +8353,7 @@
       "source": "live"
     },
     {
-      "id": 18,
+      "id": 40,
       "target": "exchange-rates",
       "checked_at": "2026-11-20T11:53:42.042056+00:00",
       "status": "healthy",
@@ -6643,7 +8448,7 @@
       "source": "live"
     },
     {
-      "id": 19,
+      "id": 41,
       "target": "dog-ceo",
       "checked_at": "2026-11-20T11:53:42.040654+00:00",
       "status": "healthy",
@@ -6714,7 +8519,7 @@
       "source": "live"
     },
     {
-      "id": 20,
+      "id": 42,
       "target": "crossref",
       "checked_at": "2026-11-20T11:53:42.038839+00:00",
       "status": "healthy",
@@ -6817,7 +8622,7 @@
       "source": "live"
     },
     {
-      "id": 21,
+      "id": 43,
       "target": "coingecko",
       "checked_at": "2026-11-20T11:53:42.036985+00:00",
       "status": "healthy",
@@ -6912,7 +8717,7 @@
       "source": "live"
     },
     {
-      "id": 22,
+      "id": 44,
       "target": "air-quality",
       "checked_at": "2026-11-20T11:53:42.034304+00:00",
       "status": "healthy",
@@ -7015,7 +8820,7 @@
       "source": "live"
     },
     {
-      "id": 23,
+      "id": 45,
       "target": "weather",
       "checked_at": "2026-11-20T09:08:12.886016+00:00",
       "status": "healthy",
@@ -7150,7 +8955,7 @@
       "source": "live"
     },
     {
-      "id": 24,
+      "id": 46,
       "target": "usgs",
       "checked_at": "2026-11-20T09:08:12.878986+00:00",
       "status": "healthy",
@@ -7285,7 +9090,7 @@
       "source": "live"
     },
     {
-      "id": 25,
+      "id": 47,
       "target": "rest-countries",
       "checked_at": "2026-11-20T09:08:12.875214+00:00",
       "status": "critical",
@@ -7324,7 +9129,7 @@
       "source": "live"
     },
     {
-      "id": 26,
+      "id": 48,
       "target": "pypi-django",
       "checked_at": "2026-11-20T09:08:12.869219+00:00",
       "status": "healthy",
@@ -7403,7 +9208,7 @@
       "source": "live"
     },
     {
-      "id": 27,
+      "id": 49,
       "target": "pokeapi",
       "checked_at": "2026-11-20T09:08:12.858153+00:00",
       "status": "healthy",
@@ -7517,7 +9322,7 @@
       "source": "live"
     },
     {
-      "id": 28,
+      "id": 50,
       "target": "own-pipeline",
       "checked_at": "2026-11-20T09:08:12.846776+00:00",
       "status": "healthy",
@@ -7644,7 +9449,7 @@
       "source": "live"
     },
     {
-      "id": 29,
+      "id": 51,
       "target": "open-trivia",
       "checked_at": "2026-11-20T09:08:12.844459+00:00",
       "status": "healthy",
@@ -7747,7 +9552,7 @@
       "source": "live"
     },
     {
-      "id": 30,
+      "id": 52,
       "target": "open-library",
       "checked_at": "2026-11-20T09:08:12.842307+00:00",
       "status": "healthy",
@@ -7842,7 +9647,7 @@
       "source": "live"
     },
     {
-      "id": 31,
+      "id": 53,
       "target": "npm-typescript",
       "checked_at": "2026-11-20T09:08:12.839266+00:00",
       "status": "healthy",
@@ -7921,7 +9726,7 @@
       "source": "live"
     },
     {
-      "id": 32,
+      "id": 54,
       "target": "nager-holidays",
       "checked_at": "2026-11-20T09:08:12.836631+00:00",
       "status": "healthy",
@@ -8008,7 +9813,7 @@
       "source": "live"
     },
     {
-      "id": 33,
+      "id": 55,
       "target": "mempool",
       "checked_at": "2026-11-20T09:08:12.834176+00:00",
       "status": "healthy",
@@ -8095,7 +9900,7 @@
       "source": "live"
     },
     {
-      "id": 34,
+      "id": 56,
       "target": "marine",
       "checked_at": "2026-11-20T09:08:12.831944+00:00",
       "status": "healthy",
@@ -8182,7 +9987,7 @@
       "source": "live"
     },
     {
-      "id": 35,
+      "id": 57,
       "target": "huggingface",
       "checked_at": "2026-11-20T09:08:12.829530+00:00",
       "status": "healthy",
@@ -8269,7 +10074,7 @@
       "source": "live"
     },
     {
-      "id": 36,
+      "id": 58,
       "target": "hacker-news",
       "checked_at": "2026-11-20T09:08:12.825824+00:00",
       "status": "healthy",
@@ -8348,7 +10153,7 @@
       "source": "live"
     },
     {
-      "id": 37,
+      "id": 59,
       "target": "github-catalog",
       "checked_at": "2026-11-20T09:08:12.822553+00:00",
       "status": "healthy",
@@ -8427,7 +10232,7 @@
       "source": "live"
     },
     {
-      "id": 38,
+      "id": 60,
       "target": "gbif",
       "checked_at": "2026-11-20T09:08:12.820084+00:00",
       "status": "healthy",
@@ -8514,7 +10319,7 @@
       "source": "live"
     },
     {
-      "id": 39,
+      "id": 61,
       "target": "frankfurter",
       "checked_at": "2026-11-20T09:08:12.817612+00:00",
       "status": "healthy",
@@ -8625,7 +10430,7 @@
       "source": "live"
     },
     {
-      "id": 40,
+      "id": 62,
       "target": "exchange-rates",
       "checked_at": "2026-11-20T09:08:12.814709+00:00",
       "status": "healthy",
@@ -8720,7 +10525,7 @@
       "source": "live"
     },
     {
-      "id": 41,
+      "id": 63,
       "target": "dog-ceo",
       "checked_at": "2026-11-20T09:08:12.812462+00:00",
       "status": "healthy",
@@ -8791,7 +10596,7 @@
       "source": "live"
     },
     {
-      "id": 42,
+      "id": 64,
       "target": "crossref",
       "checked_at": "2026-11-20T09:08:12.809979+00:00",
       "status": "healthy",
@@ -8894,7 +10699,7 @@
       "source": "live"
     },
     {
-      "id": 43,
+      "id": 65,
       "target": "coingecko",
       "checked_at": "2026-11-20T09:08:12.807419+00:00",
       "status": "healthy",
@@ -8989,7 +10794,7 @@
       "source": "live"
     },
     {
-      "id": 44,
+      "id": 66,
       "target": "air-quality",
       "checked_at": "2026-11-20T09:08:12.803901+00:00",
       "status": "healthy",
@@ -9092,7 +10897,7 @@
       "source": "live"
     },
     {
-      "id": 45,
+      "id": 67,
       "target": "weather",
       "checked_at": "2026-11-20T01:08:54.364195+00:00",
       "status": "warning",
@@ -9115,7 +10920,7 @@
       "source": "live"
     },
     {
-      "id": 46,
+      "id": 68,
       "target": "usgs",
       "checked_at": "2026-11-20T01:08:54.358095+00:00",
       "status": "healthy",
@@ -9250,7 +11055,7 @@
       "source": "live"
     },
     {
-      "id": 47,
+      "id": 69,
       "target": "rest-countries",
       "checked_at": "2026-11-20T01:08:54.352207+00:00",
       "status": "critical",
@@ -9289,7 +11094,7 @@
       "source": "live"
     },
     {
-      "id": 48,
+      "id": 70,
       "target": "pypi-django",
       "checked_at": "2026-11-20T01:08:54.346628+00:00",
       "status": "healthy",
@@ -9368,7 +11173,7 @@
       "source": "live"
     },
     {
-      "id": 49,
+      "id": 71,
       "target": "pokeapi",
       "checked_at": "2026-11-20T01:08:54.335551+00:00",
       "status": "healthy",
@@ -9482,7 +11287,7 @@
       "source": "live"
     },
     {
-      "id": 50,
+      "id": 72,
       "target": "own-pipeline",
       "checked_at": "2026-11-20T01:08:54.324226+00:00",
       "status": "healthy",
@@ -9609,7 +11414,7 @@
       "source": "live"
     },
     {
-      "id": 51,
+      "id": 73,
       "target": "open-trivia",
       "checked_at": "2026-11-20T01:08:54.321572+00:00",
       "status": "healthy",
@@ -9712,7 +11517,7 @@
       "source": "live"
     },
     {
-      "id": 52,
+      "id": 74,
       "target": "open-library",
       "checked_at": "2026-11-20T01:08:54.319418+00:00",
       "status": "healthy",
@@ -9807,7 +11612,7 @@
       "source": "live"
     },
     {
-      "id": 53,
+      "id": 75,
       "target": "npm-typescript",
       "checked_at": "2026-11-20T01:08:54.316243+00:00",
       "status": "healthy",
@@ -9886,7 +11691,7 @@
       "source": "live"
     },
     {
-      "id": 54,
+      "id": 76,
       "target": "nager-holidays",
       "checked_at": "2026-11-20T01:08:54.314155+00:00",
       "status": "healthy",
@@ -9973,7 +11778,7 @@
       "source": "live"
     },
     {
-      "id": 55,
+      "id": 77,
       "target": "mempool",
       "checked_at": "2026-11-20T01:08:54.311868+00:00",
       "status": "healthy",
@@ -10060,7 +11865,7 @@
       "source": "live"
     },
     {
-      "id": 56,
+      "id": 78,
       "target": "marine",
       "checked_at": "2026-11-20T01:08:54.309594+00:00",
       "status": "healthy",
@@ -10147,7 +11952,7 @@
       "source": "live"
     },
     {
-      "id": 57,
+      "id": 79,
       "target": "huggingface",
       "checked_at": "2026-11-20T01:08:54.307198+00:00",
       "status": "healthy",
@@ -10234,7 +12039,7 @@
       "source": "live"
     },
     {
-      "id": 58,
+      "id": 80,
       "target": "hacker-news",
       "checked_at": "2026-11-20T01:08:54.303625+00:00",
       "status": "healthy",
@@ -10313,7 +12118,7 @@
       "source": "live"
     },
     {
-      "id": 59,
+      "id": 81,
       "target": "github-catalog",
       "checked_at": "2026-11-20T01:08:54.300586+00:00",
       "status": "healthy",
@@ -10392,7 +12197,7 @@
       "source": "live"
     },
     {
-      "id": 60,
+      "id": 82,
       "target": "gbif",
       "checked_at": "2026-11-20T01:08:54.298129+00:00",
       "status": "healthy",
@@ -10479,7 +12284,7 @@
       "source": "live"
     },
     {
-      "id": 61,
+      "id": 83,
       "target": "frankfurter",
       "checked_at": "2026-11-20T01:08:54.295623+00:00",
       "status": "healthy",
@@ -10590,7 +12395,7 @@
       "source": "live"
     },
     {
-      "id": 62,
+      "id": 84,
       "target": "exchange-rates",
       "checked_at": "2026-11-20T01:08:54.293038+00:00",
       "status": "healthy",
@@ -10685,7 +12490,7 @@
       "source": "live"
     },
     {
-      "id": 63,
+      "id": 85,
       "target": "dog-ceo",
       "checked_at": "2026-11-20T01:08:54.290430+00:00",
       "status": "healthy",
@@ -10756,7 +12561,7 @@
       "source": "live"
     },
     {
-      "id": 64,
+      "id": 86,
       "target": "crossref",
       "checked_at": "2026-11-20T01:08:54.287897+00:00",
       "status": "healthy",
@@ -10859,7 +12664,7 @@
       "source": "live"
     },
     {
-      "id": 65,
+      "id": 87,
       "target": "coingecko",
       "checked_at": "2026-11-20T01:08:54.285230+00:00",
       "status": "healthy",
@@ -10954,7 +12759,7 @@
       "source": "live"
     },
     {
-      "id": 66,
+      "id": 88,
       "target": "air-quality",
       "checked_at": "2026-11-20T01:08:54.280840+00:00",
       "status": "healthy",
@@ -11057,7 +12862,7 @@
       "source": "live"
     },
     {
-      "id": 67,
+      "id": 89,
       "target": "weather",
       "checked_at": "2026-11-20T00:54:14.921484+00:00",
       "status": "healthy",
@@ -11192,7 +12997,7 @@
       "source": "live"
     },
     {
-      "id": 68,
+      "id": 90,
       "target": "usgs",
       "checked_at": "2026-11-20T00:54:14.916863+00:00",
       "status": "healthy",
@@ -11327,7 +13132,7 @@
       "source": "live"
     },
     {
-      "id": 69,
+      "id": 91,
       "target": "rest-countries",
       "checked_at": "2026-11-20T00:54:14.913415+00:00",
       "status": "critical",
@@ -11366,7 +13171,7 @@
       "source": "live"
     },
     {
-      "id": 70,
+      "id": 92,
       "target": "pypi-django",
       "checked_at": "2026-11-20T00:54:14.908554+00:00",
       "status": "healthy",
@@ -11445,7 +13250,7 @@
       "source": "live"
     },
     {
-      "id": 71,
+      "id": 93,
       "target": "pokeapi",
       "checked_at": "2026-11-20T00:54:14.898803+00:00",
       "status": "healthy",
@@ -11559,7 +13364,7 @@
       "source": "live"
     },
     {
-      "id": 72,
+      "id": 94,
       "target": "own-pipeline",
       "checked_at": "2026-11-20T00:54:14.875737+00:00",
       "status": "healthy",
@@ -11686,7 +13491,7 @@
       "source": "live"
     },
     {
-      "id": 73,
+      "id": 95,
       "target": "open-trivia",
       "checked_at": "2026-11-20T00:54:14.873723+00:00",
       "status": "healthy",
@@ -11789,7 +13594,7 @@
       "source": "live"
     },
     {
-      "id": 74,
+      "id": 96,
       "target": "open-library",
       "checked_at": "2026-11-20T00:54:14.871856+00:00",
       "status": "healthy",
@@ -11884,7 +13689,7 @@
       "source": "live"
     },
     {
-      "id": 75,
+      "id": 97,
       "target": "npm-typescript",
       "checked_at": "2026-11-20T00:54:14.869225+00:00",
       "status": "healthy",
@@ -11963,7 +13768,7 @@
       "source": "live"
     },
     {
-      "id": 76,
+      "id": 98,
       "target": "nager-holidays",
       "checked_at": "2026-11-20T00:54:14.867179+00:00",
       "status": "healthy",
@@ -12050,7 +13855,7 @@
       "source": "live"
     },
     {
-      "id": 77,
+      "id": 99,
       "target": "mempool",
       "checked_at": "2026-11-20T00:54:14.864392+00:00",
       "status": "healthy",
@@ -12137,7 +13942,7 @@
       "source": "live"
     },
     {
-      "id": 78,
+      "id": 100,
       "target": "marine",
       "checked_at": "2026-11-20T00:54:14.860186+00:00",
       "status": "healthy",
@@ -12224,7 +14029,7 @@
       "source": "live"
     },
     {
-      "id": 79,
+      "id": 101,
       "target": "huggingface",
       "checked_at": "2026-11-20T00:54:14.858179+00:00",
       "status": "healthy",
@@ -12311,7 +14116,7 @@
       "source": "live"
     },
     {
-      "id": 80,
+      "id": 102,
       "target": "hacker-news",
       "checked_at": "2026-11-20T00:54:14.855335+00:00",
       "status": "healthy",
@@ -12390,7 +14195,7 @@
       "source": "live"
     },
     {
-      "id": 81,
+      "id": 103,
       "target": "github-catalog",
       "checked_at": "2026-11-20T00:54:14.852795+00:00",
       "status": "healthy",
@@ -12469,7 +14274,7 @@
       "source": "live"
     },
     {
-      "id": 82,
+      "id": 104,
       "target": "gbif",
       "checked_at": "2026-11-20T00:54:14.850819+00:00",
       "status": "healthy",
@@ -12556,7 +14361,7 @@
       "source": "live"
     },
     {
-      "id": 83,
+      "id": 105,
       "target": "frankfurter",
       "checked_at": "2026-11-20T00:54:14.848565+00:00",
       "status": "healthy",
@@ -12667,7 +14472,7 @@
       "source": "live"
     },
     {
-      "id": 84,
+      "id": 106,
       "target": "exchange-rates",
       "checked_at": "2026-11-20T00:54:14.846476+00:00",
       "status": "healthy",
@@ -12762,7 +14567,7 @@
       "source": "live"
     },
     {
-      "id": 85,
+      "id": 107,
       "target": "dog-ceo",
       "checked_at": "2026-11-20T00:54:14.844658+00:00",
       "status": "healthy",
@@ -12833,7 +14638,7 @@
       "source": "live"
     },
     {
-      "id": 86,
+      "id": 108,
       "target": "crossref",
       "checked_at": "2026-11-20T00:54:14.842429+00:00",
       "status": "healthy",
@@ -12936,7 +14741,7 @@
       "source": "live"
     },
     {
-      "id": 87,
+      "id": 109,
       "target": "coingecko",
       "checked_at": "2026-11-20T00:54:14.840049+00:00",
       "status": "healthy",
@@ -13031,7 +14836,7 @@
       "source": "live"
     },
     {
-      "id": 88,
+      "id": 110,
       "target": "air-quality",
       "checked_at": "2026-11-20T00:54:14.836892+00:00",
       "status": "healthy",
@@ -13134,7 +14939,7 @@
       "source": "live"
     },
     {
-      "id": 89,
+      "id": 111,
       "target": "weather",
       "checked_at": "2026-11-19T18:39:06.368939+00:00",
       "status": "healthy",
@@ -13269,7 +15074,7 @@
       "source": "live"
     },
     {
-      "id": 90,
+      "id": 112,
       "target": "usgs",
       "checked_at": "2026-11-19T18:39:06.363625+00:00",
       "status": "healthy",
@@ -13404,7 +15209,7 @@
       "source": "live"
     },
     {
-      "id": 91,
+      "id": 113,
       "target": "rest-countries",
       "checked_at": "2026-11-19T18:39:06.360246+00:00",
       "status": "critical",
@@ -13443,7 +15248,7 @@
       "source": "live"
     },
     {
-      "id": 92,
+      "id": 114,
       "target": "pypi-django",
       "checked_at": "2026-11-19T18:39:06.354799+00:00",
       "status": "healthy",
@@ -13522,7 +15327,7 @@
       "source": "live"
     },
     {
-      "id": 93,
+      "id": 115,
       "target": "pokeapi",
       "checked_at": "2026-11-19T18:39:06.343896+00:00",
       "status": "healthy",
@@ -13636,7 +15441,7 @@
       "source": "live"
     },
     {
-      "id": 94,
+      "id": 116,
       "target": "own-pipeline",
       "checked_at": "2026-11-19T18:39:06.324221+00:00",
       "status": "healthy",
@@ -13763,7 +15568,7 @@
       "source": "live"
     },
     {
-      "id": 95,
+      "id": 117,
       "target": "open-trivia",
       "checked_at": "2026-11-19T18:39:06.321915+00:00",
       "status": "healthy",
@@ -13866,7 +15671,7 @@
       "source": "live"
     },
     {
-      "id": 96,
+      "id": 118,
       "target": "open-library",
       "checked_at": "2026-11-19T18:39:06.318585+00:00",
       "status": "warning",
@@ -13961,7 +15766,7 @@
       "source": "live"
     },
     {
-      "id": 97,
+      "id": 119,
       "target": "npm-typescript",
       "checked_at": "2026-11-19T18:39:06.315473+00:00",
       "status": "healthy",
@@ -14040,7 +15845,7 @@
       "source": "live"
     },
     {
-      "id": 98,
+      "id": 120,
       "target": "nager-holidays",
       "checked_at": "2026-11-19T18:39:06.313389+00:00",
       "status": "healthy",
@@ -14127,7 +15932,7 @@
       "source": "live"
     },
     {
-      "id": 99,
+      "id": 121,
       "target": "mempool",
       "checked_at": "2026-11-19T18:39:06.311193+00:00",
       "status": "healthy",
@@ -14214,7 +16019,7 @@
       "source": "live"
     },
     {
-      "id": 100,
+      "id": 122,
       "target": "marine",
       "checked_at": "2026-11-19T18:39:06.308905+00:00",
       "status": "healthy",
@@ -14301,7 +16106,7 @@
       "source": "live"
     },
     {
-      "id": 101,
+      "id": 123,
       "target": "huggingface",
       "checked_at": "2026-11-19T18:39:06.306446+00:00",
       "status": "healthy",
@@ -14388,7 +16193,7 @@
       "source": "live"
     },
     {
-      "id": 102,
+      "id": 124,
       "target": "hacker-news",
       "checked_at": "2026-11-19T18:39:06.302840+00:00",
       "status": "healthy",
@@ -14467,7 +16272,7 @@
       "source": "live"
     },
     {
-      "id": 103,
+      "id": 125,
       "target": "github-catalog",
       "checked_at": "2026-11-19T18:39:06.299887+00:00",
       "status": "healthy",
@@ -14546,7 +16351,7 @@
       "source": "live"
     },
     {
-      "id": 104,
+      "id": 126,
       "target": "gbif",
       "checked_at": "2026-11-19T18:39:06.297536+00:00",
       "status": "healthy",
@@ -14633,7 +16438,7 @@
       "source": "live"
     },
     {
-      "id": 105,
+      "id": 127,
       "target": "frankfurter",
       "checked_at": "2026-11-19T18:39:06.295115+00:00",
       "status": "healthy",
@@ -14744,7 +16549,7 @@
       "source": "live"
     },
     {
-      "id": 106,
+      "id": 128,
       "target": "exchange-rates",
       "checked_at": "2026-11-19T18:39:06.292556+00:00",
       "status": "healthy",
@@ -14839,7 +16644,7 @@
       "source": "live"
     },
     {
-      "id": 107,
+      "id": 129,
       "target": "dog-ceo",
       "checked_at": "2026-11-19T18:39:06.290592+00:00",
       "status": "healthy",
@@ -14910,7 +16715,7 @@
       "source": "live"
     },
     {
-      "id": 108,
+      "id": 130,
       "target": "crossref",
       "checked_at": "2026-11-19T18:39:06.288115+00:00",
       "status": "healthy",
@@ -15013,7 +16818,7 @@
       "source": "live"
     },
     {
-      "id": 109,
+      "id": 131,
       "target": "coingecko",
       "checked_at": "2026-11-19T18:39:06.285697+00:00",
       "status": "healthy",
@@ -15108,7 +16913,7 @@
       "source": "live"
     },
     {
-      "id": 110,
+      "id": 132,
       "target": "air-quality",
       "checked_at": "2026-11-19T18:39:06.282136+00:00",
       "status": "healthy",
@@ -15211,7 +17016,7 @@
       "source": "live"
     },
     {
-      "id": 111,
+      "id": 133,
       "target": "weather",
       "checked_at": "2026-11-19T09:28:56.166534+00:00",
       "status": "critical",
@@ -15234,7 +17039,7 @@
       "source": "live"
     },
     {
-      "id": 112,
+      "id": 134,
       "target": "usgs",
       "checked_at": "2026-11-19T09:28:56.161127+00:00",
       "status": "healthy",
@@ -15369,7 +17174,7 @@
       "source": "live"
     },
     {
-      "id": 113,
+      "id": 135,
       "target": "rest-countries",
       "checked_at": "2026-11-19T09:28:56.157236+00:00",
       "status": "critical",
@@ -15408,7 +17213,7 @@
       "source": "live"
     },
     {
-      "id": 114,
+      "id": 136,
       "target": "pypi-django",
       "checked_at": "2026-11-19T09:28:56.151726+00:00",
       "status": "healthy",
@@ -15487,7 +17292,7 @@
       "source": "live"
     },
     {
-      "id": 115,
+      "id": 137,
       "target": "pokeapi",
       "checked_at": "2026-11-19T09:28:56.140129+00:00",
       "status": "healthy",
@@ -15601,7 +17406,7 @@
       "source": "live"
     },
     {
-      "id": 116,
+      "id": 138,
       "target": "own-pipeline",
       "checked_at": "2026-11-19T09:28:56.125217+00:00",
       "status": "healthy",
@@ -15728,7 +17533,7 @@
       "source": "live"
     },
     {
-      "id": 117,
+      "id": 139,
       "target": "open-trivia",
       "checked_at": "2026-11-19T09:28:56.122753+00:00",
       "status": "healthy",
@@ -15831,7 +17636,7 @@
       "source": "live"
     },
     {
-      "id": 118,
+      "id": 140,
       "target": "open-library",
       "checked_at": "2026-11-19T09:28:56.120391+00:00",
       "status": "healthy",
@@ -15926,7 +17731,7 @@
       "source": "live"
     },
     {
-      "id": 119,
+      "id": 141,
       "target": "npm-typescript",
       "checked_at": "2026-11-19T09:28:56.116600+00:00",
       "status": "healthy",
@@ -16005,7 +17810,7 @@
       "source": "live"
     },
     {
-      "id": 120,
+      "id": 142,
       "target": "nager-holidays",
       "checked_at": "2026-11-19T09:28:56.114157+00:00",
       "status": "healthy",
@@ -16092,7 +17897,7 @@
       "source": "live"
     },
     {
-      "id": 121,
+      "id": 143,
       "target": "mempool",
       "checked_at": "2026-11-19T09:28:56.111531+00:00",
       "status": "healthy",
@@ -16179,7 +17984,7 @@
       "source": "live"
     },
     {
-      "id": 122,
+      "id": 144,
       "target": "marine",
       "checked_at": "2026-11-19T09:28:56.108995+00:00",
       "status": "healthy",
@@ -16266,7 +18071,7 @@
       "source": "live"
     },
     {
-      "id": 123,
+      "id": 145,
       "target": "huggingface",
       "checked_at": "2026-11-19T09:28:56.106364+00:00",
       "status": "healthy",
@@ -16353,7 +18158,7 @@
       "source": "live"
     },
     {
-      "id": 124,
+      "id": 146,
       "target": "hacker-news",
       "checked_at": "2026-11-19T09:28:56.102585+00:00",
       "status": "healthy",
@@ -16432,7 +18237,7 @@
       "source": "live"
     },
     {
-      "id": 125,
+      "id": 147,
       "target": "github-catalog",
       "checked_at": "2026-11-19T09:28:56.099514+00:00",
       "status": "healthy",
@@ -16511,7 +18316,7 @@
       "source": "live"
     },
     {
-      "id": 126,
+      "id": 148,
       "target": "gbif",
       "checked_at": "2026-11-19T09:28:56.097093+00:00",
       "status": "healthy",
@@ -16598,7 +18403,7 @@
       "source": "live"
     },
     {
-      "id": 127,
+      "id": 149,
       "target": "frankfurter",
       "checked_at": "2026-11-19T09:28:56.094409+00:00",
       "status": "healthy",
@@ -16709,7 +18514,7 @@
       "source": "live"
     },
     {
-      "id": 128,
+      "id": 150,
       "target": "exchange-rates",
       "checked_at": "2026-11-19T09:28:56.091987+00:00",
       "status": "healthy",
@@ -16804,7 +18609,7 @@
       "source": "live"
     },
     {
-      "id": 129,
+      "id": 151,
       "target": "dog-ceo",
       "checked_at": "2026-11-19T09:28:56.089858+00:00",
       "status": "healthy",
@@ -16875,7 +18680,7 @@
       "source": "live"
     },
     {
-      "id": 130,
+      "id": 152,
       "target": "crossref",
       "checked_at": "2026-11-19T09:28:56.087214+00:00",
       "status": "healthy",
@@ -16978,7 +18783,7 @@
       "source": "live"
     },
     {
-      "id": 131,
+      "id": 153,
       "target": "coingecko",
       "checked_at": "2026-11-19T09:28:56.084653+00:00",
       "status": "healthy",
@@ -17073,7 +18878,7 @@
       "source": "live"
     },
     {
-      "id": 132,
+      "id": 154,
       "target": "air-quality",
       "checked_at": "2026-11-19T09:28:56.080002+00:00",
       "status": "healthy",
@@ -17176,7 +18981,7 @@
       "source": "live"
     },
     {
-      "id": 133,
+      "id": 155,
       "target": "weather",
       "checked_at": "2026-11-19T01:28:06.109273+00:00",
       "status": "warning",
@@ -17199,7 +19004,7 @@
       "source": "live"
     },
     {
-      "id": 134,
+      "id": 156,
       "target": "usgs",
       "checked_at": "2026-11-19T01:28:06.104709+00:00",
       "status": "healthy",
@@ -17334,7 +19139,7 @@
       "source": "live"
     },
     {
-      "id": 135,
+      "id": 157,
       "target": "rest-countries",
       "checked_at": "2026-11-19T01:28:06.101708+00:00",
       "status": "critical",
@@ -17373,7 +19178,7 @@
       "source": "live"
     },
     {
-      "id": 136,
+      "id": 158,
       "target": "pypi-django",
       "checked_at": "2026-11-19T01:28:06.097063+00:00",
       "status": "healthy",
@@ -17452,7 +19257,7 @@
       "source": "live"
     },
     {
-      "id": 137,
+      "id": 159,
       "target": "pokeapi",
       "checked_at": "2026-11-19T01:28:06.087681+00:00",
       "status": "healthy",
@@ -17566,7 +19371,7 @@
       "source": "live"
     },
     {
-      "id": 138,
+      "id": 160,
       "target": "own-pipeline",
       "checked_at": "2026-11-19T01:28:06.078136+00:00",
       "status": "healthy",
@@ -17693,7 +19498,7 @@
       "source": "live"
     },
     {
-      "id": 139,
+      "id": 161,
       "target": "open-trivia",
       "checked_at": "2026-11-19T01:28:06.076285+00:00",
       "status": "healthy",
@@ -17796,7 +19601,7 @@
       "source": "live"
     },
     {
-      "id": 140,
+      "id": 162,
       "target": "open-library",
       "checked_at": "2026-11-19T01:28:06.074475+00:00",
       "status": "healthy",
@@ -17891,7 +19696,7 @@
       "source": "live"
     },
     {
-      "id": 141,
+      "id": 163,
       "target": "npm-typescript",
       "checked_at": "2026-11-19T01:28:06.072107+00:00",
       "status": "healthy",
@@ -17970,7 +19775,7 @@
       "source": "live"
     },
     {
-      "id": 142,
+      "id": 164,
       "target": "nager-holidays",
       "checked_at": "2026-11-19T01:28:06.070355+00:00",
       "status": "healthy",
@@ -18057,7 +19862,7 @@
       "source": "live"
     },
     {
-      "id": 143,
+      "id": 165,
       "target": "mempool",
       "checked_at": "2026-11-19T01:28:06.068495+00:00",
       "status": "healthy",
@@ -18144,7 +19949,7 @@
       "source": "live"
     },
     {
-      "id": 144,
+      "id": 166,
       "target": "marine",
       "checked_at": "2026-11-19T01:28:06.066508+00:00",
       "status": "healthy",
@@ -18231,7 +20036,7 @@
       "source": "live"
     },
     {
-      "id": 145,
+      "id": 167,
       "target": "huggingface",
       "checked_at": "2026-11-19T01:28:06.064719+00:00",
       "status": "healthy",
@@ -18318,7 +20123,7 @@
       "source": "live"
     },
     {
-      "id": 146,
+      "id": 168,
       "target": "hacker-news",
       "checked_at": "2026-11-19T01:28:06.062005+00:00",
       "status": "healthy",
@@ -18397,7 +20202,7 @@
       "source": "live"
     },
     {
-      "id": 147,
+      "id": 169,
       "target": "github-catalog",
       "checked_at": "2026-11-19T01:28:06.059447+00:00",
       "status": "healthy",
@@ -18476,7 +20281,7 @@
       "source": "live"
     },
     {
-      "id": 148,
+      "id": 170,
       "target": "gbif",
       "checked_at": "2026-11-19T01:28:06.057524+00:00",
       "status": "healthy",
@@ -18563,7 +20368,7 @@
       "source": "live"
     },
     {
-      "id": 149,
+      "id": 171,
       "target": "frankfurter",
       "checked_at": "2026-11-19T01:28:06.055275+00:00",
       "status": "healthy",
@@ -18674,7 +20479,7 @@
       "source": "live"
     },
     {
-      "id": 150,
+      "id": 172,
       "target": "exchange-rates",
       "checked_at": "2026-11-19T01:28:06.051156+00:00",
       "status": "healthy",
@@ -18769,7 +20574,7 @@
       "source": "live"
     },
     {
-      "id": 151,
+      "id": 173,
       "target": "dog-ceo",
       "checked_at": "2026-11-19T01:28:06.049484+00:00",
       "status": "healthy",
@@ -18840,7 +20645,7 @@
       "source": "live"
     },
     {
-      "id": 152,
+      "id": 174,
       "target": "crossref",
       "checked_at": "2026-11-19T01:28:06.047359+00:00",
       "status": "healthy",
@@ -18943,7 +20748,7 @@
       "source": "live"
     },
     {
-      "id": 153,
+      "id": 175,
       "target": "coingecko",
       "checked_at": "2026-11-19T01:28:06.044700+00:00",
       "status": "healthy",
@@ -19038,7 +20843,7 @@
       "source": "live"
     },
     {
-      "id": 154,
+      "id": 176,
       "target": "air-quality",
       "checked_at": "2026-11-19T01:28:05.855980+00:00",
       "status": "healthy",
@@ -19141,7 +20946,7 @@
       "source": "live"
     },
     {
-      "id": 155,
+      "id": 177,
       "target": "weather",
       "checked_at": "2026-11-18T19:02:21.334669+00:00",
       "status": "healthy",
@@ -19276,7 +21081,7 @@
       "source": "live"
     },
     {
-      "id": 156,
+      "id": 178,
       "target": "usgs",
       "checked_at": "2026-11-18T19:02:21.331035+00:00",
       "status": "healthy",
@@ -19411,7 +21216,7 @@
       "source": "live"
     },
     {
-      "id": 157,
+      "id": 179,
       "target": "rest-countries",
       "checked_at": "2026-11-18T19:02:21.328503+00:00",
       "status": "critical",
@@ -19450,7 +21255,7 @@
       "source": "live"
     },
     {
-      "id": 158,
+      "id": 180,
       "target": "pypi-django",
       "checked_at": "2026-11-18T19:02:21.324387+00:00",
       "status": "healthy",
@@ -19529,7 +21334,7 @@
       "source": "live"
     },
     {
-      "id": 159,
+      "id": 181,
       "target": "pokeapi",
       "checked_at": "2026-11-18T19:02:21.316500+00:00",
       "status": "healthy",
@@ -19643,7 +21448,7 @@
       "source": "live"
     },
     {
-      "id": 160,
+      "id": 182,
       "target": "own-pipeline",
       "checked_at": "2026-11-18T19:02:21.266036+00:00",
       "status": "healthy",
@@ -19770,7 +21575,7 @@
       "source": "live"
     },
     {
-      "id": 161,
+      "id": 183,
       "target": "open-trivia",
       "checked_at": "2026-11-18T19:02:21.264498+00:00",
       "status": "healthy",
@@ -19873,7 +21678,7 @@
       "source": "live"
     },
     {
-      "id": 162,
+      "id": 184,
       "target": "open-library",
       "checked_at": "2026-11-18T19:02:21.262899+00:00",
       "status": "healthy",
@@ -19968,7 +21773,7 @@
       "source": "live"
     },
     {
-      "id": 163,
+      "id": 185,
       "target": "npm-typescript",
       "checked_at": "2026-11-18T19:02:21.261149+00:00",
       "status": "healthy",
@@ -20047,7 +21852,7 @@
       "source": "live"
     },
     {
-      "id": 164,
+      "id": 186,
       "target": "nager-holidays",
       "checked_at": "2026-11-18T19:02:21.259573+00:00",
       "status": "healthy",
@@ -20134,7 +21939,7 @@
       "source": "live"
     },
     {
-      "id": 165,
+      "id": 187,
       "target": "mempool",
       "checked_at": "2026-11-18T19:02:21.258231+00:00",
       "status": "healthy",
@@ -20221,7 +22026,7 @@
       "source": "live"
     },
     {
-      "id": 166,
+      "id": 188,
       "target": "marine",
       "checked_at": "2026-11-18T19:02:21.256625+00:00",
       "status": "healthy",
@@ -20308,7 +22113,7 @@
       "source": "live"
     },
     {
-      "id": 167,
+      "id": 189,
       "target": "huggingface",
       "checked_at": "2026-11-18T19:02:21.255195+00:00",
       "status": "healthy",
@@ -20395,7 +22200,7 @@
       "source": "live"
     },
     {
-      "id": 168,
+      "id": 190,
       "target": "hacker-news",
       "checked_at": "2026-11-18T19:02:21.252946+00:00",
       "status": "healthy",
@@ -20474,7 +22279,7 @@
       "source": "live"
     },
     {
-      "id": 169,
+      "id": 191,
       "target": "github-catalog",
       "checked_at": "2026-11-18T19:02:21.250638+00:00",
       "status": "warning",
@@ -20497,7 +22302,7 @@
       "source": "live"
     },
     {
-      "id": 170,
+      "id": 192,
       "target": "gbif",
       "checked_at": "2026-11-18T19:02:21.249032+00:00",
       "status": "healthy",
@@ -20584,7 +22389,7 @@
       "source": "live"
     },
     {
-      "id": 171,
+      "id": 193,
       "target": "frankfurter",
       "checked_at": "2026-11-18T19:02:21.247396+00:00",
       "status": "healthy",
@@ -20695,7 +22500,7 @@
       "source": "live"
     },
     {
-      "id": 172,
+      "id": 194,
       "target": "exchange-rates",
       "checked_at": "2026-11-18T19:02:21.245725+00:00",
       "status": "healthy",
@@ -20790,7 +22595,7 @@
       "source": "live"
     },
     {
-      "id": 173,
+      "id": 195,
       "target": "dog-ceo",
       "checked_at": "2026-11-18T19:02:21.244423+00:00",
       "status": "healthy",
@@ -20861,7 +22666,7 @@
       "source": "live"
     },
     {
-      "id": 174,
+      "id": 196,
       "target": "crossref",
       "checked_at": "2026-11-18T19:02:21.242756+00:00",
       "status": "healthy",
@@ -20964,7 +22769,7 @@
       "source": "live"
     },
     {
-      "id": 175,
+      "id": 197,
       "target": "coingecko",
       "checked_at": "2026-11-18T19:02:21.240925+00:00",
       "status": "healthy",
@@ -21059,7 +22864,7 @@
       "source": "live"
     },
     {
-      "id": 176,
+      "id": 198,
       "target": "air-quality",
       "checked_at": "2026-11-18T19:02:21.238181+00:00",
       "status": "healthy",
@@ -21162,7 +22967,7 @@
       "source": "live"
     },
     {
-      "id": 177,
+      "id": 199,
       "target": "weather",
       "checked_at": "2026-11-18T10:40:16.305949+00:00",
       "status": "critical",
@@ -21185,7 +22990,7 @@
       "source": "live"
     },
     {
-      "id": 178,
+      "id": 200,
       "target": "usgs",
       "checked_at": "2026-11-18T10:40:16.302520+00:00",
       "status": "healthy",
@@ -21320,7 +23125,7 @@
       "source": "live"
     },
     {
-      "id": 179,
+      "id": 201,
       "target": "rest-countries",
       "checked_at": "2026-11-18T10:40:16.299877+00:00",
       "status": "critical",
@@ -21359,7 +23164,7 @@
       "source": "live"
     },
     {
-      "id": 180,
+      "id": 202,
       "target": "pypi-django",
       "checked_at": "2026-11-18T10:40:16.296379+00:00",
       "status": "healthy",
@@ -21438,7 +23243,7 @@
       "source": "live"
     },
     {
-      "id": 181,
+      "id": 203,
       "target": "pokeapi",
       "checked_at": "2026-11-18T10:40:16.289746+00:00",
       "status": "healthy",
@@ -21552,7 +23357,7 @@
       "source": "live"
     },
     {
-      "id": 182,
+      "id": 204,
       "target": "own-pipeline",
       "checked_at": "2026-11-18T10:40:16.273662+00:00",
       "status": "healthy",
@@ -21679,7 +23484,7 @@
       "source": "live"
     },
     {
-      "id": 183,
+      "id": 205,
       "target": "open-trivia",
       "checked_at": "2026-11-18T10:40:16.271950+00:00",
       "status": "healthy",
@@ -21782,7 +23587,7 @@
       "source": "live"
     },
     {
-      "id": 184,
+      "id": 206,
       "target": "open-library",
       "checked_at": "2026-11-18T10:40:16.270337+00:00",
       "status": "healthy",
@@ -21877,7 +23682,7 @@
       "source": "live"
     },
     {
-      "id": 185,
+      "id": 207,
       "target": "npm-typescript",
       "checked_at": "2026-11-18T10:40:16.268176+00:00",
       "status": "healthy",
@@ -21956,7 +23761,7 @@
       "source": "live"
     },
     {
-      "id": 186,
+      "id": 208,
       "target": "nager-holidays",
       "checked_at": "2026-11-18T10:40:16.266555+00:00",
       "status": "healthy",
@@ -22043,7 +23848,7 @@
       "source": "live"
     },
     {
-      "id": 187,
+      "id": 209,
       "target": "mempool",
       "checked_at": "2026-11-18T10:40:16.264912+00:00",
       "status": "healthy",
@@ -22130,7 +23935,7 @@
       "source": "live"
     },
     {
-      "id": 188,
+      "id": 210,
       "target": "marine",
       "checked_at": "2026-11-18T10:40:16.263352+00:00",
       "status": "healthy",
@@ -22217,7 +24022,7 @@
       "source": "live"
     },
     {
-      "id": 189,
+      "id": 211,
       "target": "huggingface",
       "checked_at": "2026-11-18T10:40:16.261689+00:00",
       "status": "healthy",
@@ -22304,7 +24109,7 @@
       "source": "live"
     },
     {
-      "id": 190,
+      "id": 212,
       "target": "hacker-news",
       "checked_at": "2026-11-18T10:40:16.259380+00:00",
       "status": "healthy",
@@ -22383,7 +24188,7 @@
       "source": "live"
     },
     {
-      "id": 191,
+      "id": 213,
       "target": "github-catalog",
       "checked_at": "2026-11-18T10:40:16.257216+00:00",
       "status": "healthy",
@@ -22462,7 +24267,7 @@
       "source": "live"
     },
     {
-      "id": 192,
+      "id": 214,
       "target": "gbif",
       "checked_at": "2026-11-18T10:40:16.255567+00:00",
       "status": "healthy",
@@ -22549,7 +24354,7 @@
       "source": "live"
     },
     {
-      "id": 193,
+      "id": 215,
       "target": "frankfurter",
       "checked_at": "2026-11-18T10:40:16.253612+00:00",
       "status": "healthy",
@@ -22660,7 +24465,7 @@
       "source": "live"
     },
     {
-      "id": 194,
+      "id": 216,
       "target": "exchange-rates",
       "checked_at": "2026-11-18T10:40:16.251846+00:00",
       "status": "healthy",
@@ -22755,7 +24560,7 @@
       "source": "live"
     },
     {
-      "id": 195,
+      "id": 217,
       "target": "dog-ceo",
       "checked_at": "2026-11-18T10:40:16.250287+00:00",
       "status": "healthy",
@@ -22826,7 +24631,7 @@
       "source": "live"
     },
     {
-      "id": 196,
+      "id": 218,
       "target": "crossref",
       "checked_at": "2026-11-18T10:40:16.248365+00:00",
       "status": "healthy",
@@ -22929,7 +24734,7 @@
       "source": "live"
     },
     {
-      "id": 197,
+      "id": 219,
       "target": "coingecko",
       "checked_at": "2026-11-18T10:40:16.246321+00:00",
       "status": "healthy",
@@ -23024,7 +24829,7 @@
       "source": "live"
     },
     {
-      "id": 198,
+      "id": 220,
       "target": "air-quality",
       "checked_at": "2026-11-18T10:40:16.243304+00:00",
       "status": "healthy",
@@ -23127,7 +24932,7 @@
       "source": "live"
     },
     {
-      "id": 199,
+      "id": 221,
       "target": "weather",
       "checked_at": "2026-11-18T08:56:54.366276+00:00",
       "status": "warning",
@@ -23150,7 +24955,7 @@
       "source": "live"
     },
     {
-      "id": 200,
+      "id": 222,
       "target": "usgs",
       "checked_at": "2026-11-18T08:56:54.362734+00:00",
       "status": "healthy",
@@ -23285,7 +25090,7 @@
       "source": "live"
     },
     {
-      "id": 201,
+      "id": 223,
       "target": "rest-countries",
       "checked_at": "2026-11-18T08:56:54.360060+00:00",
       "status": "critical",
@@ -23324,7 +25129,7 @@
       "source": "live"
     },
     {
-      "id": 202,
+      "id": 224,
       "target": "pypi-django",
       "checked_at": "2026-11-18T08:56:54.356520+00:00",
       "status": "healthy",
@@ -23403,7 +25208,7 @@
       "source": "live"
     },
     {
-      "id": 203,
+      "id": 225,
       "target": "pokeapi",
       "checked_at": "2026-11-18T08:56:54.349673+00:00",
       "status": "healthy",
@@ -23517,7 +25322,7 @@
       "source": "live"
     },
     {
-      "id": 204,
+      "id": 226,
       "target": "own-pipeline",
       "checked_at": "2026-11-18T08:56:54.341866+00:00",
       "status": "healthy",
@@ -23644,7 +25449,7 @@
       "source": "live"
     },
     {
-      "id": 205,
+      "id": 227,
       "target": "open-trivia",
       "checked_at": "2026-11-18T08:56:54.339884+00:00",
       "status": "healthy",
@@ -23747,7 +25552,7 @@
       "source": "live"
     },
     {
-      "id": 206,
+      "id": 228,
       "target": "open-library",
       "checked_at": "2026-11-18T08:56:54.338181+00:00",
       "status": "healthy",
@@ -23842,7 +25647,7 @@
       "source": "live"
     },
     {
-      "id": 207,
+      "id": 229,
       "target": "npm-typescript",
       "checked_at": "2026-11-18T08:56:54.335497+00:00",
       "status": "healthy",
@@ -23921,7 +25726,7 @@
       "source": "live"
     },
     {
-      "id": 208,
+      "id": 230,
       "target": "nager-holidays",
       "checked_at": "2026-11-18T08:56:54.333922+00:00",
       "status": "healthy",
@@ -24008,7 +25813,7 @@
       "source": "live"
     },
     {
-      "id": 209,
+      "id": 231,
       "target": "mempool",
       "checked_at": "2026-11-18T08:56:54.332119+00:00",
       "status": "healthy",
@@ -24095,7 +25900,7 @@
       "source": "live"
     },
     {
-      "id": 210,
+      "id": 232,
       "target": "marine",
       "checked_at": "2026-11-18T08:56:54.329984+00:00",
       "status": "healthy",
@@ -24182,7 +25987,7 @@
       "source": "live"
     },
     {
-      "id": 211,
+      "id": 233,
       "target": "huggingface",
       "checked_at": "2026-11-18T08:56:54.328048+00:00",
       "status": "healthy",
@@ -24269,7 +26074,7 @@
       "source": "live"
     },
     {
-      "id": 212,
+      "id": 234,
       "target": "hacker-news",
       "checked_at": "2026-11-18T08:56:54.325758+00:00",
       "status": "healthy",
@@ -24348,7 +26153,7 @@
       "source": "live"
     },
     {
-      "id": 213,
+      "id": 235,
       "target": "github-catalog",
       "checked_at": "2026-11-18T08:56:54.323599+00:00",
       "status": "healthy",
@@ -24427,7 +26232,7 @@
       "source": "live"
     },
     {
-      "id": 214,
+      "id": 236,
       "target": "gbif",
       "checked_at": "2026-11-18T08:56:54.321800+00:00",
       "status": "healthy",
@@ -24514,7 +26319,7 @@
       "source": "live"
     },
     {
-      "id": 215,
+      "id": 237,
       "target": "frankfurter",
       "checked_at": "2026-11-18T08:56:54.319445+00:00",
       "status": "healthy",
@@ -24625,7 +26430,7 @@
       "source": "live"
     },
     {
-      "id": 216,
+      "id": 238,
       "target": "exchange-rates",
       "checked_at": "2026-11-18T08:56:54.314271+00:00",
       "status": "healthy",
@@ -24720,7 +26525,7 @@
       "source": "live"
     },
     {
-      "id": 217,
+      "id": 239,
       "target": "dog-ceo",
       "checked_at": "2026-11-18T08:56:54.311003+00:00",
       "status": "healthy",
@@ -24791,7 +26596,7 @@
       "source": "live"
     },
     {
-      "id": 218,
+      "id": 240,
       "target": "crossref",
       "checked_at": "2026-11-18T08:56:54.308977+00:00",
       "status": "healthy",
@@ -24894,7 +26699,7 @@
       "source": "live"
     },
     {
-      "id": 219,
+      "id": 241,
       "target": "coingecko",
       "checked_at": "2026-11-18T08:56:54.306890+00:00",
       "status": "healthy",
@@ -24989,7 +26794,7 @@
       "source": "live"
     },
     {
-      "id": 220,
+      "id": 242,
       "target": "air-quality",
       "checked_at": "2026-11-18T08:56:54.302989+00:00",
       "status": "healthy",
@@ -25092,7 +26897,7 @@
       "source": "live"
     },
     {
-      "id": 221,
+      "id": 243,
       "target": "weather",
       "checked_at": "2026-11-18T05:05:47.573100+00:00",
       "status": "healthy",
@@ -25227,7 +27032,7 @@
       "source": "live"
     },
     {
-      "id": 222,
+      "id": 244,
       "target": "usgs",
       "checked_at": "2026-11-18T05:05:47.569114+00:00",
       "status": "healthy",
@@ -25362,7 +27167,7 @@
       "source": "live"
     },
     {
-      "id": 223,
+      "id": 245,
       "target": "rest-countries",
       "checked_at": "2026-11-18T05:05:47.566371+00:00",
       "status": "critical",
@@ -25401,7 +27206,7 @@
       "source": "live"
     },
     {
-      "id": 224,
+      "id": 246,
       "target": "pypi-django",
       "checked_at": "2026-11-18T05:05:47.562485+00:00",
       "status": "healthy",
@@ -25480,7 +27285,7 @@
       "source": "live"
     },
     {
-      "id": 225,
+      "id": 247,
       "target": "pokeapi",
       "checked_at": "2026-11-18T05:05:47.539312+00:00",
       "status": "healthy",
@@ -25594,7 +27399,7 @@
       "source": "live"
     },
     {
-      "id": 226,
+      "id": 248,
       "target": "own-pipeline",
       "checked_at": "2026-11-18T05:05:47.522268+00:00",
       "status": "healthy",
@@ -25721,7 +27526,7 @@
       "source": "live"
     },
     {
-      "id": 227,
+      "id": 249,
       "target": "open-trivia",
       "checked_at": "2026-11-18T05:05:47.520369+00:00",
       "status": "healthy",
@@ -25824,7 +27629,7 @@
       "source": "live"
     },
     {
-      "id": 228,
+      "id": 250,
       "target": "open-library",
       "checked_at": "2026-11-18T05:05:47.517985+00:00",
       "status": "warning",
@@ -25919,7 +27724,7 @@
       "source": "live"
     },
     {
-      "id": 229,
+      "id": 251,
       "target": "npm-typescript",
       "checked_at": "2026-11-18T05:05:47.515778+00:00",
       "status": "healthy",
@@ -25998,7 +27803,7 @@
       "source": "live"
     },
     {
-      "id": 230,
+      "id": 252,
       "target": "nager-holidays",
       "checked_at": "2026-11-18T05:05:47.514006+00:00",
       "status": "healthy",
@@ -26085,7 +27890,7 @@
       "source": "live"
     },
     {
-      "id": 231,
+      "id": 253,
       "target": "mempool",
       "checked_at": "2026-11-18T05:05:47.512169+00:00",
       "status": "healthy",
@@ -26172,7 +27977,7 @@
       "source": "live"
     },
     {
-      "id": 232,
+      "id": 254,
       "target": "marine",
       "checked_at": "2026-11-18T05:05:47.510437+00:00",
       "status": "healthy",
@@ -26259,7 +28064,7 @@
       "source": "live"
     },
     {
-      "id": 233,
+      "id": 255,
       "target": "huggingface",
       "checked_at": "2026-11-18T05:05:47.508612+00:00",
       "status": "healthy",
@@ -26346,7 +28151,7 @@
       "source": "live"
     },
     {
-      "id": 234,
+      "id": 256,
       "target": "hacker-news",
       "checked_at": "2026-11-18T05:05:47.506190+00:00",
       "status": "healthy",
@@ -26425,7 +28230,7 @@
       "source": "live"
     },
     {
-      "id": 235,
+      "id": 257,
       "target": "github-catalog",
       "checked_at": "2026-11-18T05:05:47.503659+00:00",
       "status": "healthy",
@@ -26504,7 +28309,7 @@
       "source": "live"
     },
     {
-      "id": 236,
+      "id": 258,
       "target": "gbif",
       "checked_at": "2026-11-18T05:05:47.501732+00:00",
       "status": "healthy",
@@ -26591,7 +28396,7 @@
       "source": "live"
     },
     {
-      "id": 237,
+      "id": 259,
       "target": "frankfurter",
       "checked_at": "2026-11-18T05:05:47.499821+00:00",
       "status": "healthy",
@@ -26702,7 +28507,7 @@
       "source": "live"
     },
     {
-      "id": 238,
+      "id": 260,
       "target": "exchange-rates",
       "checked_at": "2026-11-18T05:05:47.497308+00:00",
       "status": "healthy",
@@ -26797,7 +28602,7 @@
       "source": "live"
     },
     {
-      "id": 239,
+      "id": 261,
       "target": "dog-ceo",
       "checked_at": "2026-11-18T05:05:47.495773+00:00",
       "status": "healthy",
@@ -26868,7 +28673,7 @@
       "source": "live"
     },
     {
-      "id": 240,
+      "id": 262,
       "target": "crossref",
       "checked_at": "2026-11-18T05:05:47.493769+00:00",
       "status": "healthy",
@@ -26971,7 +28776,7 @@
       "source": "live"
     },
     {
-      "id": 241,
+      "id": 263,
       "target": "coingecko",
       "checked_at": "2026-11-18T05:05:47.491764+00:00",
       "status": "healthy",
@@ -27066,7 +28871,7 @@
       "source": "live"
     },
     {
-      "id": 242,
+      "id": 264,
       "target": "air-quality",
       "checked_at": "2026-11-18T05:05:47.488648+00:00",
       "status": "healthy",
@@ -27169,7 +28974,7 @@
       "source": "live"
     },
     {
-      "id": 243,
+      "id": 265,
       "target": "weather",
       "checked_at": "2026-11-18T01:51:33.509246+00:00",
       "status": "warning",
@@ -27192,7 +28997,7 @@
       "source": "live"
     },
     {
-      "id": 244,
+      "id": 266,
       "target": "usgs",
       "checked_at": "2026-11-18T01:51:33.497821+00:00",
       "status": "healthy",
@@ -27327,7 +29132,7 @@
       "source": "live"
     },
     {
-      "id": 245,
+      "id": 267,
       "target": "rest-countries",
       "checked_at": "2026-11-18T01:51:33.494332+00:00",
       "status": "critical",
@@ -27366,7 +29171,7 @@
       "source": "live"
     },
     {
-      "id": 246,
+      "id": 268,
       "target": "pypi-django",
       "checked_at": "2026-11-18T01:51:33.489755+00:00",
       "status": "healthy",
@@ -27445,7 +29250,7 @@
       "source": "live"
     },
     {
-      "id": 247,
+      "id": 269,
       "target": "pokeapi",
       "checked_at": "2026-11-18T01:51:33.470567+00:00",
       "status": "healthy",
@@ -27559,7 +29364,7 @@
       "source": "live"
     },
     {
-      "id": 248,
+      "id": 270,
       "target": "own-pipeline",
       "checked_at": "2026-11-18T01:51:33.444858+00:00",
       "status": "healthy",
@@ -27686,7 +29491,7 @@
       "source": "live"
     },
     {
-      "id": 249,
+      "id": 271,
       "target": "open-trivia",
       "checked_at": "2026-11-18T01:51:33.442985+00:00",
       "status": "healthy",
@@ -27789,7 +29594,7 @@
       "source": "live"
     },
     {
-      "id": 250,
+      "id": 272,
       "target": "open-library",
       "checked_at": "2026-11-18T01:51:33.440941+00:00",
       "status": "healthy",
@@ -27884,7 +29689,7 @@
       "source": "live"
     },
     {
-      "id": 251,
+      "id": 273,
       "target": "npm-typescript",
       "checked_at": "2026-11-18T01:51:33.438697+00:00",
       "status": "healthy",
@@ -27963,7 +29768,7 @@
       "source": "live"
     },
     {
-      "id": 252,
+      "id": 274,
       "target": "nager-holidays",
       "checked_at": "2026-11-18T01:51:33.436624+00:00",
       "status": "healthy",
@@ -28050,7 +29855,7 @@
       "source": "live"
     },
     {
-      "id": 253,
+      "id": 275,
       "target": "mempool",
       "checked_at": "2026-11-18T01:51:33.434874+00:00",
       "status": "healthy",
@@ -28137,7 +29942,7 @@
       "source": "live"
     },
     {
-      "id": 254,
+      "id": 276,
       "target": "marine",
       "checked_at": "2026-11-18T01:51:33.433022+00:00",
       "status": "healthy",
@@ -28224,7 +30029,7 @@
       "source": "live"
     },
     {
-      "id": 255,
+      "id": 277,
       "target": "huggingface",
       "checked_at": "2026-11-18T01:51:33.431294+00:00",
       "status": "healthy",
@@ -28311,7 +30116,7 @@
       "source": "live"
     },
     {
-      "id": 256,
+      "id": 278,
       "target": "hacker-news",
       "checked_at": "2026-11-18T01:51:33.428507+00:00",
       "status": "healthy",
@@ -28390,7 +30195,7 @@
       "source": "live"
     },
     {
-      "id": 257,
+      "id": 279,
       "target": "github-catalog",
       "checked_at": "2026-11-18T01:51:33.425651+00:00",
       "status": "warning",
@@ -28413,7 +30218,7 @@
       "source": "live"
     },
     {
-      "id": 258,
+      "id": 280,
       "target": "gbif",
       "checked_at": "2026-11-18T01:51:33.423665+00:00",
       "status": "healthy",
@@ -28500,7 +30305,7 @@
       "source": "live"
     },
     {
-      "id": 259,
+      "id": 281,
       "target": "frankfurter",
       "checked_at": "2026-11-18T01:51:33.421597+00:00",
       "status": "healthy",
@@ -28611,7 +30416,7 @@
       "source": "live"
     },
     {
-      "id": 260,
+      "id": 282,
       "target": "exchange-rates",
       "checked_at": "2026-11-18T01:51:33.419443+00:00",
       "status": "healthy",
@@ -28706,7 +30511,7 @@
       "source": "live"
     },
     {
-      "id": 261,
+      "id": 283,
       "target": "dog-ceo",
       "checked_at": "2026-11-18T01:51:33.415831+00:00",
       "status": "healthy",
@@ -28777,7 +30582,7 @@
       "source": "live"
     },
     {
-      "id": 262,
+      "id": 284,
       "target": "crossref",
       "checked_at": "2026-11-18T01:51:33.412075+00:00",
       "status": "healthy",
@@ -28880,7 +30685,7 @@
       "source": "live"
     },
     {
-      "id": 263,
+      "id": 285,
       "target": "coingecko",
       "checked_at": "2026-11-18T01:51:33.406797+00:00",
       "status": "healthy",
@@ -28975,7 +30780,7 @@
       "source": "live"
     },
     {
-      "id": 264,
+      "id": 286,
       "target": "air-quality",
       "checked_at": "2026-11-18T01:51:33.399005+00:00",
       "status": "healthy",
@@ -29078,7 +30883,7 @@
       "source": "live"
     },
     {
-      "id": 265,
+      "id": 287,
       "target": "weather",
       "checked_at": "2026-11-17T18:45:09.194599+00:00",
       "status": "healthy",
@@ -29213,7 +31018,7 @@
       "source": "live"
     },
     {
-      "id": 266,
+      "id": 288,
       "target": "usgs",
       "checked_at": "2026-11-17T18:45:09.189188+00:00",
       "status": "healthy",
@@ -29348,7 +31153,7 @@
       "source": "live"
     },
     {
-      "id": 267,
+      "id": 289,
       "target": "rest-countries",
       "checked_at": "2026-11-17T18:45:09.185721+00:00",
       "status": "critical",
@@ -29387,7 +31192,7 @@
       "source": "live"
     },
     {
-      "id": 268,
+      "id": 290,
       "target": "pypi-django",
       "checked_at": "2026-11-17T18:45:09.180362+00:00",
       "status": "healthy",
@@ -29466,7 +31271,7 @@
       "source": "live"
     },
     {
-      "id": 269,
+      "id": 291,
       "target": "pokeapi",
       "checked_at": "2026-11-17T18:45:09.169058+00:00",
       "status": "healthy",
@@ -29580,7 +31385,7 @@
       "source": "live"
     },
     {
-      "id": 270,
+      "id": 292,
       "target": "own-pipeline",
       "checked_at": "2026-11-17T18:45:09.157895+00:00",
       "status": "healthy",
@@ -29707,7 +31512,7 @@
       "source": "live"
     },
     {
-      "id": 271,
+      "id": 293,
       "target": "open-trivia",
       "checked_at": "2026-11-17T18:45:09.155847+00:00",
       "status": "healthy",
@@ -29810,7 +31615,7 @@
       "source": "live"
     },
     {
-      "id": 272,
+      "id": 294,
       "target": "open-library",
       "checked_at": "2026-11-17T18:45:09.152891+00:00",
       "status": "warning",
@@ -29833,7 +31638,7 @@
       "source": "live"
     },
     {
-      "id": 273,
+      "id": 295,
       "target": "npm-typescript",
       "checked_at": "2026-11-17T18:45:09.149671+00:00",
       "status": "healthy",
@@ -29912,7 +31717,7 @@
       "source": "live"
     },
     {
-      "id": 274,
+      "id": 296,
       "target": "nager-holidays",
       "checked_at": "2026-11-17T18:45:09.147498+00:00",
       "status": "healthy",
@@ -29999,7 +31804,7 @@
       "source": "live"
     },
     {
-      "id": 275,
+      "id": 297,
       "target": "mempool",
       "checked_at": "2026-11-17T18:45:09.145209+00:00",
       "status": "healthy",
@@ -30086,7 +31891,7 @@
       "source": "live"
     },
     {
-      "id": 276,
+      "id": 298,
       "target": "marine",
       "checked_at": "2026-11-17T18:45:09.143145+00:00",
       "status": "healthy",
@@ -30173,7 +31978,7 @@
       "source": "live"
     },
     {
-      "id": 277,
+      "id": 299,
       "target": "huggingface",
       "checked_at": "2026-11-17T18:45:09.140803+00:00",
       "status": "healthy",
@@ -30260,7 +32065,7 @@
       "source": "live"
     },
     {
-      "id": 278,
+      "id": 300,
       "target": "hacker-news",
       "checked_at": "2026-11-17T18:45:09.137440+00:00",
       "status": "healthy",
@@ -30339,7 +32144,7 @@
       "source": "live"
     },
     {
-      "id": 279,
+      "id": 301,
       "target": "github-catalog",
       "checked_at": "2026-11-17T18:45:09.134563+00:00",
       "status": "healthy",
@@ -30418,7 +32223,7 @@
       "source": "live"
     },
     {
-      "id": 280,
+      "id": 302,
       "target": "gbif",
       "checked_at": "2026-11-17T18:45:09.132208+00:00",
       "status": "healthy",
@@ -30505,7 +32310,7 @@
       "source": "live"
     },
     {
-      "id": 281,
+      "id": 303,
       "target": "frankfurter",
       "checked_at": "2026-11-17T18:45:09.129790+00:00",
       "status": "healthy",
@@ -30616,7 +32421,7 @@
       "source": "live"
     },
     {
-      "id": 282,
+      "id": 304,
       "target": "exchange-rates",
       "checked_at": "2026-11-17T18:45:09.127402+00:00",
       "status": "healthy",
@@ -30711,7 +32516,7 @@
       "source": "live"
     },
     {
-      "id": 283,
+      "id": 305,
       "target": "dog-ceo",
       "checked_at": "2026-11-17T18:45:09.125382+00:00",
       "status": "healthy",
@@ -30782,7 +32587,7 @@
       "source": "live"
     },
     {
-      "id": 284,
+      "id": 306,
       "target": "crossref",
       "checked_at": "2026-11-17T18:45:09.122782+00:00",
       "status": "healthy",
@@ -30885,7 +32690,7 @@
       "source": "live"
     },
     {
-      "id": 285,
+      "id": 307,
       "target": "coingecko",
       "checked_at": "2026-11-17T18:45:09.120288+00:00",
       "status": "healthy",
@@ -30980,7 +32785,7 @@
       "source": "live"
     },
     {
-      "id": 286,
+      "id": 308,
       "target": "air-quality",
       "checked_at": "2026-11-17T18:45:09.116891+00:00",
       "status": "healthy",
@@ -31083,7 +32888,7 @@
       "source": "live"
     },
     {
-      "id": 287,
+      "id": 309,
       "target": "weather",
       "checked_at": "2026-11-17T09:43:02.893395+00:00",
       "status": "healthy",
@@ -31218,7 +33023,7 @@
       "source": "live"
     },
     {
-      "id": 288,
+      "id": 310,
       "target": "usgs",
       "checked_at": "2026-11-17T09:43:02.889488+00:00",
       "status": "healthy",
@@ -31353,7 +33158,7 @@
       "source": "live"
     },
     {
-      "id": 289,
+      "id": 311,
       "target": "rest-countries",
       "checked_at": "2026-11-17T09:43:02.886617+00:00",
       "status": "critical",
@@ -31392,7 +33197,7 @@
       "source": "live"
     },
     {
-      "id": 290,
+      "id": 312,
       "target": "pypi-django",
       "checked_at": "2026-11-17T09:43:02.882230+00:00",
       "status": "healthy",
@@ -31471,7 +33276,7 @@
       "source": "live"
     },
     {
-      "id": 291,
+      "id": 313,
       "target": "pokeapi",
       "checked_at": "2026-11-17T09:43:02.874007+00:00",
       "status": "healthy",
@@ -31574,7 +33379,7 @@
       "source": "live"
     },
     {
-      "id": 292,
+      "id": 314,
       "target": "own-pipeline",
       "checked_at": "2026-11-17T09:43:02.864723+00:00",
       "status": "healthy",
@@ -31701,7 +33506,7 @@
       "source": "live"
     },
     {
-      "id": 293,
+      "id": 315,
       "target": "open-trivia",
       "checked_at": "2026-11-17T09:43:02.862900+00:00",
       "status": "healthy",
@@ -31804,7 +33609,7 @@
       "source": "live"
     },
     {
-      "id": 294,
+      "id": 316,
       "target": "open-library",
       "checked_at": "2026-11-17T09:43:02.861157+00:00",
       "status": "healthy",
@@ -31899,7 +33704,7 @@
       "source": "live"
     },
     {
-      "id": 295,
+      "id": 317,
       "target": "npm-typescript",
       "checked_at": "2026-11-17T09:43:02.858833+00:00",
       "status": "healthy",
@@ -31978,7 +33783,7 @@
       "source": "live"
     },
     {
-      "id": 296,
+      "id": 318,
       "target": "nager-holidays",
       "checked_at": "2026-11-17T09:43:02.857059+00:00",
       "status": "healthy",
@@ -32065,7 +33870,7 @@
       "source": "live"
     },
     {
-      "id": 297,
+      "id": 319,
       "target": "mempool",
       "checked_at": "2026-11-17T09:43:02.855127+00:00",
       "status": "healthy",
@@ -32152,7 +33957,7 @@
       "source": "live"
     },
     {
-      "id": 298,
+      "id": 320,
       "target": "marine",
       "checked_at": "2026-11-17T09:43:02.853344+00:00",
       "status": "healthy",
@@ -32239,7 +34044,7 @@
       "source": "live"
     },
     {
-      "id": 299,
+      "id": 321,
       "target": "huggingface",
       "checked_at": "2026-11-17T09:43:02.851436+00:00",
       "status": "healthy",
@@ -32326,7 +34131,7 @@
       "source": "live"
     },
     {
-      "id": 300,
+      "id": 322,
       "target": "hacker-news",
       "checked_at": "2026-11-17T09:43:02.848664+00:00",
       "status": "healthy",
@@ -32405,7 +34210,7 @@
       "source": "live"
     },
     {
-      "id": 301,
+      "id": 323,
       "target": "github-catalog",
       "checked_at": "2026-11-17T09:43:02.846396+00:00",
       "status": "healthy",
@@ -32484,7 +34289,7 @@
       "source": "live"
     },
     {
-      "id": 302,
+      "id": 324,
       "target": "gbif",
       "checked_at": "2026-11-17T09:43:02.844525+00:00",
       "status": "healthy",
@@ -32571,7 +34376,7 @@
       "source": "live"
     },
     {
-      "id": 303,
+      "id": 325,
       "target": "frankfurter",
       "checked_at": "2026-11-17T09:43:02.842539+00:00",
       "status": "healthy",
@@ -32682,7 +34487,7 @@
       "source": "live"
     },
     {
-      "id": 304,
+      "id": 326,
       "target": "exchange-rates",
       "checked_at": "2026-11-17T09:43:02.840614+00:00",
       "status": "healthy",
@@ -32777,7 +34582,7 @@
       "source": "live"
     },
     {
-      "id": 305,
+      "id": 327,
       "target": "dog-ceo",
       "checked_at": "2026-11-17T09:43:02.838965+00:00",
       "status": "healthy",
@@ -32848,7 +34653,7 @@
       "source": "live"
     },
     {
-      "id": 306,
+      "id": 328,
       "target": "crossref",
       "checked_at": "2026-11-17T09:43:02.836851+00:00",
       "status": "healthy",
@@ -32951,7 +34756,7 @@
       "source": "live"
     },
     {
-      "id": 307,
+      "id": 329,
       "target": "coingecko",
       "checked_at": "2026-11-17T09:43:02.834567+00:00",
       "status": "healthy",
@@ -33046,7 +34851,7 @@
       "source": "live"
     },
     {
-      "id": 308,
+      "id": 330,
       "target": "air-quality",
       "checked_at": "2026-11-17T09:43:02.831539+00:00",
       "status": "healthy",
@@ -33149,7 +34954,7 @@
       "source": "live"
     },
     {
-      "id": 309,
+      "id": 331,
       "target": "weather",
       "checked_at": "2026-11-17T01:19:28.750394+00:00",
       "status": "healthy",
@@ -33284,7 +35089,7 @@
       "source": "live"
     },
     {
-      "id": 310,
+      "id": 332,
       "target": "usgs",
       "checked_at": "2026-11-17T01:19:28.745163+00:00",
       "status": "healthy",
@@ -33419,7 +35224,7 @@
       "source": "live"
     },
     {
-      "id": 311,
+      "id": 333,
       "target": "rest-countries",
       "checked_at": "2026-11-17T01:19:28.741744+00:00",
       "status": "critical",
@@ -33458,7 +35263,7 @@
       "source": "live"
     },
     {
-      "id": 312,
+      "id": 334,
       "target": "pypi-django",
       "checked_at": "2026-11-17T01:19:28.736232+00:00",
       "status": "healthy",
@@ -33537,7 +35342,7 @@
       "source": "live"
     },
     {
-      "id": 313,
+      "id": 335,
       "target": "pokeapi",
       "checked_at": "2026-11-17T01:19:28.726092+00:00",
       "status": "healthy",
@@ -33640,7 +35445,7 @@
       "source": "live"
     },
     {
-      "id": 314,
+      "id": 336,
       "target": "own-pipeline",
       "checked_at": "2026-11-17T01:19:28.704854+00:00",
       "status": "healthy",
@@ -33767,7 +35572,7 @@
       "source": "live"
     },
     {
-      "id": 315,
+      "id": 337,
       "target": "open-trivia",
       "checked_at": "2026-11-17T01:19:28.702572+00:00",
       "status": "healthy",
@@ -33870,7 +35675,7 @@
       "source": "live"
     },
     {
-      "id": 316,
+      "id": 338,
       "target": "open-library",
       "checked_at": "2026-11-17T01:19:28.700551+00:00",
       "status": "healthy",
@@ -33965,7 +35770,7 @@
       "source": "live"
     },
     {
-      "id": 317,
+      "id": 339,
       "target": "npm-typescript",
       "checked_at": "2026-11-17T01:19:28.697732+00:00",
       "status": "healthy",
@@ -34044,7 +35849,7 @@
       "source": "live"
     },
     {
-      "id": 318,
+      "id": 340,
       "target": "nager-holidays",
       "checked_at": "2026-11-17T01:19:28.695781+00:00",
       "status": "healthy",
@@ -34131,7 +35936,7 @@
       "source": "live"
     },
     {
-      "id": 319,
+      "id": 341,
       "target": "mempool",
       "checked_at": "2026-11-17T01:19:28.693663+00:00",
       "status": "healthy",
@@ -34218,7 +36023,7 @@
       "source": "live"
     },
     {
-      "id": 320,
+      "id": 342,
       "target": "marine",
       "checked_at": "2026-11-17T01:19:28.691653+00:00",
       "status": "healthy",
@@ -34305,7 +36110,7 @@
       "source": "live"
     },
     {
-      "id": 321,
+      "id": 343,
       "target": "huggingface",
       "checked_at": "2026-11-17T01:19:28.689476+00:00",
       "status": "healthy",
@@ -34392,7 +36197,7 @@
       "source": "live"
     },
     {
-      "id": 322,
+      "id": 344,
       "target": "hacker-news",
       "checked_at": "2026-11-17T01:19:28.686046+00:00",
       "status": "healthy",
@@ -34471,7 +36276,7 @@
       "source": "live"
     },
     {
-      "id": 323,
+      "id": 345,
       "target": "github-catalog",
       "checked_at": "2026-11-17T01:19:28.683071+00:00",
       "status": "healthy",
@@ -34550,7 +36355,7 @@
       "source": "live"
     },
     {
-      "id": 324,
+      "id": 346,
       "target": "gbif",
       "checked_at": "2026-11-17T01:19:28.680660+00:00",
       "status": "healthy",
@@ -34637,7 +36442,7 @@
       "source": "live"
     },
     {
-      "id": 325,
+      "id": 347,
       "target": "frankfurter",
       "checked_at": "2026-11-17T01:19:28.678382+00:00",
       "status": "healthy",
@@ -34748,7 +36553,7 @@
       "source": "live"
     },
     {
-      "id": 326,
+      "id": 348,
       "target": "exchange-rates",
       "checked_at": "2026-11-17T01:19:28.676099+00:00",
       "status": "healthy",
@@ -34843,7 +36648,7 @@
       "source": "live"
     },
     {
-      "id": 327,
+      "id": 349,
       "target": "dog-ceo",
       "checked_at": "2026-11-17T01:19:28.674116+00:00",
       "status": "healthy",
@@ -34914,7 +36719,7 @@
       "source": "live"
     },
     {
-      "id": 328,
+      "id": 350,
       "target": "crossref",
       "checked_at": "2026-11-17T01:19:28.671613+00:00",
       "status": "healthy",
@@ -35017,7 +36822,7 @@
       "source": "live"
     },
     {
-      "id": 329,
+      "id": 351,
       "target": "coingecko",
       "checked_at": "2026-11-17T01:19:28.669099+00:00",
       "status": "healthy",
@@ -35112,7 +36917,7 @@
       "source": "live"
     },
     {
-      "id": 330,
+      "id": 352,
       "target": "air-quality",
       "checked_at": "2026-11-17T01:19:28.665591+00:00",
       "status": "healthy",
@@ -35215,7 +37020,7 @@
       "source": "live"
     },
     {
-      "id": 331,
+      "id": 353,
       "target": "weather",
       "checked_at": "2026-11-17T01:02:37.131498+00:00",
       "status": "healthy",
@@ -35350,7 +37155,7 @@
       "source": "live"
     },
     {
-      "id": 332,
+      "id": 354,
       "target": "usgs",
       "checked_at": "2026-11-17T01:02:37.127377+00:00",
       "status": "healthy",
@@ -35485,7 +37290,7 @@
       "source": "live"
     },
     {
-      "id": 333,
+      "id": 355,
       "target": "rest-countries",
       "checked_at": "2026-11-17T01:02:37.124896+00:00",
       "status": "critical",
@@ -35524,7 +37329,7 @@
       "source": "live"
     },
     {
-      "id": 334,
+      "id": 356,
       "target": "pypi-django",
       "checked_at": "2026-11-17T01:02:37.121404+00:00",
       "status": "healthy",
@@ -35603,7 +37408,7 @@
       "source": "live"
     },
     {
-      "id": 335,
+      "id": 357,
       "target": "pokeapi",
       "checked_at": "2026-11-17T01:02:37.115124+00:00",
       "status": "healthy",
@@ -35706,7 +37511,7 @@
       "source": "live"
     },
     {
-      "id": 336,
+      "id": 358,
       "target": "own-pipeline",
       "checked_at": "2026-11-17T01:02:37.095451+00:00",
       "status": "healthy",
@@ -35833,7 +37638,7 @@
       "source": "live"
     },
     {
-      "id": 337,
+      "id": 359,
       "target": "open-trivia",
       "checked_at": "2026-11-17T01:02:37.093756+00:00",
       "status": "healthy",
@@ -35936,7 +37741,7 @@
       "source": "live"
     },
     {
-      "id": 338,
+      "id": 360,
       "target": "open-library",
       "checked_at": "2026-11-17T01:02:37.092329+00:00",
       "status": "healthy",
@@ -36031,7 +37836,7 @@
       "source": "live"
     },
     {
-      "id": 339,
+      "id": 361,
       "target": "npm-typescript",
       "checked_at": "2026-11-17T01:02:37.090300+00:00",
       "status": "healthy",
@@ -36110,7 +37915,7 @@
       "source": "live"
     },
     {
-      "id": 340,
+      "id": 362,
       "target": "nager-holidays",
       "checked_at": "2026-11-17T01:02:37.088738+00:00",
       "status": "healthy",
@@ -36197,7 +38002,7 @@
       "source": "live"
     },
     {
-      "id": 341,
+      "id": 363,
       "target": "mempool",
       "checked_at": "2026-11-17T01:02:37.086912+00:00",
       "status": "healthy",
@@ -36284,7 +38089,7 @@
       "source": "live"
     },
     {
-      "id": 342,
+      "id": 364,
       "target": "marine",
       "checked_at": "2026-11-17T01:02:37.082781+00:00",
       "status": "healthy",
@@ -36371,7 +38176,7 @@
       "source": "live"
     },
     {
-      "id": 343,
+      "id": 365,
       "target": "huggingface",
       "checked_at": "2026-11-17T01:02:37.080962+00:00",
       "status": "healthy",
@@ -36458,7 +38263,7 @@
       "source": "live"
     },
     {
-      "id": 344,
+      "id": 366,
       "target": "hacker-news",
       "checked_at": "2026-11-17T01:02:37.078716+00:00",
       "status": "healthy",
@@ -36537,7 +38342,7 @@
       "source": "live"
     },
     {
-      "id": 345,
+      "id": 367,
       "target": "github-catalog",
       "checked_at": "2026-11-17T01:02:37.076673+00:00",
       "status": "healthy",
@@ -36616,7 +38421,7 @@
       "source": "live"
     },
     {
-      "id": 346,
+      "id": 368,
       "target": "gbif",
       "checked_at": "2026-11-17T01:02:37.074841+00:00",
       "status": "healthy",
@@ -36703,7 +38508,7 @@
       "source": "live"
     },
     {
-      "id": 347,
+      "id": 369,
       "target": "frankfurter",
       "checked_at": "2026-11-17T01:02:37.064861+00:00",
       "status": "healthy",
@@ -36814,7 +38619,7 @@
       "source": "live"
     },
     {
-      "id": 348,
+      "id": 370,
       "target": "exchange-rates",
       "checked_at": "2026-11-17T01:02:37.057895+00:00",
       "status": "healthy",
@@ -36909,7 +38714,7 @@
       "source": "live"
     },
     {
-      "id": 349,
+      "id": 371,
       "target": "dog-ceo",
       "checked_at": "2026-11-17T01:02:37.056395+00:00",
       "status": "healthy",
@@ -36980,7 +38785,7 @@
       "source": "live"
     },
     {
-      "id": 350,
+      "id": 372,
       "target": "crossref",
       "checked_at": "2026-11-17T01:02:37.054498+00:00",
       "status": "healthy",
@@ -37083,7 +38888,7 @@
       "source": "live"
     },
     {
-      "id": 351,
+      "id": 373,
       "target": "coingecko",
       "checked_at": "2026-11-17T01:02:37.052218+00:00",
       "status": "healthy",
@@ -37178,7 +38983,7 @@
       "source": "live"
     },
     {
-      "id": 352,
+      "id": 374,
       "target": "air-quality",
       "checked_at": "2026-11-17T01:02:37.049565+00:00",
       "status": "healthy",
@@ -37281,7 +39086,7 @@
       "source": "live"
     },
     {
-      "id": 353,
+      "id": 375,
       "target": "weather",
       "checked_at": "2026-11-17T00:33:07.818077+00:00",
       "status": "warning",
@@ -37304,7 +39109,7 @@
       "source": "live"
     },
     {
-      "id": 354,
+      "id": 376,
       "target": "usgs",
       "checked_at": "2026-11-17T00:33:07.813903+00:00",
       "status": "healthy",
@@ -37439,7 +39244,7 @@
       "source": "live"
     },
     {
-      "id": 355,
+      "id": 377,
       "target": "rest-countries",
       "checked_at": "2026-11-17T00:33:07.810879+00:00",
       "status": "critical",
@@ -37478,7 +39283,7 @@
       "source": "live"
     },
     {
-      "id": 356,
+      "id": 378,
       "target": "pypi-django",
       "checked_at": "2026-11-17T00:33:07.806299+00:00",
       "status": "healthy",
@@ -37557,7 +39362,7 @@
       "source": "live"
     },
     {
-      "id": 357,
+      "id": 379,
       "target": "pokeapi",
       "checked_at": "2026-11-17T00:33:07.798006+00:00",
       "status": "healthy",
@@ -37660,7 +39465,7 @@
       "source": "live"
     },
     {
-      "id": 358,
+      "id": 380,
       "target": "own-pipeline",
       "checked_at": "2026-11-17T00:33:07.788138+00:00",
       "status": "healthy",
@@ -37787,7 +39592,7 @@
       "source": "live"
     },
     {
-      "id": 359,
+      "id": 381,
       "target": "open-trivia",
       "checked_at": "2026-11-17T00:33:07.786149+00:00",
       "status": "healthy",
@@ -37890,7 +39695,7 @@
       "source": "live"
     },
     {
-      "id": 360,
+      "id": 382,
       "target": "open-library",
       "checked_at": "2026-11-17T00:33:07.784212+00:00",
       "status": "healthy",
@@ -37985,7 +39790,7 @@
       "source": "live"
     },
     {
-      "id": 361,
+      "id": 383,
       "target": "npm-typescript",
       "checked_at": "2026-11-17T00:33:07.781681+00:00",
       "status": "healthy",
@@ -38064,7 +39869,7 @@
       "source": "live"
     },
     {
-      "id": 362,
+      "id": 384,
       "target": "nager-holidays",
       "checked_at": "2026-11-17T00:33:07.779694+00:00",
       "status": "healthy",
@@ -38151,7 +39956,7 @@
       "source": "live"
     },
     {
-      "id": 363,
+      "id": 385,
       "target": "mempool",
       "checked_at": "2026-11-17T00:33:07.763433+00:00",
       "status": "healthy",
@@ -38238,7 +40043,7 @@
       "source": "live"
     },
     {
-      "id": 364,
+      "id": 386,
       "target": "marine",
       "checked_at": "2026-11-17T00:33:07.760707+00:00",
       "status": "healthy",
@@ -38325,7 +40130,7 @@
       "source": "live"
     },
     {
-      "id": 365,
+      "id": 387,
       "target": "huggingface",
       "checked_at": "2026-11-17T00:33:07.733176+00:00",
       "status": "healthy",
@@ -38412,7 +40217,7 @@
       "source": "live"
     },
     {
-      "id": 366,
+      "id": 388,
       "target": "hacker-news",
       "checked_at": "2026-11-17T00:33:07.730346+00:00",
       "status": "healthy",
@@ -38491,7 +40296,7 @@
       "source": "live"
     },
     {
-      "id": 367,
+      "id": 389,
       "target": "github-catalog",
       "checked_at": "2026-11-17T00:33:07.727828+00:00",
       "status": "healthy",
@@ -38570,7 +40375,7 @@
       "source": "live"
     },
     {
-      "id": 368,
+      "id": 390,
       "target": "gbif",
       "checked_at": "2026-11-17T00:33:07.725594+00:00",
       "status": "healthy",
@@ -38657,7 +40462,7 @@
       "source": "live"
     },
     {
-      "id": 369,
+      "id": 391,
       "target": "frankfurter",
       "checked_at": "2026-11-17T00:33:07.723314+00:00",
       "status": "healthy",
@@ -38768,7 +40573,7 @@
       "source": "live"
     },
     {
-      "id": 370,
+      "id": 392,
       "target": "exchange-rates",
       "checked_at": "2026-11-17T00:33:07.721288+00:00",
       "status": "healthy",
@@ -38863,7 +40668,7 @@
       "source": "live"
     },
     {
-      "id": 371,
+      "id": 393,
       "target": "dog-ceo",
       "checked_at": "2026-11-17T00:33:07.719531+00:00",
       "status": "healthy",
@@ -38934,7 +40739,7 @@
       "source": "live"
     },
     {
-      "id": 372,
+      "id": 394,
       "target": "crossref",
       "checked_at": "2026-11-17T00:33:07.717317+00:00",
       "status": "healthy",
@@ -39037,7 +40842,7 @@
       "source": "live"
     },
     {
-      "id": 373,
+      "id": 395,
       "target": "coingecko",
       "checked_at": "2026-11-17T00:33:07.688735+00:00",
       "status": "healthy",
@@ -39132,7 +40937,7 @@
       "source": "live"
     },
     {
-      "id": 374,
+      "id": 396,
       "target": "air-quality",
       "checked_at": "2026-11-17T00:33:07.683133+00:00",
       "status": "healthy",
@@ -39235,7 +41040,7 @@
       "source": "live"
     },
     {
-      "id": 375,
+      "id": 397,
       "target": "weather",
       "checked_at": "2026-11-17T00:28:07.134364+00:00",
       "status": "healthy",
@@ -39370,7 +41175,7 @@
       "source": "live"
     },
     {
-      "id": 376,
+      "id": 398,
       "target": "usgs",
       "checked_at": "2026-11-17T00:28:07.128952+00:00",
       "status": "healthy",
@@ -39505,7 +41310,7 @@
       "source": "live"
     },
     {
-      "id": 377,
+      "id": 399,
       "target": "rest-countries",
       "checked_at": "2026-11-17T00:28:07.125269+00:00",
       "status": "critical",
@@ -39544,7 +41349,7 @@
       "source": "live"
     },
     {
-      "id": 378,
+      "id": 400,
       "target": "pypi-django",
       "checked_at": "2026-11-17T00:28:07.119789+00:00",
       "status": "healthy",
@@ -39623,7 +41428,7 @@
       "source": "live"
     },
     {
-      "id": 379,
+      "id": 401,
       "target": "pokeapi",
       "checked_at": "2026-11-17T00:28:07.109182+00:00",
       "status": "healthy",
@@ -39726,7 +41531,7 @@
       "source": "live"
     },
     {
-      "id": 380,
+      "id": 402,
       "target": "own-pipeline",
       "checked_at": "2026-11-17T00:28:07.093427+00:00",
       "status": "healthy",
@@ -39853,7 +41658,7 @@
       "source": "live"
     },
     {
-      "id": 381,
+      "id": 403,
       "target": "open-trivia",
       "checked_at": "2026-11-17T00:28:07.078029+00:00",
       "status": "healthy",
@@ -39956,7 +41761,7 @@
       "source": "live"
     },
     {
-      "id": 382,
+      "id": 404,
       "target": "open-library",
       "checked_at": "2026-11-17T00:28:07.075993+00:00",
       "status": "healthy",
@@ -40051,7 +41856,7 @@
       "source": "live"
     },
     {
-      "id": 383,
+      "id": 405,
       "target": "npm-typescript",
       "checked_at": "2026-11-17T00:28:07.072891+00:00",
       "status": "healthy",
@@ -40130,7 +41935,7 @@
       "source": "live"
     },
     {
-      "id": 384,
+      "id": 406,
       "target": "nager-holidays",
       "checked_at": "2026-11-17T00:28:07.057610+00:00",
       "status": "healthy",
@@ -40217,7 +42022,7 @@
       "source": "live"
     },
     {
-      "id": 385,
+      "id": 407,
       "target": "mempool",
       "checked_at": "2026-11-17T00:28:07.055209+00:00",
       "status": "healthy",
@@ -40304,7 +42109,7 @@
       "source": "live"
     },
     {
-      "id": 386,
+      "id": 408,
       "target": "marine",
       "checked_at": "2026-11-17T00:28:07.053038+00:00",
       "status": "healthy",
@@ -40391,7 +42196,7 @@
       "source": "live"
     },
     {
-      "id": 387,
+      "id": 409,
       "target": "huggingface",
       "checked_at": "2026-11-17T00:28:07.050767+00:00",
       "status": "healthy",
@@ -40478,7 +42283,7 @@
       "source": "live"
     },
     {
-      "id": 388,
+      "id": 410,
       "target": "hacker-news",
       "checked_at": "2026-11-17T00:28:07.047317+00:00",
       "status": "healthy",
@@ -40557,7 +42362,7 @@
       "source": "live"
     },
     {
-      "id": 389,
+      "id": 411,
       "target": "github-catalog",
       "checked_at": "2026-11-17T00:28:07.044577+00:00",
       "status": "healthy",
@@ -40636,7 +42441,7 @@
       "source": "live"
     },
     {
-      "id": 390,
+      "id": 412,
       "target": "gbif",
       "checked_at": "2026-11-17T00:28:07.042166+00:00",
       "status": "healthy",
@@ -40723,7 +42528,7 @@
       "source": "live"
     },
     {
-      "id": 391,
+      "id": 413,
       "target": "frankfurter",
       "checked_at": "2026-11-17T00:28:07.039665+00:00",
       "status": "healthy",
@@ -40834,7 +42639,7 @@
       "source": "live"
     },
     {
-      "id": 392,
+      "id": 414,
       "target": "exchange-rates",
       "checked_at": "2026-11-17T00:28:07.037085+00:00",
       "status": "healthy",
@@ -40929,7 +42734,7 @@
       "source": "live"
     },
     {
-      "id": 393,
+      "id": 415,
       "target": "dog-ceo",
       "checked_at": "2026-11-17T00:28:07.034960+00:00",
       "status": "healthy",
@@ -41000,7 +42805,7 @@
       "source": "live"
     },
     {
-      "id": 394,
+      "id": 416,
       "target": "crossref",
       "checked_at": "2026-11-17T00:28:07.032033+00:00",
       "status": "healthy",
@@ -41103,7 +42908,7 @@
       "source": "live"
     },
     {
-      "id": 395,
+      "id": 417,
       "target": "coingecko",
       "checked_at": "2026-11-17T00:28:07.029433+00:00",
       "status": "healthy",
@@ -41198,7 +43003,7 @@
       "source": "live"
     },
     {
-      "id": 396,
+      "id": 418,
       "target": "air-quality",
       "checked_at": "2026-11-17T00:28:07.025964+00:00",
       "status": "healthy",
@@ -41301,7 +43106,7 @@
       "source": "live"
     },
     {
-      "id": 397,
+      "id": 419,
       "target": "weather",
       "checked_at": "2026-11-16T23:39:06.458825+00:00",
       "status": "healthy",
@@ -41436,7 +43241,7 @@
       "source": "live"
     },
     {
-      "id": 398,
+      "id": 420,
       "target": "usgs",
       "checked_at": "2026-11-16T23:39:06.453358+00:00",
       "status": "healthy",
@@ -41571,7 +43376,7 @@
       "source": "live"
     },
     {
-      "id": 399,
+      "id": 421,
       "target": "rest-countries",
       "checked_at": "2026-11-16T23:39:06.449510+00:00",
       "status": "critical",
@@ -41610,7 +43415,7 @@
       "source": "live"
     },
     {
-      "id": 400,
+      "id": 422,
       "target": "pypi-django",
       "checked_at": "2026-11-16T23:39:06.443694+00:00",
       "status": "healthy",
@@ -41689,7 +43494,7 @@
       "source": "live"
     },
     {
-      "id": 401,
+      "id": 423,
       "target": "pokeapi",
       "checked_at": "2026-11-16T23:39:06.433143+00:00",
       "status": "healthy",
@@ -41792,7 +43597,7 @@
       "source": "live"
     },
     {
-      "id": 402,
+      "id": 424,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T23:39:06.404922+00:00",
       "status": "healthy",
@@ -41919,7 +43724,7 @@
       "source": "live"
     },
     {
-      "id": 403,
+      "id": 425,
       "target": "open-trivia",
       "checked_at": "2026-11-16T23:39:06.402127+00:00",
       "status": "healthy",
@@ -42022,7 +43827,7 @@
       "source": "live"
     },
     {
-      "id": 404,
+      "id": 426,
       "target": "open-library",
       "checked_at": "2026-11-16T23:39:06.399979+00:00",
       "status": "healthy",
@@ -42117,7 +43922,7 @@
       "source": "live"
     },
     {
-      "id": 405,
+      "id": 427,
       "target": "npm-typescript",
       "checked_at": "2026-11-16T23:39:06.397012+00:00",
       "status": "healthy",
@@ -42196,7 +44001,7 @@
       "source": "live"
     },
     {
-      "id": 406,
+      "id": 428,
       "target": "nager-holidays",
       "checked_at": "2026-11-16T23:39:06.394953+00:00",
       "status": "healthy",
@@ -42283,7 +44088,7 @@
       "source": "live"
     },
     {
-      "id": 407,
+      "id": 429,
       "target": "mempool",
       "checked_at": "2026-11-16T23:39:06.392670+00:00",
       "status": "healthy",
@@ -42370,7 +44175,7 @@
       "source": "live"
     },
     {
-      "id": 408,
+      "id": 430,
       "target": "marine",
       "checked_at": "2026-11-16T23:39:06.390465+00:00",
       "status": "healthy",
@@ -42457,7 +44262,7 @@
       "source": "live"
     },
     {
-      "id": 409,
+      "id": 431,
       "target": "huggingface",
       "checked_at": "2026-11-16T23:39:06.388151+00:00",
       "status": "healthy",
@@ -42544,7 +44349,7 @@
       "source": "live"
     },
     {
-      "id": 410,
+      "id": 432,
       "target": "hacker-news",
       "checked_at": "2026-11-16T23:39:06.384574+00:00",
       "status": "healthy",
@@ -42623,7 +44428,7 @@
       "source": "live"
     },
     {
-      "id": 411,
+      "id": 433,
       "target": "github-catalog",
       "checked_at": "2026-11-16T23:39:06.381634+00:00",
       "status": "healthy",
@@ -42702,7 +44507,7 @@
       "source": "live"
     },
     {
-      "id": 412,
+      "id": 434,
       "target": "gbif",
       "checked_at": "2026-11-16T23:39:06.379299+00:00",
       "status": "healthy",
@@ -42789,7 +44594,7 @@
       "source": "live"
     },
     {
-      "id": 413,
+      "id": 435,
       "target": "frankfurter",
       "checked_at": "2026-11-16T23:39:06.376701+00:00",
       "status": "healthy",
@@ -42900,7 +44705,7 @@
       "source": "live"
     },
     {
-      "id": 414,
+      "id": 436,
       "target": "exchange-rates",
       "checked_at": "2026-11-16T23:39:06.374152+00:00",
       "status": "healthy",
@@ -42995,7 +44800,7 @@
       "source": "live"
     },
     {
-      "id": 415,
+      "id": 437,
       "target": "dog-ceo",
       "checked_at": "2026-11-16T23:39:06.371923+00:00",
       "status": "healthy",
@@ -43066,7 +44871,7 @@
       "source": "live"
     },
     {
-      "id": 416,
+      "id": 438,
       "target": "crossref",
       "checked_at": "2026-11-16T23:39:06.369241+00:00",
       "status": "healthy",
@@ -43169,7 +44974,7 @@
       "source": "live"
     },
     {
-      "id": 417,
+      "id": 439,
       "target": "coingecko",
       "checked_at": "2026-11-16T23:39:06.366719+00:00",
       "status": "healthy",
@@ -43264,7 +45069,7 @@
       "source": "live"
     },
     {
-      "id": 418,
+      "id": 440,
       "target": "air-quality",
       "checked_at": "2026-11-16T23:39:06.363295+00:00",
       "status": "healthy",
@@ -43367,7 +45172,7 @@
       "source": "live"
     },
     {
-      "id": 419,
+      "id": 441,
       "target": "weather",
       "checked_at": "2026-11-16T23:35:48.681713+00:00",
       "status": "critical",
@@ -43390,7 +45195,7 @@
       "source": "live"
     },
     {
-      "id": 420,
+      "id": 442,
       "target": "usgs",
       "checked_at": "2026-11-16T23:35:48.676285+00:00",
       "status": "healthy",
@@ -43525,7 +45330,7 @@
       "source": "live"
     },
     {
-      "id": 421,
+      "id": 443,
       "target": "rest-countries",
       "checked_at": "2026-11-16T23:35:48.672557+00:00",
       "status": "critical",
@@ -43564,7 +45369,7 @@
       "source": "live"
     },
     {
-      "id": 422,
+      "id": 444,
       "target": "pypi-django",
       "checked_at": "2026-11-16T23:35:48.666933+00:00",
       "status": "healthy",
@@ -43643,7 +45448,7 @@
       "source": "live"
     },
     {
-      "id": 423,
+      "id": 445,
       "target": "pokeapi",
       "checked_at": "2026-11-16T23:35:48.655781+00:00",
       "status": "healthy",
@@ -43746,7 +45551,7 @@
       "source": "live"
     },
     {
-      "id": 424,
+      "id": 446,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T23:35:48.631730+00:00",
       "status": "healthy",
@@ -43873,7 +45678,7 @@
       "source": "live"
     },
     {
-      "id": 425,
+      "id": 447,
       "target": "open-trivia",
       "checked_at": "2026-11-16T23:35:48.629161+00:00",
       "status": "healthy",
@@ -43976,7 +45781,7 @@
       "source": "live"
     },
     {
-      "id": 426,
+      "id": 448,
       "target": "open-library",
       "checked_at": "2026-11-16T23:35:48.626126+00:00",
       "status": "healthy",
@@ -44071,7 +45876,7 @@
       "source": "live"
     },
     {
-      "id": 427,
+      "id": 449,
       "target": "npm-typescript",
       "checked_at": "2026-11-16T23:35:48.623137+00:00",
       "status": "healthy",
@@ -44150,7 +45955,7 @@
       "source": "live"
     },
     {
-      "id": 428,
+      "id": 450,
       "target": "nager-holidays",
       "checked_at": "2026-11-16T23:35:48.621056+00:00",
       "status": "healthy",
@@ -44237,7 +46042,7 @@
       "source": "live"
     },
     {
-      "id": 429,
+      "id": 451,
       "target": "mempool",
       "checked_at": "2026-11-16T23:35:48.618597+00:00",
       "status": "healthy",
@@ -44324,7 +46129,7 @@
       "source": "live"
     },
     {
-      "id": 430,
+      "id": 452,
       "target": "marine",
       "checked_at": "2026-11-16T23:35:48.616287+00:00",
       "status": "healthy",
@@ -44411,7 +46216,7 @@
       "source": "live"
     },
     {
-      "id": 431,
+      "id": 453,
       "target": "huggingface",
       "checked_at": "2026-11-16T23:35:48.610909+00:00",
       "status": "healthy",
@@ -44498,7 +46303,7 @@
       "source": "live"
     },
     {
-      "id": 432,
+      "id": 454,
       "target": "hacker-news",
       "checked_at": "2026-11-16T23:35:48.607287+00:00",
       "status": "healthy",
@@ -44577,7 +46382,7 @@
       "source": "live"
     },
     {
-      "id": 433,
+      "id": 455,
       "target": "github-catalog",
       "checked_at": "2026-11-16T23:35:48.604333+00:00",
       "status": "healthy",
@@ -44656,7 +46461,7 @@
       "source": "live"
     },
     {
-      "id": 434,
+      "id": 456,
       "target": "gbif",
       "checked_at": "2026-11-16T23:35:48.601776+00:00",
       "status": "healthy",
@@ -44743,7 +46548,7 @@
       "source": "live"
     },
     {
-      "id": 435,
+      "id": 457,
       "target": "frankfurter",
       "checked_at": "2026-11-16T23:35:48.599165+00:00",
       "status": "healthy",
@@ -44854,7 +46659,7 @@
       "source": "live"
     },
     {
-      "id": 436,
+      "id": 458,
       "target": "exchange-rates",
       "checked_at": "2026-11-16T23:35:48.596310+00:00",
       "status": "healthy",
@@ -44949,7 +46754,7 @@
       "source": "live"
     },
     {
-      "id": 437,
+      "id": 459,
       "target": "dog-ceo",
       "checked_at": "2026-11-16T23:35:48.594023+00:00",
       "status": "healthy",
@@ -45020,7 +46825,7 @@
       "source": "live"
     },
     {
-      "id": 438,
+      "id": 460,
       "target": "crossref",
       "checked_at": "2026-11-16T23:35:48.591083+00:00",
       "status": "healthy",
@@ -45123,7 +46928,7 @@
       "source": "live"
     },
     {
-      "id": 439,
+      "id": 461,
       "target": "coingecko",
       "checked_at": "2026-11-16T23:35:48.588492+00:00",
       "status": "healthy",
@@ -45218,7 +47023,7 @@
       "source": "live"
     },
     {
-      "id": 440,
+      "id": 462,
       "target": "air-quality",
       "checked_at": "2026-11-16T23:35:48.584842+00:00",
       "status": "healthy",
@@ -45321,7 +47126,7 @@
       "source": "live"
     },
     {
-      "id": 441,
+      "id": 463,
       "target": "weather",
       "checked_at": "2026-11-16T17:24:54.595282+00:00",
       "status": "warning",
@@ -45344,7 +47149,7 @@
       "source": "live"
     },
     {
-      "id": 442,
+      "id": 464,
       "target": "usgs",
       "checked_at": "2026-11-16T17:24:54.591702+00:00",
       "status": "healthy",
@@ -45479,7 +47284,7 @@
       "source": "live"
     },
     {
-      "id": 443,
+      "id": 465,
       "target": "rest-countries",
       "checked_at": "2026-11-16T17:24:54.588885+00:00",
       "status": "critical",
@@ -45518,7 +47323,7 @@
       "source": "live"
     },
     {
-      "id": 444,
+      "id": 466,
       "target": "pypi-django",
       "checked_at": "2026-11-16T17:24:54.585039+00:00",
       "status": "healthy",
@@ -45597,7 +47402,7 @@
       "source": "live"
     },
     {
-      "id": 445,
+      "id": 467,
       "target": "pokeapi",
       "checked_at": "2026-11-16T17:24:54.577706+00:00",
       "status": "healthy",
@@ -45700,7 +47505,7 @@
       "source": "live"
     },
     {
-      "id": 446,
+      "id": 468,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T17:24:54.495080+00:00",
       "status": "healthy",
@@ -45827,7 +47632,7 @@
       "source": "live"
     },
     {
-      "id": 447,
+      "id": 469,
       "target": "open-trivia",
       "checked_at": "2026-11-16T17:24:54.493225+00:00",
       "status": "healthy",
@@ -45930,7 +47735,7 @@
       "source": "live"
     },
     {
-      "id": 448,
+      "id": 470,
       "target": "open-library",
       "checked_at": "2026-11-16T17:24:54.490656+00:00",
       "status": "warning",
@@ -46025,7 +47830,7 @@
       "source": "live"
     },
     {
-      "id": 449,
+      "id": 471,
       "target": "npm-typescript",
       "checked_at": "2026-11-16T17:24:54.488408+00:00",
       "status": "healthy",
@@ -46104,7 +47909,7 @@
       "source": "live"
     },
     {
-      "id": 450,
+      "id": 472,
       "target": "nager-holidays",
       "checked_at": "2026-11-16T17:24:54.486393+00:00",
       "status": "healthy",
@@ -46191,7 +47996,7 @@
       "source": "live"
     },
     {
-      "id": 451,
+      "id": 473,
       "target": "mempool",
       "checked_at": "2026-11-16T17:24:54.466983+00:00",
       "status": "healthy",
@@ -46278,7 +48083,7 @@
       "source": "live"
     },
     {
-      "id": 452,
+      "id": 474,
       "target": "marine",
       "checked_at": "2026-11-16T17:24:54.465382+00:00",
       "status": "healthy",
@@ -46365,7 +48170,7 @@
       "source": "live"
     },
     {
-      "id": 453,
+      "id": 475,
       "target": "huggingface",
       "checked_at": "2026-11-16T17:24:54.463573+00:00",
       "status": "healthy",
@@ -46452,7 +48257,7 @@
       "source": "live"
     },
     {
-      "id": 454,
+      "id": 476,
       "target": "hacker-news",
       "checked_at": "2026-11-16T17:24:54.461246+00:00",
       "status": "healthy",
@@ -46531,7 +48336,7 @@
       "source": "live"
     },
     {
-      "id": 455,
+      "id": 477,
       "target": "github-catalog",
       "checked_at": "2026-11-16T17:24:54.459162+00:00",
       "status": "healthy",
@@ -46610,7 +48415,7 @@
       "source": "live"
     },
     {
-      "id": 456,
+      "id": 478,
       "target": "gbif",
       "checked_at": "2026-11-16T17:24:54.457421+00:00",
       "status": "healthy",
@@ -46697,7 +48502,7 @@
       "source": "live"
     },
     {
-      "id": 457,
+      "id": 479,
       "target": "frankfurter",
       "checked_at": "2026-11-16T17:24:54.455220+00:00",
       "status": "healthy",
@@ -46808,7 +48613,7 @@
       "source": "live"
     },
     {
-      "id": 458,
+      "id": 480,
       "target": "exchange-rates",
       "checked_at": "2026-11-16T17:24:54.453330+00:00",
       "status": "healthy",
@@ -46903,7 +48708,7 @@
       "source": "live"
     },
     {
-      "id": 459,
+      "id": 481,
       "target": "dog-ceo",
       "checked_at": "2026-11-16T17:24:54.451831+00:00",
       "status": "healthy",
@@ -46974,7 +48779,7 @@
       "source": "live"
     },
     {
-      "id": 460,
+      "id": 482,
       "target": "crossref",
       "checked_at": "2026-11-16T17:24:54.449851+00:00",
       "status": "healthy",
@@ -47077,7 +48882,7 @@
       "source": "live"
     },
     {
-      "id": 461,
+      "id": 483,
       "target": "coingecko",
       "checked_at": "2026-11-16T17:24:54.447671+00:00",
       "status": "healthy",
@@ -47172,7 +48977,7 @@
       "source": "live"
     },
     {
-      "id": 462,
+      "id": 484,
       "target": "air-quality",
       "checked_at": "2026-11-16T17:24:54.443785+00:00",
       "status": "healthy",
@@ -47275,7 +49080,7 @@
       "source": "live"
     },
     {
-      "id": 463,
+      "id": 485,
       "target": "weather",
       "checked_at": "2026-11-16T07:38:01.019585+00:00",
       "status": "healthy",
@@ -47410,7 +49215,7 @@
       "source": "live"
     },
     {
-      "id": 464,
+      "id": 486,
       "target": "usgs",
       "checked_at": "2026-11-16T07:38:01.016024+00:00",
       "status": "healthy",
@@ -47545,7 +49350,7 @@
       "source": "live"
     },
     {
-      "id": 465,
+      "id": 487,
       "target": "rest-countries",
       "checked_at": "2026-11-16T07:38:01.013721+00:00",
       "status": "critical",
@@ -47584,7 +49389,7 @@
       "source": "live"
     },
     {
-      "id": 466,
+      "id": 488,
       "target": "pypi-django",
       "checked_at": "2026-11-16T07:38:01.009754+00:00",
       "status": "healthy",
@@ -47655,7 +49460,7 @@
       "source": "live"
     },
     {
-      "id": 467,
+      "id": 489,
       "target": "pokeapi",
       "checked_at": "2026-11-16T07:38:00.990573+00:00",
       "status": "healthy",
@@ -47750,7 +49555,7 @@
       "source": "live"
     },
     {
-      "id": 468,
+      "id": 490,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:38:00.979237+00:00",
       "status": "healthy",
@@ -47877,7 +49682,7 @@
       "source": "live"
     },
     {
-      "id": 469,
+      "id": 491,
       "target": "open-trivia",
       "checked_at": "2026-11-16T07:38:00.977523+00:00",
       "status": "healthy",
@@ -47972,7 +49777,7 @@
       "source": "live"
     },
     {
-      "id": 470,
+      "id": 492,
       "target": "open-library",
       "checked_at": "2026-11-16T07:38:00.976005+00:00",
       "status": "healthy",
@@ -48059,7 +49864,7 @@
       "source": "live"
     },
     {
-      "id": 471,
+      "id": 493,
       "target": "npm-typescript",
       "checked_at": "2026-11-16T07:38:00.973833+00:00",
       "status": "healthy",
@@ -48130,7 +49935,7 @@
       "source": "live"
     },
     {
-      "id": 472,
+      "id": 494,
       "target": "nager-holidays",
       "checked_at": "2026-11-16T07:38:00.972256+00:00",
       "status": "healthy",
@@ -48209,7 +50014,7 @@
       "source": "live"
     },
     {
-      "id": 473,
+      "id": 495,
       "target": "mempool",
       "checked_at": "2026-11-16T07:38:00.970403+00:00",
       "status": "healthy",
@@ -48288,7 +50093,7 @@
       "source": "live"
     },
     {
-      "id": 474,
+      "id": 496,
       "target": "marine",
       "checked_at": "2026-11-16T07:38:00.968535+00:00",
       "status": "healthy",
@@ -48367,7 +50172,7 @@
       "source": "live"
     },
     {
-      "id": 475,
+      "id": 497,
       "target": "huggingface",
       "checked_at": "2026-11-16T07:38:00.966751+00:00",
       "status": "healthy",
@@ -48446,7 +50251,7 @@
       "source": "live"
     },
     {
-      "id": 476,
+      "id": 498,
       "target": "hacker-news",
       "checked_at": "2026-11-16T07:38:00.964287+00:00",
       "status": "healthy",
@@ -48517,7 +50322,7 @@
       "source": "live"
     },
     {
-      "id": 477,
+      "id": 499,
       "target": "github-catalog",
       "checked_at": "2026-11-16T07:38:00.962184+00:00",
       "status": "healthy",
@@ -48588,7 +50393,7 @@
       "source": "live"
     },
     {
-      "id": 478,
+      "id": 500,
       "target": "gbif",
       "checked_at": "2026-11-16T07:38:00.959455+00:00",
       "status": "healthy",
@@ -48667,7 +50472,7 @@
       "source": "live"
     },
     {
-      "id": 479,
+      "id": 501,
       "target": "frankfurter",
       "checked_at": "2026-11-16T07:38:00.957803+00:00",
       "status": "healthy",
@@ -48770,7 +50575,7 @@
       "source": "live"
     },
     {
-      "id": 480,
+      "id": 502,
       "target": "exchange-rates",
       "checked_at": "2026-11-16T07:38:00.955809+00:00",
       "status": "healthy",
@@ -48857,7 +50662,7 @@
       "source": "live"
     },
     {
-      "id": 481,
+      "id": 503,
       "target": "dog-ceo",
       "checked_at": "2026-11-16T07:38:00.954006+00:00",
       "status": "healthy",
@@ -48920,7 +50725,7 @@
       "source": "live"
     },
     {
-      "id": 482,
+      "id": 504,
       "target": "crossref",
       "checked_at": "2026-11-16T07:38:00.952058+00:00",
       "status": "healthy",
@@ -49015,7 +50820,7 @@
       "source": "live"
     },
     {
-      "id": 483,
+      "id": 505,
       "target": "coingecko",
       "checked_at": "2026-11-16T07:38:00.950245+00:00",
       "status": "healthy",
@@ -49102,7 +50907,7 @@
       "source": "live"
     },
     {
-      "id": 484,
+      "id": 506,
       "target": "air-quality",
       "checked_at": "2026-11-16T07:38:00.947176+00:00",
       "status": "healthy",
@@ -49197,7 +51002,7 @@
       "source": "live"
     },
     {
-      "id": 485,
+      "id": 507,
       "target": "weather",
       "checked_at": "2026-11-16T07:19:06.004538+00:00",
       "status": "healthy",
@@ -49332,7 +51137,7 @@
       "source": "live"
     },
     {
-      "id": 486,
+      "id": 508,
       "target": "usgs",
       "checked_at": "2026-11-16T07:19:06.000553+00:00",
       "status": "healthy",
@@ -49467,7 +51272,7 @@
       "source": "live"
     },
     {
-      "id": 487,
+      "id": 509,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:19:05.982045+00:00",
       "status": "healthy",
@@ -49594,7 +51399,7 @@
       "source": "live"
     },
     {
-      "id": 488,
+      "id": 510,
       "target": "weather",
       "checked_at": "2026-11-16T07:08:46.035411+00:00",
       "status": "healthy",
@@ -49729,7 +51534,7 @@
       "source": "live"
     },
     {
-      "id": 489,
+      "id": 511,
       "target": "usgs",
       "checked_at": "2026-11-16T07:08:46.031178+00:00",
       "status": "healthy",
@@ -49864,7 +51669,7 @@
       "source": "live"
     },
     {
-      "id": 490,
+      "id": 512,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:08:46.013296+00:00",
       "status": "healthy",
@@ -49991,7 +51796,7 @@
       "source": "live"
     },
     {
-      "id": 491,
+      "id": 513,
       "target": "weather",
       "checked_at": "2026-11-16T07:07:11.352477+00:00",
       "status": "healthy",
@@ -50126,7 +51931,7 @@
       "source": "live"
     },
     {
-      "id": 492,
+      "id": 514,
       "target": "usgs",
       "checked_at": "2026-11-16T07:07:11.347821+00:00",
       "status": "healthy",
@@ -50261,7 +52066,7 @@
       "source": "live"
     },
     {
-      "id": 493,
+      "id": 515,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:07:11.340508+00:00",
       "status": "healthy",
@@ -50388,7 +52193,7 @@
       "source": "live"
     },
     {
-      "id": 494,
+      "id": 516,
       "target": "weather",
       "checked_at": "2026-11-16T07:00:39.460639+00:00",
       "status": "healthy",
@@ -50515,7 +52320,7 @@
       "source": "live"
     },
     {
-      "id": 495,
+      "id": 517,
       "target": "usgs",
       "checked_at": "2026-11-16T07:00:39.453165+00:00",
       "status": "healthy",
@@ -50642,7 +52447,7 @@
       "source": "live"
     },
     {
-      "id": 496,
+      "id": 518,
       "target": "own-pipeline",
       "checked_at": "2026-11-16T07:00:39.445480+00:00",
       "status": "healthy",
@@ -50762,6 +52567,30 @@
     }
   ],
   "incidents": [
+    {
+      "id": 16,
+      "target": "open-trivia",
+      "key": "availability",
+      "kind": "availability",
+      "severity": "warning",
+      "message": "URLError · 응답을 읽지 못했습니다.",
+      "opened_at": "2026-11-21T00:11:13.466583+00:00",
+      "last_seen_at": "2026-11-21T00:11:13.466583+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    },
+    {
+      "id": 15,
+      "target": "github-catalog",
+      "key": "availability",
+      "kind": "availability",
+      "severity": "warning",
+      "message": "HTTP 403",
+      "opened_at": "2026-11-21T00:11:13.452945+00:00",
+      "last_seen_at": "2026-11-21T00:11:13.452945+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    },
     {
       "id": 1,
       "target": "github-catalog",
@@ -50926,9 +52755,9 @@
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-20T17:59:17.720843+00:00",
+      "last_seen_at": "2026-11-21T00:11:13.488902+00:00",
       "resolved_at": null,
-      "occurrences": 23
+      "occurrences": 24
     }
   ],
   "ai_latest": {
