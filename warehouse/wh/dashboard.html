@@ -84,7 +84,7 @@ const tip=$('#tip');
 function showTip(e,h){tip.innerHTML=h;tip.style.opacity=1;const r=tip.getBoundingClientRect();let x=e.clientX+14,y=e.clientY+14;if(x+r.width>innerWidth-8)x=e.clientX-r.width-14;if(y+r.height>innerHeight-8)y=e.clientY-r.height-14;tip.style.left=Math.max(8,x)+'px';tip.style.top=Math.max(8,y)+'px'}
 const hideTip=()=>tip.style.opacity=0;
 const nice=(lo,hi,n=4)=>{if(lo===hi){lo-=1;hi+=1}const st=Math.pow(10,Math.floor(Math.log10((hi-lo)/n)));const k=[1,2,2.5,5,10].find(k=>(hi-lo)/(k*st)<=n+1)*st;const a=Math.floor(lo/k)*k,b=Math.ceil(hi/k)*k,t=[];for(let v=a;v<=b+k/2;v+=k)t.push(+v.toFixed(10));return t};
-// ---- 꺾은선: series=[{name,color,pts:[[label,y,extra]]}] (x 는 순서). 가로 기준선·십자선·말풍선
+// ---- 꺾은선: series=[{name,color,pts:[[label,y,extra]]}] (x는 순서). 가로 기준선·십자선·말풍선
 function line(host,series,o={}){const W=720,H=o.h||250,L=46,R=12,T=10,B=24,n=series[0].pts.length;if(!n){host.innerHTML='<p class="empty">자료 없음</p>';return}
   const ys=series.flatMap(s=>s.pts.map(p=>p[1])).filter(v=>v!=null),t=nice(Math.min(...ys,o.zero?0:Infinity),Math.max(...ys,o.zero?0:-Infinity)),y0=t[0],y1=t[t.length-1];
   const X=i=>L+(n<2?0:i/(n-1))*(W-L-R),Y=v=>T+(1-(v-y0)/(y1-y0))*(H-T-B);
@@ -218,7 +218,7 @@ function jobs(){const g=$('#jobs-g'),S=D.skills,J=D.jobs_total;if(!S||!J){g.inne
     const JD=D.jobs_daily||[];const c2=card('c5',`<h2>하루에 게시된 공고</h2><p class="sub">최근 45일, 출처별</p><div class="lg"><span><i style="background:var(--s1)"></i>Arbeitnow</span><span><i style="background:var(--s2)"></i>Remote OK</span></div><div class="chart" id="j2"></div>`);g.append(c2);
     bars(c2.querySelector('#j2'),JD.map(r=>[r[0],r[1]||0,r[2]||0,r[3]]),[{name:'Arbeitnow',color:'var(--s1)'},{name:'Remote OK',color:'var(--s2)'}],{h:250,label:'하루에 게시된 공고',tip:r=>`<b>${r[0]}</b><br>Arbeitnow ${nf(r[1])}<br>Remote OK ${nf(r[2])}<br>그중 기술 공고 ${nf(r[3])}`});
     g.append(card('c12',`<h2>수집 현황</h2><div class="sc"><table><tr><th>출처</th><th>마지막 수집</th><th class="n">누적 새 공고</th><th class="n">빈틈·실패한 날</th></tr>${(D.jobs_feed||[]).map(r=>`<tr><td>${esc(r[0])}</td><td>${r[1]}</td><td class="n">${nf(r[2])}</td><td class="n">${r[3]?badge('warn')+' '+r[3]+'일':badge('pass')+' 0일'}</td></tr>`).join('')}</table></div>
-    <p class="note">출처: <a href="https://remoteok.com">Remote OK</a> · <a href="https://www.arbeitnow.com">Arbeitnow</a> 공개 피드. 해외 원격·유럽 공고이며 국내 채용 시장을 말해 주지 않습니다. 공고 본문은 저장하지 않고, 받을 때 기술 사전에 있는 이름이 제목·본문에 나오는지만 봅니다. "우대"와 "필수"는 구분하지 못하고, 본문에 흔한 낱말은 실제보다 많이 잡힐 수 있습니다. 이제 막 모으기 시작해 추세를 말하기엔 이릅니다.<br>내려받기 수 출처: pypistats.org(PyPI, 미러 제외) · npm 레지스트리. 내려받기에는 자동 빌드(CI)가 많이 섞여 있어 사용자 수를 뜻하지 않습니다. PyPI 는 최근 180일만 제공돼 그 전 기록은 수집을 시작한 날부터 쌓입니다.</p>`))}
+    <p class="note">출처: <a href="https://remoteok.com">Remote OK</a> · <a href="https://www.arbeitnow.com">Arbeitnow</a> 공개 피드. 해외 원격·유럽 공고이며 국내 채용 시장을 말해 주지 않습니다. 공고 본문은 저장하지 않고, 받을 때 기술 사전에 있는 이름이 제목·본문에 나오는지만 봅니다. "우대"와 "필수"는 구분하지 못하고, 본문에 흔한 낱말은 실제보다 많이 잡힐 수 있습니다. 이제 막 모으기 시작해 추세를 말하기엔 이릅니다.<br>내려받기 수 출처: pypistats.org(PyPI, 미러 제외) · npm 레지스트리. 내려받기에는 자동 빌드(CI)가 많이 섞여 있어 사용자 수를 뜻하지 않습니다. PyPI는 최근 180일만 제공돼 그 전 기록은 수집을 시작한 날부터 쌓입니다.</p>`))}
   draw()}
 
 // ================= 전력
@@ -255,7 +255,7 @@ function eq(){const g=$('#eq-g'),Q=D.quakes_monthly,T=D.quake_total;if(!Q){g.inn
     const top=DE.filter(r=>r[5]>=2).slice(0,12);
     g.append(card('c7',`<h2>주황·빨강 경보</h2><p class="sub">등급이 높은 순, 최근 순</p><div class="sc" style="max-height:300px;overflow-y:auto"><table><tr><th>사건</th><th>종류</th><th>등급</th><th>시작</th><th class="n">지속</th></tr>${top.map(r=>`<tr><td class="w">${esc(r[2])}</td><td>${esc(r[1])}</td><td>${lv(r[4])}</td><td>${r[8]}</td><td class="n">${r[10]}일</td></tr>`).join('')||'<tr><td colspan="5">해당 사건 없음</td></tr>'}</table></div>`));
     const CH=D.dis_changes||[];g.append(card('c5',`<h2>경보 등급이 바뀐 사건</h2><p class="sub">수집을 시작한 뒤에 등급이 오르내린 기록</p>${CH.length?`<div class="sc"><table><tr><th>사건</th><th>변화</th><th>날짜</th></tr>${CH.map(r=>`<tr><td class="w">${esc(r[1])}</td><td>${lv(r[2])} → ${lv(r[3])}</td><td>${r[4]}</td></tr>`).join('')}</table></div>`:'<p class="empty">아직 등급이 바뀐 사건이 없습니다. 수집을 막 시작해 이력이 쌓이는 중입니다.</p>'}`))}
-  g.append(el(`<p class="note" style="grid-column:span 12">출처: USGS 지진 목록 (동아시아, 지역별 최소 규모 이상). 지도와 b값 분석은 <a href="../">지진 대시보드</a>에 있습니다. 재해 경보: GDACS(유엔·유럽연합 공동 재난경보체계). 산불은 건수가 많아 뺐고, 경보 등급은 GDACS 의 자동 추정이라 실제 피해와 다를 수 있습니다. 위치 그림은 경도·위도를 그대로 찍은 것이라 지도 윤곽은 없습니다.</p>`))}
+  g.append(el(`<p class="note" style="grid-column:span 12">출처: USGS 지진 목록 (동아시아, 지역별 최소 규모 이상). 지도와 b값 분석은 <a href="../">지진 대시보드</a>에 있습니다. 재해 경보: GDACS(유엔·유럽연합 공동 재난경보체계). 산불은 건수가 많아 뺐고, 경보 등급은 GDACS의 자동 추정이라 실제 피해와 다를 수 있습니다. 위치 그림은 경도·위도를 그대로 찍은 것이라 지도 윤곽은 없습니다.</p>`))}
 
 // ================= 품질
 function qa(){const g=$('#qa-g'),T=D.tests||[],H=D.history||[];
