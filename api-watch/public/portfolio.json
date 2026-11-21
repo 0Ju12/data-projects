@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_repository": "0Ju12/0Ju12.github.io",
-  "source_sha": "f7eede7726ed82f7af90e8250e8f07fab6c1a805",
-  "source_updated_at": "2026-11-20T12:16:41Z",
-  "synced_at": "2026-11-20T17:59:15.421074+00:00",
+  "source_sha": "5b9738b8bb26871a7f3f8ab1214dbb18d130298d",
+  "source_updated_at": "2026-11-21T03:29:03Z",
+  "synced_at": "2026-11-21T07:39:50.772837+00:00",
   "links": {
     "preparation": "https://0ju12.github.io/study/index.html",
     "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -140,8 +140,8 @@
     },
     {
       "id": "hankki",
-      "title": "한끼 — 냉장고 재고 기반 식단·운동 코치 Agent (LangGraph · FastAPI · Android)",
-      "summary": "냉장고 재고(중량·소비기한)를 기준으로 메뉴·부족한 재료·조리 후 남는 시간을 계산하고, 상황 문장 하나로 추천부터 장바구니·조리 모드까지 이어 주는 한국어 웹·Android 앱",
+      "title": "한끼 — 냉장고 재고 기반 식단·운동 코치 에이전트 (LangGraph · FastAPI · Android)",
+      "summary": "냉장고 재고(중량·소비기한)를 기준으로 메뉴·부족한 재료·조리 후 남는 시간을 계산하고, 상황을 한 문장으로 말하면 추천부터 장바구니·조리 모드까지 이어 주는 한국어 웹·Android 앱",
       "url": "https://0ju12.github.io/projects/hankki.html",
       "repository": "https://github.com/0Ju12/ai-agents",
       "stack": [],
@@ -199,6 +199,24 @@
     }
   ],
   "learning_notes": [
+    {
+      "id": "2026-11-ai-trend-24-gemini-4-neon",
+      "title": "11/18 Google Gemini 4 Neon — '깊은 분석' 자리의 새 모델과, 사이버 변형을 따로 여는 방식",
+      "summary": "Google이 11월 18일 Gemini 4 Neon을 공개했습니다. 빠른 모델과 장시간 작업용 모델 사이에 놓인 위치, 생각 수준·가격·캐시 할인, 그리고 사이버 변형은 검증된 방어자에게만 따로 여는 조건을 #22의 OpenAI 사례와 비교했습니다.",
+      "date": "2026-11-21",
+      "episode": 24,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-24-gemini-4-neon.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
+    {
+      "id": "2026-11-ai-trend-23-ignite-fabric-horizondb",
+      "title": "11/17~20 Microsoft Ignite 2026 — Fabric HorizonDB·Database Hub·Fabric apps, 운영 DB와 분석 저장소를 한 플랫폼에 두기",
+      "summary": "Microsoft가 Ignite 2026에서 Fabric 안에 서버리스 PostgreSQL(HorizonDB, 공개 미리보기)을 넣고, Database Hub와 Fabric apps를 정식 출시했습니다. 운영 DB와 분석 저장소 사이를 미러링과 역 ETL로 잇는 구조, 그리고 자료마다 엇갈리는 출시 단계를 정리했습니다.",
+      "date": "2026-11-21",
+      "episode": 23,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-23-ignite-fabric-horizondb.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
     {
       "id": "2026-11-ai-trend-22-gpt-6-2-critical-cyber",
       "title": "11/17 OpenAI GPT-6.2 Astra·Sol — 사이버보안 'Critical' 등급 모델을 내보내며 붙인 조건",
