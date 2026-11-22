@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-21T21:05:46.558844+00:00",
+  "last_check_at": "2026-11-22T01:32:42.833048+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.447177+00:00",
-        "duration_ms": 425.72
+        "checked_at": "2026-11-22T01:32:42.769901+00:00",
+        "duration_ms": 477.68
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.450204+00:00",
-        "duration_ms": 98.32
+        "checked_at": "2026-11-22T01:32:42.772806+00:00",
+        "duration_ms": 91.52
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.452504+00:00",
-        "duration_ms": 160.75
+        "checked_at": "2026-11-22T01:32:42.774803+00:00",
+        "duration_ms": 213.37
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.454677+00:00",
-        "duration_ms": 284.71
+        "checked_at": "2026-11-22T01:32:42.776884+00:00",
+        "duration_ms": 604.42
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.456508+00:00",
-        "duration_ms": 72.63
+        "checked_at": "2026-11-22T01:32:42.778554+00:00",
+        "duration_ms": 71.84
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.458609+00:00",
-        "duration_ms": 113.88
+        "checked_at": "2026-11-22T01:32:42.780621+00:00",
+        "duration_ms": 425.16
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.460640+00:00",
-        "duration_ms": 1562.26
+        "checked_at": "2026-11-22T01:32:42.782539+00:00",
+        "duration_ms": 1697.2
       }
     },
     {
@@ -110,8 +110,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.466229+00:00",
-        "duration_ms": 167.84
+        "checked_at": "2026-11-22T01:32:42.784443+00:00",
+        "duration_ms": 192.74
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.496124+00:00",
-        "duration_ms": 127.78
+        "checked_at": "2026-11-22T01:32:42.786775+00:00",
+        "duration_ms": 138.93
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.499100+00:00",
-        "duration_ms": 39.63
+        "checked_at": "2026-11-22T01:32:42.789426+00:00",
+        "duration_ms": 74.85
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.501289+00:00",
-        "duration_ms": 404.17
+        "checked_at": "2026-11-22T01:32:42.791270+00:00",
+        "duration_ms": 498.57
       }
     },
     {
@@ -165,9 +165,9 @@
         "docs": "https://mempool.space/docs/api/rest"
       },
       "last_run": {
-        "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.503095+00:00",
-        "duration_ms": 507.31
+        "status": "warning",
+        "checked_at": "2026-11-22T01:32:42.792989+00:00",
+        "duration_ms": 4689.0
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.519311+00:00",
-        "duration_ms": 140.13
+        "checked_at": "2026-11-22T01:32:42.795845+00:00",
+        "duration_ms": 170.62
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.521205+00:00",
-        "duration_ms": 41.07
+        "checked_at": "2026-11-22T01:32:42.797536+00:00",
+        "duration_ms": 45.09
       }
     },
     {
@@ -208,8 +208,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.523696+00:00",
-        "duration_ms": 412.44
+        "checked_at": "2026-11-22T01:32:42.799893+00:00",
+        "duration_ms": 287.19
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.525418+00:00",
-        "duration_ms": 138.58
+        "checked_at": "2026-11-22T01:32:42.801549+00:00",
+        "duration_ms": 257.66
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.527467+00:00",
-        "duration_ms": 93.32
+        "checked_at": "2026-11-22T01:32:42.803420+00:00",
+        "duration_ms": 132.99
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.536641+00:00",
-        "duration_ms": 63.56
+        "checked_at": "2026-11-22T01:32:42.813193+00:00",
+        "duration_ms": 85.34
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.545084+00:00",
-        "duration_ms": 47.53
+        "checked_at": "2026-11-22T01:32:42.821771+00:00",
+        "duration_ms": 98.17
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-21T21:05:46.549368+00:00",
-        "duration_ms": 155.77
+        "checked_at": "2026-11-22T01:32:42.826141+00:00",
+        "duration_ms": 174.98
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.552341+00:00",
-        "duration_ms": 112.17
+        "checked_at": "2026-11-22T01:32:42.828834+00:00",
+        "duration_ms": 106.01
       }
     },
     {
@@ -306,12 +306,24 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-21T21:05:46.558844+00:00",
-        "duration_ms": 213.1
+        "checked_at": "2026-11-22T01:32:42.833048+00:00",
+        "duration_ms": 281.3
       }
     }
   ],
   "incidents": [
+    {
+      "id": 17,
+      "target": "mempool",
+      "key": "latency",
+      "kind": "latency",
+      "severity": "warning",
+      "message": "4689 ms · 기준 3000 ms",
+      "opened_at": "2026-11-22T01:32:42.792989+00:00",
+      "last_seen_at": "2026-11-22T01:32:42.792989+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    },
     {
       "id": 16,
       "target": "rest-countries",
@@ -320,9 +332,9 @@
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-21T21:05:46.549368+00:00",
+      "last_seen_at": "2026-11-22T01:32:42.826141+00:00",
       "resolved_at": null,
-      "occurrences": 27
+      "occurrences": 28
     }
   ],
   "ai_latest": {
