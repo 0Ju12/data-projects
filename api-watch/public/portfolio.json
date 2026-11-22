@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_repository": "0Ju12/0Ju12.github.io",
-  "source_sha": "5b9738b8bb26871a7f3f8ab1214dbb18d130298d",
-  "source_updated_at": "2026-11-21T03:29:03Z",
-  "synced_at": "2026-11-21T07:39:50.772837+00:00",
+  "source_sha": "7e17595378499d3c778368f5d1b9f4546d2a018a",
+  "source_updated_at": "2026-11-22T03:29:14Z",
+  "synced_at": "2026-11-22T08:46:05.243979+00:00",
   "links": {
     "preparation": "https://0ju12.github.io/study/index.html",
     "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -199,6 +199,24 @@
     }
   ],
   "learning_notes": [
+    {
+      "id": "2026-11-ai-trend-26-us-frontier-ai-safety-proposals",
+      "title": "11/18~19 미국 프런티어 AI 규제 — 캘리포니아 'AI Safety in 2026 and Beyond'와 하원 SAFE AI Act 개요",
+      "summary": "캘리포니아 주정부가 대형 프런티어 AI 개발사에 독립 검증 기관의 상시 감독과 비상 정지 권한을 두자는 보고서를 냈고, 다음 날 미국 하원 의원 세 명이 연방 차원의 SAFE AI Act 개요를 공개했습니다. 둘 다 아직 법안 문구가 아닌 제안 단계입니다.",
+      "date": "2026-11-22",
+      "episode": 26,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-26-us-frontier-ai-safety-proposals.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
+    {
+      "id": "2026-11-ai-trend-25-databricks-genie-zeroops",
+      "title": "11/19 Databricks Genie ZeroOps 공개 베타 — 실패한 파이프라인을 찾고 고침안까지 내는 에이전트",
+      "summary": "Databricks가 작업·파이프라인·테이블을 지켜보다가 실패와 품질 문제를 찾아 원인을 추적하고, 고친 코드를 PR로 제안하는 에이전트 Genie ZeroOps를 공개 베타로 열었습니다. 사람 승인 없이는 바꾸지 않는다는 조건과 베타의 범위를 정리했습니다.",
+      "date": "2026-11-22",
+      "episode": 25,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-25-databricks-genie-zeroops.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
     {
       "id": "2026-11-ai-trend-24-gemini-4-neon",
       "title": "11/18 Google Gemini 4 Neon — '깊은 분석' 자리의 새 모델과, 사이버 변형을 따로 여는 방식",
