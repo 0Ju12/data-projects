@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-22T08:46:18.336780+00:00",
+  "last_check_at": "2026-11-22T17:22:24.409040+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.283920+00:00",
-        "duration_ms": 395.79
+        "checked_at": "2026-11-22T17:22:24.317475+00:00",
+        "duration_ms": 393.0
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.286606+00:00",
-        "duration_ms": 26.22
+        "checked_at": "2026-11-22T17:22:24.322238+00:00",
+        "duration_ms": 111.74
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.288391+00:00",
-        "duration_ms": 1869.23
+        "checked_at": "2026-11-22T17:22:24.324900+00:00",
+        "duration_ms": 257.37
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.290089+00:00",
-        "duration_ms": 113.16
+        "checked_at": "2026-11-22T17:22:24.327532+00:00",
+        "duration_ms": 147.86
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.291410+00:00",
-        "duration_ms": 30.52
+        "checked_at": "2026-11-22T17:22:24.329572+00:00",
+        "duration_ms": 76.16
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.293010+00:00",
-        "duration_ms": 703.04
+        "checked_at": "2026-11-22T17:22:24.332697+00:00",
+        "duration_ms": 47.53
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.294604+00:00",
-        "duration_ms": 1334.68
+        "checked_at": "2026-11-22T17:22:24.335363+00:00",
+        "duration_ms": 1502.26
       }
     },
     {
@@ -109,9 +109,9 @@
         "docs": "https://docs.github.com/en/rest/repos/repos#get-a-repository"
       },
       "last_run": {
-        "status": "warning",
-        "checked_at": "2026-11-22T08:46:18.296158+00:00",
-        "duration_ms": 8.03
+        "status": "healthy",
+        "checked_at": "2026-11-22T17:22:24.337830+00:00",
+        "duration_ms": 145.63
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.298412+00:00",
-        "duration_ms": 136.06
+        "checked_at": "2026-11-22T17:22:24.340942+00:00",
+        "duration_ms": 122.56
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.300634+00:00",
-        "duration_ms": 23.76
+        "checked_at": "2026-11-22T17:22:24.344533+00:00",
+        "duration_ms": 42.03
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.301996+00:00",
-        "duration_ms": 401.9
+        "checked_at": "2026-11-22T17:22:24.347135+00:00",
+        "duration_ms": 374.5
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.303536+00:00",
-        "duration_ms": 671.96
+        "checked_at": "2026-11-22T17:22:24.349538+00:00",
+        "duration_ms": 505.56
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.304980+00:00",
-        "duration_ms": 114.2
+        "checked_at": "2026-11-22T17:22:24.351838+00:00",
+        "duration_ms": 242.12
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.306499+00:00",
-        "duration_ms": 128.46
+        "checked_at": "2026-11-22T17:22:24.353891+00:00",
+        "duration_ms": 23.87
       }
     },
     {
@@ -207,9 +207,9 @@
         "docs": "https://openlibrary.org/dev/docs/api/search"
       },
       "last_run": {
-        "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.308200+00:00",
-        "duration_ms": 564.7
+        "status": "warning",
+        "checked_at": "2026-11-22T17:22:24.357035+00:00",
+        "duration_ms": 4110.26
       }
     },
     {
@@ -221,9 +221,9 @@
         "docs": "https://opentdb.com/api_config.php"
       },
       "last_run": {
-        "status": "warning",
-        "checked_at": "2026-11-22T08:46:18.309669+00:00",
-        "duration_ms": 12031.03
+        "status": "healthy",
+        "checked_at": "2026-11-22T17:22:24.360412+00:00",
+        "duration_ms": 110.63
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.311433+00:00",
-        "duration_ms": 87.51
+        "checked_at": "2026-11-22T17:22:24.363440+00:00",
+        "duration_ms": 78.21
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.319994+00:00",
-        "duration_ms": 27.34
+        "checked_at": "2026-11-22T17:22:24.383705+00:00",
+        "duration_ms": 29.63
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.327250+00:00",
-        "duration_ms": 21.49
+        "checked_at": "2026-11-22T17:22:24.394686+00:00",
+        "duration_ms": 50.78
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-22T08:46:18.330870+00:00",
-        "duration_ms": 63.27
+        "checked_at": "2026-11-22T17:22:24.400012+00:00",
+        "duration_ms": 135.37
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.333056+00:00",
-        "duration_ms": 16.67
+        "checked_at": "2026-11-22T17:22:24.403524+00:00",
+        "duration_ms": 179.93
       }
     },
     {
@@ -306,95 +306,83 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T08:46:18.336780+00:00",
-        "duration_ms": 50.06
+        "checked_at": "2026-11-22T17:22:24.409040+00:00",
+        "duration_ms": 170.64
       }
     }
   ],
   "incidents": [
     {
+      "id": 20,
+      "target": "open-library",
+      "key": "latency",
+      "kind": "latency",
+      "severity": "warning",
+      "message": "4110 ms · 기준 3000 ms",
+      "opened_at": "2026-11-22T17:22:24.357035+00:00",
+      "last_seen_at": "2026-11-22T17:22:24.357035+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    },
+    {
       "id": 19,
-      "target": "open-trivia",
-      "key": "availability",
-      "kind": "availability",
-      "severity": "warning",
-      "message": "URLError · 응답을 읽지 못했습니다.",
-      "opened_at": "2026-11-22T08:46:18.309669+00:00",
-      "last_seen_at": "2026-11-22T08:46:18.309669+00:00",
-      "resolved_at": null,
-      "occurrences": 1
-    },
-    {
-      "id": 18,
-      "target": "github-catalog",
-      "key": "availability",
-      "kind": "availability",
-      "severity": "warning",
-      "message": "HTTP 403",
-      "opened_at": "2026-11-22T08:46:18.296158+00:00",
-      "last_seen_at": "2026-11-22T08:46:18.296158+00:00",
-      "resolved_at": null,
-      "occurrences": 1
-    },
-    {
-      "id": 17,
       "target": "rest-countries",
       "key": "json",
       "kind": "format",
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-22T08:46:18.330870+00:00",
+      "last_seen_at": "2026-11-22T17:22:24.400012+00:00",
       "resolved_at": null,
-      "occurrences": 29
+      "occurrences": 30
     }
   ],
   "ai_latest": {
-    "date": "2026-11-22",
-    "item_id": "huggingface/transformers:453665914",
-    "created_at": "2026-11-21T15:36:19.957565+00:00",
+    "date": "2026-11-23",
+    "item_id": "langchain-ai/langgraph:450920110",
+    "created_at": "2026-11-22T17:22:24.412677+00:00",
     "kind": "release",
     "label": "관심 저장소의 공식 릴리스",
-    "title": "Transformers · Release v5.24.0",
-    "technology": "Transformers",
-    "official_published_at": "2026-11-21T12:28:26Z",
-    "collected_at": "2026-11-21T15:36:19.957565+00:00",
-    "what": "여러 모델의 토크나이저·모델 로딩·추론 인터페이스를 제공하는 라이브러리입니다.",
-    "why_for_you": "POSPEAK의 모델 실험과 VQA 작업에서 모델·토크나이저·버전 호환성을 확인하는 데 연결할 수 있습니다.",
+    "title": "LangGraph · langgraph==1.2.23",
+    "technology": "LangGraph",
+    "official_published_at": "2026-11-19T05:33:06Z",
+    "collected_at": "2026-11-22T17:22:24.412677+00:00",
+    "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+    "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
     "flow": [
-      "모델·토크나이저 선택",
-      "입력 전처리",
-      "모델 추론",
-      "출력·평가"
+      "상태 입력",
+      "검색·도구 노드",
+      "검증·분기",
+      "최종 응답"
     ],
-    "release_excerpt": "# Release v5.24.0 ## New Model additions ### Inkling 2 Mini Inkling 2 Mini is a multimodal model from Thinking Machines Lab that accepts text and image inputs and generates text outputs. It is a smaller sibling of Inkling 2 Small, added in v5.23.0. It has 24 decoder layers instead of 48, and compensates with a looping mechanism in which layers 6 to 17 run three times. A learned message-passing mechanism mixes the residuals of the previous pass into the attention and mixture-of-experts inputs of each loop layer. The",
+    "release_excerpt": "Changes since 1.2.22 * release(langgraph): 1.2.23 (#9742) * release(prebuilt): 1.1.3 (#9741) * fix(langgraph,prebuilt): give Send-dispatched tool calls the same state as an edge (#9728) * chore(deps): bump opentelemetry-api from 1.45.1 to 1.45.2 in /libs/langgraph (#9696) * fix(langgraph): avoid warning races in dynamic schemas (#9716)",
     "facts": [
       {
         "label": "공식 발표일",
-        "value": "2026-11-21T12:28:26Z"
+        "value": "2026-11-19T05:33:06Z"
       },
       {
         "label": "버전",
-        "value": "v5.24.0"
+        "value": "1.2.23"
       },
       {
         "label": "저장소",
-        "value": "huggingface/transformers"
+        "value": "langchain-ai/langgraph"
       }
     ],
     "limits": [
-      "라이브러리 업데이트와 새 모델의 성능 개선은 같은 주장이 아닙니다.",
-      "지원 모델·설치 조건·라이선스는 해당 버전 문서에서 확인해야 합니다."
+      "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+      "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
     ],
-    "question": "라이브러리 버전을 바꿨을 때 동일 입력의 결과가 달라졌는지 어떻게 검증할까요?",
+    "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
     "sources": [
       {
         "title": "공식 릴리스 또는 프로젝트 원문",
-        "url": "https://github.com/huggingface/transformers/releases/tag/v5.24.0"
+        "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.23"
       },
       {
         "title": "공식 저장소",
-        "url": "https://github.com/huggingface/transformers"
+        "url": "https://github.com/langchain-ai/langgraph"
       }
     ],
     "exercise": {
@@ -411,6 +399,67 @@
     "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
   },
   "ai_archive": [
+    {
+      "date": "2026-11-23",
+      "item_id": "langchain-ai/langgraph:450920110",
+      "created_at": "2026-11-22T17:22:24.412677+00:00",
+      "kind": "release",
+      "label": "관심 저장소의 공식 릴리스",
+      "title": "LangGraph · langgraph==1.2.23",
+      "technology": "LangGraph",
+      "official_published_at": "2026-11-19T05:33:06Z",
+      "collected_at": "2026-11-22T17:22:24.412677+00:00",
+      "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+      "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+      "flow": [
+        "상태 입력",
+        "검색·도구 노드",
+        "검증·분기",
+        "최종 응답"
+      ],
+      "release_excerpt": "Changes since 1.2.22 * release(langgraph): 1.2.23 (#9742) * release(prebuilt): 1.1.3 (#9741) * fix(langgraph,prebuilt): give Send-dispatched tool calls the same state as an edge (#9728) * chore(deps): bump opentelemetry-api from 1.45.1 to 1.45.2 in /libs/langgraph (#9696) * fix(langgraph): avoid warning races in dynamic schemas (#9716)",
+      "facts": [
+        {
+          "label": "공식 발표일",
+          "value": "2026-11-19T05:33:06Z"
+        },
+        {
+          "label": "버전",
+          "value": "1.2.23"
+        },
+        {
+          "label": "저장소",
+          "value": "langchain-ai/langgraph"
+        }
+      ],
+      "limits": [
+        "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+        "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+      ],
+      "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+      "sources": [
+        {
+          "title": "공식 릴리스 또는 프로젝트 원문",
+          "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.23"
+        },
+        {
+          "title": "공식 저장소",
+          "url": "https://github.com/langchain-ai/langgraph"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    },
     {
       "date": "2026-11-22",
       "item_id": "huggingface/transformers:453665914",
