@@ -67,6 +67,13 @@ def src(tmp_path):
         t = datetime(2025, 3, 1)
         for h in range(72):
             w.writerow([(t + timedelta(hours=h)).strftime("%Y-%m-%dT%H:%M"), 5, 7, 6, 6, 6.0])
+    with (tmp_path / "solar.csv").open("w", encoding="utf-8", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["time", "rad_seoul", "rad_busan", "rad_daejeon", "rad_gwangju", "rad_mean", "cloud_seoul", "cloud_busan", "cloud_daejeon", "cloud_gwangju", "cloud_mean"])
+        t = datetime(2025, 3, 1)
+        for h in range(72):
+            r = max(0, 600 - 100 * abs(h % 24 - 13))           # 13시(12:00~13:00) 최대
+            w.writerow([(t + timedelta(hours=h)).strftime("%Y-%m-%dT%H:%M")] + [r] * 5 + [20] * 5)
     write_quakes(tmp_path / "quakes.csv", [
         quake("a1", 4.5, "2025-03-01T01:00:00"), quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
         quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan")])
@@ -101,7 +108,7 @@ def src(tmp_path):
     M._save({e["event_key"]: e for e in [event("TC-1", "Green", "2025-03-01T00:00:00", "2025-03-04T00:00:00"),
                                          event("FL-2", "Orange", "2025-03-02T00:00:00", "2025-03-02T00:00:00")]}, tmp_path / "dis.csv", X.D_FIELDS)
     return {"vars": {"quakes_csv": str(tmp_path / "quakes.csv"), "demand_csv": str(tmp_path / "demand.csv"),
-                     "weather_csv": str(tmp_path / "weather.csv"), "quake_fresh_days": 100000,
+                     "weather_csv": str(tmp_path / "weather.csv"), "solar_csv": str(tmp_path / "solar.csv"), "quake_fresh_days": 100000,
                      "jobs_csv": str(tmp_path / "jobs.csv"), "jobs_fetch_csv": str(tmp_path / "fetch.csv"),
                      "candles_csv": str(tmp_path / "candles.csv"), "fx_csv": str(tmp_path / "fx.csv"),
                      "pkg_csv": str(tmp_path / "pkg.csv"), "disasters_csv": str(tmp_path / "dis.csv")},
@@ -632,6 +639,31 @@ def test_temperature_fit_recovers_known_breaks_and_slopes():
 def test_temperature_fit_refuses_tiny_samples():
     from wh.analysis import fit_temperature
     assert fit_temperature([1.0, 2.0, 3.0], [1.0, 2.0, 3.0]) is None
+
+
+def test_solar_fit_recovers_known_coefficient_and_placebo_is_flat():
+    """달별 절편 + 새벽 최저 + 냉난방 + 일사량으로 만든 가짜 자료에서 일사량 계수를 다시 찾는지, 저녁(일사량 무관)은 0인지"""
+    from wh.analysis import fit_solar
+    rows = []
+    for i in range(240):
+        m = 1 + i % 12
+        rad = 200 + (i * 37) % 600                     # 200~800 W/m²
+        t = -5 + (i * 13) % 40                         # -5~34℃
+        night = 50000 + (i * 71) % 9000
+        mid = 1000 * m + 0.9 * night - 2500 * rad / 100 + 1500 * max(t - 24, 0) + 800 * max(16 - t, 0)
+        eve = 500 * m + 1.1 * night + 1500 * max(t - 24, 0) + 800 * max(16 - t, 0)
+        rows.append({"month": m, "midday_rad": rad, "midday_temp": t, "evening_temp": t, "night_min_mw": night, "midday_mw": mid, "evening_mw": eve})
+    r = fit_solar(rows)
+    assert r["mw_per_100w"] == -2500 and r["r2"] == 1.0 and r["days"] == 240
+    assert fit_solar(rows, "evening_mw", "evening_temp")["mw_per_100w"] == 0
+    # 겨울만 고르면 냉방항이 모두 0 — 그 열을 빼고도 풀려야 함
+    winter = [r for r in rows if r["month"] in (12, 1, 2) and r["midday_temp"] < 24]
+    assert fit_solar(winter)["mw_per_100w"] == -2500
+
+
+def test_solar_fit_refuses_tiny_samples():
+    from wh.analysis import fit_solar
+    assert fit_solar([{"month": 1, "midday_rad": 100, "midday_temp": 0, "night_min_mw": 1, "midday_mw": 1}]) is None
 
 
 def test_holidays_override_weekday_and_analysis_tables_build(src):

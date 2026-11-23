@@ -21,6 +21,7 @@ SOURCES = {
     "quakes_csv": ("../geo-data-pipeline/data/events.csv", ["id", "time_utc", "updated", "mag", "place"]),
     "demand_csv": ("../power-demand/data/kpx_hourly_demand_2025.csv", ["날짜", "1시", "24시"]),
     "weather_csv": ("../power-demand/data/weather_2025.csv", ["time", "mean"]),
+    "solar_csv": ("data/solar_2025.csv", ["time", "rad_mean", "cloud_mean"]),
     "jobs_csv": ("data/jobs.csv", ["source", "job_id", "title", "posted_at_utc", "skills", "skills_dict", "first_seen", "last_seen"]),
     "jobs_fetch_csv": ("data/jobs_fetch_log.csv", ["run_date", "source", "fetched", "overlap"]),
     "candles_csv": ("data/market_candles.csv", ["exchange", "asset", "day_utc", "open", "high", "low", "close", "volume"]),

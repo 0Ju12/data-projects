@@ -14,6 +14,7 @@ vars:
   quakes_csv: "../geo-data-pipeline/data/events.csv"
   demand_csv: "../power-demand/data/kpx_hourly_demand_2025.csv"
   weather_csv: "../power-demand/data/weather_2025.csv"
+  solar_csv: "data/solar_2025.csv"             # 4개 도시 시간별 일사량·운량 (Open-Meteo, 2025)
   jobs_csv: "data/jobs.csv"
   jobs_fetch_csv: "data/jobs_fetch_log.csv"
   candles_csv: "data/market_candles.csv"

@@ -31,6 +31,20 @@ models:
     columns:
       - name: month
         data_tests: [unique, not_null]
+  - name: ana_solar_daily
+    columns:
+      - name: demand_date
+        data_tests: [unique, not_null]
+      - name: midday_rad
+        data_tests: [{accepted_range: {arguments: {min_value: 0, max_value: 1100}}}]
+  - name: ana_solar_terciles
+    columns:
+      - name: midday_vs_night
+        data_tests: [not_null]
+  - name: ana_solar_hour_profile
+    columns:
+      - name: demand_mw
+        data_tests: [not_null]
   - name: ana_role_summary
     columns:
       - name: role

@@ -10,7 +10,9 @@ main{max-width:1100px;margin:0 auto;padding:28px 16px 60px}h1{margin:0 0 4px;let
 h3{font-size:13px;color:var(--muted);margin:10px 0 4px}.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
 svg.chart{width:100%;height:auto;color:var(--text)}#map{height:440px;border-radius:12px}table{width:100%;border-collapse:collapse;font-size:13px}td{padding:4px 6px;border-top:1px solid var(--line)}
 .note{font-size:12.5px;color:var(--muted)}a{color:inherit}
+nav.others{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;margin:0 0 6px;color:var(--muted)}nav.others a{text-decoration:none;border-bottom:1px solid var(--line)}nav.others a:hover{border-color:currentColor}
 </style></head><body><main>
+<nav class="others" aria-label="같은 사이트의 다른 분석"><span>같은 사이트:</span><a href="warehouse/">공개 데이터 분석 웨어하우스</a><a href="energy/">전력 전환 분석</a><a href="api-watch/">API Watch</a><a href="power/">전력 수요 예측</a><a href="fire/">산불 위험 지도</a><a href="wcf/">중력 모델링 도구</a></nav>
 <h1>동아시아 지진 데이터 파이프라인</h1>
 <p class="sub">USGS FDSN Event API → 정제(중복·수정본·범위 검사) → CSV/SQLite → 분석 → 이 페이지. GitHub Actions 가 매일 갱신 · 마지막 갱신 2026-11-23 01:46 UTC</p>
 <section class="card"><h2>지도 <small>원 크기 = 규모, 색 = 깊이</small></h2><div id="map"></div><p class="note">표시: 동아시아 (한반도·일본 주변) M4.0+ 최근 365일</p></section>

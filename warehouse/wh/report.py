@@ -10,7 +10,7 @@ import html
 import json
 from pathlib import Path
 
-from .analysis import temperature_analysis
+from .analysis import solar_analysis, temperature_analysis
 
 ROOT = Path(__file__).resolve().parent.parent
 import re
@@ -142,6 +142,9 @@ def collect_data(db: Path) -> dict:
         part("ana_peakdays", lambda: R("select peak_rank, demand_date, iso_dow, peak_mw, peak_hour_start, temp_mean from ana_peak_days order by 1"))
         part("ana_holiday", lambda: R("select period_name, start_date, end_date, holiday_days, holiday_mean_mw, near_weekday_mean_mw, near_offday_mean_mw, vs_weekday_pct, vs_offday_pct from ana_holiday_effect order by start_date"))
         part("ana_noon", lambda: R("select month, weekdays, dip_days, noon_vs_night_pct from ana_noon_dip_monthly order by 1"))
+        part("ana_solar", lambda: solar_analysis(con))
+        part("ana_solar_terc", lambda: R("select month, sun_tercile, midday_rad, midday_cloud, midday_temp, midday_mw, midday_vs_night, days from ana_solar_terciles order by 1, 2"))
+        part("ana_solar_hours", lambda: R("select season, sun_label, hour_start, demand_mw from ana_solar_hour_profile order by 1, 2, 3"))
         part("ana_roles", lambda: R("select role, postings, avg_skills, remote_postings, salary_postings, first_seen, last_seen from ana_role_summary order by postings desc"))
         part("ana_role_skills", lambda: R("select role, skill, category, share_pct, mentions, postings from ana_role_skills order by role, share_pct desc, skill"))
         part("quake_total", lambda: R("select count(*), max(mag), max(occurred_at_utc)::date, (select count(*) from snap_quakes), (select count(*) from snap_quakes where dbt_valid_to is not null) from stg_quakes")[0])
