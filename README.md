@@ -1,6 +1,6 @@
 # data-projects — 공개 데이터로 만든 데이터·AI 프로젝트 모음
 
-에너지·자원·제조·금융 분야의 **공개 데이터**로 수집 → 정제 → 분석·모델링 → 검증까지 직접 해 본 프로젝트 8개입니다.
+에너지·자원·제조·금융 분야의 **공개 데이터**로 수집 → 정제 → 분석·모델링 → 검증까지 직접 해 본 프로젝트 9개입니다.
 각 폴더가 독립된 프로젝트이고, 폴더마다 README·테스트가 따로 있습니다.
 
 | 폴더 | 내용 | 데이터 | 핵심 결과 |
@@ -11,7 +11,7 @@
 | [dart-analyzer](dart-analyzer/) | 전자공시 데이터 마트(SQL 뷰)와 사업보고서 근거 검색 | OpenDART | 피벗·LAG·RANK 뷰, 2-gram BM25 근거 검색 (인증키로 실행) |
 | [wildfire-watch](wildfire-watch/) | 화재기상지수(FFWI)와 위성 화재 탐지를 매일 모아 비교 · [산불 위험 지도](https://0ju12.github.io/data-projects/fire/) | NASA FIRMS VIIRS + Open-Meteo | 탐지의 90%는 제철소 등 상시 열원 → 가려내는 규칙 · 지수 평가는 아직 표본 부족(AUC 0.57, 양성 10건) |
 | [data-agent](data-agent/) | 위 결과들을 LLM이 SQL로 조회하는 MCP 서버 + 답 속 숫자 검증 | 이 저장소의 산출물 (SQLite) | 읽기 전용 SQL 안전장치 · 틀린 숫자·지어낸 계산을 막는 검사 (LLM 연결 평가는 미실시) |
-| [warehouse](warehouse/) | 2025년 전력 수요·기온과 데이터 직무 채용 공고로 질문 7개를 세우고 dbt 분석 표로 답함 · [분석 대시보드](https://0ju12.github.io/data-projects/warehouse/) | 전력거래소 수요 · Open-Meteo 기온 · Remote OK·Arbeitnow 공고 (+ 부가: 지진·재해 경보·시세·패키지 통계) | 평일 기온 17.5℃ 위 1℃당 +1,636 MW · 13℃ 아래 +969 MW (R² 0.83) · 쉬는 날 −10.8~16.7% · 직무별 기술 언급률 · 모델 40개(분석 표 9개) · dbt 테스트 123개 |
+| [warehouse](warehouse/) | 2025년 전력 수요·기온·일사량과 데이터 직무 채용 공고로 질문 8개를 세우고 dbt 분석 표로 답함 · [분석 대시보드](https://0ju12.github.io/data-projects/warehouse/) | 전력거래소 수요 · Open-Meteo 기온·일사량 · Remote OK·Arbeitnow 공고 (+ 부가: 지진·재해 경보·시세·패키지 통계) | 평일 기온 17.5℃ 위 1℃당 +1,636 MW · 13℃ 아래 +969 MW (R² 0.83) · 쉬는 날 −10.8~16.7% · 일사량 100 W/m²당 한낮 수요 −2,704 MW (해가 진 20~23시 대조군 +11 MW) · 직무별 기술 언급률 · 모델 44개(분석 표 12개) · dbt 테스트 129개 |
 | [energy-transition](energy-transition/) | 한국 발전 구성 25년·석탄 감소 속도·태양광 계절성·탄소 집약도를 12개국과 비교 · [대시보드](https://0ju12.github.io/data-projects/energy/) | Ember 월별 발전량 · Our World in Data 연간 에너지 (CC BY, 키 없음) | 석탄 46.3%(2009) → 31.1%(2025) · 태양광 5월 7.6% vs 12월 3.4% · D3 연도 재생 산점도 · SQL 쿼리 7개 |
 | [api-watch](api-watch/) | API 응답·최신성·구조·품질 관제 + 하루 한 개 AI 기술 학습 · [관제판](https://0ju12.github.io/data-projects/api-watch/) | 22개 공개 엔드포인트 · 한국·글로벌 API/리소스 전체 탐색 · 공식 GitHub/Hugging Face 메타데이터 | 실제 검사와 합성 장애 10종을 분리 · Django/PostgreSQL 실행 구성 · 정기 검사 표본을 가동률로 일반화하지 않음 |
 
@@ -23,9 +23,9 @@
 - **비밀값 관리**: 인증키는 환경변수·GitHub Secrets로만 받습니다.
 
 ```bash
-cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 40 · energy 5
+cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 42 · energy 5
 ```
 
-GitHub Actions: `tests`(폴더별 테스트 + Airflow DAG 1회 실행), `geo daily update`(매일 수집 → 지진 대시보드·산불 위험 지도를 갱신하고 전력 예측 탐색기와 함께 GitHub Pages로 배포), `dart build mart`(인증키가 있을 때 매월).
+GitHub Actions: `tests`(폴더별 테스트 + Airflow DAG 1회 실행), `geo daily update`(매일 수집 → 지진 대시보드·산불 위험 지도·분석 웨어하우스·전력 전환 대시보드를 갱신하고 전력 예측 탐색기·API 관제판과 함께 GitHub Pages로 배포), `dart build mart`(인증키가 있을 때 매월).
 
 데이터 출처·라이선스는 각 폴더 README에 적었습니다 (USGS 공공 데이터, UCI CC BY 4.0, 공공데이터포털, Open-Meteo CC BY 4.0, OpenDART).
