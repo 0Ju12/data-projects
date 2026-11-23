@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-22T22:45:43.362315+00:00",
+  "last_check_at": "2026-11-23T03:59:15.251826+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.266644+00:00",
-        "duration_ms": 590.93
+        "checked_at": "2026-11-23T03:59:15.189741+00:00",
+        "duration_ms": 505.17
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.271639+00:00",
-        "duration_ms": 166.35
+        "checked_at": "2026-11-23T03:59:15.192861+00:00",
+        "duration_ms": 114.99
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.274854+00:00",
-        "duration_ms": 265.56
+        "checked_at": "2026-11-23T03:59:15.194936+00:00",
+        "duration_ms": 2027.57
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.286737+00:00",
-        "duration_ms": 419.66
+        "checked_at": "2026-11-23T03:59:15.196979+00:00",
+        "duration_ms": 573.46
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.289456+00:00",
-        "duration_ms": 101.61
+        "checked_at": "2026-11-23T03:59:15.198644+00:00",
+        "duration_ms": 75.72
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.292290+00:00",
-        "duration_ms": 513.88
+        "checked_at": "2026-11-23T03:59:15.200642+00:00",
+        "duration_ms": 417.23
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.295085+00:00",
-        "duration_ms": 1576.1
+        "checked_at": "2026-11-23T03:59:15.202621+00:00",
+        "duration_ms": 1772.47
       }
     },
     {
@@ -110,8 +110,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.297817+00:00",
-        "duration_ms": 278.5
+        "checked_at": "2026-11-23T03:59:15.204410+00:00",
+        "duration_ms": 195.22
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.300862+00:00",
-        "duration_ms": 106.7
+        "checked_at": "2026-11-23T03:59:15.206739+00:00",
+        "duration_ms": 303.77
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.304615+00:00",
-        "duration_ms": 77.73
+        "checked_at": "2026-11-23T03:59:15.209612+00:00",
+        "duration_ms": 91.41
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.307124+00:00",
-        "duration_ms": 614.56
+        "checked_at": "2026-11-23T03:59:15.211548+00:00",
+        "duration_ms": 488.58
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.309409+00:00",
-        "duration_ms": 309.47
+        "checked_at": "2026-11-23T03:59:15.213203+00:00",
+        "duration_ms": 376.09
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.312098+00:00",
-        "duration_ms": 2144.6
+        "checked_at": "2026-11-23T03:59:15.215041+00:00",
+        "duration_ms": 91.46
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.314517+00:00",
-        "duration_ms": 53.18
+        "checked_at": "2026-11-23T03:59:15.216708+00:00",
+        "duration_ms": 54.13
       }
     },
     {
@@ -208,8 +208,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.317738+00:00",
-        "duration_ms": 982.22
+        "checked_at": "2026-11-23T03:59:15.218981+00:00",
+        "duration_ms": 566.56
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.320438+00:00",
-        "duration_ms": 265.24
+        "checked_at": "2026-11-23T03:59:15.220619+00:00",
+        "duration_ms": 231.24
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.322949+00:00",
-        "duration_ms": 204.49
+        "checked_at": "2026-11-23T03:59:15.222648+00:00",
+        "duration_ms": 138.96
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.334453+00:00",
-        "duration_ms": 94.66
+        "checked_at": "2026-11-23T03:59:15.231856+00:00",
+        "duration_ms": 104.49
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.345806+00:00",
-        "duration_ms": 157.28
+        "checked_at": "2026-11-23T03:59:15.240257+00:00",
+        "duration_ms": 62.08
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-22T22:45:43.351650+00:00",
-        "duration_ms": 239.34
+        "checked_at": "2026-11-23T03:59:15.244620+00:00",
+        "duration_ms": 214.99
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-22T22:45:43.355975+00:00",
-        "duration_ms": 55.65
+        "checked_at": "2026-11-23T03:59:15.247481+00:00",
+        "duration_ms": 148.86
       }
     },
     {
@@ -305,36 +305,24 @@
         "docs": "https://open-meteo.com/en/docs"
       },
       "last_run": {
-        "status": "warning",
-        "checked_at": "2026-11-22T22:45:43.362315+00:00",
-        "duration_ms": 12072.82
+        "status": "healthy",
+        "checked_at": "2026-11-23T03:59:15.251826+00:00",
+        "duration_ms": 284.22
       }
     }
   ],
   "incidents": [
     {
       "id": 21,
-      "target": "weather",
-      "key": "availability",
-      "kind": "availability",
-      "severity": "warning",
-      "message": "URLError · 응답을 읽지 못했습니다.",
-      "opened_at": "2026-11-22T22:45:43.362315+00:00",
-      "last_seen_at": "2026-11-22T22:45:43.362315+00:00",
-      "resolved_at": null,
-      "occurrences": 1
-    },
-    {
-      "id": 20,
       "target": "rest-countries",
       "key": "json",
       "kind": "format",
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-22T22:45:43.351650+00:00",
+      "last_seen_at": "2026-11-23T03:59:15.244620+00:00",
       "resolved_at": null,
-      "occurrences": 31
+      "occurrences": 32
     }
   ],
   "ai_latest": {
@@ -915,9 +903,9 @@
   "portfolio": {
     "schema_version": 1,
     "source_repository": "0Ju12/0Ju12.github.io",
-    "source_sha": "7e17595378499d3c778368f5d1b9f4546d2a018a",
-    "source_updated_at": "2026-11-22T03:29:14Z",
-    "synced_at": "2026-11-22T08:46:05.243979+00:00",
+    "source_sha": "75bdbaa510e1f42464170722a74b2a59c29e9bce",
+    "source_updated_at": "2026-11-23T03:40:47Z",
+    "synced_at": "2026-11-23T03:59:12.710268+00:00",
     "links": {
       "preparation": "https://0ju12.github.io/study/index.html",
       "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -1113,6 +1101,15 @@
       }
     ],
     "learning_notes": [
+      {
+        "id": "2026-11-ai-trend-27-starburst-context-studio",
+        "title": "11/18 Starburst Context Studio — 에이전트에게 '매출'의 뜻을 알려 주는 정의 저장소",
+        "summary": "Starburst가 카탈로그·BI 도구·지표 저장소에 흩어진 업무 정의를 모아, 충돌하면 사람이 고르게 하고, 확정된 정의를 MCP로 에이전트에게 주는 Context Studio를 발표했습니다. 데이터 팀에게 지표 정의 관리가 어떤 일이 되는지 정리했습니다.",
+        "date": "2026-11-23",
+        "episode": 27,
+        "url": "https://0ju12.github.io/posts/2026-11-ai-trend-27-starburst-context-studio.html",
+        "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+      },
       {
         "id": "2026-11-ai-trend-26-us-frontier-ai-safety-proposals",
         "title": "11/18~19 미국 프런티어 AI 규제 — 캘리포니아 'AI Safety in 2026 and Beyond'와 하원 SAFE AI Act 개요",

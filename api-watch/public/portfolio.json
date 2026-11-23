@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_repository": "0Ju12/0Ju12.github.io",
-  "source_sha": "7e17595378499d3c778368f5d1b9f4546d2a018a",
-  "source_updated_at": "2026-11-22T03:29:14Z",
-  "synced_at": "2026-11-22T08:46:05.243979+00:00",
+  "source_sha": "75bdbaa510e1f42464170722a74b2a59c29e9bce",
+  "source_updated_at": "2026-11-23T03:40:47Z",
+  "synced_at": "2026-11-23T03:59:12.710268+00:00",
   "links": {
     "preparation": "https://0ju12.github.io/study/index.html",
     "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -199,6 +199,15 @@
     }
   ],
   "learning_notes": [
+    {
+      "id": "2026-11-ai-trend-27-starburst-context-studio",
+      "title": "11/18 Starburst Context Studio — 에이전트에게 '매출'의 뜻을 알려 주는 정의 저장소",
+      "summary": "Starburst가 카탈로그·BI 도구·지표 저장소에 흩어진 업무 정의를 모아, 충돌하면 사람이 고르게 하고, 확정된 정의를 MCP로 에이전트에게 주는 Context Studio를 발표했습니다. 데이터 팀에게 지표 정의 관리가 어떤 일이 되는지 정리했습니다.",
+      "date": "2026-11-23",
+      "episode": 27,
+      "url": "https://0ju12.github.io/posts/2026-11-ai-trend-27-starburst-context-studio.html",
+      "label": "내 포트폴리오의 AI 기술 정리 · 공식 신규 발표와 구분"
+    },
     {
       "id": "2026-11-ai-trend-26-us-frontier-ai-safety-proposals",
       "title": "11/18~19 미국 프런티어 AI 규제 — 캘리포니아 'AI Safety in 2026 and Beyond'와 하원 SAFE AI Act 개요",
