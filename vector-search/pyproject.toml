@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ju-vectorlab"
+version = "0.1.0"
+description = "Local exact and inverted-file cosine search with Korean evidence retrieval evaluation"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24,<3"]
+license = {file = "LICENSE"}
+
+[project.scripts]
+vectorlab = "vectorlab.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["vectorlab"]
+
+[tool.setuptools.package-data]
+vectorlab = ["data/*.json"]

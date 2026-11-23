@@ -1,0 +1,28 @@
+name: VectorLab
+on:
+  push:
+    paths: ['vector-search/**', '.github/workflows/vectorlab.yml']
+  pull_request:
+    paths: ['vector-search/**', '.github/workflows/vectorlab.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vector-search
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install . pytest
+      - run: python -m pytest -q
+      - run: vectorlab pipeline --out report.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vectorlab-report
+          path: vector-search/report.json

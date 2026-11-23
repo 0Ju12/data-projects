@@ -15,6 +15,8 @@
 | [energy-transition](energy-transition/) | 한국 발전 구성 25년·석탄 감소 속도·태양광 계절성·탄소 집약도를 12개국과 비교 · [대시보드](https://0ju12.github.io/data-projects/energy/) | Ember 월별 발전량 · Our World in Data 연간 에너지 (CC BY, 키 없음) | 석탄 46.3%(2009) → 31.1%(2025) · 태양광 5월 7.6% vs 12월 3.4% · D3 연도 재생 산점도 · SQL 쿼리 7개 |
 | [api-watch](api-watch/) | API 응답·최신성·구조·품질 관제 + 하루 한 개 AI 기술 학습 · [관제판](https://0ju12.github.io/data-projects/api-watch/) | 22개 공개 엔드포인트 · 한국·글로벌 API/리소스 전체 탐색 · 공식 GitHub/Hugging Face 메타데이터 | 실제 검사와 합성 장애 10종을 분리 · Django/PostgreSQL 실행 구성 · 정기 검사 표본을 가동률로 일반화하지 않음 |
 
+벡터 검색 구현과 한국어 근거 검색 평가는 [VectorLab](vector-search/)에서 실행할 수 있습니다.
+
 공통으로 지킨 것
 - **평가를 정직하게**: 시계열은 시간 순서로 나눠 검증하고, 잘 안 된 결과(부품별 비지도 탐지의 오경보, 연휴 다음 날 예측 오차)도 README에 남겼습니다.
 - **재처리 안전성**: 같은 데이터를 여러 번 넣어도 결과가 같게(멱등), 원본은 체크섬으로 확인.

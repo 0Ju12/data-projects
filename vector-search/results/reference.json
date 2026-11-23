@@ -1,0 +1,335 @@
+{
+  "seed": 42,
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "openblas_threads": "1",
+  "fixture_sha256": {
+    "queries": "ec24a294013c8c77c36ca5c717abe9035b7aaf277c677612410e83402749742b",
+    "documents": "89675c609f388250731abef342a275bf358c23b1b9135f20406cf17089fb70a3"
+  },
+  "heritage": {
+    "exact": {
+      "hit_at_3": 1.0,
+      "mrr_at_3": 1.0,
+      "answerable": 6,
+      "rows": [
+        {
+          "id": "g01",
+          "text": "2008년 화재는 언제 일어났고, 복구 뒤 언제 다시 공개되었나?",
+          "relevant": [
+            "gate-fire"
+          ],
+          "retrieved": [
+            "gate-fire",
+            "grotto-id",
+            "book-year"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g02",
+          "text": "숭례문을 남대문이라고도 부르는 이유는?",
+          "relevant": [
+            "gate-name"
+          ],
+          "retrieved": [
+            "gate-name",
+            "gate-site",
+            "dabo-site"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g03",
+          "text": "다보탑 기단의 돌사자는 지금 몇 마리 남아 있나?",
+          "relevant": [
+            "dabo-lion"
+          ],
+          "retrieved": [
+            "dabo-lion",
+            "dabo-site",
+            "gate-site"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g04",
+          "text": "훈민정음 해례본은 언제 간행되었고 지금 어디에 있나?",
+          "relevant": [
+            "book-year"
+          ],
+          "retrieved": [
+            "book-year",
+            "book-content",
+            "gate-site"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g05",
+          "text": "석굴암을 지금도 공식적으로 '국보 제24호'라고 부르나?",
+          "relevant": [
+            "grotto-id"
+          ],
+          "retrieved": [
+            "grotto-id",
+            "statue-home",
+            "grotto-site"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g06",
+          "text": "이 반가사유상은 어디에 소장되어 있나?",
+          "relevant": [
+            "statue-home"
+          ],
+          "retrieved": [
+            "statue-home",
+            "statue-pose",
+            "grotto-site"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g07",
+          "text": "숭례문 복원 공사에 참여한 목수의 이름과 하루 품삯은?",
+          "relevant": [],
+          "retrieved": [
+            "gate-site",
+            "gate-restore",
+            "book-year"
+          ],
+          "rank": null
+        },
+        {
+          "id": "g08",
+          "text": "다보탑을 설계한 석공의 고향은 어디인가?",
+          "relevant": [],
+          "retrieved": [
+            "dabo-site",
+            "dabo-lion",
+            "grotto-id"
+          ],
+          "rank": null
+        },
+        {
+          "id": "g09",
+          "text": "해례본을 처음 발견한 사람이 받은 보상금은 얼마였나?",
+          "relevant": [],
+          "retrieved": [
+            "book-year",
+            "gate-site",
+            "gate-fire"
+          ],
+          "rank": null
+        }
+      ]
+    },
+    "ivf": {
+      "hit_at_3": 1.0,
+      "mrr_at_3": 1.0,
+      "answerable": 6,
+      "rows": [
+        {
+          "id": "g01",
+          "text": "2008년 화재는 언제 일어났고, 복구 뒤 언제 다시 공개되었나?",
+          "relevant": [
+            "gate-fire"
+          ],
+          "retrieved": [
+            "gate-fire",
+            "book-year",
+            "book-content"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g02",
+          "text": "숭례문을 남대문이라고도 부르는 이유는?",
+          "relevant": [
+            "gate-name"
+          ],
+          "retrieved": [
+            "gate-name",
+            "dabo-site",
+            "grotto-site"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g03",
+          "text": "다보탑 기단의 돌사자는 지금 몇 마리 남아 있나?",
+          "relevant": [
+            "dabo-lion"
+          ],
+          "retrieved": [
+            "dabo-lion",
+            "dabo-site",
+            "gate-name"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g04",
+          "text": "훈민정음 해례본은 언제 간행되었고 지금 어디에 있나?",
+          "relevant": [
+            "book-year"
+          ],
+          "retrieved": [
+            "book-year",
+            "book-content",
+            "gate-fire"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g05",
+          "text": "석굴암을 지금도 공식적으로 '국보 제24호'라고 부르나?",
+          "relevant": [
+            "grotto-id"
+          ],
+          "retrieved": [
+            "grotto-id",
+            "grotto-site",
+            "dabo-site"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g06",
+          "text": "이 반가사유상은 어디에 소장되어 있나?",
+          "relevant": [
+            "statue-home"
+          ],
+          "retrieved": [
+            "statue-home",
+            "statue-pose",
+            "gate-site"
+          ],
+          "rank": 1
+        },
+        {
+          "id": "g07",
+          "text": "숭례문 복원 공사에 참여한 목수의 이름과 하루 품삯은?",
+          "relevant": [],
+          "retrieved": [
+            "gate-site",
+            "gate-restore",
+            "statue-pose"
+          ],
+          "rank": null
+        },
+        {
+          "id": "g08",
+          "text": "다보탑을 설계한 석공의 고향은 어디인가?",
+          "relevant": [],
+          "retrieved": [
+            "dabo-site",
+            "dabo-lion",
+            "grotto-id"
+          ],
+          "rank": null
+        },
+        {
+          "id": "g09",
+          "text": "해례본을 처음 발견한 사람이 받은 보상금은 얼마였나?",
+          "relevant": [],
+          "retrieved": [
+            "book-year",
+            "gate-fire",
+            "book-content"
+          ],
+          "rank": null
+        }
+      ]
+    }
+  },
+  "synthetic": [
+    {
+      "documents": 1000,
+      "dimensions": 96,
+      "clusters": 32,
+      "k": 10,
+      "queries": 128,
+      "build_ms": 16.758753,
+      "database_bytes": 450560,
+      "index_array_bytes": 412288,
+      "modes": [
+        {
+          "probes": null,
+          "recall_at_k": 1.0,
+          "p50_ms": 0.076741,
+          "p95_ms": 0.12299934999999995
+        },
+        {
+          "probes": 1,
+          "recall_at_k": 0.96015625,
+          "p50_ms": 0.0243015,
+          "p95_ms": 0.047003399999999966
+        },
+        {
+          "probes": 4,
+          "recall_at_k": 0.9953125,
+          "p50_ms": 0.034326999999999996,
+          "p95_ms": 0.08244389999999996
+        },
+        {
+          "probes": 12,
+          "recall_at_k": 1.0,
+          "p50_ms": 0.067312,
+          "p95_ms": 0.1638768
+        },
+        {
+          "probes": 32,
+          "recall_at_k": 1.0,
+          "p50_ms": 0.1454545,
+          "p95_ms": 0.2500663499999999
+        }
+      ]
+    },
+    {
+      "documents": 10000,
+      "dimensions": 96,
+      "clusters": 32,
+      "k": 10,
+      "queries": 128,
+      "build_ms": 114.574825,
+      "database_bytes": 4276224,
+      "index_array_bytes": 4012288,
+      "modes": [
+        {
+          "probes": null,
+          "recall_at_k": 1.0,
+          "p50_ms": 0.970942,
+          "p95_ms": 2.5928264999999993
+        },
+        {
+          "probes": 1,
+          "recall_at_k": 0.9640625,
+          "p50_ms": 0.051753,
+          "p95_ms": 0.10527265
+        },
+        {
+          "probes": 4,
+          "recall_at_k": 0.9984375,
+          "p50_ms": 0.16402250000000002,
+          "p95_ms": 0.2478775
+        },
+        {
+          "probes": 12,
+          "recall_at_k": 1.0,
+          "p50_ms": 0.4719375,
+          "p95_ms": 0.5872388
+        },
+        {
+          "probes": 32,
+          "recall_at_k": 1.0,
+          "p50_ms": 1.3696195,
+          "p95_ms": 1.6197287999999999
+        }
+      ]
+    }
+  ]
+}
