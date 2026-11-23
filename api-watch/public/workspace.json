@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-23T03:59:15.251826+00:00",
+  "last_check_at": "2026-11-23T15:18:36.117633+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.189741+00:00",
-        "duration_ms": 505.17
+        "checked_at": "2026-11-23T15:18:36.034052+00:00",
+        "duration_ms": 696.47
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.192861+00:00",
-        "duration_ms": 114.99
+        "checked_at": "2026-11-23T15:18:36.037778+00:00",
+        "duration_ms": 126.74
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.194936+00:00",
-        "duration_ms": 2027.57
+        "checked_at": "2026-11-23T15:18:36.040361+00:00",
+        "duration_ms": 500.58
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.196979+00:00",
-        "duration_ms": 573.46
+        "checked_at": "2026-11-23T15:18:36.042985+00:00",
+        "duration_ms": 563.02
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.198644+00:00",
-        "duration_ms": 75.72
+        "checked_at": "2026-11-23T15:18:36.045154+00:00",
+        "duration_ms": 79.83
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.200642+00:00",
-        "duration_ms": 417.23
+        "checked_at": "2026-11-23T15:18:36.050789+00:00",
+        "duration_ms": 642.04
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.202621+00:00",
-        "duration_ms": 1772.47
+        "checked_at": "2026-11-23T15:18:36.053365+00:00",
+        "duration_ms": 1884.67
       }
     },
     {
@@ -110,8 +110,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.204410+00:00",
-        "duration_ms": 195.22
+        "checked_at": "2026-11-23T15:18:36.055708+00:00",
+        "duration_ms": 196.63
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.206739+00:00",
-        "duration_ms": 303.77
+        "checked_at": "2026-11-23T15:18:36.058592+00:00",
+        "duration_ms": 175.61
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.209612+00:00",
-        "duration_ms": 91.41
+        "checked_at": "2026-11-23T15:18:36.062014+00:00",
+        "duration_ms": 129.1
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.211548+00:00",
-        "duration_ms": 488.58
+        "checked_at": "2026-11-23T15:18:36.065125+00:00",
+        "duration_ms": 601.64
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.213203+00:00",
-        "duration_ms": 376.09
+        "checked_at": "2026-11-23T15:18:36.067374+00:00",
+        "duration_ms": 464.93
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.215041+00:00",
-        "duration_ms": 91.46
+        "checked_at": "2026-11-23T15:18:36.069844+00:00",
+        "duration_ms": 286.89
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.216708+00:00",
-        "duration_ms": 54.13
+        "checked_at": "2026-11-23T15:18:36.072055+00:00",
+        "duration_ms": 40.58
       }
     },
     {
@@ -207,9 +207,9 @@
         "docs": "https://openlibrary.org/dev/docs/api/search"
       },
       "last_run": {
-        "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.218981+00:00",
-        "duration_ms": 566.56
+        "status": "warning",
+        "checked_at": "2026-11-23T15:18:36.074988+00:00",
+        "duration_ms": 4193.65
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.220619+00:00",
-        "duration_ms": 231.24
+        "checked_at": "2026-11-23T15:18:36.078667+00:00",
+        "duration_ms": 292.7
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.222648+00:00",
-        "duration_ms": 138.96
+        "checked_at": "2026-11-23T15:18:36.081167+00:00",
+        "duration_ms": 189.76
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.231856+00:00",
-        "duration_ms": 104.49
+        "checked_at": "2026-11-23T15:18:36.092238+00:00",
+        "duration_ms": 77.28
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.240257+00:00",
-        "duration_ms": 62.08
+        "checked_at": "2026-11-23T15:18:36.103326+00:00",
+        "duration_ms": 43.92
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-23T03:59:15.244620+00:00",
-        "duration_ms": 214.99
+        "checked_at": "2026-11-23T15:18:36.108802+00:00",
+        "duration_ms": 171.92
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.247481+00:00",
-        "duration_ms": 148.86
+        "checked_at": "2026-11-23T15:18:36.112181+00:00",
+        "duration_ms": 89.1
       }
     },
     {
@@ -306,12 +306,24 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T03:59:15.251826+00:00",
-        "duration_ms": 284.22
+        "checked_at": "2026-11-23T15:18:36.117633+00:00",
+        "duration_ms": 33.27
       }
     }
   ],
   "incidents": [
+    {
+      "id": 22,
+      "target": "open-library",
+      "key": "latency",
+      "kind": "latency",
+      "severity": "warning",
+      "message": "4194 ms · 기준 3000 ms",
+      "opened_at": "2026-11-23T15:18:36.074988+00:00",
+      "last_seen_at": "2026-11-23T15:18:36.074988+00:00",
+      "resolved_at": null,
+      "occurrences": 1
+    },
     {
       "id": 21,
       "target": "rest-countries",
@@ -320,21 +332,21 @@
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-23T03:59:15.244620+00:00",
+      "last_seen_at": "2026-11-23T15:18:36.108802+00:00",
       "resolved_at": null,
-      "occurrences": 32
+      "occurrences": 33
     }
   ],
   "ai_latest": {
-    "date": "2026-11-23",
-    "item_id": "langchain-ai/langgraph:450920110",
-    "created_at": "2026-11-22T17:22:24.412677+00:00",
+    "date": "2026-11-24",
+    "item_id": "langchain-ai/langgraph:450915663",
+    "created_at": "2026-11-23T15:18:36.121286+00:00",
     "kind": "release",
     "label": "관심 저장소의 공식 릴리스",
-    "title": "LangGraph · langgraph==1.2.23",
+    "title": "LangGraph · langgraph-prebuilt==1.1.3",
     "technology": "LangGraph",
-    "official_published_at": "2026-11-19T05:33:06Z",
-    "collected_at": "2026-11-22T17:22:24.412677+00:00",
+    "official_published_at": "2026-11-19T05:26:17Z",
+    "collected_at": "2026-11-23T15:18:36.121286+00:00",
     "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
     "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
     "flow": [
@@ -343,15 +355,15 @@
       "검증·분기",
       "최종 응답"
     ],
-    "release_excerpt": "Changes since 1.2.22 * release(langgraph): 1.2.23 (#9742) * release(prebuilt): 1.1.3 (#9741) * fix(langgraph,prebuilt): give Send-dispatched tool calls the same state as an edge (#9728) * chore(deps): bump opentelemetry-api from 1.45.1 to 1.45.2 in /libs/langgraph (#9696) * fix(langgraph): avoid warning races in dynamic schemas (#9716)",
+    "release_excerpt": "Changes since prebuilt==1.1.2 * release(prebuilt): 1.1.3 (#9741) * fix(langgraph,prebuilt): give Send-dispatched tool calls the same state as an edge (#9728) * fix(prebuilt): make wrap_tool_call state overrides reach the tool (#9730)",
     "facts": [
       {
         "label": "공식 발표일",
-        "value": "2026-11-19T05:33:06Z"
+        "value": "2026-11-19T05:26:17Z"
       },
       {
         "label": "버전",
-        "value": "1.2.23"
+        "value": "prebuilt==1.1.3"
       },
       {
         "label": "저장소",
@@ -366,7 +378,7 @@
     "sources": [
       {
         "title": "공식 릴리스 또는 프로젝트 원문",
-        "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.23"
+        "url": "https://github.com/langchain-ai/langgraph/releases/tag/prebuilt%3D%3D1.1.3"
       },
       {
         "title": "공식 저장소",
@@ -387,6 +399,67 @@
     "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
   },
   "ai_archive": [
+    {
+      "date": "2026-11-24",
+      "item_id": "langchain-ai/langgraph:450915663",
+      "created_at": "2026-11-23T15:18:36.121286+00:00",
+      "kind": "release",
+      "label": "관심 저장소의 공식 릴리스",
+      "title": "LangGraph · langgraph-prebuilt==1.1.3",
+      "technology": "LangGraph",
+      "official_published_at": "2026-11-19T05:26:17Z",
+      "collected_at": "2026-11-23T15:18:36.121286+00:00",
+      "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+      "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+      "flow": [
+        "상태 입력",
+        "검색·도구 노드",
+        "검증·분기",
+        "최종 응답"
+      ],
+      "release_excerpt": "Changes since prebuilt==1.1.2 * release(prebuilt): 1.1.3 (#9741) * fix(langgraph,prebuilt): give Send-dispatched tool calls the same state as an edge (#9728) * fix(prebuilt): make wrap_tool_call state overrides reach the tool (#9730)",
+      "facts": [
+        {
+          "label": "공식 발표일",
+          "value": "2026-11-19T05:26:17Z"
+        },
+        {
+          "label": "버전",
+          "value": "prebuilt==1.1.3"
+        },
+        {
+          "label": "저장소",
+          "value": "langchain-ai/langgraph"
+        }
+      ],
+      "limits": [
+        "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+        "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+      ],
+      "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+      "sources": [
+        {
+          "title": "공식 릴리스 또는 프로젝트 원문",
+          "url": "https://github.com/langchain-ai/langgraph/releases/tag/prebuilt%3D%3D1.1.3"
+        },
+        {
+          "title": "공식 저장소",
+          "url": "https://github.com/langchain-ai/langgraph"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    },
     {
       "date": "2026-11-23",
       "item_id": "langchain-ai/langgraph:450920110",
@@ -903,9 +976,9 @@
   "portfolio": {
     "schema_version": 1,
     "source_repository": "0Ju12/0Ju12.github.io",
-    "source_sha": "75bdbaa510e1f42464170722a74b2a59c29e9bce",
-    "source_updated_at": "2026-11-23T03:40:47Z",
-    "synced_at": "2026-11-23T03:59:12.710268+00:00",
+    "source_sha": "e17665cfff60a3ca4a59d5db599f00f580f5de0c",
+    "source_updated_at": "2026-11-23T05:44:51Z",
+    "synced_at": "2026-11-23T15:18:30.583079+00:00",
     "links": {
       "preparation": "https://0ju12.github.io/study/index.html",
       "study": "https://0ju12.github.io/study/index.html#/notes",
@@ -1347,7 +1420,7 @@
     ],
     "scope": "공개 프로젝트 YAML과 공개 AI 글의 제목·요약만 가져옵니다. 기존 개인 기록과 실험 결과를 수정하지 않습니다.",
     "study": {
-      "note_count": 54,
+      "note_count": 57,
       "url": "https://0ju12.github.io/study/index.html#/notes",
       "highlights": [
         {
