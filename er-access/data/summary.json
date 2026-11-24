@@ -1,0 +1,872 @@
+{
+ "built": "2026-11-24 15:07 KST",
+ "region": "경상북도",
+ "bbox": [
+  35.57,
+  127.8,
+  37.55,
+  129.6
+ ],
+ "er_source": "provisional",
+ "er_files": [
+  "data/er_osm.csv",
+  "data/regional_centers_wiki.csv",
+  "data/er_extra_provisional.csv"
+ ],
+ "er": {
+  "rows": 18,
+  "by_tier": {
+   "regional": 5,
+   "local_center": 0,
+   "local_institution": 0,
+   "other": 13
+  }
+ },
+ "cells": 26898,
+ "cells_bbox": 46118,
+ "road_source": "hotosm_gpkg",
+ "graph": {
+  "nodes": 939298,
+  "edges": 1727271,
+  "nodes_before_largest_component": 1008273
+ },
+ "assumptions": {
+  "road_classes": [
+   "motorway",
+   "trunk",
+   "primary",
+   "secondary",
+   "tertiary",
+   "unclassified"
+  ],
+  "speeds_kmh": {
+   "motorway": 90,
+   "trunk": 70,
+   "primary": 50,
+   "secondary": 45,
+   "tertiary": 40,
+   "unclassified": 30,
+   "residential": 25
+  },
+  "snap_m": 1500,
+  "access_kmh": 20,
+  "cutoff_min": 240
+ },
+ "targets": [
+  {
+   "name": "지역응급의료센터 이상",
+   "minutes": 30,
+   "tiers": [
+    "regional",
+    "local_center"
+   ],
+   "available": false,
+   "targets": 5,
+   "targets_unsnapped": [],
+   "cells_no_road": 3043,
+   "bands": null
+  },
+  {
+   "name": "권역응급의료센터",
+   "minutes": 60,
+   "tiers": [
+    "regional"
+   ],
+   "available": true,
+   "limit_min": 60,
+   "population": 2558650,
+   "within": 2342467,
+   "share_within": 0.9155,
+   "population_unreached": 58430,
+   "targets": 5,
+   "targets_unsnapped": [],
+   "cells_no_road": 3043,
+   "bands": [
+    {
+     "label": "0–15분",
+     "pop": 455760
+    },
+    {
+     "label": "15–30분",
+     "pop": 542099
+    },
+    {
+     "label": "30–60분",
+     "pop": 1344608
+    },
+    {
+     "label": "60–90분",
+     "pop": 119984
+    },
+    {
+     "label": "90분 넘음",
+     "pop": 37769
+    },
+    {
+     "label": "못 닿음",
+     "pop": 58430
+    }
+   ]
+  },
+  {
+   "name": "응급실 아무 곳",
+   "minutes": 30,
+   "tiers": [
+    "regional",
+    "local_center",
+    "local_institution",
+    "other"
+   ],
+   "available": true,
+   "limit_min": 30,
+   "population": 2558650,
+   "within": 1848346,
+   "share_within": 0.7224,
+   "population_unreached": 52599,
+   "targets": 18,
+   "targets_unsnapped": [
+    "울릉군보건의료원"
+   ],
+   "cells_no_road": 3043,
+   "bands": [
+    {
+     "label": "0–15분",
+     "pop": 1148237
+    },
+    {
+     "label": "15–30분",
+     "pop": 700108
+    },
+    {
+     "label": "30–60분",
+     "pop": 582480
+    },
+    {
+     "label": "60–90분",
+     "pop": 44442
+    },
+    {
+     "label": "90분 넘음",
+     "pop": 30783
+    },
+    {
+     "label": "못 닿음",
+     "pop": 52599
+    }
+   ]
+  }
+ ],
+ "by_sigun": [
+  {
+   "name": "경산시",
+   "population": 288894,
+   "cells": 586,
+   "권역응급의료센터": {
+    "share_within": 0.9793,
+    "median_min": 25.3
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.9593,
+    "median_min": 8.0
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0207
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "경주시",
+   "population": 232276,
+   "cells": 1964,
+   "권역응급의료센터": {
+    "share_within": 0.9679,
+    "median_min": 33.8
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.3309,
+    "median_min": 33.2
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0321
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "고령군",
+   "population": 29466,
+   "cells": 533,
+   "권역응급의료센터": {
+    "share_within": 0.9894,
+    "median_min": 32.7
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.6683,
+    "median_min": 28.0
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0106
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "구미시",
+   "population": 460367,
+   "cells": 895,
+   "권역응급의료센터": {
+    "share_within": 0.9854,
+    "median_min": 40.0
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.9647,
+    "median_min": 9.6
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0146
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "김천시",
+   "population": 111163,
+   "cells": 1491,
+   "권역응급의료센터": {
+    "share_within": 0.818,
+    "median_min": 55.6
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.6158,
+    "median_min": 29.2
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.182
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "문경시",
+   "population": 48885,
+   "cells": 1320,
+   "권역응급의료센터": {
+    "share_within": 0.463,
+    "median_min": 61.6
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.3752,
+    "median_min": 35.5
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.537
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "봉화군",
+   "population": 22039,
+   "cells": 1526,
+   "권역응급의료센터": {
+    "share_within": 0.4838,
+    "median_min": 61.1
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.0066,
+    "median_min": 50.1
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.5162
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "상주시",
+   "population": 83989,
+   "cells": 1798,
+   "권역응급의료센터": {
+    "share_within": 0.6136,
+    "median_min": 58.4
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.0432,
+    "median_min": 42.2
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.3864
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "성주군",
+   "population": 29115,
+   "cells": 871,
+   "권역응급의료센터": {
+    "share_within": 0.9661,
+    "median_min": 37.6
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.5151,
+    "median_min": 29.9
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0339
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "안동시",
+   "population": 150045,
+   "cells": 2189,
+   "권역응급의료센터": {
+    "share_within": 0.9803,
+    "median_min": 12.6
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.8791,
+    "median_min": 12.3
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0197
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "영덕군",
+   "population": 29756,
+   "cells": 1144,
+   "권역응급의료센터": {
+    "share_within": 0.6196,
+    "median_min": 53.2
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.0322,
+    "median_min": 50.4
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.3804
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "영양군",
+   "population": 13058,
+   "cells": 1242,
+   "권역응급의료센터": {
+    "share_within": 0.1649,
+    "median_min": 71.5
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.0,
+    "median_min": 71.5
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.8351
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "영주시",
+   "population": 91945,
+   "cells": 1017,
+   "권역응급의료센터": {
+    "share_within": 0.9321,
+    "median_min": 39.5
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.7684,
+    "median_min": 26.1
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0679
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "영천시",
+   "population": 81001,
+   "cells": 1249,
+   "권역응급의료센터": {
+    "share_within": 0.9627,
+    "median_min": 38.5
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.822,
+    "median_min": 23.1
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0373
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "예천군",
+   "population": 33601,
+   "cells": 1001,
+   "권역응급의료센터": {
+    "share_within": 0.9613,
+    "median_min": 35.6
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.9073,
+    "median_min": 12.6
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0387
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "울릉군",
+   "population": 5898,
+   "cells": 146,
+   "권역응급의료센터": {
+    "share_within": 0.0,
+    "median_min": null
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.9766,
+    "median_min": 15.2
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 1.0
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "울진군",
+   "population": 36801,
+   "cells": 1507,
+   "권역응급의료센터": {
+    "share_within": 0.0,
+    "median_min": 122.3
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.0,
+    "median_min": 113.9
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 1.0
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "의성군",
+   "population": 39869,
+   "cells": 1723,
+   "권역응급의료센터": {
+    "share_within": 0.9555,
+    "median_min": 41.3
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.053,
+    "median_min": 38.9
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0445
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "청도군",
+   "population": 32361,
+   "cells": 1102,
+   "권역응급의료센터": {
+    "share_within": 0.9035,
+    "median_min": 35.8
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.5921,
+    "median_min": 26.2
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0965
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "청송군",
+   "population": 18656,
+   "cells": 1177,
+   "권역응급의료센터": {
+    "share_within": 0.7109,
+    "median_min": 53.7
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.0,
+    "median_min": 53.3
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.2891
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "칠곡군",
+   "population": 133401,
+   "cells": 626,
+   "권역응급의료센터": {
+    "share_within": 0.9912,
+    "median_min": 27.3
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.9867,
+    "median_min": 16.5
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0088
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "포항시",
+   "population": 586064,
+   "cells": 1791,
+   "권역응급의료센터": {
+    "share_within": 0.9752,
+    "median_min": 12.8
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.7947,
+    "median_min": 12.1
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0248
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  }
+ ],
+ "farthest_cells": [
+  {
+   "lat": 37.1204,
+   "lon": 129.3779,
+   "pop": 54,
+   "minutes": 137.3,
+   "nearest_er": "예천권병원",
+   "sigun": "울진군",
+   "place": "북면"
+  },
+  {
+   "lat": 37.1454,
+   "lon": 129.3612,
+   "pop": 84,
+   "minutes": 136.0,
+   "nearest_er": "예천권병원",
+   "sigun": "울진군",
+   "place": "원덕읍"
+  },
+  {
+   "lat": 37.0871,
+   "lon": 129.3862,
+   "pop": 501,
+   "minutes": 128.1,
+   "nearest_er": "예천권병원",
+   "sigun": "울진군",
+   "place": "죽변면"
+  },
+  {
+   "lat": 37.0204,
+   "lon": 129.3946,
+   "pop": 54,
+   "minutes": 120.5,
+   "nearest_er": "예천권병원",
+   "sigun": "울진군",
+   "place": "울진읍"
+  },
+  {
+   "lat": 36.9538,
+   "lon": 129.4029,
+   "pop": 65,
+   "minutes": 119.4,
+   "nearest_er": "에스포항병원",
+   "sigun": "울진군",
+   "place": "근남면"
+  },
+  {
+   "lat": 36.8954,
+   "lon": 129.4112,
+   "pop": 59,
+   "minutes": 113.5,
+   "nearest_er": "에스포항병원",
+   "sigun": "울진군",
+   "place": "매화면"
+  },
+  {
+   "lat": 36.6704,
+   "lon": 129.4279,
+   "pop": 147,
+   "minutes": 102.4,
+   "nearest_er": "에스포항병원",
+   "sigun": "울진군",
+   "place": "후포면"
+  },
+  {
+   "lat": 36.8204,
+   "lon": 129.4446,
+   "pop": 76,
+   "minutes": 100.4,
+   "nearest_er": "에스포항병원",
+   "sigun": "울진군",
+   "place": "기성면"
+  },
+  {
+   "lat": 36.7204,
+   "lon": 129.3362,
+   "pop": 84,
+   "minutes": 96.3,
+   "nearest_er": "에스포항병원",
+   "sigun": "울진군",
+   "place": "온정면"
+  },
+  {
+   "lat": 36.7704,
+   "lon": 129.4696,
+   "pop": 60,
+   "minutes": 93.6,
+   "nearest_er": "에스포항병원",
+   "sigun": "울진군",
+   "place": "평해읍"
+  },
+  {
+   "lat": 36.6038,
+   "lon": 127.8196,
+   "pop": 58,
+   "minutes": 85.4,
+   "nearest_er": "예천권병원",
+   "sigun": "상주시",
+   "place": "화북면"
+  },
+  {
+   "lat": 36.6704,
+   "lon": 129.1112,
+   "pop": 252,
+   "minutes": 77.2,
+   "nearest_er": "안동병원",
+   "sigun": "영양군",
+   "place": "영양읍"
+  },
+  {
+   "lat": 35.5954,
+   "lon": 129.3029,
+   "pop": 150,
+   "minutes": 72.0,
+   "nearest_er": "포항성모병원",
+   "sigun": "포항시",
+   "place": "두동면"
+  },
+  {
+   "lat": 36.6371,
+   "lon": 129.4112,
+   "pop": 104,
+   "minutes": 71.1,
+   "nearest_er": "에스포항병원",
+   "sigun": "영덕군",
+   "place": "병곡면"
+  },
+  {
+   "lat": 36.3871,
+   "lon": 127.9612,
+   "pop": 74,
+   "minutes": 70.6,
+   "nearest_er": "순천향대학교부속구미병원",
+   "sigun": "상주시",
+   "place": "화동면"
+  }
+ ],
+ "seconds": 40.4,
+ "seconds_network": 34.0
+}

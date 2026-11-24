@@ -1,0 +1,300 @@
+import zipfile
+from pathlib import Path
+
+import pytest
+
+from eraccess import access, er, osm, population
+from eraccess.geo import PointIndex, haversine_m
+from eraccess.graph import RoadGraph, multi_source_dijkstra
+
+# 위도 36.0 위를 동쪽으로 0.01° (약 900 m) 간격으로 놓인 노드 1~5. 6 은 일방통행으로만 이어진 곁가지.
+LON0 = 129.00
+
+
+def node(i, lon, lat=36.0):
+    return {"type": "node", "id": i, "lat": lat, "lon": lon}
+
+
+OVERPASS = {"elements": [
+    *(node(i, LON0 + 0.01 * (i - 1)) for i in range(1, 6)),
+    node(6, LON0 + 0.02, 36.01),
+    node(7, LON0 + 0.05, 36.02),
+    {"type": "way", "id": 100, "nodes": [1, 2, 3], "tags": {"highway": "primary"}},
+    {"type": "way", "id": 101, "nodes": [3, 4, 5], "tags": {"highway": "primary_link", "maxspeed": "30"}},
+    {"type": "way", "id": 102, "nodes": [3, 6], "tags": {"highway": "residential", "oneway": "yes"}},
+    {"type": "way", "id": 103, "nodes": [5, 7], "tags": {"highway": "footway"}},          # 차도 아님 → 빠짐
+]}
+
+
+def test_haversine_and_point_index():
+    d = haversine_m(36.0, 129.0, 36.0, 129.01)
+    assert 890 < d < 910
+    idx = PointIndex({"a": (36.0, 129.0), "b": (36.0, 129.02)})
+    assert idx.nearest(36.0, 129.004, 1000)[0] == "a"
+    assert idx.nearest(36.0, 129.015, 1000)[0] == "b"
+    assert idx.nearest(36.0, 129.05, 1000) is None                     # 거리 제한 밖
+
+
+def test_osm_graph_speeds_and_oneway():
+    g = osm.to_graph(OVERPASS)
+    assert 7 not in g.nodes                                             # 보도는 그래프에 없음
+    t12 = dict(g.adj[1])[2]
+    assert t12 == pytest.approx(haversine_m(36, LON0, 36, LON0 + 0.01) / (50 / 3.6))
+    t34 = dict(g.adj[3])[4]
+    assert t34 == pytest.approx(haversine_m(36, LON0 + 0.02, 36, LON0 + 0.03) / (30 / 3.6))   # 제한속도 30 이 가정 50 보다 낮음
+    assert 6 in dict(g.adj[3]) and 3 not in dict(g.adj[6])               # 일방통행
+    assert osm._direction({"highway": "motorway"}) == 1
+    assert osm._direction({"highway": "motorway", "oneway": "no"}) == 0
+    assert osm._direction({"highway": "secondary", "oneway": "-1"}) == -1
+
+
+def test_build_query():
+    q = osm.build_query([35.5, 127.8, 37.5, 129.6], ["primary", "secondary"])
+    assert '"^(primary|secondary)(_link)?$"' in q and "(35.5,127.8,37.5,129.6)" in q
+
+
+def test_multi_source_dijkstra_picks_nearest_source():
+    g = RoadGraph(nodes={i: (0, i) for i in range(5)})
+    for a in range(4):
+        g.add_edge(a, a + 1, 10)
+        g.add_edge(a + 1, a, 10)
+    best = multi_source_dijkstra(g, {0: 0, 4: 5})
+    assert best[1] == (10, 0) and best[3] == (15, 4)
+    assert best[2] == (20, 0)                                           # 0 에서 20, 4 에서 25
+    cut = multi_source_dijkstra(g, {0: 0}, cutoff=15)
+    assert set(cut) == {0, 1}
+
+
+def test_reversed_graph_follows_oneway_backwards():
+    g = osm.to_graph(OVERPASS)
+    # 응급실이 6 에 있으면: 3 → 6 으로 갈 수 있으니 3 은 닿고, 6 → 3 은 없으니 원래 그래프에서 6 출발로는 3 에 못 감
+    to_er = multi_source_dijkstra(g.reversed(), {6: 0})
+    assert 3 in to_er and 1 in to_er
+    from_er = multi_source_dijkstra(g, {6: 0})
+    assert set(from_er) == {6}
+
+
+def write_cp949(path: Path, text: str):
+    path.write_bytes(text.encode("cp949"))
+
+
+def test_er_load_cp949_aliases_dedup_and_tiers(tmp_path):
+    p = tmp_path / "er.csv"
+    write_cp949(p, "기관명,응급의료기관 종별,위도,경도\n"
+                   "가 병원,권역응급의료센터,36.0,129.0\n"
+                   "가 병원,권역응급의료센터,36.0,129.0\n"            # 중복
+                   "나 의원,지역응급의료기관,36.1,129.1\n"
+                   "다 병원,지역응급의료센터,,\n"                      # 좌표 없음
+                   "라 병원,기타,10.0,10.0\n")                         # 한국 밖 좌표
+    rows = er.load(p)
+    assert [r["name"] for r in rows] == ["가 병원", "나 의원"]
+    assert [r["tier"] for r in rows] == ["regional", "local_institution"]
+
+
+def test_er_load_api_style_columns(tmp_path):
+    p = tmp_path / "er_api.csv"
+    p.write_text("dutyName,dutyEmclsName,wgs84Lat,wgs84Lon\nA,지역응급의료센터,36.2,128.9\n", encoding="utf-8")
+    assert er.load(p) == [{"name": "A", "lat": 36.2, "lon": 128.9, "tier": "local_center"}]
+
+
+def test_er_load_reports_missing_columns(tmp_path):
+    p = tmp_path / "bad.csv"
+    p.write_text("이름,주소\nA,서울\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="위도"):
+        er.load(p)
+
+
+def test_population_load_from_zip_with_bbox(tmp_path):
+    z = tmp_path / "pop.zip"
+    with zipfile.ZipFile(z, "w") as f:
+        f.writestr("ppp_KOR_2020_1km_Aggregated.csv",
+                   "X,Y,Z\n129.0,36.0,100.5\n129.5,36.5,0\n130.5,36.0,50\n128.9,35.9,20\n")
+    cells = population.load(z, [35.95, 128.95, 36.6, 129.6])
+    assert cells == [{"lat": 36.0, "lon": 129.0, "pop": 100.5}]          # 빈 칸·범위 밖 제외
+
+
+def test_travel_times_and_coverage_end_to_end():
+    g = osm.to_graph(OVERPASS)
+    ers = [{"name": "동쪽센터", "lat": 36.0, "lon": LON0 + 0.04, "tier": "local_center"},
+           {"name": "작은기관", "lat": 36.0, "lon": LON0, "tier": "local_institution"}]
+    cells = [{"lat": 36.0, "lon": LON0 + 0.001, "pop": 1000},              # 노드 1 근처
+             {"lat": 36.0, "lon": LON0 + 0.039, "pop": 500},               # 노드 5 근처
+             {"lat": 36.3, "lon": LON0, "pop": 200}]                       # 도로에서 30 km 넘게 떨어짐
+    net = access.Network(g, cells, snap_m=1500, access_kmh=20)
+    mins, near, info = net.travel_times(ers, ["local_center"])
+    assert near == [0, 0, None] and mins[2] is None and info["cells_no_road"] == 1
+    assert mins[1] < 1 < mins[0]                                          # 동쪽 칸이 더 가깝다
+    # 노드1→5: primary 1.8 km @50 + link 1.8 km @30 ≈ 5.8 분 (+ 도로 붙이기 몫)
+    assert 5.5 < mins[0] < 6.5
+    cov = access.coverage(cells, mins, 3)
+    assert cov["within"] == 500 and cov["population"] == 1700 and cov["population_unreached"] == 200
+    mins_any, near_any, _ = net.travel_times(ers, ["local_center", "local_institution"])
+    assert near_any[0] == 1 and mins_any[0] < 1
+    b = access.bands(cells, mins)
+    assert b[0] == {"label": "0–15분", "pop": 1500} and b[-1] == {"label": "못 닿음", "pop": 200}
+    assert sum(x["pop"] for x in b) == 1700
+
+
+def test_tiles_cover_bbox_without_gaps():
+    t = osm.tiles([35.57, 127.80, 36.10, 128.30], 0.25)
+    assert len(t) == 3 * 2 and t[0] == [35.57, 127.8, 35.82, 128.05] and t[-1][2:] == [36.1, 128.3]
+
+
+def test_graph_from_tiles_dedups_shared_ways(tmp_path):
+    c = osm.compact(OVERPASS)
+    for name in ("a.json", "b.json"):                                     # 경계에 걸친 도로는 두 타일에 다 들어 있다
+        (tmp_path / name).write_text(__import__("json").dumps(c), encoding="utf-8")
+    g1 = osm.to_graph(OVERPASS)
+    g2 = osm.graph_from_tiles([tmp_path / "a.json", tmp_path / "b.json"])
+    assert g2.edge_count() == g1.edge_count() and set(g2.nodes) == set(g1.nodes)
+
+
+def test_er_from_osm_and_save_round_trip(tmp_path):
+    data = {"elements": [
+        {"type": "node", "id": 1, "lat": 36.0, "lon": 129.0, "tags": {"name": "A병원", "amenity": "hospital"}},
+        {"type": "way", "id": 2, "center": {"lat": 36.1, "lon": 129.1}, "tags": {"name": "B", "name:ko": "B병원"}},
+        {"type": "way", "id": 3, "tags": {"name": "좌표없음"}}]}
+    rows = er.from_osm(data)
+    assert [r["name"] for r in rows] == ["A병원", "B병원"]
+    rows[0]["tier"] = "regional"
+    er.save(rows, tmp_path / "e.csv")
+    back = er.load(tmp_path / "e.csv")
+    assert [r["tier"] for r in back] == ["regional", "other"] and back[1]["lat"] == 36.1
+
+
+def test_merge_provisional_prefers_regional_center():
+    centers = [{"name": "가 대학병원", "lat": 36.0, "lon": 129.0, "tier": "regional"}]
+    osm_rows = [{"name": "가대학교병원", "lat": 36.001, "lon": 129.001, "tier": "other"},    # 약 140 m → 같은 병원
+                {"name": "나 병원", "lat": 36.05, "lon": 129.0, "tier": "other"}]
+    merged = er.merge_provisional(osm_rows, centers)
+    assert [(r["name"], r["tier"]) for r in merged] == [("가 대학병원", "regional"), ("나 병원", "other")]
+
+
+def test_fetch_tiled_splits_failed_tile_and_resumes(tmp_path, monkeypatch):
+    calls = []
+
+    def fake_fetch(query, timeout=0, tries=0):
+        calls.append(query)
+        if "(36.0,129.0,36.5,129.5)" in query:                          # 큰 타일은 실패 → 4등분
+            raise RuntimeError("reset")
+        return OVERPASS
+    monkeypatch.setattr(osm, "fetch", fake_fetch)
+    monkeypatch.setattr(osm.time, "sleep", lambda s: None)
+    st = osm.fetch_tiled([36.0, 129.0, 36.5, 129.5], ["primary"], tmp_path, step=0.5, log=lambda m: None)
+    assert st["fetched"] == 4 and st["failed"] == [] and len(list(tmp_path.glob("*.json"))) == 4
+    n = len(calls)
+    st2 = osm.fetch_tiled([36.0, 129.0, 36.5, 129.5], ["primary"], tmp_path, step=0.5, log=lambda m: None)
+    assert len(calls) == n and st2["fetched"] == 0                       # 다시 돌려도 받은 것은 건너뜀
+
+
+def _gp_line(coords, ewkb_z=False):
+    """GeoPackage 도형: 'GP' 머리말(봉투 없음, 리틀 엔디언) + WKB LineString."""
+    import struct
+    gtype = 2 | (0x80000000 if ewkb_z else 0)
+    body = struct.pack("<BII", 1, gtype, len(coords))
+    for x, y in coords:
+        body += struct.pack("<dd", x, y) + (struct.pack("<d", 0.0) if ewkb_z else b"")
+    return b"GP" + bytes([0, 1]) + struct.pack("<i", 4326) + body
+
+
+def test_gpkg_read_builds_connected_graph(tmp_path):
+    import sqlite3
+    from eraccess import gpkg
+    p = tmp_path / "roads.gpkg"
+    con = sqlite3.connect(p)
+    con.execute("CREATE TABLE gpkg_geometry_columns (table_name, column_name)")
+    con.execute("INSERT INTO gpkg_geometry_columns VALUES ('roads', 'geom')")
+    con.execute("CREATE TABLE roads (fid INTEGER PRIMARY KEY, geom BLOB, highway, oneway, adm1_name, adm2_name)")
+    rows = [
+        (_gp_line([(129.00, 36.0), (129.01, 36.0)]), "primary", None, "North Gyeongsang", "Andong-si"),
+        (_gp_line([(129.01, 36.0), (129.02, 36.0)], ewkb_z=True), "secondary", "yes", "Gangwon", "Uljin-gun"),   # 좌표 공유 → 이어짐
+        (_gp_line([(129.05, 36.0), (129.06, 36.0)]), "footway", None, "North Gyeongsang", "Andong-si"),         # 등급 밖
+        (_gp_line([(130.00, 37.0), (130.01, 37.0)]), "primary", None, "Gangwon", "Samcheok-si"),               # 범위 밖
+    ]
+    con.executemany("INSERT INTO roads (geom, highway, oneway, adm1_name, adm2_name) VALUES (?,?,?,?,?)", rows)
+    con.commit(); con.close()
+    c = gpkg.read(p, [35.9, 128.9, 36.1, 129.1], ["primary", "secondary"])
+    assert len(c["ways"]) == 2 and len(c["nodes"]) == 3                  # 가운데 노드는 하나로 합쳐짐
+    g = RoadGraph()
+    osm.add_compact(g, c, osm.DEFAULT_SPEEDS)
+    a, mid, b = (gpkg.node_key(36.0, x) for x in (129.00, 129.01, 129.02))
+    assert b in dict(g.adj[mid]) and mid not in dict(g.adj[b])           # 두 번째 도로는 일방통행
+    assert multi_source_dijkstra(g, {a: 0})[b][0] > 0
+    from eraccess import region
+    regs = region.node_regions(c)
+    assert regs[a] == "안동시" and regs[b] == "울진군"                    # 강원으로 잘못 표시된 울진 보정
+
+
+def test_region_fixes():
+    from eraccess.region import gyeongbuk_sigun
+    assert gyeongbuk_sigun("North Gyeongsang", "Gumi-si") == "구미시"
+    assert gyeongbuk_sigun("North Gyeongsang", "Buk-gu") == "포항시"
+    assert gyeongbuk_sigun("North Gyeongsang", "Gunwi-gun") is None       # 2023년 대구 편입
+    assert gyeongbuk_sigun("North Gyeongsang", "Dalseong-gun") is None
+    assert gyeongbuk_sigun("Gangwon", "Samcheok-si") is None
+
+
+def test_largest_component_drops_islands():
+    g = RoadGraph(nodes={i: (36, 129 + i / 100) for i in range(6)})
+    for a, b in [(0, 1), (1, 2), (2, 3), (4, 5)]:
+        g.add_edge(a, b, 1)
+    big = g.largest_component()
+    assert set(big.nodes) == {0, 1, 2, 3} and set(big.adj) == {0, 1, 2, 3}
+
+
+def test_weighted_median_counts_unreached_as_far():
+    cells = [{"pop": 10}, {"pop": 10}, {"pop": 30}]
+    assert access.weighted_median(cells, [5, 10, 20]) == 20
+    assert access.weighted_median(cells, [5, 10, None]) is None          # 절반 넘게 못 닿으면 '못 닿음'
+
+
+BEDS_XML = """<?xml version="1.0" encoding="UTF-8"?><response><header><resultCode>00</resultCode><resultMsg>NORMAL SERVICE.</resultMsg></header>
+<body><items><item><dutyName>가병원</dutyName><hpid>A1</hpid><hvec>3</hvec><hvidate>20261124101500</hvidate></item>
+<item><dutyName>나병원</dutyName><hpid>A2</hpid><hvec>-1</hvec><hvidate>20261124100000</hvidate></item></items>
+<numOfRows>500</numOfRows><pageNo>1</pageNo><totalCount>2</totalCount></body></response>""".encode()
+
+
+class _Resp:
+    def __init__(self, b): self.b = b
+    def read(self): return self.b
+    def __enter__(self): return self
+    def __exit__(self, *a): return False
+
+
+def test_parse_items_and_error_code():
+    items, total = er.parse_items(BEDS_XML)
+    assert total == 2 and items[0] == {"dutyName": "가병원", "hpid": "A1", "hvec": "3", "hvidate": "20261124101500"}
+    bad = b"<response><header><resultCode>30</resultCode><resultMsg>SERVICE KEY IS NOT REGISTERED</resultMsg></header></response>"
+    with pytest.raises(RuntimeError, match="30"):
+        er.parse_items(bad)
+
+
+def test_fetch_beds_appends_snapshots(tmp_path):
+    seen = []
+    def opener(url, timeout=0):
+        seen.append(url)
+        return _Resp(BEDS_XML)
+    out = tmp_path / "beds.csv"
+    assert er.fetch_beds("KEY", out, when="2026-11-24 10:00", opener=opener) == 2
+    assert er.fetch_beds("KEY", out, when="2026-11-24 11:00", opener=opener) == 2
+    import csv as _csv
+    rows = list(_csv.DictReader(open(out, encoding="utf-8")))
+    assert len(rows) == 4 and [r["collected_at"] for r in rows] == ["2026-11-24 10:00"] * 2 + ["2026-11-24 11:00"] * 2
+    assert "STAGE1=%EA%B2%BD%EC%83%81%EB%B6%81%EB%8F%84" in seen[0] and "serviceKey=KEY" in seen[0]
+
+
+def test_fetch_er_list_pages_until_total(tmp_path):
+    pages = {1: BEDS_XML.replace(b"<totalCount>2</totalCount>", b"<totalCount>3</totalCount>"),
+             2: BEDS_XML.replace(b"<totalCount>2</totalCount>", b"<totalCount>3</totalCount>")}
+    def opener(url, timeout=0):
+        n = int(url.split("pageNo=")[1].split("&")[0])
+        return _Resp(pages[n])
+    assert er.fetch("KEY", tmp_path / "er.csv", rows_per_page=2, opener=opener) == 4   # 2쪽에서 total 넘김 → 멈춤
+
+
+def test_vulnerable_uses_only_computable_criteria():
+    targets = [{"name": "A", "vulnerability": True}, {"name": "B", "vulnerability": True}, {"name": "C"}]
+    row = {"A": {"share_within": 0.70}, "C": {"share_within": 0.1}}
+    v = access.vulnerable(row, targets, 0.27)
+    assert v["is_vulnerable"] is True and v["basis"] == ["A"] and v["missing"] == ["B"] and v["outside"]["A"] == 0.3
+    assert access.vulnerable({"A": {"share_within": 0.8}}, targets)["is_vulnerable"] is False

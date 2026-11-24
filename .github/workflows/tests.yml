@@ -17,6 +17,8 @@ jobs:
           - { dir: warehouse,         deps: "-r requirements.txt" }
           - { dir: energy-transition, deps: "-r requirements.txt" }
           - { dir: job-calendar,      deps: "pytest" }
+          - { dir: er-access,         deps: "pytest" }
+          - { dir: crash-hotspots,    deps: "pytest numpy" }
     defaults: { run: { working-directory: "${{ matrix.dir }}" } }
     steps:
       - uses: actions/checkout@v4

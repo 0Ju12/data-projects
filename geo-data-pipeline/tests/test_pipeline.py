@@ -108,7 +108,7 @@ def test_offline_run_builds_outputs(tmp_path):
     out = cli.run(CFG, tmp_path / "data", tmp_path / "docs", offline=FIX, now=datetime(2026, 10, 9))
     assert out["kept"] > 0
     html = (tmp_path / "docs" / "index.html").read_text(encoding="utf-8")
-    assert "leaflet" in html and "데이터 품질" in html
+    assert "deck.gl" in html and "maplibre-gl" in html and "데이터 품질" in html and "__" not in html.split("<script>")[0]
     s = json.loads((tmp_path / "data" / "summary.json").read_text(encoding="utf-8"))
     assert s["regions"][0]["n"] == out["kept"]
     assert (tmp_path / "data" / "events.sqlite").exists()

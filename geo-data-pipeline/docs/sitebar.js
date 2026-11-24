@@ -1,4 +1,4 @@
-/* data-projects 공통 상단 막대 — 6개 대시보드가 같은 이름·같은 메뉴·같은 색으로 이어지도록 (각 페이지는 ../sitebar.js 를 불러옴)
+/* data-projects 공통 상단 막대 — 대시보드들이 같은 이름·같은 메뉴·같은 색으로 이어지도록 (각 페이지는 ../sitebar.js 를 불러옴)
    자체 접두어(.dpb)와 자체 색 토큰만 써서 각 대시보드의 CSS와 충돌하지 않음. 밝은/어두운 모드는 시스템 설정을 따름. */
 (function () {
   if (document.querySelector('.dpb')) return;
@@ -13,6 +13,7 @@
     ['api-watch/', 'API Watch'],
     ['power/', '전력 수요 예측'],
     ['fire/', '산불 위험 지도'],
+    ['er/', '응급실 접근성'],
     ['jobs/', '신입 공고 달력'],
   ];
   var here = location.pathname.replace(/index\.html$/, '');

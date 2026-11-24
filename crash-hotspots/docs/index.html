@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>교통사고 핫스팟 3D</title>
+<meta name="description" content="사망 교통사고 지점을 1 km 격자에 모아 Getis-Ord Gi*와 거짓 발견 비율 보정으로 우연보다 많이 몰린 곳을 찾고, 공식 사고 다발 지역과 대조한 3D 지도">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/deck.gl@9.0.38/dist.min.js"></script>
+<script src="../sitebar.js" defer></script>
+<style>
+:root{color-scheme:light;
+  --bg:#f4f3f0;--card:#fcfcfb;--glass:rgba(252,252,251,.86);--text:#0b0b0b;--muted:#52514e;--faint:#6e6d68;--line:#e2e0da;--soft:#ecebe6;
+  --h1:#e56a34;--h2:#c24d1d;--h3:#5e230b;--base:#bdbcb6;--ring:#0b0b0b;--accent:#c24d1d;--shadow:0 10px 30px rgba(20,18,12,.10)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --bg:#0d0d0c;--card:#171716;--glass:rgba(23,23,22,.82);--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2c2c29;--soft:#22221f;
+  --h1:#b84e1e;--h2:#e2652a;--h3:#fcc7a8;--base:#45443f;--ring:#f0efec;--accent:#f39465;--shadow:0 10px 30px rgba(0,0,0,.45)}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#0d0d0c;--card:#171716;--glass:rgba(23,23,22,.82);--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2c2c29;--soft:#22221f;
+  --h1:#b84e1e;--h2:#e2652a;--h3:#fcc7a8;--base:#45443f;--ring:#f0efec;--accent:#f39465;--shadow:0 10px 30px rgba(0,0,0,.45)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font:15px/1.6 "Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.hero{position:relative;height:min(82vh,860px);min-height:580px;border-bottom:1px solid var(--line)}
+#map{position:absolute;inset:0}
+.panel{position:absolute;top:16px;left:16px;width:min(380px,calc(100% - 32px));background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:18px;padding:18px 18px 14px;box-shadow:var(--shadow);z-index:2;max-height:calc(100% - 32px);overflow:auto}
+.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--accent);font-weight:700;margin:0 0 4px}
+h1{font-size:clamp(24px,3.2vw,32px);letter-spacing:-.035em;line-height:1.15;margin:0 0 8px;font-weight:800}
+.lede{color:var(--muted);font-size:14px;margin:0 0 10px}
+.label{font-size:12px;color:var(--faint);margin:12px 0 6px;font-weight:600}
+.seg{display:flex;gap:4px;background:var(--soft);border-radius:12px;padding:4px}
+.seg button{flex:1;border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;font-weight:600;padding:7px 10px;border-radius:9px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.leg{display:grid;gap:5px;font-size:12.5px;color:var(--muted)}
+.leg span{display:flex;align-items:center;gap:8px}.leg i{width:14px;height:14px;border-radius:3px;display:inline-block}
+.hint{font-size:12px;color:var(--faint);margin:10px 0 0;line-height:1.5}
+.stat{position:absolute;right:16px;bottom:28px;z-index:2;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);min-width:210px}
+.stat .k{font-size:12px;color:var(--faint);font-weight:600}.stat .v{font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.15}.stat .d{font-size:12px;color:var(--muted)}
+.empty{position:absolute;inset:0;display:grid;place-items:center;z-index:3;padding:24px}
+.empty .card{max-width:560px}
+@media (max-width:760px){.hero{height:auto;min-height:0;display:flex;flex-direction:column}#map{position:relative;height:62vh;order:2}.panel{position:relative;inset:auto;width:auto;margin:12px 16px;max-height:none;order:1}.stat{position:relative;right:auto;bottom:auto;margin:0 16px 16px;order:3}}
+.w{max-width:1120px;margin:0 auto;padding:26px 16px 56px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+h2{font-size:17px;letter-spacing:-.02em;margin:0 0 8px}
+.lay{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:900px){.lay{grid-template-columns:1fr}}
+.stack{display:grid;gap:14px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}td,th{padding:6px 5px;border-top:1px solid var(--line);text-align:left}th{color:var(--faint);font-weight:600;border-top:0;font-size:12.5px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}tbody tr{cursor:pointer}tbody tr:hover{background:var(--soft)}
+.bars{display:grid;gap:6px}.bar{display:grid;grid-template-columns:110px minmax(0,1fr) 46px;gap:8px;align-items:center;font-size:13px}
+.bar .fill{display:block;height:14px;border-radius:0 4px 4px 0;background:var(--h2);min-width:2px}.bar .n{text-align:right;font-variant-numeric:tabular-nums}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.kpi{background:var(--soft);border-radius:12px;padding:10px 12px}.kpi b{display:block;font-size:22px;letter-spacing:-.02em}.kpi span{font-size:12.5px;color:var(--muted)}
+.faint{color:var(--faint);font-size:12.5px}
+.deck-tooltip{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif !important}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div id="map" aria-label="교통사고 핫스팟 3D 지도"></div>
+  <div class="panel">
+    <p class="eyebrow">도로교통공단 사망 교통사고 · 1 km 격자</p>
+    <h1>교통사고가 우연보다 많이 몰리는 곳</h1>
+    <p class="lede">기둥 하나가 사고가 난 1 km 칸이고 <b>높이는 사고 수</b>(제곱근 비례)입니다. 이웃 칸까지 합쳐 평균보다 유의하게 많은 칸(Getis-Ord Gi*, 거짓 발견 비율 5% 보정)만 <b>주황색</b>으로 칠했습니다.</p>
+    <div class="label">보기</div>
+    <div class="seg" id="view"><button data-v="3d" aria-pressed="true">3D 기둥</button><button data-v="2d" aria-pressed="false">평면</button></div>
+    <div class="label">칸</div>
+    <div class="seg" id="only"><button data-o="all" aria-pressed="true">모든 칸</button><button data-o="hot" aria-pressed="false">핫스팟만</button></div>
+    <div class="label">색: 몰림 정도 (Gi* z)</div>
+    <div class="leg">
+      <span><i style="background:var(--h1)"></i>핫스팟 · z 4 미만</span>
+      <span><i style="background:var(--h2)"></i>핫스팟 · z 4–6</span>
+      <span><i style="background:var(--h3)"></i>핫스팟 · z 6 이상</span>
+      <span><i style="background:var(--base)"></i>유의하지 않음</span>
+      <span><i style="background:transparent;border:2px solid var(--ring);border-radius:50%"></i>공식 사고 다발 지역</span>
+    </div>
+    <p class="hint">사고 수는 교통량을 나누지 않은 값이라 '위험도' 가 아니라 '몰린 정도' 입니다.</p>
+  </div>
+  <div class="stat" id="stat"></div>
+</section>
+<div class="w">
+  <div class="lay">
+    <div class="card"><h2>핫스팟 구역 (맞닿은 칸 묶음)</h2><p class="faint" style="margin:0 0 8px">사고 수가 많은 순. 행을 누르면 지도가 이동합니다.</p>
+      <table><thead><tr><th>#</th><th>위치(중심)</th><th class="n">칸</th><th class="n">사고</th><th class="n">최대 z</th></tr></thead><tbody id="zones"></tbody></table></div>
+    <div class="stack">
+      <div class="card"><h2>공식 다발 지역과 겹침</h2><div class="kpis" id="cmp"></div><p class="faint" id="cmpn" style="margin:8px 0 0"></p></div>
+      <div class="card"><h2>핫스팟 안 사고 유형</h2><div class="bars" id="kind"></div></div>
+      <div class="card"><h2>핫스팟 안 도로 형태</h2><div class="bars" id="road"></div></div>
+    </div>
+  </div>
+  <p class="faint" id="foot" style="margin-top:16px"></p>
+</div>
+<script>
+(async function(){
+  var $=function(id){return document.getElementById(id)};
+  var root=document.documentElement, css=function(n){return getComputedStyle(root).getPropertyValue(n).trim()};
+  var dark=function(){return root.dataset.theme==='dark'||(root.dataset.theme!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches)};
+  var hex=function(h){var n=parseInt(h.slice(1),16);return[n>>16&255,n>>8&255,n&255]};
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  var D;
+  try{var r=await fetch('data.json');if(!r.ok)throw 0;D=await r.json()}catch(e){
+    ['.panel','.stat','.w'].forEach(function(q){var el=document.querySelector(q);if(el)el.hidden=true});
+    document.querySelector('.hero').insertAdjacentHTML('beforeend','<div class="empty"><div class="card"><h2>아직 사고 자료가 없습니다</h2><p class="faint" style="font-size:14px">공공데이터포털의 도로교통공단 사망 교통사고 자료를 한국에서 내려받아 <code>data/crashes_*.csv</code> 로 넣고 <code>python -m crash.cli build</code> 를 실행하면 이 지도가 채워집니다. 계산 방법과 테스트는 <a href="https://github.com/0Ju12/data-projects/tree/main/crash-hotspots">저장소</a>에 있습니다.</p></div></div>');
+    return}
+  var S=D.summary, flat=false, only=false;
+  var band=function(z){return z<4?0:z<6?1:2};
+  var small=matchMedia('(max-width:760px)').matches;
+  var lats=D.cells.map(function(c){return c[0]}), lons=D.cells.map(function(c){return c[1]});
+  var bounds=[[Math.min.apply(null,lons),Math.min.apply(null,lats)],[Math.max.apply(null,lons),Math.max.apply(null,lats)]];
+  var style=function(){return 'https://tiles.openfreemap.org/styles/'+(dark()?'dark':'positron')};
+  var map=new maplibregl.Map({container:'map',style:style(),bounds:bounds,fitBoundsOptions:{padding:small?20:{top:40,bottom:40,left:420,right:40}},pitch:50,bearing:-15,maxPitch:72,attributionControl:{compact:true}});
+  map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),'top-right');
+  var overlay=new deck.MapboxOverlay({interleaved:false,layers:[],getTooltip:tip});
+  map.addControl(overlay);
+  var maxc=Math.max.apply(null,D.cells.map(function(c){return c[2]}))||1;
+  function layers(){
+    var hc=['--h1','--h2','--h3'].map(function(v){return hex(css(v))}), base=hex(css('--base')), ring=hex(css('--ring'));
+    var data=only?D.cells.filter(function(c){return c[4]}):D.cells;
+    return [
+      new deck.ColumnLayer({id:'cells',data:data,diskResolution:4,angle:45,radius:470,coverage:.9,extruded:!flat,
+        getPosition:function(c){return[c[1],c[0]]},getElevation:function(c){return Math.sqrt(c[2]/maxc)*45000}   /* 제곱근: 가장 많은 칸 하나가 나머지를 납작하게 만들지 않게 */,elevationScale:flat?0:1,
+        getFillColor:function(c){return c[4]?hc[band(c[3])]:base.concat([150])},pickable:true,autoHighlight:true,
+        highlightColor:dark()?[255,255,255,90]:[0,0,0,70],material:{ambient:.55,diffuse:.55,shininess:12,specularColor:[40,40,40]},
+        updateTriggers:{getFillColor:dark(),elevationScale:flat},transitions:{elevationScale:600}}),
+      new deck.ScatterplotLayer({id:'official',data:D.official,getPosition:function(o){return[o[2],o[1],flat?0:2000]},getRadius:7,radiusUnits:'pixels',
+        filled:false,stroked:true,getLineColor:ring,lineWidthUnits:'pixels',getLineWidth:1.6,pickable:true,parameters:{depthTest:false},
+        updateTriggers:{getLineColor:dark(),getPosition:flat}})];
+  }
+  function tip(o){if(!o.object)return null;
+    var box={backgroundColor:css('--card'),color:css('--text'),border:'1px solid '+css('--line'),borderRadius:'10px',padding:'8px 10px',fontSize:'13px',boxShadow:css('--shadow')};
+    if(o.layer.id==='official'){var s=o.object;return{html:'<b>공식 다발 지역</b><br>'+esc(s[0])+(s[3]!=null?' · '+s[3]+'건':'')+(s[4]?' · '+esc(s[4])+'년':''),style:box}}
+    var c=o.object;return{html:'<b>사고 '+c[2]+'건</b> · Gi* z '+(c[3]==null?'–':c[3])+'<br><span style="color:'+css('--muted')+'">'+(c[4]?'핫스팟 (보정 후 유의)':'유의하지 않음')+'</span>',style:box}}
+  function refresh(){overlay.setProps({layers:layers()})}
+  document.querySelectorAll('#view button').forEach(function(b){b.onclick=function(){flat=b.dataset.v==='2d';
+    document.querySelectorAll('#view button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});map.easeTo({pitch:flat?0:50,bearing:flat?0:-15,duration:900});refresh()}});
+  document.querySelectorAll('#only button').forEach(function(b){b.onclick=function(){only=b.dataset.o==='hot';
+    document.querySelectorAll('#only button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});refresh()}});
+  $('stat').innerHTML='<div class="k">사고 '+S.crashes.toLocaleString('ko-KR')+'건 중 핫스팟 칸 안</div><div class="v">'+(S.crashes?Math.round(S.crashes_in_hot_cells/S.crashes*100):0)+'%</div>'
+    +'<div class="d">핫스팟 칸 '+S.hot_cells+'개 · 구역 '+S.zones+'곳 (사고 난 칸 '+S.cells_with_crash.toLocaleString('ko-KR')+'개 중)</div>';
+  $('zones').innerHTML=S.top_zones.slice(0,15).map(function(z,i){return '<tr data-ll="'+z.lon+','+z.lat+'"><td>'+(i+1)+'</td><td>'+z.lat.toFixed(3)+', '+z.lon.toFixed(3)+'</td><td class="n">'+z.cells+'</td><td class="n">'+z.crashes+'</td><td class="n">'+z.max_z+'</td></tr>'}).join('');
+  document.querySelectorAll('#zones tr').forEach(function(tr){tr.onclick=function(){var p=tr.dataset.ll.split(',').map(Number);
+    map.flyTo({center:p,zoom:small?10:11,pitch:flat?0:55,duration:1400});document.querySelector('.hero').scrollIntoView({behavior:'smooth'})}});
+  var C=S.official&&S.official.compare, k=function(a,b){return '<div class="kpi"><b>'+a+'</b><span>'+b+'</span></div>'};
+  if(C){$('cmp').innerHTML=k(Math.round(C.share_official_in_hotspots*100)+'%','공식 다발 지역 중 내 핫스팟과 겹침 ('+C.official_in_hotspots+'/'+C.official_spots+')')
+      +k(C.share_hot_cells_with_official==null?'–':Math.round(C.share_hot_cells_with_official*100)+'%','내 핫스팟 칸 중 공식 다발 지역이 가까운 칸');
+    $('cmpn').textContent='겹침은 핫스팟 칸 경계에서 '+C.near_m+' m 안. 공식 다발 지역은 부상 사고까지 포함한 기준이고 이 분석은 사망 사고 기준이라 겹침이 낮아도 이상하지 않습니다.'}
+  else{$('cmp').innerHTML=k('–','공식 다발 지역 자료 없음');$('cmpn').textContent='data/official_*.csv (전국교통사고다발지역표준데이터)를 넣으면 계산합니다.'}
+  function bars(id,rows){var mx=Math.max.apply(null,rows.map(function(r){return r[1]}).concat([1]));
+    $(id).innerHTML=rows.length?rows.map(function(r){return '<div class="bar"><span>'+esc(r[0])+'</span><span><span class="fill" style="width:'+(r[1]/mx*100).toFixed(1)+'%"></span></span><span class="n">'+r[1]+'</span></div>'}).join(''):'<p class="faint">해당 열이 없는 자료입니다.</p>'}
+  bars('kind',S.hot_mix.kind);bars('road',S.hot_mix.road);
+  $('foot').innerHTML='계산 '+esc(S.built)+' · 칸 '+S.cell_m+' m · 이웃 '+S.band_m+' m 안 · 거짓 발견 비율 '+S.fdr_q*100+'% (Benjamini–Hochberg) · 분석 범위는 사고가 난 칸에서 '+S.band_m+' m 안. '
+    +'자료: 도로교통공단 교통사고 자료(공공데이터포털) · 지도 deck.gl · MapLibre GL JS · 배경 OpenFreeMap / OpenMapTiles, © OpenStreetMap contributors. <a href="https://github.com/0Ju12/data-projects/tree/main/crash-hotspots">코드와 방법</a>';
+  refresh();
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){map.setStyle(style());refresh()});
+})();
+</script>
+</body>
+</html>

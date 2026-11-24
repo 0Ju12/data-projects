@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>응급실 접근성 3D 지도</title>
+<meta name="description" content="1 km 칸마다 인구를 기둥 높이로, 가장 가까운 응급실까지의 차량 이동 시간을 색으로 보여 주는 경상북도 3D 지도">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/deck.gl@9.0.38/dist.min.js"></script>
+<script src="../sitebar.js" defer></script>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f4f3f0;--card:#fcfcfb;--glass:rgba(252,252,251,.86);--text:#0b0b0b;--muted:#52514e;--faint:#6e6d68;--line:#e2e0da;--soft:#ecebe6;
+  --t1:#f39a6a;--t2:#e56a34;--t3:#c24d1d;--t4:#8f3713;--t5:#5e230b;--none:#bdbcb6;
+  --warn-bg:#fff4e5;--warn-line:#f0d3a8;--warn-ink:#6b4310;--accent:#c24d1d;--shadow:0 10px 30px rgba(20,18,12,.10)
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0d0d0c;--card:#171716;--glass:rgba(23,23,22,.82);--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2c2c29;--soft:#22221f;
+  --t1:#86391a;--t2:#b84e1e;--t3:#e2652a;--t4:#f39465;--t5:#fcc7a8;--none:#45443f;
+  --warn-bg:#2a1f12;--warn-line:#5b4220;--warn-ink:#f3d6a6;--accent:#f39465;--shadow:0 10px 30px rgba(0,0,0,.45)}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0d0d0c;--card:#171716;--glass:rgba(23,23,22,.82);--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2c2c29;--soft:#22221f;
+  --t1:#86391a;--t2:#b84e1e;--t3:#e2652a;--t4:#f39465;--t5:#fcc7a8;--none:#45443f;
+  --warn-bg:#2a1f12;--warn-line:#5b4220;--warn-ink:#f3d6a6;--accent:#f39465;--shadow:0 10px 30px rgba(0,0,0,.45)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font:15px/1.6 "Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.hero{position:relative;height:min(82vh,860px);min-height:560px;border-bottom:1px solid var(--line)}
+#map{position:absolute;inset:0}
+.panel{position:absolute;top:16px;left:16px;width:min(380px,calc(100% - 32px));background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--line);border-radius:18px;padding:18px 18px 14px;box-shadow:var(--shadow);z-index:2;max-height:calc(100% - 32px);overflow:auto}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 4px}
+h1{font-size:clamp(24px,3.2vw,32px);letter-spacing:-.035em;line-height:1.15;margin:0 0 8px;font-weight:800}
+.lede{color:var(--muted);font-size:14px;margin:0 0 12px}
+.chip{display:block;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:12px;padding:8px 10px;font-size:12.5px;line-height:1.5;margin:0 0 12px}
+.label{font-size:12px;color:var(--faint);margin:10px 0 6px;font-weight:600}
+.seg{display:flex;flex-wrap:wrap;gap:4px;background:var(--soft);border-radius:12px;padding:4px}
+.seg button{flex:1 1 auto;border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;font-weight:600;padding:7px 10px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg button:disabled{opacity:.4;cursor:not-allowed}
+.ramp{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;margin:2px 0 4px}
+.ramp i{height:10px;border-radius:3px;display:block}
+.ramp-l{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;font-size:11px;color:var(--faint)}
+.ramp-l span{white-space:nowrap}
+.hint{font-size:12px;color:var(--faint);margin:10px 0 0;line-height:1.5}
+.big{position:absolute;right:16px;bottom:28px;z-index:2;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);
+  border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);min-width:200px}
+.big .k{font-size:12px;color:var(--faint);font-weight:600}
+.big .v{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.big .d{font-size:12px;color:var(--muted)}
+@media (max-width:760px){.hero{height:auto;min-height:0;display:flex;flex-direction:column}#map{position:relative;height:62vh;order:2}.panel{position:relative;inset:auto;width:auto;margin:12px 16px;max-height:none;order:1}.big{position:relative;right:auto;bottom:auto;margin:0 16px 16px;order:3}}
+.w{max-width:1160px;margin:0 auto;padding:28px 16px 56px}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 16px}
+@media (max-width:1000px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:620px){.tiles{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.tile .k{color:var(--muted);font-size:13px;font-weight:600}
+.tile .v{font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.2;margin:4px 0 2px}
+.tile .d{color:var(--faint);font-size:13px}
+.tile.off .v{font-size:19px;color:var(--faint);font-weight:700}
+.lay{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.lay{grid-template-columns:1fr}}
+h2{font-size:17px;letter-spacing:-.02em;margin:0 0 4px}
+.sub2{color:var(--faint);font-size:13px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{color:var(--faint);font-weight:600;font-size:12px}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--soft)}
+.meter{position:relative;height:6px;background:var(--soft);border-radius:3px;min-width:60px}
+.meter b{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--muted)}
+.bars{display:grid;gap:7px;margin:8px 0 4px}
+.bar{display:grid;grid-template-columns:72px minmax(0,1fr) 70px;gap:8px;align-items:center;font-size:13px}
+.bar .t{color:var(--muted)}
+.bar .track{height:16px}
+.bar .fill{display:block;height:100%;border-radius:0 4px 4px 0;min-width:2px}
+.bar .n{text-align:right;font-variant-numeric:tabular-nums}
+.stack{display:grid;gap:16px}
+.foot{color:var(--faint);font-size:13px;margin:26px 0 0;max-width:86ch;line-height:1.7}
+.foot p{margin:6px 0}
+.maplibregl-ctrl-attrib{font-size:11px}
+.deck-tooltip{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif !important}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div id="map" aria-label="경상북도 응급실 접근성 3D 지도"></div>
+  <div class="panel">
+    <p class="eyebrow">응급의료 접근성 · 1 km 격자</p>
+    <h1 id="title">응급실까지 몇 분</h1>
+    <p class="lede">기둥 하나가 1 km 칸입니다. <b>높이는 사는 사람 수</b>, <b>색은 가장 가까운 응급실까지 차로 걸리는 시간</b>입니다. 높고 밝은 기둥일수록 많은 사람이 멀리 떨어져 있다는 뜻입니다.</p>
+    <span class="chip" id="warn" hidden></span>
+    <div class="label">응급실 종류</div>
+    <div class="seg" id="seg" role="group" aria-label="응급실 종류"></div>
+    <div class="label">보기</div>
+    <div class="seg" id="view" role="group" aria-label="시점">
+      <button data-v="3d" aria-pressed="true">3D 기둥</button>
+      <button data-v="2d" aria-pressed="false">평면</button>
+    </div>
+    <div class="label">색: 이동 시간</div>
+    <div class="ramp" id="ramp"></div>
+    <div class="ramp-l"><span>15분↓</span><span>30</span><span>60</span><span>90</span><span>90분↑</span><span>못 닿음</span></div>
+    <p class="hint">흰 점은 응급실(큰 점: 권역응급의료센터). 끌어서 이동, 오른쪽 버튼(또는 두 손가락)으로 회전·기울이기, 칸에 마우스를 올리면 값이 나옵니다.</p>
+  </div>
+  <div class="big" id="big"></div>
+</section>
+
+<main class="w">
+  <div class="tiles" id="tiles"></div>
+  <div class="lay">
+    <div class="card">
+      <h2>시군별</h2>
+      <p class="sub2" id="sigun-sub">행을 누르면 지도가 그 시군으로 이동합니다. 기준 안 비율이 낮은 순. <b>취약</b>: 지역센터 30분 또는 권역센터 60분 밖 인구가 27% 이상(응급의료 취약지 지정 기준).</p>
+      <table><thead><tr><th>시군</th><th class="r">인구</th><th id="th-share">기준 안</th><th class="r">중앙값</th><th>취약</th></tr></thead><tbody id="sigun"></tbody></table>
+    </div>
+    <div class="stack">
+      <div class="card">
+        <h2 id="bars-title">이동 시간별 인구</h2>
+        <div class="bars" id="bars"></div>
+        <p class="sub2" id="bars-note" style="margin:6px 0 0"></p>
+      </div>
+      <div class="card">
+        <h2>가장 먼 곳</h2>
+        <p class="sub2">인구 50명 이상 칸 · 기준 '응급실 아무 곳'</p>
+        <table><thead><tr><th>부근</th><th class="r">인구</th><th class="r">분</th></tr></thead><tbody id="far"></tbody></table>
+      </div>
+    </div>
+  </div>
+  <div class="foot" id="foot"></div>
+</main>
+
+<script>
+(async function () {
+  const D = await (await fetch('data.json')).json();
+  const S = D.summary;
+  const root = document.documentElement;
+  const css = n => getComputedStyle(root).getPropertyValue(n).trim();
+  const dark = () => root.dataset.theme === 'dark' || (root.dataset.theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+  const hex = h => { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+  const EDGES = [15, 30, 60, 90];
+  const BAND = ['15분 이하', '15–30분', '30–60분', '60–90분', '90분 넘음'];
+  const band = m => { if (m == null) return -1; const i = EDGES.findIndex(e => m <= e); return i < 0 ? 4 : i; };
+  const fmt = n => n >= 10000 ? (n / 10000).toFixed(n >= 1e6 ? 0 : 1) + '만' : Math.round(n).toLocaleString('ko-KR');
+  const pct = x => x == null ? '–' : (x * 100).toFixed(1) + '%';
+
+  document.getElementById('title').textContent = `${S.region}, 응급실까지 몇 분`;
+  if (S.er_source !== 'official') {
+    const w = document.getElementById('warn');
+    w.hidden = false;
+    w.innerHTML = `<b>임시 응급실 목록</b>(위키백과 권역센터 ${S.er.by_tier.regional}곳 + OSM 응급실 표시 등 ${S.er.by_tier.other}곳)으로 계산했습니다. `
+      + `빠진 응급실이 많아 시간이 실제보다 길게 나옵니다. 예: 울진군은 군 안의 응급실이 목록에 없어 0%로 나옵니다.`;
+  }
+
+  // ── 응급실 종류 선택 ─────────────────────────────────────────
+  let cur = S.targets.map(t => t.available).lastIndexOf(true);
+  const seg = document.getElementById('seg');
+  S.targets.forEach((t, i) => {
+    const b = document.createElement('button');
+    b.textContent = t.name.replace('응급의료센터', '센터');
+    b.title = t.available ? `${t.name} (${t.minutes}분 기준)` : '공식 응급의료기관 목록이 있어야 계산할 수 있습니다';
+    b.disabled = !t.available;
+    b.setAttribute('aria-pressed', i === cur);
+    b.onclick = () => { cur = i; [...seg.children].forEach((x, k) => x.setAttribute('aria-pressed', k === cur)); refresh(); };
+    seg.appendChild(b);
+  });
+
+  // ── 통계 타일 ────────────────────────────────────────────────
+  document.getElementById('tiles').innerHTML = S.targets.map(t => t.available
+    ? `<div class="card tile"><div class="k">${t.name} · ${t.minutes}분 안</div><div class="v">${pct(t.share_within)}</div>`
+      + `<div class="d">${fmt(t.population)}명 중 ${fmt(t.within)}명 · 응급실 ${t.targets}곳</div></div>`
+    : `<div class="card tile off"><div class="k">${t.name} · ${t.minutes}분 안</div><div class="v">공식 목록 필요</div>`
+      + `<div class="d">임시 목록에 이 종별 응급실이 없음</div></div>`).join('');
+  {
+    const vs = S.by_sigun.filter(r => r.vulnerable && r.vulnerable.is_vulnerable);
+    const miss = (S.by_sigun[0] && S.by_sigun[0].vulnerable && S.by_sigun[0].vulnerable.missing) || [];
+    document.getElementById('tiles').insertAdjacentHTML('beforeend',
+      `<div class="card tile"><div class="k">응급의료 취약 시군 (27% 기준)</div><div class="v">${vs.length}곳 / ${S.by_sigun.length}</div>`
+      + `<div class="d">${vs.map(r => r.name).join(' · ')}${miss.length ? `<br>${miss.join(', ')} 기준은 공식 목록이 있어야 판정` : ''}</div></div>`);
+  }
+
+  // ── 시군 중심(인구 가중) ────────────────────────────────────
+  const centers = D.sigun.map(() => [0, 0, 0]);
+  for (const c of D.cells) { const z = centers[c[3]]; z[0] += c[1] * c[2]; z[1] += c[0] * c[2]; z[2] += c[2]; }
+  centers.forEach(z => { z[0] /= z[2] || 1; z[1] /= z[2] || 1; });
+
+  // ── 지도 ────────────────────────────────────────────────────
+  const small = matchMedia('(max-width:760px)').matches;
+  const HOME = { center: [128.78, 36.3], zoom: small ? 7.1 : 7.95, pitch: 55, bearing: -20 };
+  const style = () => `https://tiles.openfreemap.org/styles/${dark() ? 'dark' : 'positron'}`;
+  const map = new maplibregl.Map({ container: 'map', style: style(), ...HOME, maxPitch: 70, attributionControl: { compact: true } });
+  map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+  if (!small) map.setPadding({ left: 400, top: 0, right: 0, bottom: 0 });   // 왼쪽 패널만큼 지도 중심을 오른쪽으로
+  const overlay = new deck.MapboxOverlay({ interleaved: false, layers: [], getTooltip });
+  map.addControl(overlay);
+
+  let flat = false;
+  function colors() { return { ramp: ['--t1', '--t2', '--t3', '--t4', '--t5'].map(v => hex(css(v))), none: hex(css('--none')) }; }
+
+  function layers() {
+    const { ramp, none } = colors();
+    const k = 3 + 1 + cur;   // [위도, 경도, 인구, 시군, 분...]
+    const tiers = S.targets[cur].tiers;
+    return [
+      new deck.ColumnLayer({
+        id: 'cells', data: D.cells, diskResolution: 4, angle: 45, radius: 470, coverage: .92, extruded: !flat,
+        getPosition: c => [c[1], c[0]],
+        getElevation: c => Math.sqrt(c[2]) * 220,         // 제곱근: 도시 몇 칸이 전부를 가리지 않게
+        elevationScale: flat ? 0 : 1,
+        getFillColor: c => { const b = band(c[k]); return b < 0 ? none : ramp[b]; },
+        material: { ambient: .55, diffuse: .55, shininess: 12, specularColor: [40, 40, 40] },
+        pickable: true, autoHighlight: true, highlightColor: dark() ? [255, 255, 255, 90] : [0, 0, 0, 70],
+        updateTriggers: { getFillColor: [cur, dark()], elevationScale: flat },
+        transitions: { elevationScale: 600, getFillColor: 400 },
+      }),
+      new deck.ScatterplotLayer({
+        id: 'er', data: D.ers.filter(e => tiers.includes(e[3])),
+        getPosition: e => [e[2], e[1]], getRadius: e => e[3] === 'regional' ? 7 : 4.5, radiusUnits: 'pixels',
+        stroked: true, lineWidthUnits: 'pixels', getLineWidth: 2,
+        getFillColor: dark() ? [250, 250, 248] : [20, 20, 18], getLineColor: dark() ? [13, 13, 12] : [252, 252, 251],
+        pickable: true, parameters: { depthTest: false },
+        updateTriggers: { getFillColor: dark(), getLineColor: dark() },
+      }),
+    ];
+  }
+
+  function getTooltip({ object, layer }) {
+    if (!object) return null;
+    const box = { backgroundColor: css('--card'), color: css('--text'), border: `1px solid ${css('--line')}`, borderRadius: '10px', padding: '8px 10px', fontSize: '13px', boxShadow: css('--shadow') };
+    if (layer.id === 'er') return { html: `<b>${object[0]}</b><br><span style="color:${css('--muted')}">${object[3] === 'regional' ? '권역응급의료센터' : '응급실'}</span>`, style: box };
+    const rows = S.targets.map((t, i) => t.available
+      ? `<div style="color:${css('--muted')}">${t.name}: <b style="color:${css('--text')}">${object[4 + i] == null ? '못 닿음' : Math.round(object[4 + i]) + '분'}</b></div>` : '').join('');
+    return { html: `<b>${D.sigun[object[3]]}</b> · 인구 ${Math.round(object[2]).toLocaleString('ko-KR')}명${rows}`, style: box };
+  }
+
+  function legendRamp() {
+    document.getElementById('ramp').innerHTML = ['--t1', '--t2', '--t3', '--t4', '--t5', '--none'].map(v => `<i style="background:var(${v})"></i>`).join('');
+  }
+
+  function big() {
+    const t = S.targets[cur];
+    document.getElementById('big').innerHTML = `<div class="k">${t.name} ${t.minutes}분 안에 닿는 인구</div><div class="v">${pct(t.share_within)}</div>`
+      + `<div class="d">${fmt(t.population - t.within)}명은 ${t.minutes}분 넘게 걸림</div>`;
+  }
+
+  // ── 시군 표 ─────────────────────────────────────────────────
+  function vul(r) {
+    const v = r.vulnerable || {};
+    if (v.is_vulnerable == null) return '<span style="color:var(--faint)">–</span>';
+    const why = Object.entries(v.outside || {}).map(([k, x]) => x == null ? `${k}: 계산 불가` : `${k} 밖 ${(x * 100).toFixed(0)}%`).join(', ');
+    return v.is_vulnerable ? `<b title="${why}" style="color:var(--accent)">취약</b>` : `<span title="${why}" style="color:var(--faint)">아님</span>`;
+  }
+  function sigunTable() {
+    const t = S.targets[cur];
+    document.getElementById('th-share').textContent = `${t.minutes}분 안`;
+    const rows = S.by_sigun.map(r => ({ ...r, v: r[t.name] || {} })).sort((a, b) => (a.v.share_within ?? 2) - (b.v.share_within ?? 2));
+    document.getElementById('sigun').innerHTML = rows.map(r => `<tr data-s="${D.sigun.indexOf(r.name)}"><td>${r.name}</td><td class="r">${fmt(r.population)}</td>`
+      + `<td><div style="display:flex;align-items:center;gap:8px"><div class="meter" style="flex:1"><b style="width:${((r.v.share_within || 0) * 100).toFixed(1)}%"></b></div>`
+      + `<span style="font-variant-numeric:tabular-nums;min-width:46px;text-align:right">${pct(r.v.share_within)}</span></div></td>`
+      + `<td class="r">${r.v.median_min == null ? '못 닿음' : Math.round(r.v.median_min) + '분'}</td>`
+      + `<td>${vul(r)}</td></tr>`).join('');
+    document.querySelectorAll('#sigun tr').forEach(tr => tr.onclick = () => {
+      const z = centers[+tr.dataset.s];
+      map.flyTo({ center: [z[0], z[1]], zoom: small ? 8.6 : 9.6, pitch: flat ? 0 : 55, bearing: -18, duration: 1600, essential: true });
+      document.querySelector('.hero').scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  // ── 이동 시간별 인구 ───────────────────────────────────────
+  function bars() {
+    const t = S.targets[cur];
+    document.getElementById('bars-title').textContent = `이동 시간별 인구 — ${t.name}`;
+    const max = Math.max(...t.bands.map(r => r.pop));
+    document.getElementById('bars').innerHTML = t.bands.map((r, i) => {
+      const label = i < 5 ? BAND[i] : '못 닿음';
+      return `<div class="bar" title="${label}: ${Math.round(r.pop).toLocaleString('ko-KR')}명"><span class="t">${label}</span>`
+        + `<span class="track"><span class="fill" style="width:${(r.pop / max * 100).toFixed(1)}%;background:var(${i < 5 ? '--t' + (i + 1) : '--none'})"></span></span>`
+        + `<span class="n">${fmt(r.pop)}명</span></div>`;
+    }).join('');
+    document.getElementById('bars-note').textContent = `${S.region} 인구 ${fmt(t.population)}명 (WorldPop 2020 격자 합). '못 닿음'은 1.5 km 안에 도로가 없는 산간 칸입니다.`;
+  }
+
+  document.getElementById('far').innerHTML = S.farthest_cells.slice(0, 10).map(f =>
+    `<tr data-ll="${f.lon},${f.lat}"><td>${f.sigun} ${f.place || ''}</td><td class="r">${fmt(f.pop)}</td><td class="r">${Math.round(f.minutes)}</td></tr>`).join('');
+  document.querySelectorAll('#far tr').forEach(tr => tr.onclick = () => {
+    const [lon, lat] = tr.dataset.ll.split(',').map(Number);
+    map.flyTo({ center: [lon, lat], zoom: 10.2, pitch: flat ? 0 : 55, duration: 1600 });
+    document.querySelector('.hero').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // ── 시점 전환 ───────────────────────────────────────────────
+  const view = document.getElementById('view');
+  view.querySelectorAll('button').forEach(b => b.onclick = () => {
+    flat = b.dataset.v === '2d';
+    view.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    map.easeTo({ pitch: flat ? 0 : 52, bearing: flat ? 0 : -18, duration: 900 });
+    overlay.setProps({ layers: layers() });
+  });
+
+  function refresh() { overlay.setProps({ layers: layers() }); big(); sigunTable(); bars(); }
+  legendRamp(); refresh();
+
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { map.setStyle(style()); refresh(); });
+
+  document.getElementById('foot').innerHTML =
+    `<p><b>방법.</b> OSM 도로망(${S.graph.nodes.toLocaleString('ko-KR')}개 지점)에서 응급실로부터 거꾸로 퍼지는 최단 시간 계산. 도로 등급별 평균 속도 가정(고속도로 ${S.assumptions.speeds_kmh.motorway}, 주요 도로 ${S.assumptions.speeds_kmh.primary}, 마을길 ${S.assumptions.speeds_kmh.unclassified} km/h), `
+    + `칸·응급실은 ${S.assumptions.snap_m / 1000} km 안 가장 가까운 도로에 붙이고 그 거리를 ${S.assumptions.access_kmh} km/h로 더함. 정체·신호 없음. 경계 밖(대구·강원 등) 응급실도 이용 가능한 것으로 계산하고, 집계는 경북 칸 ${S.cells.toLocaleString('ko-KR')}개만. 울릉군은 섬 안 도로만으로 계산하고 육지 응급실은 못 닿는 것으로 셉니다(실제로는 배·헬기 이송). 기둥 높이는 인구의 제곱근에 비례합니다.</p>`
+    + `<p><b>자료.</b> 인구 WorldPop 2020 (CC BY 4.0) · 도로 © OpenStreetMap contributors, HOT 국가별 내보내기(HDX, ODbL) · 응급실 표시 OSM · 권역응급의료센터 표 위키백과 · 배경 지도 OpenFreeMap / OpenMapTiles. 계산 ${S.built}.</p>`
+    + `<p><b>만든 도구.</b> deck.gl · MapLibre GL JS · Pretendard (모두 무료 오픈소스). 3D 기둥 표현은 Spencer Schien·Kontur 인구 '스파이크 지도'와 deck.gl ColumnLayer 예제를 참고했습니다. `
+    + `<a href="https://github.com/0ju12/data-projects/tree/main/er-access">코드와 방법</a></p>`;
+})();
+</script>
+</body>
+</html>
