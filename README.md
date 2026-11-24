@@ -17,7 +17,9 @@
 
 벡터 검색 구현과 한국어 근거 검색 평가는 [VectorLab](vector-search/)에서 실행할 수 있습니다.
 
-진행 중 (뼈대 단계 — 엔진·테스트만 있고 실제 자료로 낸 결과는 아직 없음)
+신입 IT 공고를 매일 모아 마감일 달력으로 보는 개인 취업 도구는 [job-calendar](job-calendar/)에 있습니다 · [공고 달력](https://0ju12.github.io/data-projects/jobs/) (점핏·카카오·Greenhouse 공개 API, robots.txt 준수).
+
+진행 중 (공식 자료를 아직 넣지 못해 결과가 임시이거나 엔진·테스트만 있는 프로젝트)
 - [er-access](er-access/): 1 km 격자마다 가장 가까운 응급실까지의 차량 이동 시간을 OSM 도로망(HOT 한국 내보내기)으로 계산해 경북의 응급의료 취약 인구를 셉니다. deck.gl 3D 지도(높이 = 인구, 색 = 이동 시간) · [응급실 접근성 3D 지도](https://0ju12.github.io/data-projects/er/). 공식 응급실 목록을 받기 전이라 임시 목록(권역센터 5곳 + OSM 12곳)으로 낸 첫 결과: 권역센터 60분 안 91.8%, 영양·문경·봉화·울진이 낮음.
 - [crash-hotspots](crash-hotspots/): 사망 교통사고 지점을 UTM-K 1 km 격자에 모아 Getis-Ord Gi\* 와 거짓 발견 비율 보정(BH)으로 우연보다 많이 몰린 구간을 찾고, 공식 사고 다발 지역과 대조합니다.
 

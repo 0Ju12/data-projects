@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>신입 IT 공고 달력</title>
+<meta name="description" content="점핏·카카오·Greenhouse 공개 공고판에서 매일 모은 신입·개발 공고를 마감일 달력으로 보고, 직무·경력·지역으로 거르는 페이지">
+<style>
+:root{--bg:#f4f4f2;--card:#fcfcfb;--text:#0b0b0b;--muted:#52514e;--faint:#6b6a66;--line:#e4e2dc;--soft:#ecebe6;--acc:#2a78d6;--acc-ink:#226dc4;--hot:#c2410c;--warm:#8a5a0a;--today:#e8f0fb;
+  --r1:#2a78d6;--r2:#7c4dcc;--r3:#0f8a6a;--r4:#c2410c;--r5:#5b6b7a;--r6:#b4235a;--r7:#8a5a0a;--r8:#3b7d23;--r9:#9b3fb8;--r0:#8a8780}
+@media (prefers-color-scheme:dark){:root{--bg:#111110;--card:#1a1a19;--text:#f0efec;--muted:#c3c2b7;--faint:#a3a29a;--line:#2e2e2b;--soft:#232321;--acc:#3987e5;--acc-ink:#6aa6ef;--hot:#fb923c;--warm:#facc15;--today:#17253a;
+  --r1:#6aa6ef;--r2:#b39af0;--r3:#4cc9a4;--r4:#fb923c;--r5:#a3b3c2;--r6:#f17aa5;--r7:#e3b341;--r8:#8bc96b;--r9:#d79af0;--r0:#8f8d86}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,"Segoe UI","Noto Sans KR",sans-serif;word-break:keep-all}
+a{color:var(--acc-ink)}
+.w{max-width:1180px;margin:0 auto;padding:22px 16px 60px}
+h1{font-size:clamp(24px,3.4vw,32px);letter-spacing:-.03em;margin:4px 0 6px}
+.lead{color:var(--muted);margin:0 0 14px;max-width:760px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin-bottom:16px}
+.meta b{color:var(--text)}
+.src-bad{color:var(--hot)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row+.row{margin-top:10px}
+.lbl{font-size:12.5px;font-weight:700;color:var(--muted);min-width:44px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:5px 11px;font:600 13px/1.2 inherit;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.chip i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.chip small{color:var(--faint);font-weight:500}
+.chip[aria-pressed="true"]{background:var(--text);color:var(--card);border-color:var(--text)}.chip[aria-pressed="true"] small{color:inherit;opacity:.75}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:var(--card);color:var(--muted);padding:6px 12px;font:600 13px/1.2 inherit;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--text);color:var(--card)}
+input[type=search],select{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:7px 10px;font:inherit;font-size:14px;min-width:0}
+input[type=search]{flex:1 1 220px}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin:16px 0 10px}
+.mnav{display:flex;align-items:center;gap:6px}
+.mnav h2{font-size:18px;margin:0 8px;min-width:180px;text-align:center;letter-spacing:-.02em}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:6px 11px;font:600 13px/1.2 inherit;cursor:pointer}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.dow{background:var(--soft);padding:6px 8px;font-size:12px;font-weight:700;color:var(--muted);text-align:center}
+.dow:first-child{color:var(--hot)}
+.day{background:var(--card);min-height:112px;padding:6px 6px 8px;cursor:pointer;display:flex;flex-direction:column;gap:3px;text-align:left;border:0;font:inherit;color:inherit}
+.day.out{background:var(--bg);color:var(--faint)}
+.day.past .n,.day.past .ev{opacity:.55}.day.first{box-shadow:inset 3px 0 0 var(--line)}
+.day.today{background:var(--today)}
+.day.sel{box-shadow:inset 0 0 0 2px var(--acc)}
+.day .n{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700}
+.day .n em{font-style:normal;font-weight:700;font-size:11px;color:var(--card);background:var(--acc);border-radius:999px;padding:0 7px;line-height:18px}
+.day .ev{font-size:11.5px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-left:3px solid var(--r0);padding-left:5px}
+.day .more{font-size:11px;color:var(--faint)}
+.list h3{font-size:15px;margin:18px 0 8px;display:flex;gap:8px;align-items:baseline}
+.list h3 small{color:var(--faint);font-weight:500}
+.post{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-bottom:8px}
+.dd{font:700 12px/1 inherit;border-radius:8px;padding:6px 8px;background:var(--soft);color:var(--muted);white-space:nowrap;min-width:58px;text-align:center}
+.dd.hot{background:color-mix(in srgb,var(--hot) 16%,transparent);color:var(--hot)}.dd.warm{background:color-mix(in srgb,var(--warm) 16%,transparent);color:var(--warm)}
+.post .t{font-weight:700;font-size:15px;line-height:1.45;color:var(--text);text-decoration:none}.post .t:hover{text-decoration:underline}
+.post .c{font-size:13px;color:var(--muted);margin-top:2px}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.tag{font-size:11.5px;border-radius:6px;padding:1px 7px;background:var(--soft);color:var(--muted)}
+.tag.r{color:var(--card);font-weight:700}
+.star{border:0;background:none;font-size:20px;line-height:1;cursor:pointer;color:var(--faint);padding:2px 4px}
+.star[aria-pressed="true"]{color:#e0a800}
+.empty{color:var(--muted);padding:18px;text-align:center;background:var(--card);border:1px dashed var(--line);border-radius:12px}
+.foot{margin-top:26px;font-size:12.5px;color:var(--muted);line-height:1.7}
+.hide{display:none!important}
+@media (max-width:760px){
+  .day{min-height:58px;padding:4px}.day .ev,.day .more{display:none}.day .n{flex-direction:column;align-items:flex-start;gap:2px}
+  .mnav h2{font-size:15px;min-width:0}.post{grid-template-columns:1fr auto}.post .dd{grid-column:1/-1;justify-self:start}
+}
+</style>
+</head>
+<body>
+<div class="w">
+  <h1>신입 IT 공고 달력</h1>
+  <p class="lead">공개 공고판에서 매일 아침 모은 개발·데이터 공고를 <b>마감일</b> 기준 달력으로 봅니다. 날짜를 누르면 그날 마감하는 공고가 아래에 나옵니다. 지원 전에는 반드시 원래 공고에서 조건과 마감을 다시 확인하세요.</p>
+  <div class="meta" id="meta">불러오는 중…</div>
+
+  <div class="panel" role="group" aria-label="공고 거르기">
+    <div class="row"><span class="lbl">직무</span><div class="row" id="roles" style="margin:0"></div></div>
+    <div class="row"><span class="lbl">경력</span>
+      <div class="seg" id="career"><button data-v="new">신입만</button><button data-v="new+">신입·표시 없음</button><button data-v="all">전체</button></div>
+      <span class="lbl" style="margin-left:8px">출처</span><select id="src" aria-label="출처"><option value="">전체</option></select>
+      <span class="lbl" style="margin-left:8px">지역</span><select id="loc" aria-label="지역"><option value="">전체</option></select>
+    </div>
+    <div class="row"><input type="search" id="q" placeholder="회사·제목·기술 검색 (예: Python, 데이터, 카카오)" aria-label="검색">
+      <button class="chip" id="techOnly" aria-pressed="true">개발 직군만</button>
+      <button class="chip" id="starOnly" aria-pressed="false">★ 관심 공고만</button>
+      <button class="btn" id="reset">초기화</button>
+    </div>
+  </div>
+
+  <div class="tools">
+    <div class="mnav"><button class="btn" id="prev" aria-label="이전 5주">‹</button><h2 id="mtitle"></h2><button class="btn" id="next" aria-label="다음 5주">›</button><button class="btn" id="todayBtn">오늘</button></div>
+    <div class="row" style="margin:0"><div class="seg" id="view"><button data-v="cal">달력</button><button data-v="list">마감 순 목록</button></div>
+      <button class="btn" id="ics" title="★ 표시한 공고의 마감일을 휴대폰·구글 캘린더에 넣는 파일">관심 공고 캘린더(.ics)</button></div>
+  </div>
+
+  <div id="calWrap"><div class="cal" id="cal" aria-label="마감일 달력"></div></div>
+  <div class="list" id="dayList"></div>
+  <div class="list" id="always"></div>
+
+  <p class="foot">출처: 점핏(신입 공고 목록), 카카오 채용(공개 API), Greenhouse 공개 채용 API(쿠팡·당근·크래프톤·몰로코·센드버드·퓨리오사AI). robots.txt 가 막지 않는 공개 API만 하루 한 번 받고, 제목·회사·마감일·링크만 저장합니다.
+    직무와 신입 여부는 제목·분류 글자로 자동 추정한 값이라 틀릴 수 있습니다. 관심 공고(★)와 거르기 설정은 이 브라우저에만 저장됩니다.
+    · <a href="https://github.com/0Ju12/data-projects/tree/main/job-calendar">코드</a></p>
+</div>
+<script src="../sitebar.js" defer></script>
+<script>
+(function(){
+var ROLES=['백엔드','프론트엔드','모바일','데이터·AI','인프라·클라우드','보안','임베디드·하드웨어','QA','게임','기타'];
+var RC={'백엔드':'--r1','프론트엔드':'--r2','모바일':'--r3','데이터·AI':'--r4','인프라·클라우드':'--r5','보안':'--r6','임베디드·하드웨어':'--r7','QA':'--r8','게임':'--r9','기타':'--r0'};
+var $=function(s){return document.querySelector(s)};
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var store={get:function(k,d){try{var v=localStorage.getItem('jobcal:'+k);return v?JSON.parse(v):d}catch(_){return d}},set:function(k,v){try{localStorage.setItem('jobcal:'+k,JSON.stringify(v))}catch(_){}}};
+var DEF={roles:[],career:'new+',src:'',loc:'',q:'',tech:true,star:false,view:'cal'};
+var F=Object.assign({},DEF,store.get('f',{}));F.q='';
+var STAR=store.get('star',{});
+var D=null,today=null,cur=null,sel=null;
+function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function parse(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+function dday(end){if(!end)return '상시';var n=Math.round((parse(end)-today)/864e5);return n===0?'오늘 마감':n>0?'D-'+n:'마감'}
+function region(l){if(!l)return '';var m=l.match(/서울|경기|판교|성남|인천|부산|대구|대전|광주|울산|세종|강원|충북|충남|전북|전남|경북|경남|제주|Seoul|Pangyo|Busan|Remote/i);if(!m)return '기타';var x=m[0];return {Seoul:'서울',Pangyo:'경기',Busan:'부산',판교:'경기',성남:'경기',Remote:'원격'}[x]||x}
+
+function pass(p,ignoreRole){
+  if(F.tech&&!p.tech)return false;
+  if(F.career==='new'&&p.newbie!==true)return false;
+  if(F.career==='new+'&&p.newbie===false)return false;
+  if(F.src&&p.src!==F.src)return false;
+  if(F.loc&&region(p.loc)!==F.loc)return false;
+  if(F.star&&!STAR[p.id])return false;
+  if(!ignoreRole&&F.roles.length&&!p.roles.some(function(r){return F.roles.indexOf(r)>=0}))return false;
+  if(F.q){var t=(p.co+' '+p.title+' '+(p.stacks||[]).join(' ')+' '+p.roles.join(' ')).toLowerCase();if(F.q.toLowerCase().split(/\s+/).some(function(w){return w&&t.indexOf(w)<0}))return false}
+  return true;
+}
+function card(p){
+  var d=dday(p.end),n=p.end?Math.round((parse(p.end)-today)/864e5):99,cls=p.end&&n>=0&&n<=3?' hot':p.end&&n>=0&&n<=7?' warm':'';
+  return '<div class="post"><span class="dd'+cls+'">'+esc(d)+'</span><div><a class="t" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+esc(p.title)+'</a>'+
+    '<div class="c">'+esc(p.co)+(p.loc?' · '+esc(p.loc):'')+' · '+esc(p.src)+(p.end?' · 마감 '+esc(p.end.slice(5).replace('-','/')):'')+(p.start?' · 등록 '+esc(p.start.slice(5).replace('-','/')):'')+'</div>'+
+    '<div class="tags">'+p.roles.map(function(r){return '<span class="tag r" style="background:var('+RC[r]+')">'+esc(r)+'</span>'}).join('')+
+    (p.newbie===true?'<span class="tag">신입 가능</span>':p.newbie===false?'<span class="tag">경력</span>':'')+
+    (p.stacks||[]).slice(0,6).map(function(s){return '<span class="tag">'+esc(s)+'</span>'}).join('')+'</div></div>'+
+    '<button class="star" data-star="'+esc(p.id)+'" aria-pressed="'+(STAR[p.id]?'true':'false')+'" aria-label="관심 공고 '+(STAR[p.id]?'해제':'표시')+'">'+(STAR[p.id]?'★':'☆')+'</button></div>';
+}
+function rolesUI(){
+  var base=D.postings.filter(function(p){return pass(p,true)});
+  $('#roles').innerHTML=ROLES.map(function(r){var c=base.filter(function(p){return p.roles.indexOf(r)>=0}).length;
+    return '<button class="chip" data-role="'+r+'" aria-pressed="'+(F.roles.indexOf(r)>=0)+'"><i style="background:var('+RC[r]+')"></i>'+r+' <small>'+c+'</small></button>'}).join('');
+}
+function draw(){
+  store.set('f',Object.assign({},F,{q:''}));
+  document.querySelectorAll('#career button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.v===F.career)});
+  document.querySelectorAll('#view button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.v===F.view)});
+  $('#techOnly').setAttribute('aria-pressed',F.tech);$('#starOnly').setAttribute('aria-pressed',F.star);
+  rolesUI();
+  var P=D.postings.filter(function(p){return pass(p)}),byEnd={};
+  P.forEach(function(p){if(p.end)(byEnd[p.end]=byEnd[p.end]||[]).push(p)});
+  var dated=P.filter(function(p){return p.end&&p.end>=ymd(today)}).length;
+  $('#meta').innerHTML='<span>갱신 <b>'+esc(D.updated)+'</b></span><span>거른 결과 <b>'+P.length+'</b>건 / 전체 '+D.count+'건</span><span>마감일 있는 공고 <b>'+dated+'</b>건 · 상시 '+P.filter(function(p){return !p.end}).length+'건</span>'+
+    (D.sources||[]).filter(function(s){return !s.ok}).map(function(s){return '<span class="src-bad">'+esc(s.src)+' 수집 실패</span>'}).join('');
+  $('#calWrap').classList.toggle('hide',F.view!=='cal');
+  document.querySelector('.mnav').classList.toggle('hide',F.view!=='cal');
+  if(F.view==='cal'){
+    // 이번 주 일요일부터 5주 (지난 주를 비워 두지 않으려고) — ‹ › 는 5주씩 이동
+    var start=new Date(today.getFullYear(),today.getMonth(),today.getDate()-today.getDay()+cur*35),last=new Date(start.getFullYear(),start.getMonth(),start.getDate()+34),h='';
+    var fmt=function(d){return (d.getMonth()+1)+'월 '+d.getDate()+'일'};$('#mtitle').textContent=fmt(start)+' – '+fmt(last);
+    ['일','월','화','수','목','금','토'].forEach(function(d){h+='<div class="dow">'+d+'</div>'});
+    for(var i=0;i<35;i++){
+      var d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i),k=ymd(d),L=(byEnd[k]||[]).slice().sort(function(a,b){return (STAR[b.id]?1:0)-(STAR[a.id]?1:0)||(b.newbie===true)-(a.newbie===true)});
+      var G=[],seen={};L.forEach(function(p){if(seen[p.co])seen[p.co].n++;else{seen[p.co]={p:p,n:1};G.push(seen[p.co])}});   // 같은 회사는 한 줄로
+      h+='<button class="day'+(d.getDate()===1?' first':'')+(k<ymd(today)?' past':'')+(k===ymd(today)?' today':'')+(k===sel?' sel':'')+'" data-day="'+k+'" aria-label="'+(d.getMonth()+1)+'월 '+d.getDate()+'일 마감 '+L.length+'건">'+
+        '<span class="n"><span>'+(d.getDate()===1||i===0?(d.getMonth()+1)+'/':'')+d.getDate()+'</span>'+(L.length?'<em>'+L.length+'</em>':'')+'</span>'+
+        G.slice(0,3).map(function(g){var p=g.p;return '<span class="ev" style="border-left-color:var('+RC[p.roles[0]]+')">'+(STAR[p.id]?'★ ':'')+esc(p.co)+(g.n>1?' ×'+g.n:'')+'</span>'}).join('')+(G.length>3?'<span class="more">+'+(G.length-3)+'곳 더</span>':'')+'</button>';
+    }
+    $('#cal').innerHTML=h;
+    var dl=sel?(byEnd[sel]||[]):[];
+    var sd=sel&&parse(sel);
+    $('#dayList').innerHTML=sel?'<h3>'+(sd.getMonth()+1)+'월 '+sd.getDate()+'일 마감 <small>'+dl.length+'건 · '+esc(dday(sel))+'</small></h3>'+(dl.length?dl.map(card).join(''):'<div class="empty">이날 마감하는 공고가 없습니다.</div>'):'<p class="empty">날짜를 누르면 그날 마감하는 공고가 여기에 나옵니다.</p>';
+  } else {
+    var up=P.filter(function(p){return p.end&&p.end>=ymd(today)}).sort(function(a,b){return a.end<b.end?-1:a.end>b.end?1:0}),g={},order=[];
+    up.forEach(function(p){if(!g[p.end]){g[p.end]=[];order.push(p.end)}g[p.end].push(p)});
+    $('#dayList').innerHTML=order.length?order.map(function(k){var d=parse(k);return '<h3>'+(d.getMonth()+1)+'월 '+d.getDate()+'일 ('+'일월화수목금토'[d.getDay()]+') <small>'+esc(dday(k))+' · '+g[k].length+'건</small></h3>'+g[k].map(card).join('')}).join(''):'<div class="empty">조건에 맞는 마감일 있는 공고가 없습니다.</div>';
+  }
+  var al=P.filter(function(p){return !p.end}).sort(function(a,b){return (b.start||'')<(a.start||'')?-1:1});
+  $('#always').innerHTML='<h3>상시 채용 · 마감일 없음 <small>'+al.length+'건 · 최근 등록 순</small></h3>'+(al.length?al.slice(0,F.allAlways?al.length:30).map(card).join('')+(al.length>30&&!F.allAlways?'<button class="btn" id="moreAlways">'+(al.length-30)+'건 더 보기</button>':''):'<div class="empty">조건에 맞는 상시 공고가 없습니다.</div>');
+}
+function ics(){
+  var L=D.postings.filter(function(p){return STAR[p.id]&&p.end});
+  if(!L.length){alert('★ 표시한 공고 중 마감일이 있는 공고가 없습니다.');return}
+  var s=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//job-calendar//KO','CALSCALE:GREGORIAN'];
+  L.forEach(function(p){var d=p.end.replace(/-/g,''),n=parse(p.end);n.setDate(n.getDate()+1);
+    s.push('BEGIN:VEVENT','UID:'+p.id.replace(/[^\w:.-]/g,'')+'@job-calendar','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z','DTSTART;VALUE=DATE:'+d,'DTEND;VALUE=DATE:'+ymd(n).replace(/-/g,''),
+      'SUMMARY:[마감] '+(p.co+' '+p.title).replace(/[,;\\]/g,' ').slice(0,120),'URL:'+p.url,'DESCRIPTION:'+p.url,'BEGIN:VALARM','TRIGGER:-P2D','ACTION:DISPLAY','DESCRIPTION:지원 마감 2일 전','END:VALARM','END:VEVENT')});
+  s.push('END:VCALENDAR');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([s.join('\r\n')],{type:'text/calendar'}));a.download='관심공고-마감.ics';document.body.appendChild(a);a.click();a.remove();
+}
+document.addEventListener('click',function(e){
+  var t=e.target.closest('button');if(!t)return;
+  if(t.dataset.role){var r=t.dataset.role,i=F.roles.indexOf(r);i>=0?F.roles.splice(i,1):F.roles.push(r);draw();return}
+  if(t.dataset.day){sel=sel===t.dataset.day?null:t.dataset.day;draw();if(sel)$('#dayList').scrollIntoView({behavior:'smooth',block:'nearest'});return}
+  if(t.dataset.star){var id=t.dataset.star;STAR[id]?delete STAR[id]:STAR[id]=1;store.set('star',STAR);draw();return}
+  if(t.parentNode.id==='career'){F.career=t.dataset.v;draw();return}
+  if(t.parentNode.id==='view'){F.view=t.dataset.v;draw();return}
+  if(t.id==='techOnly'){F.tech=!F.tech;draw()}else if(t.id==='starOnly'){F.star=!F.star;draw()}
+  else if(t.id==='reset'){F=Object.assign({},DEF);$('#q').value='';$('#src').value='';$('#loc').value='';draw()}
+  else if(t.id==='prev'||t.id==='next'){cur+=t.id==='prev'?-1:1;draw()}
+  else if(t.id==='todayBtn'){cur=0;sel=ymd(today);draw()}
+  else if(t.id==='ics')ics();else if(t.id==='moreAlways'){F.allAlways=true;draw()}
+});
+$('#q').addEventListener('input',function(){F.q=this.value.trim();draw()});
+$('#src').addEventListener('change',function(){F.src=this.value;draw()});
+$('#loc').addEventListener('change',function(){F.loc=this.value;draw()});
+fetch('jobs.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
+  D=d;var n=new Date();today=new Date(n.getFullYear(),n.getMonth(),n.getDate());cur=0;
+  var srcs=[],locs=[];D.postings.forEach(function(p){if(srcs.indexOf(p.src)<0)srcs.push(p.src);var r=region(p.loc);if(r&&locs.indexOf(r)<0)locs.push(r)});
+  srcs.forEach(function(s){$('#src').insertAdjacentHTML('beforeend','<option>'+esc(s)+'</option>')});
+  locs.sort().forEach(function(s){$('#loc').insertAdjacentHTML('beforeend','<option>'+esc(s)+'</option>')});
+  $('#src').value=F.src;$('#loc').value=F.loc;draw();
+}).catch(function(){$('#meta').textContent='공고 자료(jobs.json)를 불러오지 못했습니다.'});
+})();
+</script>
+</body>
+</html>

@@ -14,7 +14,7 @@ def _esc(s) -> str:
     return html.escape(str(s if s is not None else ""))
 
 
-def bar_svg(pairs, w=640, h=170, color="#2563eb", every=None) -> str:
+def bar_svg(pairs, w=640, h=170, color="#2a78d6", every=None) -> str:
     if not pairs:
         return "<p>데이터 없음</p>"
     every = every or max(1, len(pairs) // 8)
@@ -54,9 +54,6 @@ def fmd_svg(fmd, gr, w=640, h=230) -> str:
     return f'<svg class="chart" viewBox="0 0 {w} {h}" role="img" aria-label="규모-누적빈도 그래프 (로그)">{yt}{ticks}{line}{dots}</svg>'
 
 
-NAV = [("er/", "응급실 접근성 3D"), ("fire/", "산불 위험 3D"), ("warehouse/", "공개 데이터 분석 웨어하우스"), ("energy/", "전력 전환 분석"),
-       ("api-watch/", "API Watch"), ("power/", "전력 수요 예측"), ("wcf/", "중력 모델링 도구")]
-
 # 깊이 색: 파랑 한 색상 5단계 (라이트는 깊을수록 진하게, 다크는 깊을수록 밝게). 단계 대비는 검증 스크립트로 확인.
 DEPTH_EDGES = [30, 70, 150, 300]
 DEPTH_LABELS = ["0–30", "30–70", "70–150", "150–300", "300 km↓"]
@@ -68,6 +65,7 @@ PAGE = r"""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/deck.gl@9.0.38/dist.min.js"></script>
+<script src="sitebar.js" defer></script>
 <style>
 :root{color-scheme:light;--bg:#f4f3f0;--card:#fcfcfb;--glass:rgba(252,252,251,.86);--text:#0b0b0b;--muted:#52514e;--faint:#6e6d68;--line:#e2e0da;--soft:#ecebe6;
   --d1:#86b6ef;--d2:#3987e5;--d3:#256abf;--d4:#184f95;--d5:#0d366b;--accent:#256abf;--shadow:0 10px 30px rgba(20,18,12,.10)}
@@ -97,7 +95,6 @@ h1{font-size:clamp(24px,3.2vw,32px);letter-spacing:-.035em;line-height:1.15;marg
 .stat .k{font-size:12px;color:var(--faint);font-weight:600}.stat .v{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.1}.stat .d{font-size:12px;color:var(--muted)}
 @media (max-width:760px){.hero{height:auto;min-height:0;display:flex;flex-direction:column}#map{position:relative;height:64vh;order:2}.panel{position:relative;inset:auto;width:auto;margin:12px 16px;max-height:none;order:1}.stat{position:relative;right:auto;bottom:auto;margin:0 16px 16px;order:3}}
 main{max-width:1120px;margin:0 auto;padding:26px 16px 60px}
-nav.others{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;margin:0 0 12px;color:var(--muted)}nav.others a{text-decoration:none;border-bottom:1px solid var(--line)}nav.others a:hover{border-color:currentColor}
 .sub{color:var(--muted);margin:0 0 6px;font-size:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0}h2{margin:0 0 10px;font-size:19px;letter-spacing:-.02em}h2 small{font-weight:500;color:var(--faint);font-size:13px}
 h3{font-size:13px;color:var(--muted);margin:10px 0 4px}.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
@@ -125,7 +122,6 @@ svg.chart{width:100%;height:auto;color:var(--text)}table{width:100%;border-colla
   <div class="stat" id="stat"></div>
 </section>
 <main>
-<nav class="others" aria-label="같은 사이트의 다른 분석"><span>같은 사이트:</span>__NAV__</nav>
 <p class="sub">USGS FDSN Event API → 정제(중복·수정본·범위 검사) → CSV/SQLite → 분석 → 이 페이지. GitHub Actions 가 매일 갱신 · 마지막 갱신 __UPDATED__ UTC · 지도: __MAP_NOTE__</p>
 __CARDS__
 <section class="card"><h2>데이터 품질 <small>마지막 실행 기준</small></h2><table>__QROWS__</table>
@@ -218,7 +214,6 @@ def render(summaries: list[dict], quality: dict, events_js: list[list], updated:
         "__MAP_DAYS__": str(cfg["map_days"]),
         "__MIN_MAG__": str(r0["min_mag"]),
         "__MAP_NOTE__": f'{_esc(r0["name"])} M{r0["min_mag"]}+ 최근 {cfg["map_days"]}일',
-        "__NAV__": "".join(f'<a href="{h}">{_esc(t)}</a>' for h, t in NAV),
         "__UPDATED__": _esc(updated),
         "__CARDS__": "".join(cards),
         "__QROWS__": qrows,

@@ -4,13 +4,13 @@
 <style>
 .lvl{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700}.lvl i{width:9px;height:9px;border-radius:50%;display:inline-block}
 :root{color-scheme:light;--bg:#f4f4f2;--surface:#fcfcfb;--text:#0b0b0b;--text2:#52514e;--muted:#7a7873;--line:#e4e2dc;--grid:#ebe9e3;--line2:#b9b6ae;
-  --s1:#2a78d6;--s2:#eb6834;--good:#0ca30c;--warn:#b97700;--crit:#d03b3b;--card:#fcfcfb;
+  --s1:#2a78d6;--s1-ink:#226dc4;--s2:#eb6834;--good:#0ca30c;--warn:#b97700;--crit:#d03b3b;--card:#fcfcfb;
   --q0:#cde2fb;--q1:#9ec5f4;--q2:#6da7ec;--q3:#3987e5;--q4:#256abf;--q5:#184f95;--q6:#0d366b}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#111110;--surface:#1a1a19;--text:#f0efec;--text2:#c3c2b7;--muted:#96948c;--line:#2e2e2b;--grid:#262624;--line2:#5a5852;
-  --s1:#3987e5;--s2:#d95926;--good:#0ca30c;--warn:#fab219;--crit:#e66767;--card:#1a1a19;
+  --s1:#3987e5;--s1-ink:#3987e5;--s2:#d95926;--good:#0ca30c;--warn:#fab219;--crit:#e66767;--card:#1a1a19;
   --q0:#0d366b;--q1:#184f95;--q2:#256abf;--q3:#3987e5;--q4:#6da7ec;--q5:#9ec5f4;--q6:#cde2fb}}
 :root[data-theme="dark"]{color-scheme:dark;--bg:#111110;--surface:#1a1a19;--text:#f0efec;--text2:#c3c2b7;--muted:#96948c;--line:#2e2e2b;--grid:#262624;--line2:#5a5852;
-  --s1:#3987e5;--s2:#d95926;--good:#0ca30c;--warn:#fab219;--crit:#e66767;--card:#1a1a19;
+  --s1:#3987e5;--s1-ink:#3987e5;--s2:#d95926;--good:#0ca30c;--warn:#fab219;--crit:#e66767;--card:#1a1a19;
   --q0:#0d366b;--q1:#184f95;--q2:#256abf;--q3:#3987e5;--q4:#6da7ec;--q5:#9ec5f4;--q6:#cde2fb}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI","Noto Sans KR",sans-serif}
@@ -57,12 +57,12 @@ details{margin-top:10px}summary{cursor:pointer;font-size:12.5px;color:var(--text
 .empty{color:var(--muted);font-size:13.5px;padding:18px 0}
 .ramp{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);margin-top:8px}.ramp i{display:inline-block;width:22px;height:10px}
 .sec{font-size:16px;margin:30px 0 12px;letter-spacing:-.2px}
-.q{font-size:12px;font-weight:700;color:var(--s1);margin:0 0 4px;letter-spacing:.2px}.ans{font-size:14.5px;line-height:1.65;margin:4px 0 8px}.src{font-size:11.5px;color:var(--muted)}.src code{font-size:11px}
-.more{all:unset;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--s1)}.more:focus-visible{outline:2px solid var(--s1);outline-offset:3px;border-radius:4px}
+.q{font-size:12px;font-weight:700;color:var(--s1-ink);margin:0 0 4px;letter-spacing:.2px}.ans{font-size:14.5px;line-height:1.65;margin:4px 0 8px}.src{font-size:11.5px;color:var(--muted)}.src code{font-size:11px}
+.more{all:unset;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--s1-ink)}.more:focus-visible{outline:2px solid var(--s1);outline-offset:3px;border-radius:4px}
 .heat td.h{text-align:right;font-variant-numeric:tabular-nums;min-width:64px}
 @media (max-width:900px){.c3{grid-column:span 6}.c4,.c5,.c6,.c7,.c8{grid-column:span 12}}
 @media (max-width:520px){.kpi b{font-size:22px}.hb{grid-template-columns:minmax(80px,120px) 1fr 38px 46px}}
-</style></head><body>
+</style><script src="../sitebar.js" defer></script></head><body>
 <header><div class="hd"><h1>공개 데이터 분석 — 전력 수요 · 데이터 직무 채용 공고</h1><span class="gen" id="gen"></span></div>
 <nav role="tablist" aria-label="화면">
 <button role="tab" data-t="home" aria-selected="true">분석 요약</button><button role="tab" data-t="pwr" aria-selected="false">전력 분석</button><button role="tab" data-t="jobs" aria-selected="false">채용 공고 분석</button><button role="tab" data-t="qa" aria-selected="false">데이터 품질</button><button role="tab" data-t="more" aria-selected="false">부가 자료</button>
@@ -285,8 +285,8 @@ function qa(){const g=$('#qa-g'),T=D.tests||[],H=D.history||[];
   g.append(card('c12',`<h2>품질 테스트 ${T.length}개</h2><p class="sub">통과 ${(grp.pass||[]).length} · 경고 ${(grp.warn||[]).length} · 실패 ${(grp.fail||[]).length}. 실패와 경고가 먼저 나옵니다.</p><div class="sc" style="max-height:420px;overflow-y:auto"><table><tr><th>테스트</th><th>결과</th><th class="n">걸린 행</th><th class="n">초</th></tr>${T.map(t=>`<tr><td class="w">${esc(t[0])}</td><td>${badge(t[1])}</td><td class="n">${t[2]}</td><td class="n">${t[3]}</td></tr>`).join('')}</table></div>`))}
 
 const R={home,pwr,jobs:jobsA,qa,more},done={};
-function show(t){document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===t));if(!done[t]){done[t]=1;try{R[t]()}catch(e){$('#'+t).insertAdjacentHTML('beforeend','<p class="empty">이 화면을 그리지 못했습니다: '+esc(e.message)+'</p>')}}try{history.replaceState(null,'','#'+t)}catch(e){}window.scrollTo(0,0)}
+function show(t){document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===t));if(!done[t]){done[t]=1;try{R[t]()}catch(e){$('#'+t).insertAdjacentHTML('beforeend','<p class="empty">이 화면을 그리지 못했습니다: '+esc(e.message)+'</p>')}}try{history.replaceState(null,'',t==='home'?location.pathname+location.search:'#'+t)}catch(e){}window.scrollTo(0,0)}
 document.querySelector('nav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)show(b.dataset.t)});
 $('#gen').innerHTML=`생성 ${esc(D.generated||'')} UTC · 매일 06:17(한국 시간) 실행 뒤 갱신 · <a href="https://github.com/0Ju12/data-projects/tree/main/warehouse">코드</a>`;
-show(R[location.hash.slice(1)]?location.hash.slice(1):'home');
+show(R[location.hash.slice(1)]?location.hash.slice(1):'home');window.addEventListener('load',()=>{if(scrollY<400)window.scrollTo(0,0)});
 </script></body></html>

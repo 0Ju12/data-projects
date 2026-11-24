@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-23T15:18:36.117633+00:00",
+  "last_check_at": "2026-11-24T04:50:12.183872+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.034052+00:00",
-        "duration_ms": 696.47
+        "checked_at": "2026-11-24T04:50:12.104777+00:00",
+        "duration_ms": 404.86
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.037778+00:00",
-        "duration_ms": 126.74
+        "checked_at": "2026-11-24T04:50:12.108630+00:00",
+        "duration_ms": 117.64
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.040361+00:00",
-        "duration_ms": 500.58
+        "checked_at": "2026-11-24T04:50:12.112765+00:00",
+        "duration_ms": 561.72
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.042985+00:00",
-        "duration_ms": 563.02
+        "checked_at": "2026-11-24T04:50:12.115252+00:00",
+        "duration_ms": 378.94
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.045154+00:00",
-        "duration_ms": 79.83
+        "checked_at": "2026-11-24T04:50:12.117476+00:00",
+        "duration_ms": 86.89
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.050789+00:00",
-        "duration_ms": 642.04
+        "checked_at": "2026-11-24T04:50:12.120032+00:00",
+        "duration_ms": 308.43
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.053365+00:00",
-        "duration_ms": 1884.67
+        "checked_at": "2026-11-24T04:50:12.122487+00:00",
+        "duration_ms": 1520.78
       }
     },
     {
@@ -110,8 +110,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.055708+00:00",
-        "duration_ms": 196.63
+        "checked_at": "2026-11-24T04:50:12.124688+00:00",
+        "duration_ms": 156.04
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.058592+00:00",
-        "duration_ms": 175.61
+        "checked_at": "2026-11-24T04:50:12.127645+00:00",
+        "duration_ms": 184.83
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.062014+00:00",
-        "duration_ms": 129.1
+        "checked_at": "2026-11-24T04:50:12.131045+00:00",
+        "duration_ms": 41.98
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.065125+00:00",
-        "duration_ms": 601.64
+        "checked_at": "2026-11-24T04:50:12.133264+00:00",
+        "duration_ms": 402.25
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.067374+00:00",
-        "duration_ms": 464.93
+        "checked_at": "2026-11-24T04:50:12.135370+00:00",
+        "duration_ms": 407.51
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.069844+00:00",
-        "duration_ms": 286.89
+        "checked_at": "2026-11-24T04:50:12.137703+00:00",
+        "duration_ms": 134.37
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.072055+00:00",
-        "duration_ms": 40.58
+        "checked_at": "2026-11-24T04:50:12.140007+00:00",
+        "duration_ms": 39.3
       }
     },
     {
@@ -207,9 +207,9 @@
         "docs": "https://openlibrary.org/dev/docs/api/search"
       },
       "last_run": {
-        "status": "warning",
-        "checked_at": "2026-11-23T15:18:36.074988+00:00",
-        "duration_ms": 4193.65
+        "status": "healthy",
+        "checked_at": "2026-11-24T04:50:12.143049+00:00",
+        "duration_ms": 1574.56
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.078667+00:00",
-        "duration_ms": 292.7
+        "checked_at": "2026-11-24T04:50:12.145082+00:00",
+        "duration_ms": 104.07
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.081167+00:00",
-        "duration_ms": 189.76
+        "checked_at": "2026-11-24T04:50:12.147364+00:00",
+        "duration_ms": 100.32
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.092238+00:00",
-        "duration_ms": 77.28
+        "checked_at": "2026-11-24T04:50:12.158248+00:00",
+        "duration_ms": 90.45
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.103326+00:00",
-        "duration_ms": 43.92
+        "checked_at": "2026-11-24T04:50:12.169209+00:00",
+        "duration_ms": 95.27
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-23T15:18:36.108802+00:00",
-        "duration_ms": 171.92
+        "checked_at": "2026-11-24T04:50:12.174463+00:00",
+        "duration_ms": 128.39
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.112181+00:00",
-        "duration_ms": 89.1
+        "checked_at": "2026-11-24T04:50:12.178018+00:00",
+        "duration_ms": 119.81
       }
     },
     {
@@ -306,35 +306,23 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-23T15:18:36.117633+00:00",
-        "duration_ms": 33.27
+        "checked_at": "2026-11-24T04:50:12.183872+00:00",
+        "duration_ms": 158.09
       }
     }
   ],
   "incidents": [
     {
       "id": 22,
-      "target": "open-library",
-      "key": "latency",
-      "kind": "latency",
-      "severity": "warning",
-      "message": "4194 ms · 기준 3000 ms",
-      "opened_at": "2026-11-23T15:18:36.074988+00:00",
-      "last_seen_at": "2026-11-23T15:18:36.074988+00:00",
-      "resolved_at": null,
-      "occurrences": 1
-    },
-    {
-      "id": 21,
       "target": "rest-countries",
       "key": "json",
       "kind": "format",
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-23T15:18:36.108802+00:00",
+      "last_seen_at": "2026-11-24T04:50:12.174463+00:00",
       "resolved_at": null,
-      "occurrences": 33
+      "occurrences": 36
     }
   ],
   "ai_latest": {
@@ -976,9 +964,9 @@
   "portfolio": {
     "schema_version": 1,
     "source_repository": "0Ju12/0Ju12.github.io",
-    "source_sha": "e17665cfff60a3ca4a59d5db599f00f580f5de0c",
-    "source_updated_at": "2026-11-23T05:44:51Z",
-    "synced_at": "2026-11-23T15:18:30.583079+00:00",
+    "source_sha": "8d758c0dfb3cff418b94289a4fa8202e90fc2a36",
+    "source_updated_at": "2026-11-24T04:39:15Z",
+    "synced_at": "2026-11-24T04:50:09.435580+00:00",
     "links": {
       "preparation": "https://0ju12.github.io/study/index.html",
       "study": "https://0ju12.github.io/study/index.html#/notes",
