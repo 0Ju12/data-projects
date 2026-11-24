@@ -13,7 +13,7 @@ def _esc(s) -> str:
     return html.escape(str(s if s is not None else ""))
 
 
-def bar_svg(pairs, w=640, h=170, color="#2563eb", every=None) -> str:
+def bar_svg(pairs, w=640, h=170, color="#2a78d6", every=None) -> str:
     if not pairs:
         return "<p>데이터 없음</p>"
     every = every or max(1, len(pairs) // 8)
@@ -74,17 +74,15 @@ def render(summaries: list[dict], quality: dict, events_js: list[list], updated:
 <title>동아시아 지진 데이터 파이프라인</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
-:root{{--bg:#f6f5f2;--card:#fff;--text:#17191e;--muted:#5e6472;--line:#e5e2db}}
-@media (prefers-color-scheme:dark){{:root{{--bg:#0e1116;--card:#161a21;--text:#eceef2;--muted:#a1a8b4;--line:#28303a}}}}
+:root{{--bg:#f4f4f2;--card:#fcfcfb;--text:#0b0b0b;--muted:#52514e;--line:#e4e2dc}}
+@media (prefers-color-scheme:dark){{:root{{--bg:#111110;--card:#1a1a19;--text:#f0efec;--muted:#c3c2b7;--line:#2e2e2b}}}}
 *{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}}
 main{{max-width:1100px;margin:0 auto;padding:28px 16px 60px}}h1{{margin:0 0 4px;letter-spacing:-.03em}}.sub{{color:var(--muted);margin:0 0 18px}}
 .card{{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0}}h2{{margin:0 0 10px;font-size:19px}}h2 small{{font-weight:500;color:var(--muted);font-size:13px}}
 h3{{font-size:13px;color:var(--muted);margin:10px 0 4px}}.g2{{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}}
 svg.chart{{width:100%;height:auto;color:var(--text)}}#map{{height:440px;border-radius:12px}}table{{width:100%;border-collapse:collapse;font-size:13px}}td{{padding:4px 6px;border-top:1px solid var(--line)}}
 .note{{font-size:12.5px;color:var(--muted)}}a{{color:inherit}}
-nav.others{{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;margin:0 0 6px;color:var(--muted)}}nav.others a{{text-decoration:none;border-bottom:1px solid var(--line)}}nav.others a:hover{{border-color:currentColor}}
-</style></head><body><main>
-<nav class="others" aria-label="같은 사이트의 다른 분석"><span>같은 사이트:</span><a href="warehouse/">공개 데이터 분석 웨어하우스</a><a href="energy/">전력 전환 분석</a><a href="api-watch/">API Watch</a><a href="power/">전력 수요 예측</a><a href="fire/">산불 위험 지도</a><a href="wcf/">중력 모델링 도구</a></nav>
+</style><script src="sitebar.js" defer></script></head><body><main>
 <h1>동아시아 지진 데이터 파이프라인</h1>
 <p class="sub">USGS FDSN Event API → 정제(중복·수정본·범위 검사) → CSV/SQLite → 분석 → 이 페이지. GitHub Actions 가 매일 갱신 · 마지막 갱신 {_esc(updated)} UTC</p>
 <section class="card"><h2>지도 <small>원 크기 = 규모, 색 = 깊이</small></h2><div id="map"></div><p class="note">표시: {_esc(cfg["regions"][0]["name"])} M{cfg["regions"][0]["min_mag"]}+ 최근 {cfg["map_days"]}일</p></section>
@@ -98,6 +96,6 @@ nav.others{{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;margin:0 0
 var EV={json.dumps(events_js, separators=(",", ":"))};
 var map=L.map('map',{{scrollWheelZoom:false}}).setView([37,134],5);
 L.tileLayer('https://tile.openstreetmap.org/{{z}}/{{x}}/{{y}}.png',{{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',maxZoom:10}}).addTo(map);
-function col(d){{return d<30?'#dc2626':d<70?'#f59e0b':d<300?'#2563eb':'#7c3aed'}}
+function col(d){{return d<30?'#dc2626':d<70?'#f59e0b':d<300?'#2a78d6':'#7c3aed'}}
 EV.forEach(function(e){{L.circleMarker([e[1],e[2]],{{radius:Math.max(2,(e[4]-3)*3),color:col(e[3]),weight:1,fillOpacity:.45}}).bindTooltip(e[0]+' · M'+e[4]+' · '+Math.round(e[3])+'km<br>'+e[5]).addTo(map)}});
 </script></body></html>'''
