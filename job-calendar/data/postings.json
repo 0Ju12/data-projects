@@ -4815,6 +4815,24 @@
 "first_seen": "2026-11-24",
 "last_seen": "2026-11-24"
 },
+"gh:coupang:8345565": {
+"id": "gh:coupang:8345565",
+"src": "Greenhouse",
+"co": "쿠팡",
+"title": "[쿠팡풀필먼트서비스] 물류센터 자동화 설비 보전 관리자 (경기광주5센터)",
+"url": "https://www.coupang.jobs/en/jobs/?gh_jid=8345565",
+"roles": [
+"기타"
+],
+"stacks": [],
+"loc": "South Korea",
+"newbie": null,
+"start": "2026-11-11",
+"end": null,
+"tech": false,
+"first_seen": "2026-11-24",
+"last_seen": "2026-11-24"
+},
 "gh:coupang:8345567": {
 "id": "gh:coupang:8345567",
 "src": "Greenhouse",
@@ -6455,6 +6473,24 @@
 "first_seen": "2026-11-24",
 "last_seen": "2026-11-24"
 },
+"gh:coupang:8413349": {
+"id": "gh:coupang:8413349",
+"src": "Greenhouse",
+"co": "쿠팡",
+"title": "Product Manager II (Eats Shopping)",
+"url": "https://www.coupang.jobs/en/jobs/?gh_jid=8413349",
+"roles": [
+"기타"
+],
+"stacks": [],
+"loc": "Seoul, South Korea",
+"newbie": false,
+"start": "2026-11-24",
+"end": null,
+"tech": false,
+"first_seen": "2026-11-24",
+"last_seen": "2026-11-24"
+},
 "gh:daangn:4288939003": {
 "id": "gh:daangn:4288939003",
 "src": "Greenhouse",
@@ -6579,6 +6615,24 @@
 "start": "2022-03-27",
 "end": null,
 "tech": true,
+"first_seen": "2026-11-24",
+"last_seen": "2026-11-24"
+},
+"gh:daangn:5120737003": {
+"id": "gh:daangn:5120737003",
+"src": "Greenhouse",
+"co": "당근",
+"title": "Product Designer - 커뮤니티",
+"url": "https://about.daangn.com?gh_jid=5120737003",
+"roles": [
+"기타"
+],
+"stacks": [],
+"loc": "SEOUL",
+"newbie": null,
+"start": "2022-05-10",
+"end": null,
+"tech": false,
 "first_seen": "2026-11-24",
 "last_seen": "2026-11-24"
 },
