@@ -1,7 +1,8 @@
 {
   "region": "경상북도",
   "bbox": [35.57, 127.80, 37.55, 129.60],
-  "road_classes": ["motorway", "trunk", "primary", "secondary", "tertiary", "unclassified", "residential"],
+  "road_classes": ["motorway", "trunk", "primary", "secondary", "tertiary", "unclassified"],
+  "tile_deg": 0.25,
   "speeds_kmh": {
     "motorway": 90, "trunk": 70, "primary": 50, "secondary": 45, "tertiary": 40,
     "unclassified": 30, "residential": 25
@@ -10,7 +11,7 @@
   "access_kmh": 20,
   "cutoff_min": 240,
   "targets": [
-    {"name": "지역응급의료센터 이상", "tiers": ["regional", "local_center"], "minutes": 30},
+    {"name": "지역응급의료센터 이상", "tiers": ["regional", "local_center"], "requires": ["local_center"], "minutes": 30},
     {"name": "권역응급의료센터", "tiers": ["regional"], "minutes": 60},
     {"name": "응급실 아무 곳", "tiers": ["regional", "local_center", "local_institution", "other"], "minutes": 30}
   ],

@@ -36,11 +36,18 @@ class PointIndex:
         side_m = self.cell * 111_320 * max(math.cos(math.radians(lat)), 0.1)
         reach = int(math.ceil(max_m / side_m))
         best, best_d = None, max_m
-        for di in range(-reach, reach + 1):
-            for dj in range(-reach, reach + 1):
-                for key in self.buckets.get((ci + di, cj + dj), ()):
-                    plat, plon = self.points[key]
-                    d = haversine_m(lat, lon, plat, plon)
-                    if d <= best_d:
-                        best, best_d = key, d
+        # 가운데 칸부터 고리 모양으로 넓혀 간다. r 번째 고리를 다 본 뒤, 다음 고리의 점은
+        # 최소 r·side_m 떨어져 있으므로 이미 그보다 가까운 점을 찾았으면 멈춘다.
+        for r in range(reach + 1):
+            for di in range(-r, r + 1):
+                for dj in range(-r, r + 1):
+                    if max(abs(di), abs(dj)) != r:
+                        continue
+                    for key in self.buckets.get((ci + di, cj + dj), ()):
+                        plat, plon = self.points[key]
+                        d = haversine_m(lat, lon, plat, plon)
+                        if d <= best_d:
+                            best, best_d = key, d
+            if best is not None and best_d <= r * side_m:
+                break
         return None if best is None else (best, best_d)

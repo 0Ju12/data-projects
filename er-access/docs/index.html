@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>응급실 접근성 지도</title>
+<meta name="description" content="1 km 격자마다 가장 가까운 응급실까지의 차량 이동 시간을 도로망으로 계산해 응급의료 사각지대를 보여 주는 지도">
+<style>
+:root{
+  --bg:#f7f7f8;--card:#fcfcfb;--text:#0b0b0b;--muted:#52514e;--faint:#6e6e78;--line:#e4e6ea;--soft:#f0f2f5;
+  --s1:#86b6ef;--s2:#3987e5;--s3:#256abf;--s4:#184f95;--s5:#0d366b;--none:#c9c8c2;
+  --mark:#0b0b0b;--ring:#fcfcfb;--warn-bg:#fff7e6;--warn-line:#f0d9a8;--warn-ink:#6b4e0e;--bar:#256abf
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111110;--card:#1a1a19;--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2e2e2b;--soft:#232321;
+  --s1:#184f95;--s2:#2a78d6;--s3:#5598e7;--s4:#9ec5f4;--s5:#cde2fb;--none:#4a4a46;
+  --mark:#f0efec;--ring:#1a1a19;--warn-bg:#2a2214;--warn-line:#5a4720;--warn-ink:#f1d9a3;--bar:#5598e7}}
+:root[data-theme="dark"]{
+  --bg:#111110;--card:#1a1a19;--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2e2e2b;--soft:#232321;
+  --s1:#184f95;--s2:#2a78d6;--s3:#5598e7;--s4:#9ec5f4;--s5:#cde2fb;--none:#4a4a46;
+  --mark:#f0efec;--ring:#1a1a19;--warn-bg:#2a2214;--warn-line:#5a4720;--warn-ink:#f1d9a3;--bar:#5598e7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 Pretendard,"Noto Sans KR",system-ui,sans-serif;word-break:keep-all}
+.w{max-width:1120px;margin:0 auto;padding:28px 16px 56px}
+a{color:inherit}
+h1{font-size:clamp(26px,4vw,36px);letter-spacing:-.03em;margin:0 0 6px;line-height:1.2}
+h2{font-size:16px;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 16px;max-width:76ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+.warn{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:14px;padding:12px 14px;margin:0 0 14px;font-size:14px}
+.warn b{font-weight:700}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 14px}
+@media (max-width:760px){.tiles{grid-template-columns:1fr}}
+.tile .k{color:var(--muted);font-size:13px}
+.tile .v{font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin:2px 0}
+.tile .d{color:var(--faint);font-size:13px}
+.tile.off .v{font-size:18px;color:var(--faint);font-weight:600}
+.lay{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:900px){.lay{grid-template-columns:1fr}}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;flex-wrap:wrap;margin:0 0 10px}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;padding:6px 12px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--text);color:var(--card)}
+.seg button:disabled{opacity:.45;cursor:not-allowed}
+.mapwrap{position:relative}
+canvas{display:block;width:100%;height:auto;border-radius:12px;background:var(--soft);touch-action:none}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0 0;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:14px;border-radius:3px;display:inline-block}
+.tip{position:absolute;pointer-events:none;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;line-height:1.45;box-shadow:0 4px 18px rgba(0,0,0,.12);min-width:180px;display:none;z-index:2}
+.tip b{font-weight:700}
+.tip .m{color:var(--muted)}
+.bars{display:grid;gap:6px;margin:6px 0 4px}
+.bar{display:grid;grid-template-columns:76px minmax(0,1fr) 78px;gap:8px;align-items:center;font-size:13px}
+.bar .t{color:var(--muted)}
+.bar .track{height:18px;position:relative}
+.bar .fill{height:100%;border-radius:0 4px 4px 0;min-width:2px}
+.bar .n{text-align:right;font-variant-numeric:tabular-nums}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:6px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
+.note{color:var(--faint);font-size:13px;margin:8px 0 0}
+.foot{color:var(--faint);font-size:13px;margin:22px 0 0;max-width:80ch}
+.foot p{margin:4px 0}
+</style>
+</head>
+<body>
+<div class="w">
+  <h1 id="title">응급실까지 몇 분</h1>
+  <p class="sub" id="sub">1 km 격자마다 가장 가까운 응급실까지의 차량 이동 시간을 도로망으로 계산했습니다. 시간 구간별 색은 지도 아래 범례에 있습니다. 칸에 마우스를 올리면 값이 보입니다.</p>
+  <div class="warn" id="warn" hidden></div>
+  <div class="tiles" id="tiles"></div>
+  <div class="lay">
+    <div class="card">
+      <div class="seg" id="seg" role="group" aria-label="응급실 종류"></div>
+      <div class="mapwrap" id="mapwrap">
+        <canvas id="map" width="720" height="760" aria-label="격자별 이동 시간 지도"></canvas>
+        <div class="tip" id="tip"></div>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div style="display:grid;gap:14px">
+      <div class="card">
+        <h2 id="bars-title">이동 시간별 인구</h2>
+        <div class="bars" id="bars"></div>
+        <p class="note" id="bars-note"></p>
+      </div>
+      <div class="card">
+        <h2>가장 먼 곳 (인구 50명 이상 칸)</h2>
+        <table><thead><tr><th>부근</th><th class="r">인구</th><th class="r">분</th><th>가장 가까운 응급실</th></tr></thead><tbody id="far"></tbody></table>
+        <p class="note">기준: '응급실 아무 곳'. 위치는 칸 중심에서 가장 가까운 시·읍 이름입니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot" id="foot"></div>
+</div>
+<script>
+(async function(){
+  const res = await fetch('data.json');
+  const D = await res.json();
+  const S = D.summary;
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const EDGES = [15, 30, 60, 90];
+  const BAND_LABELS = ['15분 이하', '15–30분', '30–60분', '60–90분', '90분 넘음'];
+  const fmtPop = n => n >= 10000 ? (n / 10000).toFixed(n >= 1e6 ? 0 : 1) + '만' : Math.round(n).toLocaleString('ko-KR');
+  const pct = x => (x * 100).toFixed(1) + '%';
+
+  document.getElementById('title').textContent = `응급실까지 몇 분 — ${S.region}`;
+  if (S.er_source !== 'official') {
+    const w = document.getElementById('warn');
+    w.hidden = false;
+    w.innerHTML = `<b>임시 응급실 목록으로 계산한 결과입니다.</b> 공식 응급의료기관 목록(국립중앙의료원)을 아직 받지 못해, `
+      + `OpenStreetMap 에 응급실로 표시된 병원과 위키백과의 권역응급의료센터 표로 만든 ${S.er.rows}곳만 썼습니다. `
+      + `빠진 응급실이 많아 <b>이동 시간이 실제보다 길게</b> 나옵니다. 지역응급의료센터 기준은 공식 목록이 있어야 계산할 수 있습니다.`;
+  }
+
+  // 통계 타일
+  const tiles = document.getElementById('tiles');
+  S.targets.forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'card tile' + (t.available ? '' : ' off');
+    el.innerHTML = t.available
+      ? `<div class="k">${t.name} ${t.minutes}분 안</div><div class="v">${pct(t.share_within)}</div>`
+        + `<div class="d">${fmtPop(t.population)}명 중 ${fmtPop(t.within)}명 · 응급실 ${t.targets}곳</div>`
+      : `<div class="k">${t.name} ${t.minutes}분 안</div><div class="v">공식 목록 필요</div><div class="d">이 종별의 응급실이 임시 목록에 없음</div>`;
+    tiles.appendChild(el);
+  });
+
+  // 종별 선택: 쓸 수 있는 것 중 마지막(아무 곳)을 기본으로
+  let cur = S.targets.map(t => t.available).lastIndexOf(true);
+  const seg = document.getElementById('seg');
+  S.targets.forEach((t, i) => {
+    const b = document.createElement('button');
+    b.textContent = t.name;
+    b.disabled = !t.available;
+    b.setAttribute('aria-pressed', i === cur);
+    b.onclick = () => { cur = i; [...seg.children].forEach((x, k) => x.setAttribute('aria-pressed', k === cur)); draw(); bars(); };
+    seg.appendChild(b);
+  });
+
+  // 지도 투영: 등장방형, 경도에 cos(가운데 위도)를 곱해 모양을 맞춘다
+  const cv = document.getElementById('map'), ctx = cv.getContext('2d');
+  const d = D.cell_deg;
+  const lats = D.cells.map(c => c[0]), lons = D.cells.map(c => c[1]);
+  const la0 = Math.min(...lats) - d, la1 = Math.max(...lats) + d, lo0 = Math.min(...lons) - d, lo1 = Math.max(...lons) + d;
+  const kx = Math.cos((la0 + la1) / 2 * Math.PI / 180);
+  const W = 720, H = Math.round(W * (la1 - la0) / ((lo1 - lo0) * kx));
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.aspectRatio = `${W} / ${H}`;
+  ctx.scale(dpr, dpr);
+  const X = lon => (lon - lo0) / (lo1 - lo0) * W, Y = lat => (la1 - lat) / (la1 - la0) * H;
+  const cw = d / (lo1 - lo0) * W, ch = d / (la1 - la0) * H;
+  const band = m => m == null ? -1 : EDGES.findIndex(e => m <= e) === -1 ? 4 : EDGES.findIndex(e => m <= e);
+  const key = (lat, lon) => Math.round(lat / d) + ':' + Math.round(lon / d);
+  const lookup = new Map(D.cells.map((c, i) => [key(c[0], c[1]), i]));
+
+  function draw(hi) {
+    const cols = [css('--s1'), css('--s2'), css('--s3'), css('--s4'), css('--s5')], none = css('--none');
+    ctx.clearRect(0, 0, W, H);
+    for (const c of D.cells) {
+      const b = band(c[3 + cur]);
+      ctx.fillStyle = b < 0 ? none : cols[b];
+      ctx.fillRect(X(c[1]) - cw / 2, Y(c[0]) - ch / 2, cw + .4, ch + .4);
+    }
+    // 시 이름
+    ctx.font = '600 12px Pretendard, "Noto Sans KR", system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    for (const p of D.places) {
+      const x = X(p[3]), y = Y(p[2]);
+      ctx.lineWidth = 3; ctx.strokeStyle = css('--card'); ctx.strokeText(p[0], x, y - 9);
+      ctx.fillStyle = css('--text'); ctx.fillText(p[0], x, y - 9);
+    }
+    // 응급실: 권역센터는 마름모, 나머지는 원. 표면색 고리로 칸과 분리
+    const tiers = S.targets[cur].tiers;
+    for (const e of D.ers) {
+      if (!tiers.includes(e[3])) continue;
+      const x = X(e[2]), y = Y(e[1]), r = e[3] === 'regional' ? 7 : 4.5;
+      ctx.beginPath();
+      if (e[3] === 'regional') { ctx.moveTo(x, y - r); ctx.lineTo(x + r, y); ctx.lineTo(x, y + r); ctx.lineTo(x - r, y); ctx.closePath(); }
+      else ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.lineWidth = 2; ctx.strokeStyle = css('--ring'); ctx.stroke();
+      ctx.fillStyle = css('--mark'); ctx.fill();
+    }
+    if (hi != null) {
+      const c = D.cells[hi];
+      ctx.lineWidth = 2; ctx.strokeStyle = css('--mark');
+      ctx.strokeRect(X(c[1]) - cw / 2 - 1, Y(c[0]) - ch / 2 - 1, cw + 2, ch + 2);
+    }
+  }
+
+  // 범례
+  const lg = document.getElementById('legend');
+  function legend() {
+    lg.innerHTML = BAND_LABELS.map((l, i) => `<span><i class="sw" style="background:var(--s${i + 1})"></i>${l}</span>`).join('')
+      + `<span><i class="sw" style="background:var(--none)"></i>도로에 못 붙음 · 4시간 넘음</span>`
+      + `<span>◆ 권역응급의료센터</span><span>● 그 밖의 응급실</span>`;
+  }
+
+  // 구간별 인구 막대
+  function bars() {
+    const t = S.targets[cur];
+    document.getElementById('bars-title').textContent = `이동 시간별 인구 — ${t.name}`;
+    const rows = t.bands, max = Math.max(...rows.map(r => r.pop));
+    document.getElementById('bars').innerHTML = rows.map((r, i) => {
+      const col = i < 5 ? `var(--s${i + 1})` : 'var(--none)';
+      const label = i < 5 ? BAND_LABELS[i] : '못 닿음';
+      return `<div class="bar" title="${label}: ${Math.round(r.pop).toLocaleString('ko-KR')}명">`
+        + `<span class="t">${label}</span><span class="track"><span class="fill" style="display:block;width:${(r.pop / max * 100).toFixed(1)}%;background:${col}"></span></span>`
+        + `<span class="n">${fmtPop(r.pop)}명</span></div>`;
+    }).join('');
+    document.getElementById('bars-note').textContent =
+      `경계 상자 안 인구 ${fmtPop(t.population)}명 (WorldPop 2020). ${t.minutes}분 기준 밖 ${fmtPop(t.population - t.within)}명.`;
+  }
+
+  // 가장 먼 칸 표
+  document.getElementById('far').innerHTML = S.farthest_cells.map(f =>
+    `<tr><td>${f.place ? f.place + ' 부근' : `${f.lat.toFixed(2)}, ${f.lon.toFixed(2)}`}</td><td class="r">${fmtPop(f.pop)}</td>`
+    + `<td class="r">${f.minutes.toFixed(0)}</td><td>${f.nearest_er}</td></tr>`).join('');
+
+  // 마우스를 올린 칸의 값
+  const tip = document.getElementById('tip'), wrap = document.getElementById('mapwrap');
+  function hover(ev) {
+    const r = cv.getBoundingClientRect();
+    const px = (ev.clientX - r.left) / r.width * W, py = (ev.clientY - r.top) / r.height * H;
+    const lon = lo0 + px / W * (lo1 - lo0), lat = la1 - py / H * (la1 - la0);
+    // 칸 중심이 1/120° 격자의 반칸 위치라, 반칸을 빼고 반올림
+    const half = d / 2;
+    const i = lookup.get(key(Math.round((lat - half) / d) * d + half, Math.round((lon - half) / d) * d + half));
+    if (i == null) { tip.style.display = 'none'; draw(); return; }
+    const c = D.cells[i];
+    const lines = S.targets.map((t, k) => t.available
+      ? `<div class="m">${t.name}: <b style="color:var(--text)">${c[3 + k] == null ? '못 닿음' : c[3 + k].toFixed(0) + '분'}</b></div>` : '').join('');
+    tip.innerHTML = `<b>인구 ${Math.round(c[2]).toLocaleString('ko-KR')}명</b> <span class="m">(${c[0].toFixed(3)}, ${c[1].toFixed(3)})</span>${lines}`;
+    tip.style.display = 'block';
+    const bx = ev.clientX - wrap.getBoundingClientRect().left, by = ev.clientY - wrap.getBoundingClientRect().top;
+    tip.style.left = Math.min(bx + 14, wrap.clientWidth - tip.offsetWidth - 4) + 'px';
+    tip.style.top = Math.max(by - tip.offsetHeight - 10, 4) + 'px';
+    draw(i);
+  }
+  cv.addEventListener('pointermove', hover);
+  cv.addEventListener('pointerleave', () => { tip.style.display = 'none'; draw(); });
+
+  document.getElementById('foot').innerHTML =
+    `<p>계산: ${S.built} · 도로 노드 ${S.graph.nodes.toLocaleString('ko-KR')}개 · 칸 ${S.cells.toLocaleString('ko-KR')}개.</p>`
+    + `<p>가정: 도로 등급별 평균 속도(고속도로 ${S.assumptions.speeds_kmh.motorway}, 주요 도로 ${S.assumptions.speeds_kmh.primary}, 마을길 ${S.assumptions.speeds_kmh.unclassified} km/h), `
+    + `칸·응급실을 ${S.assumptions.snap_m / 1000} km 안의 가장 가까운 도로에 붙이고 그 거리를 ${S.assumptions.access_kmh} km/h 로 더함. 정체·신호는 반영하지 않습니다. `
+    + `경계 상자라 대구 등 이웃 지역도 섞여 있습니다.</p>`
+    + `<p>자료: 인구 WorldPop 2020 (CC BY 4.0) · 도로·응급실 표시 © OpenStreetMap contributors (ODbL) · 권역응급의료센터 표 위키백과. `
+    + `<a href="https://github.com/0ju12/data-projects/tree/main/er-access">코드와 방법</a></p>`;
+
+  legend(); draw(); bars();
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => draw());
+})();
+</script>
+</body>
+</html>

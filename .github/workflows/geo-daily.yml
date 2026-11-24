@@ -48,15 +48,16 @@ jobs:
           git push
       - uses: actions/checkout@v4
         with: { repository: 0Ju12/gravmag-wcf, path: _wcf }
-      - name: 다른 프로젝트의 페이지를 같은 Pages 에 포함 (/power/ · /fire/ · /wcf/ · /warehouse/ · /energy/)
+      - name: 다른 프로젝트의 페이지를 같은 Pages 에 포함 (/power/ · /fire/ · /wcf/ · /warehouse/ · /energy/ · /er/)
         run: |
-          rm -rf docs/power docs/fire docs/wcf docs/warehouse docs/energy
+          rm -rf docs/power docs/fire docs/wcf docs/warehouse docs/energy docs/er
           cp -r ../power-demand/explorer docs/power
           cp -r ../wildfire-watch/docs docs/fire
           cp -r ../_wcf/web docs/wcf
           if [ -f ../warehouse/docs/index.html ]; then cp -r ../warehouse/docs docs/warehouse; fi
           if [ -f ../energy-transition/docs/index.html ]; then cp -r ../energy-transition/docs docs/energy; fi
           if [ -f ../api-watch/public/index.html ]; then cp -r ../api-watch/public docs/api-watch; fi
+          if [ -f ../er-access/docs/index.html ]; then cp -r ../er-access/docs docs/er; fi
       - uses: actions/upload-pages-artifact@v3
         with: { path: geo-data-pipeline/docs }
   deploy:

@@ -10,49 +10,47 @@ def _snap_cost(dist_m: float, access_kmh: float) -> float:
     return dist_m / (access_kmh / 3.6)
 
 
-def travel_times(g: RoadGraph, cells: list[dict], ers: list[dict], tiers: list[str],
-                 snap_m: float, access_kmh: float, cutoff_min: float | None = None) -> tuple[list[float | None], list[str | None], dict]:
-    """tiers 에 속한 응급실 중 가장 가까운 곳까지의 분. 도로에 못 붙거나 cutoff 안에 못 닿으면 None.
+class Network:
+    """그래프·점 색인·뒤집힌 그래프·칸 붙이기 결과를 한 번만 만들어 여러 대상(응급실 종별)에 재사용한다."""
 
-    응급실 쪽에서 뒤집힌 그래프로 한 번만 퍼뜨린다 (칸마다 따로 풀지 않음).
-    """
-    idx = PointIndex(g.nodes)
-    targets = [e for e in ers if e["tier"] in tiers]
-    sources: dict[int, float] = {}
-    origin_name: dict[int, str] = {}
-    unsnapped_er = []
-    for e in targets:
-        hit = idx.nearest(e["lat"], e["lon"], snap_m)
-        if hit is None:
-            unsnapped_er.append(e["name"])
-            continue
-        node, d = hit
-        cost = _snap_cost(d, access_kmh)
-        if node not in sources or cost < sources[node]:
-            sources[node], origin_name[node] = cost, e["name"]
-    cutoff = None if cutoff_min is None else cutoff_min * 60
-    reached = multi_source_dijkstra(g.reversed(), sources, cutoff) if sources else {}
+    def __init__(self, g: RoadGraph, cells: list[dict], snap_m: float, access_kmh: float):
+        self.g, self.cells, self.snap_m, self.access_kmh = g, cells, snap_m, access_kmh
+        self.idx = PointIndex(g.nodes)
+        self.rev = g.reversed()             # 칸 → 응급실 시간을 응급실 쪽에서 한 번에 풀기 위해
+        self.snapped = [self.idx.nearest(c["lat"], c["lon"], snap_m) for c in cells]
 
-    minutes: list[float | None] = []
-    nearest: list[str | None] = []
-    no_road = 0
-    for c in cells:
-        hit = idx.nearest(c["lat"], c["lon"], snap_m)
-        if hit is None:
-            no_road += 1
-            minutes.append(None)
-            nearest.append(None)
-            continue
-        node, d = hit
-        r = reached.get(node)
-        if r is None:
-            minutes.append(None)
-            nearest.append(None)
-            continue
-        minutes.append((r[0] + _snap_cost(d, access_kmh)) / 60)
-        nearest.append(origin_name[r[1]])
-    info = {"targets": len(targets), "targets_unsnapped": unsnapped_er, "cells_no_road": no_road}
-    return minutes, nearest, info
+    def travel_times(self, ers: list[dict], tiers: list[str], cutoff_min: float | None = None):
+        """tiers 에 속한 응급실 중 가장 가까운 곳까지의 분. 도로에 못 붙거나 cutoff 안에 못 닿으면 None.
+        반환: (분 목록, 가장 가까운 응급실의 ers 안 번호 목록, 정보)."""
+        sources: dict[int, float] = {}
+        origin: dict[int, int] = {}
+        unsnapped = []
+        for k, e in enumerate(ers):
+            if e["tier"] not in tiers:
+                continue
+            hit = self.idx.nearest(e["lat"], e["lon"], self.snap_m)
+            if hit is None:
+                unsnapped.append(e["name"])
+                continue
+            node, d = hit
+            cost = _snap_cost(d, self.access_kmh)
+            if node not in sources or cost < sources[node]:
+                sources[node], origin[node] = cost, k
+        cutoff = None if cutoff_min is None else cutoff_min * 60
+        reached = multi_source_dijkstra(self.rev, sources, cutoff) if sources else {}
+        minutes: list[float | None] = []
+        nearest: list[int | None] = []
+        for hit in self.snapped:
+            r = reached.get(hit[0]) if hit else None
+            if r is None:
+                minutes.append(None)
+                nearest.append(None)
+            else:
+                minutes.append((r[0] + _snap_cost(hit[1], self.access_kmh)) / 60)
+                nearest.append(origin[r[1]])
+        info = {"targets": sum(e["tier"] in tiers for e in ers), "targets_unsnapped": unsnapped,
+                "cells_no_road": sum(h is None for h in self.snapped)}
+        return minutes, nearest, info
 
 
 def coverage(cells: list[dict], minutes: list[float | None], limit_min: float) -> dict:
@@ -67,3 +65,22 @@ def coverage(cells: list[dict], minutes: list[float | None], limit_min: float) -
         "share_within": round(within / total, 4) if total else None,
         "population_unreached": round(unknown),
     }
+
+
+BANDS = [15, 30, 60, 90]           # 지도 색 구간과 같게 (30·60분 기준이 경계에 오도록)
+
+
+def bands(cells: list[dict], minutes: list[float | None]) -> list[dict]:
+    """이동 시간 구간별 인구. 마지막 두 칸은 '90분 넘음' 과 '못 닿음'."""
+    edges = [0, *BANDS]
+    out = [{"label": f"{a}–{b}분", "pop": 0.0} for a, b in zip(edges, edges[1:])]
+    out += [{"label": f"{BANDS[-1]}분 넘음", "pop": 0.0}, {"label": "못 닿음", "pop": 0.0}]
+    for c, m in zip(cells, minutes):
+        if m is None:
+            out[-1]["pop"] += c["pop"]
+            continue
+        k = next((i for i, b in enumerate(BANDS) if m <= b), len(BANDS))
+        out[k]["pop"] += c["pop"]
+    for b in out:
+        b["pop"] = round(b["pop"])
+    return out

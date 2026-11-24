@@ -62,6 +62,44 @@ def load(path: Path) -> list[dict]:
     return out
 
 
+def from_osm(data: dict) -> list[dict]:
+    """OSM 의 amenity=hospital + emergency=yes. 공식 목록이 없을 때 쓰는 **임시** 목록이다.
+    한국 OSM 은 응급실 태그가 빠진 병원이 많고 종별 정보가 없어, 이 목록으로 낸 시간은 실제보다 길게 나온다."""
+    out, seen = [], set()
+    for el in data.get("elements", []):
+        lat = el.get("lat", el.get("center", {}).get("lat"))
+        lon = el.get("lon", el.get("center", {}).get("lon"))
+        if lat is None or lon is None:
+            continue
+        tags = el.get("tags", {})
+        name = tags.get("name:ko") or tags.get("name") or f"OSM {el['type']}/{el['id']}"
+        key = (name, round(lat, 3), round(lon, 3))
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append({"name": name, "lat": lat, "lon": lon, "tier": "other"})
+    return out
+
+
+def merge_provisional(osm_rows: list[dict], centers: list[dict], within_m: float = 300) -> list[dict]:
+    """임시 목록 = 위키백과 권역센터(종별 있음) + OSM 응급실 태그. 같은 병원이 두 곳에 있으면(300 m 안) 권역센터 쪽을 남긴다."""
+    from .geo import haversine_m
+    out = list(centers)
+    for r in osm_rows:
+        if not any(haversine_m(r["lat"], r["lon"], c["lat"], c["lon"]) <= within_m for c in centers):
+            out.append(r)
+    return out
+
+
+def save(rows: list[dict], path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["기관명", "위도", "경도", "종별"])
+        for r in rows:
+            w.writerow([r["name"], f"{r['lat']:.6f}", f"{r['lon']:.6f}", TIERS.get(r["tier"], ("",))[0]])
+
+
 API = "https://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytListInfoInqire"
 
 

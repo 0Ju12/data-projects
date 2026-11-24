@@ -120,12 +120,51 @@ def test_travel_times_and_coverage_end_to_end():
     cells = [{"lat": 36.0, "lon": LON0 + 0.001, "pop": 1000},              # 노드 1 근처
              {"lat": 36.0, "lon": LON0 + 0.039, "pop": 500},               # 노드 5 근처
              {"lat": 36.3, "lon": LON0, "pop": 200}]                       # 도로에서 30 km 넘게 떨어짐
-    mins, near, info = access.travel_times(g, cells, ers, ["local_center"], snap_m=1500, access_kmh=20)
-    assert near[:2] == ["동쪽센터", "동쪽센터"] and mins[2] is None and info["cells_no_road"] == 1
+    net = access.Network(g, cells, snap_m=1500, access_kmh=20)
+    mins, near, info = net.travel_times(ers, ["local_center"])
+    assert near == [0, 0, None] and mins[2] is None and info["cells_no_road"] == 1
     assert mins[1] < 1 < mins[0]                                          # 동쪽 칸이 더 가깝다
     # 노드1→5: primary 1.8 km @50 + link 1.8 km @30 ≈ 5.8 분 (+ 도로 붙이기 몫)
     assert 5.5 < mins[0] < 6.5
     cov = access.coverage(cells, mins, 3)
     assert cov["within"] == 500 and cov["population"] == 1700 and cov["population_unreached"] == 200
-    mins_any, near_any, _ = access.travel_times(g, cells, ers, ["local_center", "local_institution"], 1500, 20)
-    assert near_any[0] == "작은기관" and mins_any[0] < 1
+    mins_any, near_any, _ = net.travel_times(ers, ["local_center", "local_institution"])
+    assert near_any[0] == 1 and mins_any[0] < 1
+    b = access.bands(cells, mins)
+    assert b[0] == {"label": "0–15분", "pop": 1500} and b[-1] == {"label": "못 닿음", "pop": 200}
+    assert sum(x["pop"] for x in b) == 1700
+
+
+def test_tiles_cover_bbox_without_gaps():
+    t = osm.tiles([35.57, 127.80, 36.10, 128.30], 0.25)
+    assert len(t) == 3 * 2 and t[0] == [35.57, 127.8, 35.82, 128.05] and t[-1][2:] == [36.1, 128.3]
+
+
+def test_graph_from_tiles_dedups_shared_ways(tmp_path):
+    c = osm.compact(OVERPASS)
+    for name in ("a.json", "b.json"):                                     # 경계에 걸친 도로는 두 타일에 다 들어 있다
+        (tmp_path / name).write_text(__import__("json").dumps(c), encoding="utf-8")
+    g1 = osm.to_graph(OVERPASS)
+    g2 = osm.graph_from_tiles([tmp_path / "a.json", tmp_path / "b.json"])
+    assert g2.edge_count() == g1.edge_count() and set(g2.nodes) == set(g1.nodes)
+
+
+def test_er_from_osm_and_save_round_trip(tmp_path):
+    data = {"elements": [
+        {"type": "node", "id": 1, "lat": 36.0, "lon": 129.0, "tags": {"name": "A병원", "amenity": "hospital"}},
+        {"type": "way", "id": 2, "center": {"lat": 36.1, "lon": 129.1}, "tags": {"name": "B", "name:ko": "B병원"}},
+        {"type": "way", "id": 3, "tags": {"name": "좌표없음"}}]}
+    rows = er.from_osm(data)
+    assert [r["name"] for r in rows] == ["A병원", "B병원"]
+    rows[0]["tier"] = "regional"
+    er.save(rows, tmp_path / "e.csv")
+    back = er.load(tmp_path / "e.csv")
+    assert [r["tier"] for r in back] == ["regional", "other"] and back[1]["lat"] == 36.1
+
+
+def test_merge_provisional_prefers_regional_center():
+    centers = [{"name": "가 대학병원", "lat": 36.0, "lon": 129.0, "tier": "regional"}]
+    osm_rows = [{"name": "가대학교병원", "lat": 36.001, "lon": 129.001, "tier": "other"},    # 약 140 m → 같은 병원
+                {"name": "나 병원", "lat": 36.05, "lon": 129.0, "tier": "other"}]
+    merged = er.merge_provisional(osm_rows, centers)
+    assert [(r["name"], r["tier"]) for r in merged] == [("가 대학병원", "regional"), ("나 병원", "other")]
