@@ -3,7 +3,8 @@
 공개 지진 목록(USGS FDSN Event API)을 **매일 수집 → 정제 → 저장 → 분석 → 대시보드로 공개**하는 작은 데이터 파이프라인입니다.
 지구물리 석사 과정에서 다룬 자료 해석을 데이터 엔지니어링 흐름(증분 수집·재처리 안전성·품질 검사·자동화)으로 옮겨 본 프로젝트입니다.
 
-- 대시보드: GitHub Pages `docs/index.html` (지도, 월별 건수, 규모-누적빈도와 b값, 깊이 분포, 큰 지진, 데이터 품질)
+- 대시보드: GitHub Pages `docs/index.html` (3D 지도, 월별 건수, 규모-누적빈도와 b값, 깊이 분포, 큰 지진, 데이터 품질)
+- 3D 지도: 진원을 **실제 깊이만큼 지도 아래에** 그려(deck.gl + MapLibre GL), 일본 밑으로 비스듬히 깊어지는 섭입대가 보입니다. 진앙에서 진원까지 수직선, 깊이 100·300·500 km 틀, 깊이 3배 과장·평면 전환.
 - 외부 라이브러리 없이 Python 표준 라이브러리만 사용 (테스트에만 pytest)
 
 ## 흐름
@@ -54,8 +55,8 @@ geopipe/fetch.py      USGS API (count → 기간 분할, 재시도)
 geopipe/transform.py  정제·중복/수정본 처리·격리 집계, UTC/KST
 geopipe/store.py      CSV ⇄ SQLite, 실행 상태
 geopipe/analyze.py    월별 건수(빈 달 0), 규모-누적빈도, b값·Mc, 깊이 분포
-geopipe/dashboard.py  정적 HTML (Leaflet 지도 + 서버에서 그린 SVG)
+geopipe/dashboard.py  정적 HTML (deck.gl·MapLibre 3D 지도 + 서버에서 그린 SVG)
 config.json           지역(경계·최소 규모·수집 시작일)
 ```
 
-데이터: U.S. Geological Survey, Earthquake Hazards Program. 지도: © OpenStreetMap contributors.
+데이터: U.S. Geological Survey, Earthquake Hazards Program. 지도: deck.gl · MapLibre GL JS · 배경 OpenFreeMap / OpenMapTiles, © OpenStreetMap contributors.

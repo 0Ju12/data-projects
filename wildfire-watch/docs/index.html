@@ -3,83 +3,169 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>산불 위험 지도 — 화재기상지수와 위성 탐지</title>
-<meta name="description" content="기상으로 계산한 화재기상지수(FFWI)와 위성이 실제로 탐지한 열원을 매일 모아 비교하는 지도">
+<title>산불 위험 3D 지도</title>
+<meta name="description" content="기상으로 계산한 화재기상지수(FFWI)를 3D 기둥으로, 위성이 실제로 탐지한 열원을 점으로 매일 같은 지도에 놓고 비교하는 지도">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/deck.gl@9.0.38/dist.min.js"></script>
 <style>
-:root{--bg:#f7f7f8;--card:#fff;--text:#18181b;--muted:#5f6670;--faint:#6e6e78;--line:#e4e6ea;--soft:#f0f2f5;--sea:#eef2f6;--fire:#dc2626;--static:#6b7280;--hi:#b91c1c}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0e1116;--card:#161a21;--text:#eef1f5;--muted:#a3abb7;--faint:#8b93a0;--line:#29303a;--soft:#1d222b;--sea:#12161c;--fire:#f87171;--static:#9ca3af;--hi:#f87171}}
+:root{color-scheme:light;
+  --bg:#f4f3f0;--card:#fcfcfb;--glass:rgba(252,252,251,.86);--text:#0b0b0b;--muted:#52514e;--faint:#6e6d68;--line:#e2e0da;--soft:#ecebe6;
+  --f1:#f39a6a;--f2:#e56a34;--f3:#c24d1d;--f4:#8f3713;--f5:#5e230b;--fire:#d03b3b;--static:#6e6d68;--accent:#c24d1d;--shadow:0 10px 30px rgba(20,18,12,.10)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --bg:#0d0d0c;--card:#171716;--glass:rgba(23,23,22,.82);--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2c2c29;--soft:#22221f;
+  --f1:#86391a;--f2:#b84e1e;--f3:#e2652a;--f4:#f39465;--f5:#fcc7a8;--fire:#ff6b6b;--static:#9a998f;--accent:#f39465;--shadow:0 10px 30px rgba(0,0,0,.45)}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#0d0d0c;--card:#171716;--glass:rgba(23,23,22,.82);--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2c2c29;--soft:#22221f;
+  --f1:#86391a;--f2:#b84e1e;--f3:#e2652a;--f4:#f39465;--f5:#fcc7a8;--fire:#ff6b6b;--static:#9a998f;--accent:#f39465;--shadow:0 10px 30px rgba(0,0,0,.45)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 Pretendard,"Noto Sans KR",system-ui,sans-serif;word-break:keep-all}
-.w{max-width:1080px;margin:0 auto;padding:28px 16px 56px}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font:15px/1.6 "Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased}
 a{color:inherit}
-h1{font-size:clamp(26px,4vw,36px);letter-spacing:-.03em;margin:0 0 6px;line-height:1.2}
-h2{font-size:16px;margin:0 0 8px}
-.sub{color:var(--muted);margin:0 0 18px;max-width:74ch}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
-.lay{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:14px;align-items:start}
-@media (max-width:860px){.lay{grid-template-columns:1fr}}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.btn{height:36px;min-width:36px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-weight:700;cursor:pointer}
+.hero{position:relative;height:min(84vh,880px);min-height:600px;border-bottom:1px solid var(--line)}
+#map{position:absolute;inset:0}
+.panel{position:absolute;top:16px;left:16px;width:min(380px,calc(100% - 32px));background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--line);border-radius:18px;padding:18px 18px 14px;box-shadow:var(--shadow);z-index:2;max-height:calc(100% - 32px);overflow:auto}
+.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--accent);font-weight:700;margin:0 0 4px}
+h1{font-size:clamp(24px,3.2vw,32px);letter-spacing:-.035em;line-height:1.15;margin:0 0 8px;font-weight:800}
+.lede{color:var(--muted);font-size:14px;margin:0 0 10px}
+.label{font-size:12px;color:var(--faint);margin:12px 0 6px;font-weight:600}
+.row{display:flex;gap:8px;align-items:center}
+.btn{height:34px;min-width:34px;padding:0 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-weight:700;cursor:pointer}
 .btn:hover{border-color:var(--text)}
-input[type=range]{flex:1;min-width:120px}
+input[type=range]{flex:1;min-width:100px;accent-color:var(--accent)}
+.dayline{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px}
+.dayline b{font-size:16px;letter-spacing:-.01em}
 .tagf{font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--soft);color:var(--muted)}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.seg{display:flex;gap:4px;background:var(--soft);border-radius:12px;padding:4px}
+.seg button{flex:1;border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;font-weight:600;padding:7px 10px;border-radius:9px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.ramp{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin:2px 0 4px}.ramp i{height:10px;border-radius:3px;display:block}
+.ramp-l{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;font-size:11px;color:var(--faint)}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:10px}
+.leg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.hint{font-size:12px;color:var(--faint);margin:10px 0 0;line-height:1.5;min-height:1.5em}
+.stat{position:absolute;right:16px;bottom:28px;z-index:2;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);min-width:210px}
+.stat .k{font-size:12px;color:var(--faint);font-weight:600}.stat .v{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.15}.stat .d{font-size:12px;color:var(--muted)}
+@media (max-width:760px){.hero{height:auto;min-height:0;display:flex;flex-direction:column}#map{position:relative;height:62vh;order:2}.panel{position:relative;inset:auto;width:auto;margin:12px 16px;max-height:none;order:1}.stat{position:relative;right:auto;bottom:auto;margin:0 16px 16px;order:3}}
+.w{max-width:1120px;margin:0 auto;padding:26px 16px 56px}
+.links{color:var(--faint);font-size:13px;margin:0 0 14px}
+h2{font-size:17px;letter-spacing:-.02em;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.lay{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+@media (max-width:980px){.lay{grid-template-columns:1fr}}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
 .kpi{background:var(--soft);border-radius:12px;padding:10px 12px}.kpi b{display:block;font-size:20px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.kpi span{font-size:12.5px;color:var(--muted)}
-table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px 4px;border-top:1px solid var(--line);text-align:left}th{color:var(--muted);font-weight:600;border-top:0}
-td.n{text-align:right;font-variant-numeric:tabular-nums}
-.leg{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:8px}
-.leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
-.bar{display:inline-block;height:10px;width:120px;border-radius:5px;vertical-align:-1px;margin:0 6px;background:linear-gradient(90deg,#fff7d6,#fdba74,#ea580c,#7f1d1d)}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px 4px;border-top:1px solid var(--line);text-align:left}th{color:var(--faint);font-weight:600;border-top:0;font-size:12.5px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
 .faint{color:var(--faint);font-size:12.5px}
-svg text{font-size:10px;fill:var(--muted)}
 :focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.deck-tooltip{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif !important}
 </style>
 </head>
 <body>
-<div class="w">
-  <p class="faint" style="margin:0 0 6px"><a href="https://github.com/0Ju12/data-projects/tree/main/wildfire-watch">코드</a> · <a href="../">지진 대시보드</a> · <a href="../power/">전력 예측 탐색기</a></p>
-  <h1>산불 위험 지도</h1>
-  <p class="sub">날씨로 계산한 <b>화재기상지수(FFWI)</b>와 위성이 실제로 탐지한 <b>열원</b>을 매일 모아 같은 지도에 놓습니다. 지수가 높았던 곳에서 정말 불이 더 났는지를 계속 기록해, 지수를 믿어도 되는지 숫자로 확인하는 것이 목적입니다.</p>
-
-  <div class="lay">
-    <div class="card">
-      <div class="row"><button class="btn" id="prev" aria-label="전날">←</button><input type="range" id="day" min="0" max="0" value="0" aria-label="날짜"><button class="btn" id="next" aria-label="다음 날">→</button></div>
-      <div class="row" style="margin-top:6px;justify-content:space-between"><b id="dlabel"></b><span class="tagf" id="dkind"></span></div>
-      <div id="map" style="margin-top:8px"></div>
-      <div class="leg"><span>지수 낮음<span class="bar"></span>높음</span><span><i style="background:var(--fire)"></i>화재 의심 탐지</span><span><i style="background:transparent;border:1.5px solid var(--static)"></i>상시 열원(공장 등)</span></div>
-      <p class="faint" id="tip" style="margin:8px 0 0;min-height:1.6em">칸을 누르면 그날 기상 값을 볼 수 있습니다.</p>
-    </div>
-    <div>
-      <div class="card"><h2 id="toph"></h2><table id="top"></table></div>
-      <div class="card" style="margin-top:14px"><h2>지수가 맞았나</h2><div class="kpis" id="ev"></div><p class="faint" id="evn" style="margin:8px 0 0"></p></div>
-      <div class="card" style="margin-top:14px"><h2>위성 탐지의 대부분은 불이 아닙니다</h2><div class="kpis" id="st"></div><table id="stt" style="margin-top:8px"></table><p class="faint" style="margin:8px 0 0">같은 자리(약 1 km)에서 서로 다른 날 3일 이상 탐지되면 제철소·시멘트 공장 같은 상시 열원으로 보고 화재에서 뺍니다. 여러 날 이어지는 큰 산불이 잘못 걸러질 수 있고, 하루 이틀만 잡힌 공장은 '화재 의심'에 남아 있을 수 있습니다.</p></div>
-    </div>
+<section class="hero">
+  <div id="map" aria-label="산불 위험 3D 지도"></div>
+  <div class="panel">
+    <p class="eyebrow">NASA FIRMS · Open-Meteo · 매일 갱신</p>
+    <h1>산불 위험, 높이로 보기</h1>
+    <p class="lede">기둥 하나가 0.25° 칸(약 25 km)입니다. <b>높이와 색은 날씨로 계산한 화재기상지수</b>, 점은 그날 <b>위성이 실제로 잡은 열원</b>입니다. 높은 기둥 위에 불이 더 났는지를 매일 기록합니다.</p>
+    <div class="label">날짜</div>
+    <div class="row"><button class="btn" id="prev" aria-label="전날">←</button><input type="range" id="day" min="0" max="0" value="0" aria-label="날짜"><button class="btn" id="next" aria-label="다음 날">→</button><button class="btn" id="play" aria-label="날짜 이어 보기">▶</button></div>
+    <div class="dayline"><b id="dlabel"></b><span class="tagf" id="dkind"></span></div>
+    <div class="label">보기</div>
+    <div class="seg" id="view"><button data-v="3d" aria-pressed="true">3D 기둥</button><button data-v="2d" aria-pressed="false">평면</button></div>
+    <div class="label">화재기상지수 (FFWI)</div>
+    <div class="ramp"><i style="background:var(--f1)"></i><i style="background:var(--f2)"></i><i style="background:var(--f3)"></i><i style="background:var(--f4)"></i><i style="background:var(--f5)"></i></div>
+    <div class="ramp-l"><span>10 미만</span><span>10–20</span><span>20–30</span><span>30–40</span><span>40 이상</span></div>
+    <div class="leg"><span><i style="background:var(--fire);box-shadow:0 0 0 2px var(--card)"></i>화재 의심 탐지</span><span><i style="background:transparent;border:1.5px solid var(--static)"></i>상시 열원(공장 등)</span></div>
+    <p class="hint" id="tip">기둥에 마우스를 올리면 그날 기상 값이 나옵니다.</p>
   </div>
-  <p class="faint" style="margin-top:16px">자료: NASA FIRMS VIIRS 375 m 활성 화재(NOAA-20·NOAA-21·Suomi NPP, 준실시간), Open-Meteo 일 기상(CC BY 4.0), 경계 Natural Earth. 지수는 Fosberg 화재기상지수로 기온·습도·풍속만 쓰며 비가 온 이력과 숲의 상태는 반영하지 않습니다. 0.25° 칸의 그날 최고기온·최저습도·최대풍속으로 계산한 '가장 나쁜 조건' 근사입니다. 이 페이지는 연구·학습용이며 산림청 산불위험예보를 대신하지 않습니다. 학부 연구의 딥러닝 산불 확산 모델과는 다른, 기상만 쓰는 기준선입니다.</p>
+  <div class="stat" id="stat"></div>
+</section>
+
+<div class="w">
+  <p class="links"><a href="https://github.com/0Ju12/data-projects/tree/main/wildfire-watch">코드</a> · <a href="../">지진 3D</a> · <a href="../er/">응급실 접근성 3D</a> · <a href="../power/">전력 예측 탐색기</a></p>
+  <div class="lay">
+    <div class="card"><h2 id="toph"></h2><table id="top"></table></div>
+    <div class="card"><h2>지수가 맞았나</h2><div class="kpis" id="ev"></div><p class="faint" id="evn" style="margin:8px 0 0"></p></div>
+    <div class="card"><h2>위성 탐지의 대부분은 불이 아닙니다</h2><div class="kpis" id="st"></div><table id="stt" style="margin-top:8px"></table><p class="faint" style="margin:8px 0 0">같은 자리(약 1 km)에서 서로 다른 날 3일 이상 탐지되면 제철소·시멘트 공장 같은 상시 열원으로 보고 화재에서 뺍니다. 여러 날 이어지는 큰 산불이 잘못 걸러질 수 있고, 하루 이틀만 잡힌 공장은 '화재 의심'에 남아 있을 수 있습니다.</p></div>
+  </div>
+  <p class="faint" style="margin-top:16px">자료: NASA FIRMS VIIRS 375 m 활성 화재(NOAA-20·NOAA-21·Suomi NPP, 준실시간), Open-Meteo 일 기상(CC BY 4.0). 지수는 Fosberg 화재기상지수로 기온·습도·풍속만 쓰며 비가 온 이력과 숲의 상태는 반영하지 않습니다. 0.25° 칸의 그날 최고기온·최저습도·최대풍속으로 계산한 '가장 나쁜 조건' 근사입니다. 이 페이지는 연구·학습용이며 산림청 산불위험예보를 대신하지 않습니다. 학부 연구의 딥러닝 산불 확산 모델과는 다른, 기상만 쓰는 기준선입니다.
+  지도: deck.gl · MapLibre GL JS · 배경 OpenFreeMap / OpenMapTiles, © OpenStreetMap contributors.</p>
 </div>
 <script>
-(function(){
-var D,cur=0,$=function(id){return document.getElementById(id)},sel=null;
-function col(v){var t=Math.max(0,Math.min(1,v/45)),S=[[255,247,214],[253,186,116],[234,88,12],[127,29,29]],x=t*(S.length-1),i=Math.min(S.length-2,Math.floor(x)),f=x-i;return 'rgb('+S[i].map(function(a,k){return Math.round(a+(S[i+1][k]-a)*f)}).join(',')+')'}
+(async function(){
+var $=function(id){return document.getElementById(id)};
+var root=document.documentElement, css=function(n){return getComputedStyle(root).getPropertyValue(n).trim()};
+var dark=function(){return root.dataset.theme==='dark'||(root.dataset.theme!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches)};
+var hex=function(h){var n=parseInt(h.slice(1),16);return[n>>16&255,n>>8&255,n&255]};
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-fetch('data.json').then(function(r){return r.json()}).then(function(d){D=d;
-  $('day').max=D.days.length-1;cur=Math.max(0,D.days.indexOf(D.today));$('day').value=cur;
-  $('day').oninput=function(){cur=+this.value;draw()};$('prev').onclick=function(){if(cur>0){cur--;$('day').value=cur;draw()}};$('next').onclick=function(){if(cur<D.days.length-1){cur++;$('day').value=cur;draw()}};
-  side();draw()}).catch(function(){$('map').textContent='자료를 불러오지 못했습니다.'});
-function draw(){var day=D.days[cur],W=520,b=D.bbox,kx=Math.cos(36*Math.PI/180),sc=W/((b[3]-b[2])*kx),H=Math.round((b[1]-b[0])*sc);
-  var X=function(lon){return (lon-b[2])*kx*sc},Y=function(lat){return H-(lat-b[0])*sc},wx=D.weather[day]||{},fc=D.forecast_from&&day>=D.forecast_from;
-  $('dlabel').textContent=day+' ('+'일월화수목금토'[new Date(day+'T00:00:00').getDay()]+')'+(day===D.today?' · 오늘':'');$('dkind').textContent=fc?'예보':'지난 날';
-  var cs=getComputedStyle(document.documentElement),g='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="'+day+' 화재기상지수 지도"><rect width="'+W+'" height="'+H+'" fill="'+cs.getPropertyValue('--sea').trim()+'" rx="10"/>';
-  D.cells.forEach(function(c){var p=c.split('_'),la=+p[0],lo=+p[1],v=wx[c];if(!v)return;
-    g+='<rect data-c="'+c+'" x="'+X(lo).toFixed(1)+'" y="'+Y(la+D.step).toFixed(1)+'" width="'+(D.step*kx*sc+0.5).toFixed(1)+'" height="'+(D.step*sc+0.5).toFixed(1)+'" fill="'+col(v[0])+'"'+(sel===c?' stroke="'+cs.getPropertyValue('--text').trim()+'" stroke-width="2"':'')+' style="cursor:pointer"><title>'+esc(D.near[c])+' · 지수 '+v[0]+'</title></rect>'});
-  D.outline.forEach(function(r){g+='<path d="M'+r.map(function(p){return X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)}).join('L')+'Z" fill="none" stroke="'+cs.getPropertyValue('--muted').trim()+'" stroke-width="0.8"/>'});
-  var nf=0,ns=0;D.detections.forEach(function(d){if(d[0]!==day)return;if(d[3]){ns++;g+='<circle cx="'+X(d[2]).toFixed(1)+'" cy="'+Y(d[1]).toFixed(1)+'" r="3.2" fill="none" stroke="'+cs.getPropertyValue('--static').trim()+'" stroke-width="1.3"/>'}});
-  D.detections.forEach(function(d){if(d[0]!==day||d[3])return;nf++;g+='<circle cx="'+X(d[2]).toFixed(1)+'" cy="'+Y(d[1]).toFixed(1)+'" r="3.6" fill="'+cs.getPropertyValue('--fire').trim()+'" stroke="#fff" stroke-width="0.8"><title>'+d[4]+' · FRP '+d[5]+'</title></circle>'});
-  $('map').innerHTML=g+'</svg>';
-  [].forEach.call(document.querySelectorAll('[data-c]'),function(r){r.onclick=function(){sel=r.dataset.c;var v=wx[sel];$('tip').textContent=D.near[sel]+' — 지수 '+v[0]+' · 최고 '+v[1]+'℃ · 최저 습도 '+v[2]+'% · 최대 풍속 '+v[3]+' km/h · 강수 '+v[4]+' mm';draw()}});
+var D;
+try{D=await (await fetch('data.json')).json()}catch(e){$('map').textContent='자료를 불러오지 못했습니다.';return}
+var cur=Math.max(0,D.days.indexOf(D.today)), flat=false, timer=null;
+var band=function(v){return v<10?0:v<20?1:v<30?2:v<40?3:4};
+
+// 칸 → 사각형 (0.25° 칸의 남서 모서리가 칸 이름)
+var CELLS=D.cells.map(function(c){var p=c.split('_'),la=+p[0],lo=+p[1],s=D.step,g=s*.04;
+  return{id:c,poly:[[lo+g,la+g],[lo+s-g,la+g],[lo+s-g,la+s-g],[lo+g,la+s-g]]}});
+
+var small=matchMedia('(max-width:760px)').matches;
+var HOME={center:[127.75,35.95],zoom:small?5.6:6.55,pitch:58,bearing:-20};
+var style=function(){return 'https://tiles.openfreemap.org/styles/'+(dark()?'dark':'positron')};
+var map=new maplibregl.Map({container:'map',style:style(),center:HOME.center,zoom:HOME.zoom,pitch:HOME.pitch,bearing:HOME.bearing,maxPitch:72,attributionControl:{compact:true}});
+map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),'top-right');
+if(!small)map.setPadding({left:400,top:0,right:0,bottom:0});
+var overlay=new deck.MapboxOverlay({interleaved:false,layers:[],getTooltip:tooltip});
+map.addControl(overlay);
+
+function layers(){
+  var day=D.days[cur], wx=D.weather[day]||{}, ramp=['--f1','--f2','--f3','--f4','--f5'].map(function(v){return hex(css(v))});
+  var fire=hex(css('--fire')), ring=hex(css('--card')), stat=hex(css('--static'));
+  var det=D.detections.filter(function(d){return d[0]===day});
+  var Z=function(c){var v=wx[c.id];return v?v[0]*1300:0};             // 지수 1 = 1.3 km 높이
+  return [
+    new deck.PolygonLayer({id:'ffwi',data:CELLS.filter(function(c){return wx[c.id]}),getPolygon:function(c){return c.poly},extruded:!flat,
+      getElevation:Z,elevationScale:flat?0:1,getFillColor:function(c){var v=wx[c.id];return v?ramp[band(v[0])]:[0,0,0,0]},
+      getLineColor:dark()?[13,13,12]:[252,252,251],lineWidthMinPixels:1,stroked:true,wireframe:false,
+      material:{ambient:.5,diffuse:.6,shininess:16,specularColor:[50,50,50]},pickable:true,autoHighlight:true,highlightColor:dark()?[255,255,255,80]:[0,0,0,60],
+      updateTriggers:{getElevation:cur,getFillColor:[cur,dark()]},transitions:{getElevation:{duration:650,easing:function(t){return t*(2-t)}},getFillColor:450,elevationScale:600}}),
+    // 탐지 점은 기둥 꼭대기 높이에 띄워 기둥에 가리지 않게
+    new deck.ScatterplotLayer({id:'static',data:det.filter(function(d){return d[3]}),getPosition:function(d){return[d[2],d[1],flat?0:elevAt(d)+800]},
+      getRadius:5,radiusUnits:'pixels',filled:false,stroked:true,getLineColor:stat,lineWidthUnits:'pixels',getLineWidth:1.5,parameters:{depthTest:false},
+      updateTriggers:{getPosition:[cur,flat],getLineColor:dark()}}),
+    new deck.ScatterplotLayer({id:'fire',data:det.filter(function(d){return !d[3]}),getPosition:function(d){return[d[2],d[1],flat?0:elevAt(d)+800]},
+      getRadius:6,radiusUnits:'pixels',getFillColor:fire,stroked:true,getLineColor:ring,lineWidthUnits:'pixels',getLineWidth:2,pickable:true,parameters:{depthTest:false},
+      updateTriggers:{getPosition:[cur,flat],getFillColor:dark(),getLineColor:dark()}})];
+}
+function cellOf(lat,lon){var s=D.step,la=Math.floor(lat/s)*s,lo=Math.floor(lon/s)*s;return la.toFixed(2)+'_'+lo.toFixed(2)}
+function elevAt(d){var v=(D.weather[D.days[cur]]||{})[cellOf(d[1],d[2])];return v?v[0]*1300:0}
+
+function tooltip(o){if(!o.object)return null;
+  var box={backgroundColor:css('--card'),color:css('--text'),border:'1px solid '+css('--line'),borderRadius:'10px',padding:'8px 10px',fontSize:'13px',boxShadow:css('--shadow')};
+  if(o.layer.id==='fire'){var d=o.object;return{html:'<b>화재 의심 탐지</b><br>위성 '+esc(d[4])+' · FRP '+esc(d[5])+' MW',style:box}}
+  if(o.layer.id!=='ffwi')return null;
+  var c=o.object.id,v=D.weather[D.days[cur]][c];
+  return{html:'<b>'+esc(D.near[c])+'</b> · 지수 <b>'+v[0]+'</b><br><span style="color:'+css('--muted')+'">최고 '+v[1]+'℃ · 최저 습도 '+v[2]+'% · 최대 풍속 '+v[3]+' km/h · 강수 '+v[4]+' mm</span>',style:box}}
+
+function draw(){
+  var day=D.days[cur], wx=D.weather[day]||{}, fc=D.forecast_from&&day>=D.forecast_from;
+  $('day').value=cur;
+  $('dlabel').textContent=day+' ('+'일월화수목금토'[new Date(day+'T00:00:00').getDay()]+')'+(day===D.today?' · 오늘':'');
+  $('dkind').textContent=fc?'예보':'지난 날';
+  overlay.setProps({layers:layers()});
+  var det=D.detections.filter(function(d){return d[0]===day}), nf=det.filter(function(d){return !d[3]}).length, ns=det.length-nf;
+  var vals=D.cells.map(function(c){return wx[c]?wx[c][0]:null}).filter(function(v){return v!=null}), mx=Math.max.apply(null,vals);
+  $('stat').innerHTML='<div class="k">'+day+(fc?' 예보':'')+' · 가장 높은 지수</div><div class="v">'+(vals.length?mx.toFixed(1):'—')+'</div>'
+    +'<div class="d">'+(fc?'예보 날짜라 위성 탐지는 아직 없음':'화재 의심 '+nf+'건 · 상시 열원 '+ns+'건')+'</div>';
   var rank=D.cells.filter(function(c){return wx[c]}).sort(function(a,b){return wx[b][0]-wx[a][0]}).slice(0,6);
   $('toph').textContent=day+' 지수가 높은 곳'+(fc?' (예보)':'');
-  $('top').innerHTML='<tr><th>지역</th><th class="n">지수</th><th class="n">습도</th><th class="n">풍속</th></tr>'+rank.map(function(c){var v=wx[c];return '<tr><td>'+esc(D.near[c])+'</td><td class="n">'+v[0]+'</td><td class="n">'+v[2]+'%</td><td class="n">'+v[3]+'</td></tr>'}).join('')+'<tr><td colspan="4" class="faint">'+(fc?'예보 날짜라 탐지 자료는 아직 없습니다.':'이날 위성 탐지: 화재 의심 '+nf+'건 · 상시 열원 '+ns+'건')+'</td></tr>'}
+  $('top').innerHTML='<tr><th>지역</th><th class="n">지수</th><th class="n">습도</th><th class="n">풍속</th></tr>'+rank.map(function(c){var v=wx[c];
+    return '<tr data-c="'+c+'" style="cursor:pointer"><td>'+esc(D.near[c])+'</td><td class="n">'+v[0]+'</td><td class="n">'+v[2]+'%</td><td class="n">'+v[3]+'</td></tr>'}).join('');
+  [].forEach.call(document.querySelectorAll('#top [data-c]'),function(tr){tr.onclick=function(){var p=tr.dataset.c.split('_');
+    map.flyTo({center:[+p[1]+D.step/2,+p[0]+D.step/2],zoom:small?7:8,pitch:flat?0:60,duration:1400});document.querySelector('.hero').scrollIntoView({behavior:'smooth'})}});
+}
 function side(){var s=D.summary,e=s.evaluation,k=function(a,b){return '<div class="kpi"><b>'+a+'</b><span>'+b+'</span></div>'};
   if(e){$('ev').innerHTML=k(e.auc==null?'—':e.auc.toFixed(2),'AUC (0.5 = 무작위)')+k(e.top20_hit==null?'—':Math.round(e.top20_hit*100)+'%','지수 상위 20% 칸에 든 화재 칸')+k(e.positive_cell_days,'화재 의심 칸·날')+k(e.days+'일','평가 기간');
     $('evn').textContent=e.first+' ~ '+e.last+', 육지 칸 '+D.cells.length+'개 × '+e.days+'일 = '+e.cell_days+' 칸·날 가운데 화재 의심은 '+e.positive_cell_days+'건입니다. '+(e.positive_cell_days<50?'아직 건수가 너무 적어 지수가 맞는지 틀리는지 말할 수 없습니다. 매일 쌓이면서 달라집니다.':'')+' 화재 칸의 평균 지수 '+(e.mean_ffwi_pos==null?'—':e.mean_ffwi_pos)+' · 나머지 '+e.mean_ffwi_neg+'.'}
@@ -87,6 +173,20 @@ function side(){var s=D.summary,e=s.evaluation,k=function(a,b){return '<div clas
   $('st').innerHTML=k(s.detections,'모은 탐지 ('+s.detection_days[0].slice(5)+' ~ '+s.detection_days[1].slice(5)+')')+k(Math.round(s.static_detections/s.detections*100)+'%','상시 열원으로 걸러낸 비율')+k(s.static_sources,'상시 열원 자리');
   var m={};D.static.forEach(function(x){(m[x[3]]=m[x[3]]||[]).push(x[2])});var rows=Object.keys(m).map(function(n){return [n,m[n].length,Math.max.apply(null,m[n])]}).sort(function(a,b){return b[1]-a[1]}).slice(0,6);
   $('stt').innerHTML='<tr><th>상시 열원이 모인 곳</th><th class="n">자리 수</th><th class="n">최다 탐지 일수</th></tr>'+rows.map(function(r){return '<tr><td>'+esc(r[0])+'</td><td class="n">'+r[1]+'</td><td class="n">'+r[2]+'일</td></tr>'}).join('')}
+
+$('day').max=D.days.length-1;
+$('day').oninput=function(){stop();cur=+this.value;draw()};
+$('prev').onclick=function(){stop();if(cur>0){cur--;draw()}};
+$('next').onclick=function(){stop();if(cur<D.days.length-1){cur++;draw()}};
+function stop(){if(timer){clearInterval(timer);timer=null;$('play').textContent='▶'}}
+$('play').onclick=function(){if(timer){stop();return}
+  if(cur>=D.days.length-1)cur=0;$('play').textContent='❚❚';
+  timer=setInterval(function(){if(cur>=D.days.length-1){stop();return}cur++;draw()},900)};
+document.querySelectorAll('#view button').forEach(function(b){b.onclick=function(){flat=b.dataset.v==='2d';
+  document.querySelectorAll('#view button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+  map.easeTo({pitch:flat?0:HOME.pitch,bearing:flat?0:HOME.bearing,duration:900});draw()}});
+side();draw();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){map.setStyle(style());draw()});
 })();
 </script>
 </body>
