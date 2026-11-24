@@ -86,28 +86,61 @@ def tiles(bbox: list[float], step: float) -> list[list[float]]:
     return out
 
 
-def fetch_tiled(bbox: list[float], classes: list[str], out_dir: Path, step: float = 0.25, log=print) -> dict:
+def _tile_path(out_dir: Path, t: list[float]) -> Path:
+    return out_dir / f"{t[0]:.4f}_{t[1]:.4f}_{t[2] - t[0]:.4f}.json"
+
+
+def _quarters(t: list[float]) -> list[list[float]]:
+    s, w, n, e = t
+    ms, mw = round((s + n) / 2, 4), round((w + e) / 2, 4)
+    return [[s, w, ms, mw], [s, mw, ms, e], [ms, w, n, mw], [ms, mw, n, e]]
+
+
+def _done(out_dir: Path, t: list[float], depth: int, max_depth: int) -> bool:
+    """이 타일이 이미 받아져 있거나, 네 조각으로 나눠 모두 받아져 있으면 True."""
+    if _tile_path(out_dir, t).exists() or (out_dir / f"{t[0]:.4f}_{t[1]:.4f}.json").exists():   # 뒤쪽은 예전 이름
+        return True
+    return depth < max_depth and all(_done(out_dir, q, depth + 1, max_depth) for q in _quarters(t))
+
+
+def fetch_tiled(bbox: list[float], classes: list[str], out_dir: Path, step: float = 0.25,
+                max_depth: int = 2, log=print) -> dict:
+    """타일마다 받고, 실패하면 4등분해 다시 시도한다 (최대 max_depth 번 나눔).
+    도로가 많은 도시 타일은 응답이 커서 연결이 끊기는 일이 잦았다."""
     out_dir.mkdir(parents=True, exist_ok=True)
     todo = tiles(bbox, step)
     status = {"tiles": len(todo), "fetched": 0, "skipped": 0, "failed": []}
-    for k, t in enumerate(todo, 1):
-        path = out_dir / f"{t[0]:.4f}_{t[1]:.4f}.json"
-        if path.exists():
+
+    def one(t: list[float], depth: int, label: str) -> None:
+        if _done(out_dir, t, depth, max_depth):
             status["skipped"] += 1
-            continue
+            return
+        if not _tile_path(out_dir, t).exists() and depth < max_depth and any(_done(out_dir, q, depth + 1, max_depth) for q in _quarters(t)):
+            for q in _quarters(t):                          # 이전 실행에서 이미 나눠 받던 타일은 조각으로 이어 받기
+                one(q, depth + 1, label + "·")
+            return
         t0 = time.time()
         try:
-            c = compact(fetch(build_query(t, classes)))
+            c = compact(fetch(build_query(t, classes), timeout=180, tries=1))
         except Exception as e:
-            status["failed"].append([t, str(e)[:120]])
-            log(f"[{k}/{len(todo)}] {t} 실패: {e}")
-            continue
+            if depth < max_depth:
+                log(f"{label} {t} 실패 → 4등분 ({str(e)[:60]})")
+                for q in _quarters(t):
+                    one(q, depth + 1, label + "·")
+            else:
+                status["failed"].append([t, str(e)[:120]])
+                log(f"{label} {t} 실패: {e}")
+            return
+        path = _tile_path(out_dir, t)
         tmp = path.with_suffix(".tmp")
         tmp.write_text(json.dumps(c, separators=(",", ":")), encoding="utf-8")
         tmp.replace(path)                                   # 다 쓴 뒤에만 이름을 붙여, 반쯤 쓴 타일이 남지 않게
         status["fetched"] += 1
-        log(f"[{k}/{len(todo)}] {t} 노드 {len(c['nodes'])} 도로 {len(c['ways'])} ({time.time() - t0:.0f}s)")
+        log(f"{label} {t} 노드 {len(c['nodes'])} 도로 {len(c['ways'])} ({time.time() - t0:.0f}s)")
         time.sleep(2)                                       # 공용 서버 예의
+
+    for k, t in enumerate(todo, 1):
+        one(t, 0, f"[{k}/{len(todo)}]")
     return status
 
 

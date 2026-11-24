@@ -168,3 +168,20 @@ def test_merge_provisional_prefers_regional_center():
                 {"name": "나 병원", "lat": 36.05, "lon": 129.0, "tier": "other"}]
     merged = er.merge_provisional(osm_rows, centers)
     assert [(r["name"], r["tier"]) for r in merged] == [("가 대학병원", "regional"), ("나 병원", "other")]
+
+
+def test_fetch_tiled_splits_failed_tile_and_resumes(tmp_path, monkeypatch):
+    calls = []
+
+    def fake_fetch(query, timeout=0, tries=0):
+        calls.append(query)
+        if "(36.0,129.0,36.5,129.5)" in query:                          # 큰 타일은 실패 → 4등분
+            raise RuntimeError("reset")
+        return OVERPASS
+    monkeypatch.setattr(osm, "fetch", fake_fetch)
+    monkeypatch.setattr(osm.time, "sleep", lambda s: None)
+    st = osm.fetch_tiled([36.0, 129.0, 36.5, 129.5], ["primary"], tmp_path, step=0.5, log=lambda m: None)
+    assert st["fetched"] == 4 and st["failed"] == [] and len(list(tmp_path.glob("*.json"))) == 4
+    n = len(calls)
+    st2 = osm.fetch_tiled([36.0, 129.0, 36.5, 129.5], ["primary"], tmp_path, step=0.5, log=lambda m: None)
+    assert len(calls) == n and st2["fetched"] == 0                       # 다시 돌려도 받은 것은 건너뜀
