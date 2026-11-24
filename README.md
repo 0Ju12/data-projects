@@ -17,13 +17,17 @@
 
 벡터 검색 구현과 한국어 근거 검색 평가는 [VectorLab](vector-search/)에서 실행할 수 있습니다.
 
+진행 중 (뼈대 단계 — 엔진·테스트만 있고 실제 자료로 낸 결과는 아직 없음)
+- [er-access](er-access/): 1 km 격자마다 가장 가까운 응급실까지의 차량 이동 시간을 OSM 도로망으로 계산해 응급의료 취약지(지역센터 30분·권역센터 60분 밖) 인구를 셉니다. WorldPop 인구 + 국립중앙의료원 응급의료기관 목록.
+- [crash-hotspots](crash-hotspots/): 사망 교통사고 지점을 UTM-K 1 km 격자에 모아 Getis-Ord Gi\* 와 거짓 발견 비율 보정(BH)으로 우연보다 많이 몰린 구간을 찾고, 공식 사고 다발 지역과 대조합니다.
+
 공통으로 지킨 것
 - **평가를 정직하게**: 시계열은 시간 순서로 나눠 검증하고, 잘 안 된 결과(부품별 비지도 탐지의 오경보, 연휴 다음 날 예측 오차)도 README에 남겼습니다.
 - **재처리 안전성**: 같은 데이터를 여러 번 넣어도 결과가 같게(멱등), 원본은 체크섬으로 확인.
 - **비밀값 관리**: 인증키는 환경변수·GitHub Secrets로만 받습니다.
 
 ```bash
-cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 42 · energy 5
+cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 42 · energy 5 · er-access 10 · crash 12
 ```
 
 GitHub Actions: `tests`(폴더별 테스트 + Airflow DAG 1회 실행), `geo daily update`(매일 수집 → 지진 대시보드·산불 위험 지도·분석 웨어하우스·전력 전환 대시보드를 갱신하고 전력 예측 탐색기·API 관제판과 함께 GitHub Pages로 배포), `dart build mart`(인증키가 있을 때 매월).

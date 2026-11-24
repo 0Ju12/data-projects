@@ -1,0 +1,9 @@
+{
+  "region": "전국",
+  "inputs": "data/crashes_*.csv",
+  "cell_m": 1000,
+  "band_m": 1500,
+  "fdr_q": 0.05,
+  "weight": null,
+  "_note": "cell_m 1 km 칸, band_m 1.5 km 면 자신 + 맞닿은 8칸이 이웃. weight 를 \"deaths\" 로 두면 사고 건수 대신 사망자 수로 센다."
+}

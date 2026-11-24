@@ -16,6 +16,8 @@ jobs:
           - { dir: data-agent,        deps: "pytest anyio 'mcp>=1.9,<2'" }
           - { dir: warehouse,         deps: "-r requirements.txt" }
           - { dir: energy-transition, deps: "-r requirements.txt" }
+          - { dir: er-access,         deps: "pytest" }
+          - { dir: crash-hotspots,    deps: "pytest numpy" }
     defaults: { run: { working-directory: "${{ matrix.dir }}" } }
     steps:
       - uses: actions/checkout@v4

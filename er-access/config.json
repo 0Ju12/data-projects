@@ -1,0 +1,18 @@
+{
+  "region": "경상북도",
+  "bbox": [35.57, 127.80, 37.55, 129.60],
+  "road_classes": ["motorway", "trunk", "primary", "secondary", "tertiary", "unclassified", "residential"],
+  "speeds_kmh": {
+    "motorway": 90, "trunk": 70, "primary": 50, "secondary": 45, "tertiary": 40,
+    "unclassified": 30, "residential": 25
+  },
+  "snap_m": 1500,
+  "access_kmh": 20,
+  "cutoff_min": 240,
+  "targets": [
+    {"name": "지역응급의료센터 이상", "tiers": ["regional", "local_center"], "minutes": 30},
+    {"name": "권역응급의료센터", "tiers": ["regional"], "minutes": 60},
+    {"name": "응급실 아무 곳", "tiers": ["regional", "local_center", "local_institution", "other"], "minutes": 30}
+  ],
+  "_note": "bbox 는 [남, 서, 북, 동]. 경북 경계 상자라 대구·울산·충북·강원 일부가 섞이며, 경계 밖 응급실도 이용 가능한 것으로 보기 위해 일부러 넓게 둔다. 시군구 경계로 자르는 일은 다음 단계. 30/60분 기준은 보건복지부 응급의료 취약지 정의(지역센터 30분·권역센터 60분)를 따른다."
+}
