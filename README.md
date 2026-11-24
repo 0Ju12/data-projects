@@ -20,8 +20,8 @@
 신입 IT 공고를 매일 모아 마감일 달력으로 보는 개인 취업 도구는 [job-calendar](job-calendar/)에 있습니다 · [공고 달력](https://0ju12.github.io/data-projects/jobs/) (점핏·카카오·Greenhouse 공개 API, robots.txt 준수).
 
 진행 중 (공식 자료를 아직 넣지 못해 결과가 임시이거나 엔진·테스트만 있는 프로젝트)
-- [er-access](er-access/): 1 km 격자마다 가장 가까운 응급실까지의 차량 이동 시간을 OSM 도로망(HOT 한국 내보내기)으로 계산해 경북의 응급의료 취약 인구를 셉니다. deck.gl 3D 지도(높이 = 인구, 색 = 이동 시간) · [응급실 접근성 3D 지도](https://0ju12.github.io/data-projects/er/). 공식 응급실 목록을 받기 전이라 임시 목록(권역센터 5곳 + OSM 12곳)으로 낸 첫 결과: 권역센터 60분 안 91.8%, 영양·문경·봉화·울진이 낮음.
-- [crash-hotspots](crash-hotspots/): 사망 교통사고 지점을 UTM-K 1 km 격자에 모아 Getis-Ord Gi\* 와 거짓 발견 비율 보정(BH)으로 우연보다 많이 몰린 구간을 찾고, 공식 사고 다발 지역과 대조합니다.
+- [er-access](er-access/): 1 km 격자마다 가장 가까운 응급실까지의 차량 이동 시간을 OSM 도로망(HOT 한국 내보내기)으로 계산해 경북의 응급의료 취약 인구와 취약 시군(27% 기준)을 판정합니다. deck.gl 3D 지도(높이 = 인구, 색 = 이동 시간) · [응급실 접근성 3D 지도](https://0ju12.github.io/data-projects/er/). 임시 응급실 목록(권역센터 5곳 + OSM 등 13곳)으로 낸 첫 결과: 권역센터 60분 안 91.5%, 취약 8곳 / 22 (문경·봉화·상주·영덕·영양·울릉·울진·청송). 공식 목록·실시간 병상은 한국에서 `korea-fetch` 한 번.
+- [crash-hotspots](crash-hotspots/): 사망 교통사고 지점을 UTM-K 1 km 격자에 모아 Getis-Ord Gi\* 와 거짓 발견 비율 보정(BH)으로 우연보다 많이 몰린 구간을 찾고, 공식 사고 다발 지역과 겹침을 셉니다. 엔진·대조·3D 대시보드까지 완성, 사고 자료(공공데이터포털, 한국에서 받기)만 넣으면 됩니다.
 
 공통으로 지킨 것
 - **평가를 정직하게**: 시계열은 시간 순서로 나눠 검증하고, 잘 안 된 결과(부품별 비지도 탐지의 오경보, 연휴 다음 날 예측 오차)도 README에 남겼습니다.
@@ -29,7 +29,7 @@
 - **비밀값 관리**: 인증키는 환경변수·GitHub Secrets로만 받습니다.
 
 ```bash
-cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 42 · energy 5 · er-access 19 · crash 12
+cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 42 · energy 5 · er-access 23 · crash 13
 ```
 
 GitHub Actions: `tests`(폴더별 테스트 + Airflow DAG 1회 실행), `geo daily update`(매일 수집 → 지진 대시보드·산불 위험 지도·분석 웨어하우스·전력 전환 대시보드를 갱신하고 전력 예측 탐색기·API 관제판과 함께 GitHub Pages로 배포), `dart build mart`(인증키가 있을 때 매월).

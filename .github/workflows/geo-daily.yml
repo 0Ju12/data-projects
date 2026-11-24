@@ -54,7 +54,7 @@ jobs:
         with: { repository: 0Ju12/gravmag-wcf, path: _wcf }
       - name: 다른 프로젝트의 페이지를 같은 Pages 에 포함 (/power/ · /fire/ · /wcf/ · /warehouse/ · /energy/ · /jobs/ · /er/)
         run: |
-          rm -rf docs/power docs/fire docs/wcf docs/warehouse docs/energy docs/jobs docs/er
+          rm -rf docs/power docs/fire docs/wcf docs/warehouse docs/energy docs/jobs docs/er docs/crash
           cp -r ../job-calendar/docs docs/jobs
           cp -r ../power-demand/explorer docs/power
           cp -r ../wildfire-watch/docs docs/fire
@@ -63,6 +63,7 @@ jobs:
           if [ -f ../energy-transition/docs/index.html ]; then cp -r ../energy-transition/docs docs/energy; fi
           if [ -f ../api-watch/public/index.html ]; then cp -r ../api-watch/public docs/api-watch; fi
           if [ -f ../er-access/docs/index.html ]; then cp -r ../er-access/docs docs/er; fi
+          if [ -f ../crash-hotspots/docs/data.json ]; then cp -r ../crash-hotspots/docs docs/crash; fi   # 사고 자료로 build 한 뒤에만 공개
       - uses: actions/upload-pages-artifact@v3
         with: { path: geo-data-pipeline/docs }
   deploy:

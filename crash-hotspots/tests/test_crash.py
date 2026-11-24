@@ -102,8 +102,32 @@ def test_build_end_to_end(tmp_path, monkeypatch):
     for x, y in background(rng, 800) + [(1_010_500 + dx, 1_810_500 + dy) for dx, dy in rng.normal(0, 250, (40, 2))]:
         lines.append(f"2024010100,1,{x:.1f},{y:.1f}")
     (data / "crashes_2024.csv").write_text("\n".join(lines), encoding="utf-8")
+    # 공식 다발 지역 2곳: 하나는 심어 둔 밀집 지점, 하나는 아무것도 없는 곳
+    from crash.utmk import to_wgs84
+    la1, lo1 = to_wgs84(1_010_500, 1_810_500)
+    la2, lo2 = to_wgs84(1_035_000, 1_835_000)
+    poly = json.dumps({"type": "Polygon", "coordinates": [[[lo1 - .001, la1 - .001], [lo1 + .001, la1 - .001], [lo1 + .001, la1 + .001], [lo1 - .001, la1 - .001]]]})
+    (data / "official_2024.csv").write_text("사고연도,사고지역위치명,발생건수,위도,경도,사고다발지역폴리곤정보\n"
+                                           f'2024,가 교차로,12,{la1},{lo1},"{poly.replace(chr(34), chr(34) * 2)}"\n2024,나 부근,5,{la2},{lo2},\n', encoding="utf-8")
     monkeypatch.setattr(cli, "ROOT", tmp_path)
     monkeypatch.setattr(cli, "DATA", data)
+    monkeypatch.setattr(cli, "DOCS", tmp_path / "docs")
     s = cli.build({"region": "시험", "inputs": "data/crashes_*.csv", "cell_m": 1000, "band_m": 1500, "fdr_q": 0.05})
     assert s["crashes"] == 840 and s["zones"] >= 1 and s["top_zones"][0]["crashes"] >= 40
     assert json.loads((data / "summary.json").read_text(encoding="utf-8"))["crashes"] == 840
+    cmp = s["official"]["compare"]
+    assert cmp["official_spots"] == 2 and cmp["official_in_hotspots"] == 1 and cmp["share_official_in_hotspots"] == 0.5
+    assert s["official"]["inputs"][0]["with_polygon"] == 1
+    page = json.loads((tmp_path / "docs" / "data.json").read_text(encoding="utf-8"))
+    assert len(page["official"]) == 2 and any(c[4] == 1 for c in page["cells"])
+    assert sum(c[2] for c in page["cells"]) == 840                      # 칸별 사고 수 합 = 전체
+
+
+def test_official_loader_requires_center_coordinates(tmp_path):
+    from crash import official
+    p = tmp_path / "o.csv"
+    p.write_text("사고지역위치명,발생건수\n가,3\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="좌표"):
+        official.load(p)
+    assert official._ring("not json") is None
+    assert official._ring('{"type":"MultiPolygon","coordinates":[[[[127,37],[127.1,37],[127,37.1],[127,37]]]]}')[0] == (127, 37)
