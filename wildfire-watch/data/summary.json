@@ -24,7 +24,7 @@
   "N20": 134,
   "N21": 130,
   "SNPP": 0,
-  "new": 19,
-  "weather": "ok"
+  "new": 0,
+  "weather": "실패: URLError"
  }
 }
