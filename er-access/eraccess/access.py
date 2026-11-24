@@ -84,3 +84,17 @@ def bands(cells: list[dict], minutes: list[float | None]) -> list[dict]:
     for b in out:
         b["pop"] = round(b["pop"])
     return out
+
+
+def weighted_median(cells: list[dict], minutes: list[float | None]) -> float | None:
+    """인구 가중 중앙값(분). 못 닿는 칸은 '아주 큼' 으로 보고 넣는다 — 빼면 사각지대가 가려진다."""
+    pairs = sorted(((m if m is not None else float("inf")), c["pop"]) for c, m in zip(cells, minutes))
+    total = sum(p for _, p in pairs)
+    if not total:
+        return None
+    acc = 0.0
+    for m, p in pairs:
+        acc += p
+        if acc >= total / 2:
+            return None if m == float("inf") else round(m, 1)
+    return None

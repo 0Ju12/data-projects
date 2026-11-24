@@ -18,7 +18,7 @@
 벡터 검색 구현과 한국어 근거 검색 평가는 [VectorLab](vector-search/)에서 실행할 수 있습니다.
 
 진행 중 (뼈대 단계 — 엔진·테스트만 있고 실제 자료로 낸 결과는 아직 없음)
-- [er-access](er-access/): 1 km 격자마다 가장 가까운 응급실까지의 차량 이동 시간을 OSM 도로망으로 계산해 응급의료 취약지(지역센터 30분·권역센터 60분 밖) 인구를 셉니다. WorldPop 인구 + 국립중앙의료원 응급의료기관 목록.
+- [er-access](er-access/): 1 km 격자마다 가장 가까운 응급실까지의 차량 이동 시간을 OSM 도로망(HOT 한국 내보내기)으로 계산해 경북의 응급의료 취약 인구를 셉니다. deck.gl 3D 지도(높이 = 인구, 색 = 이동 시간) · [응급실 접근성 3D 지도](https://0ju12.github.io/data-projects/er/). 공식 응급실 목록을 받기 전이라 임시 목록(권역센터 5곳 + OSM 12곳)으로 낸 첫 결과: 권역센터 60분 안 91.8%, 영양·문경·봉화·울진이 낮음.
 - [crash-hotspots](crash-hotspots/): 사망 교통사고 지점을 UTM-K 1 km 격자에 모아 Getis-Ord Gi\* 와 거짓 발견 비율 보정(BH)으로 우연보다 많이 몰린 구간을 찾고, 공식 사고 다발 지역과 대조합니다.
 
 공통으로 지킨 것
@@ -27,7 +27,7 @@
 - **비밀값 관리**: 인증키는 환경변수·GitHub Secrets로만 받습니다.
 
 ```bash
-cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 42 · energy 5 · er-access 10 · crash 12
+cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 42 · energy 5 · er-access 19 · crash 12
 ```
 
 GitHub Actions: `tests`(폴더별 테스트 + Airflow DAG 1회 실행), `geo daily update`(매일 수집 → 지진 대시보드·산불 위험 지도·분석 웨어하우스·전력 전환 대시보드를 갱신하고 전력 예측 탐색기·API 관제판과 함께 GitHub Pages로 배포), `dart build mart`(인증키가 있을 때 매월).

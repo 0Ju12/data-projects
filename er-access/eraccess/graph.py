@@ -26,6 +26,37 @@ class RoadGraph:
     def edge_count(self) -> int:
         return sum(len(v) for v in self.adj.values())
 
+    def largest_component(self) -> "RoadGraph":
+        """방향을 무시하고 이어진 덩어리 중 가장 큰 것만 남긴다.
+        등급을 골라 받으면 (예: 주거 도로 제외) 바깥과 끊긴 작은 조각이 생기는데, 칸이 그런 조각에
+        붙으면 응급실에 '못 닿음' 으로 잘못 나온다."""
+        und: dict[int, list[int]] = {}
+        for a, outs in self.adj.items():
+            for b, _ in outs:
+                und.setdefault(a, []).append(b)
+                und.setdefault(b, []).append(a)
+        seen: set[int] = set()
+        best: list[int] = []
+        for start in self.nodes:
+            if start in seen:
+                continue
+            comp, stack = [], [start]
+            seen.add(start)
+            while stack:
+                x = stack.pop()
+                comp.append(x)
+                for y in und.get(x, ()):
+                    if y not in seen:
+                        seen.add(y)
+                        stack.append(y)
+            if len(comp) > len(best):
+                best = comp
+        keep = set(best)
+        g = RoadGraph(nodes={k: self.nodes[k] for k in best})
+        for a in best:
+            g.adj[a] = [(b, s) for b, s in self.adj.get(a, ()) if b in keep]
+        return g
+
 
 def multi_source_dijkstra(g: RoadGraph, sources: dict[int, float], cutoff: float | None = None) -> dict[int, tuple[float, int]]:
     """여러 출발점에서 동시에 퍼지는 다익스트라.

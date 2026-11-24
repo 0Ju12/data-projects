@@ -170,7 +170,7 @@ def add_compact(g: RoadGraph, c: dict, speeds: dict, seen_ways: set | None = Non
     """압축 타일 하나를 그래프에 더한다. 타일 경계에 걸친 도로는 양쪽 타일에 다 들어 있어,
     같은 (노드 목록) 도로는 한 번만 더한다."""
     coords = c["nodes"]
-    for hw, direction, maxspeed, ids in c["ways"]:
+    for hw, direction, maxspeed, ids, *_ in c["ways"]:      # 뒤에 [시도, 시군구] 가 붙을 수 있음
         kmh = _speed(hw, maxspeed, speeds)
         if kmh is None:
             continue

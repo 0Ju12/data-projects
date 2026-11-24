@@ -185,3 +185,64 @@ def test_fetch_tiled_splits_failed_tile_and_resumes(tmp_path, monkeypatch):
     n = len(calls)
     st2 = osm.fetch_tiled([36.0, 129.0, 36.5, 129.5], ["primary"], tmp_path, step=0.5, log=lambda m: None)
     assert len(calls) == n and st2["fetched"] == 0                       # 다시 돌려도 받은 것은 건너뜀
+
+
+def _gp_line(coords, ewkb_z=False):
+    """GeoPackage 도형: 'GP' 머리말(봉투 없음, 리틀 엔디언) + WKB LineString."""
+    import struct
+    gtype = 2 | (0x80000000 if ewkb_z else 0)
+    body = struct.pack("<BII", 1, gtype, len(coords))
+    for x, y in coords:
+        body += struct.pack("<dd", x, y) + (struct.pack("<d", 0.0) if ewkb_z else b"")
+    return b"GP" + bytes([0, 1]) + struct.pack("<i", 4326) + body
+
+
+def test_gpkg_read_builds_connected_graph(tmp_path):
+    import sqlite3
+    from eraccess import gpkg
+    p = tmp_path / "roads.gpkg"
+    con = sqlite3.connect(p)
+    con.execute("CREATE TABLE gpkg_geometry_columns (table_name, column_name)")
+    con.execute("INSERT INTO gpkg_geometry_columns VALUES ('roads', 'geom')")
+    con.execute("CREATE TABLE roads (fid INTEGER PRIMARY KEY, geom BLOB, highway, oneway, adm1_name, adm2_name)")
+    rows = [
+        (_gp_line([(129.00, 36.0), (129.01, 36.0)]), "primary", None, "North Gyeongsang", "Andong-si"),
+        (_gp_line([(129.01, 36.0), (129.02, 36.0)], ewkb_z=True), "secondary", "yes", "Gangwon", "Uljin-gun"),   # 좌표 공유 → 이어짐
+        (_gp_line([(129.05, 36.0), (129.06, 36.0)]), "footway", None, "North Gyeongsang", "Andong-si"),         # 등급 밖
+        (_gp_line([(130.00, 37.0), (130.01, 37.0)]), "primary", None, "Gangwon", "Samcheok-si"),               # 범위 밖
+    ]
+    con.executemany("INSERT INTO roads (geom, highway, oneway, adm1_name, adm2_name) VALUES (?,?,?,?,?)", rows)
+    con.commit(); con.close()
+    c = gpkg.read(p, [35.9, 128.9, 36.1, 129.1], ["primary", "secondary"])
+    assert len(c["ways"]) == 2 and len(c["nodes"]) == 3                  # 가운데 노드는 하나로 합쳐짐
+    g = RoadGraph()
+    osm.add_compact(g, c, osm.DEFAULT_SPEEDS)
+    a, mid, b = (gpkg.node_key(36.0, x) for x in (129.00, 129.01, 129.02))
+    assert b in dict(g.adj[mid]) and mid not in dict(g.adj[b])           # 두 번째 도로는 일방통행
+    assert multi_source_dijkstra(g, {a: 0})[b][0] > 0
+    from eraccess import region
+    regs = region.node_regions(c)
+    assert regs[a] == "안동시" and regs[b] == "울진군"                    # 강원으로 잘못 표시된 울진 보정
+
+
+def test_region_fixes():
+    from eraccess.region import gyeongbuk_sigun
+    assert gyeongbuk_sigun("North Gyeongsang", "Gumi-si") == "구미시"
+    assert gyeongbuk_sigun("North Gyeongsang", "Buk-gu") == "포항시"
+    assert gyeongbuk_sigun("North Gyeongsang", "Gunwi-gun") is None       # 2023년 대구 편입
+    assert gyeongbuk_sigun("North Gyeongsang", "Dalseong-gun") is None
+    assert gyeongbuk_sigun("Gangwon", "Samcheok-si") is None
+
+
+def test_largest_component_drops_islands():
+    g = RoadGraph(nodes={i: (36, 129 + i / 100) for i in range(6)})
+    for a, b in [(0, 1), (1, 2), (2, 3), (4, 5)]:
+        g.add_edge(a, b, 1)
+    big = g.largest_component()
+    assert set(big.nodes) == {0, 1, 2, 3} and set(big.adj) == {0, 1, 2, 3}
+
+
+def test_weighted_median_counts_unreached_as_far():
+    cells = [{"pop": 10}, {"pop": 10}, {"pop": 30}]
+    assert access.weighted_median(cells, [5, 10, 20]) == 20
+    assert access.weighted_median(cells, [5, 10, None]) is None          # 절반 넘게 못 닿으면 '못 닿음'
