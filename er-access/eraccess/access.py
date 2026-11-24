@@ -98,3 +98,20 @@ def weighted_median(cells: list[dict], minutes: list[float | None]) -> float | N
         if acc >= total / 2:
             return None if m == float("inf") else round(m, 1)
     return None
+
+
+def vulnerable(row: dict, targets: list[dict], share: float = 0.27) -> dict:
+    """응급의료 취약지 판정: '지역센터 이상 30분' 또는 '권역센터 60분' 안에 닿지 못하는 인구가 share 이상이면 취약.
+    계산할 수 없는 기준(임시 목록에 지역센터가 없음 등)은 빼고 판정하며, 그 사실을 basis 에 남긴다."""
+    checks = {}
+    for t in targets:
+        if not t.get("vulnerability"):
+            continue
+        v = row.get(t["name"])
+        if v is None or v.get("share_within") is None:
+            checks[t["name"]] = None
+        else:
+            checks[t["name"]] = round(1 - v["share_within"], 4)
+    known = {k: v for k, v in checks.items() if v is not None}
+    return {"outside": checks, "is_vulnerable": any(v >= share for v in known.values()) if known else None,
+            "basis": sorted(known), "missing": sorted(k for k, v in checks.items() if v is None)}

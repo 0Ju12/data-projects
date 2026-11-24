@@ -4,6 +4,8 @@
    python -m eraccess.cli fetch-osm      # OSM 응급실 태그(임시 목록), Overpass
    python -m eraccess.cli fetch-roads-overpass   # (대안) Overpass 로 타일 나눠 받기 — 공용 서버가 막히면 매우 느림
    python -m eraccess.cli fetch-er       # 공식 응급의료기관 목록 → data/er_list.csv (한국 IP + ER_API_KEY 필요)
+   python -m eraccess.cli collect-beds   # 응급실 실시간 가용 병상 한 번 → data/beds/YYYY-MM.csv 에 이어 붙임 (한국 IP + ER_API_KEY)
+   python -m eraccess.cli korea-fetch    # 한국에서 한 번에: fetch-er + collect-beds + build
    python -m eraccess.cli build          # 받아 둔 자료로 계산만 → data/summary.json, docs/data.json (네트워크 없음)"""
 from __future__ import annotations
 
@@ -27,6 +29,7 @@ DATA, RAW, DOCS = ROOT / "data", ROOT / "raw", ROOT / "docs"     # raw/ 는 커�
 POP_ZIP, ROADS_DIR = RAW / "worldpop_kor_2020_1km.zip", RAW / "roads"
 ER_CSV, ER_OSM_CSV, PLACES_CSV = DATA / "er_list.csv", DATA / "er_osm.csv", DATA / "places.csv"
 CENTERS_CSV = DATA / "regional_centers_wiki.csv"     # 위키백과 권역응급의료센터 표 (공식 목록이 없을 때만)
+EXTRA_CSV = DATA / "er_extra_provisional.csv"       # OSM 응급실 표시엔 없지만 응급실로 알려진 곳 (울릉군보건의료원 등, 공식 목록 없을 때만)
 ROADS_GPKG = RAW / "hotosm" / "roads.gpkg"
 HOT = "https://production-raw-data-api.s3.amazonaws.com/ISO3/KOR"      # HDX 'hotosm_kor_*' 의 원본 위치 (ODbL)
 
@@ -91,7 +94,7 @@ def load_places() -> list[list]:
 def build(cfg: dict) -> dict:
     tiles = sorted(ROADS_DIR.glob("*.json"))
     official = ER_CSV.exists()
-    er_files = [ER_CSV] if official else [ER_OSM_CSV, CENTERS_CSV]
+    er_files = [ER_CSV] if official else [ER_OSM_CSV, CENTERS_CSV, EXTRA_CSV]
     has_roads = ROADS_GPKG.exists() or tiles
     missing = [str(p.relative_to(ROOT)) for p in (POP_ZIP, *er_files) if not p.exists()] + ([] if has_roads else ["raw/hotosm/roads.gpkg"])
     if missing:
@@ -109,7 +112,7 @@ def build(cfg: dict) -> dict:
         g = osm.graph_from_tiles(tiles, cfg["speeds_kmh"])
     nodes_all = len(g.nodes)
     g = g.largest_component()
-    ers = er.load(ER_CSV) if official else er.merge_provisional(er.load(ER_OSM_CSV), er.load(CENTERS_CSV))
+    ers = er.load(ER_CSV) if official else er.merge_provisional(er.load(ER_OSM_CSV) + er.load(EXTRA_CSV), er.load(CENTERS_CSV))
     # 경로는 경계 상자 전체(이웃 시도의 도로·응급실 포함)로 풀고, 집계·지도는 경북 칸만
     net = access.Network(g, cells_all, cfg["snap_m"], cfg["access_kmh"])
     if compact is not None:
@@ -126,13 +129,30 @@ def build(cfg: dict) -> dict:
     sigun = [sigun_all[k] for k in keep]
     t_net = time.time() - t0
 
+    # 섬(울릉군): 육지 도로망과 이어지지 않으므로 섬 도로만으로 따로 풀고, 섬 밖 응급실은 '못 닿음'
+    islands = []
+    for isl in (cfg.get("islands", []) if compact is not None else []):
+        ic = population.load(POP_ZIP, isl["bbox"])
+        ig = osm.RoadGraph()
+        osm.add_compact(ig, gpkg.read(ROADS_GPKG, isl["bbox"], isl["road_classes"]), cfg["speeds_kmh"])
+        inet = access.Network(ig.largest_component(), ic, cfg["snap_m"], cfg["access_kmh"])
+        s_, w_, n_, e_ = isl["bbox"]
+        local = [k for k, x in enumerate(ers) if s_ <= x["lat"] <= n_ and w_ <= x["lon"] <= e_]
+        per = []
+        for t in cfg["targets"]:
+            m, nr, _ = inet.travel_times([ers[k] for k in local], t["tiers"], cfg["cutoff_min"])
+            per.append((m, [None if j is None else local[j] for j in nr]))
+        islands.append({"name": isl["name"], "cells": ic, "per": per})
+        cells += ic
+        sigun += [isl["name"]] * len(ic)
+
     results, per_target = [], []
-    for t in cfg["targets"]:
+    for ti, t in enumerate(cfg["targets"]):
         mins_all, near_all, info = net.travel_times(ers, t["tiers"], cfg["cutoff_min"])
         # requires: 이 종별이 목록에 하나도 없으면 계산하지 않는다 (임시 목록엔 지역센터가 없어 "지역센터 이상" 이 권역센터만으로 계산되는 것을 막음)
         available = info["targets"] > 0 and all(any(e["tier"] == r for e in ers) for r in t.get("requires", []))
-        mins = [mins_all[k] for k in keep]
-        near = [near_all[k] for k in keep]
+        mins = [mins_all[k] for k in keep] + [m for isl in islands for m in isl["per"][ti][0]]
+        near = [near_all[k] for k in keep] + [j for isl in islands for j in isl["per"][ti][1]]
         info["cells_no_road"] = sum(net.snapped[k] is None for k in keep)
         results.append({"name": t["name"], "minutes": t["minutes"], "tiers": t["tiers"], "available": available,
                         **(access.coverage(cells, mins, t["minutes"]) if available else {}), **info,
@@ -151,6 +171,7 @@ def build(cfg: dict) -> dict:
             m = [mins[k] for k in idx]
             row[t["name"]] = {"share_within": access.coverage(sub, m, t["minutes"])["share_within"],
                               "median_min": access.weighted_median(sub, m)}
+        row["vulnerable"] = access.vulnerable(row, cfg["targets"], cfg.get("vulnerable_share", 0.27))
         by_sigun.append(row)
 
     places = load_places()
@@ -217,11 +238,19 @@ def main(argv: list[str]) -> None:
         print(json.dumps(status, ensure_ascii=False))
     elif cmd == "fetch-osm":
         print(json.dumps(fetch_osm(cfg), ensure_ascii=False))
-    elif cmd == "fetch-er":
+    elif cmd in ("fetch-er", "collect-beds", "korea-fetch"):
         key = os.environ.get("ER_API_KEY")
         if not key:
             raise SystemExit("환경변수 ER_API_KEY 에 공공데이터포털 인증키(일반 인증키, Decoding)를 넣어 주세요")
-        print(f"{ER_CSV}: {er.fetch(key, ER_CSV)}행")
+        if cmd in ("fetch-er", "korea-fetch"):
+            print(f"{ER_CSV}: {er.fetch(key, ER_CSV)}행")
+        if cmd in ("collect-beds", "korea-fetch"):
+            kst = datetime.now(timezone.utc) + timedelta(hours=9)
+            out = DATA / "beds" / f"{kst:%Y-%m}.csv"
+            print(f"{out}: {er.fetch_beds(key, out, when=kst.strftime('%Y-%m-%d %H:%M'))}행 추가")
+        if cmd == "korea-fetch":
+            s = build(cfg)
+            print(json.dumps({k: s[k] for k in ("er_source", "er", "cells")}, ensure_ascii=False))
     elif cmd == "build":
         s = build(cfg)
         print(json.dumps({k: s[k] for k in ("er_source", "cells", "graph", "seconds")}, ensure_ascii=False))

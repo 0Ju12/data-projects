@@ -1,5 +1,5 @@
 {
- "built": "2026-11-24 13:49 KST",
+ "built": "2026-11-24 15:07 KST",
  "region": "경상북도",
  "bbox": [
   35.57,
@@ -10,18 +10,19 @@
  "er_source": "provisional",
  "er_files": [
   "data/er_osm.csv",
-  "data/regional_centers_wiki.csv"
+  "data/regional_centers_wiki.csv",
+  "data/er_extra_provisional.csv"
  ],
  "er": {
-  "rows": 17,
+  "rows": 18,
   "by_tier": {
    "regional": 5,
    "local_center": 0,
    "local_institution": 0,
-   "other": 12
+   "other": 13
   }
  },
- "cells": 26752,
+ "cells": 26898,
  "cells_bbox": 46118,
  "road_source": "hotosm_gpkg",
  "graph": {
@@ -73,10 +74,10 @@
    ],
    "available": true,
    "limit_min": 60,
-   "population": 2552753,
+   "population": 2558650,
    "within": 2342467,
-   "share_within": 0.9176,
-   "population_unreached": 52532,
+   "share_within": 0.9155,
+   "population_unreached": 58430,
    "targets": 5,
    "targets_unsnapped": [],
    "cells_no_road": 3043,
@@ -103,7 +104,7 @@
     },
     {
      "label": "못 닿음",
-     "pop": 52532
+     "pop": 58430
     }
    ]
   },
@@ -118,25 +119,27 @@
    ],
    "available": true,
    "limit_min": 30,
-   "population": 2552753,
-   "within": 1842586,
-   "share_within": 0.7218,
-   "population_unreached": 52532,
-   "targets": 17,
-   "targets_unsnapped": [],
+   "population": 2558650,
+   "within": 1848346,
+   "share_within": 0.7224,
+   "population_unreached": 52599,
+   "targets": 18,
+   "targets_unsnapped": [
+    "울릉군보건의료원"
+   ],
    "cells_no_road": 3043,
    "bands": [
     {
      "label": "0–15분",
-     "pop": 1145335
+     "pop": 1148237
     },
     {
      "label": "15–30분",
-     "pop": 697252
+     "pop": 700108
     },
     {
      "label": "30–60분",
-     "pop": 582409
+     "pop": 582480
     },
     {
      "label": "60–90분",
@@ -148,7 +151,7 @@
     },
     {
      "label": "못 닿음",
-     "pop": 52532
+     "pop": 52599
     }
    ]
   }
@@ -165,6 +168,19 @@
    "응급실 아무 곳": {
     "share_within": 0.9593,
     "median_min": 8.0
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0207
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -178,6 +194,19 @@
    "응급실 아무 곳": {
     "share_within": 0.3309,
     "median_min": 33.2
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0321
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -191,6 +220,19 @@
    "응급실 아무 곳": {
     "share_within": 0.6683,
     "median_min": 28.0
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0106
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -204,6 +246,19 @@
    "응급실 아무 곳": {
     "share_within": 0.9647,
     "median_min": 9.6
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0146
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -217,6 +272,19 @@
    "응급실 아무 곳": {
     "share_within": 0.6158,
     "median_min": 29.2
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.182
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -230,6 +298,19 @@
    "응급실 아무 곳": {
     "share_within": 0.3752,
     "median_min": 35.5
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.537
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -243,6 +324,19 @@
    "응급실 아무 곳": {
     "share_within": 0.0066,
     "median_min": 50.1
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.5162
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -256,6 +350,19 @@
    "응급실 아무 곳": {
     "share_within": 0.0432,
     "median_min": 42.2
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.3864
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -269,6 +376,19 @@
    "응급실 아무 곳": {
     "share_within": 0.5151,
     "median_min": 29.9
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0339
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -282,6 +402,19 @@
    "응급실 아무 곳": {
     "share_within": 0.8791,
     "median_min": 12.3
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0197
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -295,6 +428,19 @@
    "응급실 아무 곳": {
     "share_within": 0.0322,
     "median_min": 50.4
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.3804
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -308,6 +454,19 @@
    "응급실 아무 곳": {
     "share_within": 0.0,
     "median_min": 71.5
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.8351
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -321,6 +480,19 @@
    "응급실 아무 곳": {
     "share_within": 0.7684,
     "median_min": 26.1
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0679
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -334,6 +506,19 @@
    "응급실 아무 곳": {
     "share_within": 0.822,
     "median_min": 23.1
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0373
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -347,6 +532,45 @@
    "응급실 아무 곳": {
     "share_within": 0.9073,
     "median_min": 12.6
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0387
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
+   }
+  },
+  {
+   "name": "울릉군",
+   "population": 5898,
+   "cells": 146,
+   "권역응급의료센터": {
+    "share_within": 0.0,
+    "median_min": null
+   },
+   "응급실 아무 곳": {
+    "share_within": 0.9766,
+    "median_min": 15.2
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 1.0
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -360,6 +584,19 @@
    "응급실 아무 곳": {
     "share_within": 0.0,
     "median_min": 113.9
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 1.0
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -373,6 +610,19 @@
    "응급실 아무 곳": {
     "share_within": 0.053,
     "median_min": 38.9
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0445
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -386,6 +636,19 @@
    "응급실 아무 곳": {
     "share_within": 0.5921,
     "median_min": 26.2
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0965
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -399,6 +662,19 @@
    "응급실 아무 곳": {
     "share_within": 0.0,
     "median_min": 53.3
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.2891
+    },
+    "is_vulnerable": true,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -412,6 +688,19 @@
    "응급실 아무 곳": {
     "share_within": 0.9867,
     "median_min": 16.5
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0088
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   },
   {
@@ -425,6 +714,19 @@
    "응급실 아무 곳": {
     "share_within": 0.7947,
     "median_min": 12.1
+   },
+   "vulnerable": {
+    "outside": {
+     "지역응급의료센터 이상": null,
+     "권역응급의료센터": 0.0248
+    },
+    "is_vulnerable": false,
+    "basis": [
+     "권역응급의료센터"
+    ],
+    "missing": [
+     "지역응급의료센터 이상"
+    ]
    }
   }
  ],
@@ -565,6 +867,6 @@
    "place": "화동면"
   }
  ],
- "seconds": 35.3,
- "seconds_network": 29.7
+ "seconds": 40.4,
+ "seconds_network": 34.0
 }

@@ -246,3 +246,55 @@ def test_weighted_median_counts_unreached_as_far():
     cells = [{"pop": 10}, {"pop": 10}, {"pop": 30}]
     assert access.weighted_median(cells, [5, 10, 20]) == 20
     assert access.weighted_median(cells, [5, 10, None]) is None          # 절반 넘게 못 닿으면 '못 닿음'
+
+
+BEDS_XML = """<?xml version="1.0" encoding="UTF-8"?><response><header><resultCode>00</resultCode><resultMsg>NORMAL SERVICE.</resultMsg></header>
+<body><items><item><dutyName>가병원</dutyName><hpid>A1</hpid><hvec>3</hvec><hvidate>20261124101500</hvidate></item>
+<item><dutyName>나병원</dutyName><hpid>A2</hpid><hvec>-1</hvec><hvidate>20261124100000</hvidate></item></items>
+<numOfRows>500</numOfRows><pageNo>1</pageNo><totalCount>2</totalCount></body></response>""".encode()
+
+
+class _Resp:
+    def __init__(self, b): self.b = b
+    def read(self): return self.b
+    def __enter__(self): return self
+    def __exit__(self, *a): return False
+
+
+def test_parse_items_and_error_code():
+    items, total = er.parse_items(BEDS_XML)
+    assert total == 2 and items[0] == {"dutyName": "가병원", "hpid": "A1", "hvec": "3", "hvidate": "20261124101500"}
+    bad = b"<response><header><resultCode>30</resultCode><resultMsg>SERVICE KEY IS NOT REGISTERED</resultMsg></header></response>"
+    with pytest.raises(RuntimeError, match="30"):
+        er.parse_items(bad)
+
+
+def test_fetch_beds_appends_snapshots(tmp_path):
+    seen = []
+    def opener(url, timeout=0):
+        seen.append(url)
+        return _Resp(BEDS_XML)
+    out = tmp_path / "beds.csv"
+    assert er.fetch_beds("KEY", out, when="2026-11-24 10:00", opener=opener) == 2
+    assert er.fetch_beds("KEY", out, when="2026-11-24 11:00", opener=opener) == 2
+    import csv as _csv
+    rows = list(_csv.DictReader(open(out, encoding="utf-8")))
+    assert len(rows) == 4 and [r["collected_at"] for r in rows] == ["2026-11-24 10:00"] * 2 + ["2026-11-24 11:00"] * 2
+    assert "STAGE1=%EA%B2%BD%EC%83%81%EB%B6%81%EB%8F%84" in seen[0] and "serviceKey=KEY" in seen[0]
+
+
+def test_fetch_er_list_pages_until_total(tmp_path):
+    pages = {1: BEDS_XML.replace(b"<totalCount>2</totalCount>", b"<totalCount>3</totalCount>"),
+             2: BEDS_XML.replace(b"<totalCount>2</totalCount>", b"<totalCount>3</totalCount>")}
+    def opener(url, timeout=0):
+        n = int(url.split("pageNo=")[1].split("&")[0])
+        return _Resp(pages[n])
+    assert er.fetch("KEY", tmp_path / "er.csv", rows_per_page=2, opener=opener) == 4   # 2쪽에서 total 넘김 → 멈춤
+
+
+def test_vulnerable_uses_only_computable_criteria():
+    targets = [{"name": "A", "vulnerability": True}, {"name": "B", "vulnerability": True}, {"name": "C"}]
+    row = {"A": {"share_within": 0.70}, "C": {"share_within": 0.1}}
+    v = access.vulnerable(row, targets, 0.27)
+    assert v["is_vulnerable"] is True and v["basis"] == ["A"] and v["missing"] == ["B"] and v["outside"]["A"] == 0.3
+    assert access.vulnerable({"A": {"share_within": 0.8}}, targets)["is_vulnerable"] is False

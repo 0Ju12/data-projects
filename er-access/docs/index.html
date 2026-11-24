@@ -56,8 +56,8 @@ h1{font-size:clamp(24px,3.2vw,32px);letter-spacing:-.035em;line-height:1.15;marg
 .big .d{font-size:12px;color:var(--muted)}
 @media (max-width:760px){.hero{height:auto;min-height:0;display:flex;flex-direction:column}#map{position:relative;height:62vh;order:2}.panel{position:relative;inset:auto;width:auto;margin:12px 16px;max-height:none;order:1}.big{position:relative;right:auto;bottom:auto;margin:0 16px 16px;order:3}}
 .w{max-width:1160px;margin:0 auto;padding:28px 16px 56px}
-.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 16px}
-@media (max-width:760px){.tiles{grid-template-columns:1fr}}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 16px}
+@media (max-width:1000px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:620px){.tiles{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
 .tile .k{color:var(--muted);font-size:13px;font-weight:600}
 .tile .v{font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.2;margin:4px 0 2px}
@@ -116,8 +116,8 @@ tbody tr:hover{background:var(--soft)}
   <div class="lay">
     <div class="card">
       <h2>시군별</h2>
-      <p class="sub2" id="sigun-sub">행을 누르면 지도가 그 시군으로 이동합니다. 기준 안 비율이 낮은 순.</p>
-      <table><thead><tr><th>시군</th><th class="r">인구</th><th id="th-share">기준 안</th><th class="r">중앙값</th></tr></thead><tbody id="sigun"></tbody></table>
+      <p class="sub2" id="sigun-sub">행을 누르면 지도가 그 시군으로 이동합니다. 기준 안 비율이 낮은 순. <b>취약</b>: 지역센터 30분 또는 권역센터 60분 밖 인구가 27% 이상(응급의료 취약지 지정 기준).</p>
+      <table><thead><tr><th>시군</th><th class="r">인구</th><th id="th-share">기준 안</th><th class="r">중앙값</th><th>취약</th></tr></thead><tbody id="sigun"></tbody></table>
     </div>
     <div class="stack">
       <div class="card">
@@ -153,7 +153,7 @@ tbody tr:hover{background:var(--soft)}
   if (S.er_source !== 'official') {
     const w = document.getElementById('warn');
     w.hidden = false;
-    w.innerHTML = `<b>임시 응급실 목록</b>(위키백과 권역센터 ${S.er.by_tier.regional}곳 + OSM 응급실 표시 ${S.er.by_tier.other}곳)으로 계산했습니다. `
+    w.innerHTML = `<b>임시 응급실 목록</b>(위키백과 권역센터 ${S.er.by_tier.regional}곳 + OSM 응급실 표시 등 ${S.er.by_tier.other}곳)으로 계산했습니다. `
       + `빠진 응급실이 많아 시간이 실제보다 길게 나옵니다. 예: 울진군은 군 안의 응급실이 목록에 없어 0%로 나옵니다.`;
   }
 
@@ -176,6 +176,13 @@ tbody tr:hover{background:var(--soft)}
       + `<div class="d">${fmt(t.population)}명 중 ${fmt(t.within)}명 · 응급실 ${t.targets}곳</div></div>`
     : `<div class="card tile off"><div class="k">${t.name} · ${t.minutes}분 안</div><div class="v">공식 목록 필요</div>`
       + `<div class="d">임시 목록에 이 종별 응급실이 없음</div></div>`).join('');
+  {
+    const vs = S.by_sigun.filter(r => r.vulnerable && r.vulnerable.is_vulnerable);
+    const miss = (S.by_sigun[0] && S.by_sigun[0].vulnerable && S.by_sigun[0].vulnerable.missing) || [];
+    document.getElementById('tiles').insertAdjacentHTML('beforeend',
+      `<div class="card tile"><div class="k">응급의료 취약 시군 (27% 기준)</div><div class="v">${vs.length}곳 / ${S.by_sigun.length}</div>`
+      + `<div class="d">${vs.map(r => r.name).join(' · ')}${miss.length ? `<br>${miss.join(', ')} 기준은 공식 목록이 있어야 판정` : ''}</div></div>`);
+  }
 
   // ── 시군 중심(인구 가중) ────────────────────────────────────
   const centers = D.sigun.map(() => [0, 0, 0]);
@@ -242,6 +249,12 @@ tbody tr:hover{background:var(--soft)}
   }
 
   // ── 시군 표 ─────────────────────────────────────────────────
+  function vul(r) {
+    const v = r.vulnerable || {};
+    if (v.is_vulnerable == null) return '<span style="color:var(--faint)">–</span>';
+    const why = Object.entries(v.outside || {}).map(([k, x]) => x == null ? `${k}: 계산 불가` : `${k} 밖 ${(x * 100).toFixed(0)}%`).join(', ');
+    return v.is_vulnerable ? `<b title="${why}" style="color:var(--accent)">취약</b>` : `<span title="${why}" style="color:var(--faint)">아님</span>`;
+  }
   function sigunTable() {
     const t = S.targets[cur];
     document.getElementById('th-share').textContent = `${t.minutes}분 안`;
@@ -249,7 +262,8 @@ tbody tr:hover{background:var(--soft)}
     document.getElementById('sigun').innerHTML = rows.map(r => `<tr data-s="${D.sigun.indexOf(r.name)}"><td>${r.name}</td><td class="r">${fmt(r.population)}</td>`
       + `<td><div style="display:flex;align-items:center;gap:8px"><div class="meter" style="flex:1"><b style="width:${((r.v.share_within || 0) * 100).toFixed(1)}%"></b></div>`
       + `<span style="font-variant-numeric:tabular-nums;min-width:46px;text-align:right">${pct(r.v.share_within)}</span></div></td>`
-      + `<td class="r">${r.v.median_min == null ? '못 닿음' : Math.round(r.v.median_min) + '분'}</td></tr>`).join('');
+      + `<td class="r">${r.v.median_min == null ? '못 닿음' : Math.round(r.v.median_min) + '분'}</td>`
+      + `<td>${vul(r)}</td></tr>`).join('');
     document.querySelectorAll('#sigun tr').forEach(tr => tr.onclick = () => {
       const z = centers[+tr.dataset.s];
       map.flyTo({ center: [z[0], z[1]], zoom: small ? 8.6 : 9.6, pitch: flat ? 0 : 55, bearing: -18, duration: 1600, essential: true });
@@ -295,7 +309,7 @@ tbody tr:hover{background:var(--soft)}
 
   document.getElementById('foot').innerHTML =
     `<p><b>방법.</b> OSM 도로망(${S.graph.nodes.toLocaleString('ko-KR')}개 지점)에서 응급실로부터 거꾸로 퍼지는 최단 시간 계산. 도로 등급별 평균 속도 가정(고속도로 ${S.assumptions.speeds_kmh.motorway}, 주요 도로 ${S.assumptions.speeds_kmh.primary}, 마을길 ${S.assumptions.speeds_kmh.unclassified} km/h), `
-    + `칸·응급실은 ${S.assumptions.snap_m / 1000} km 안 가장 가까운 도로에 붙이고 그 거리를 ${S.assumptions.access_kmh} km/h로 더함. 정체·신호 없음. 경계 밖(대구·강원 등) 응급실도 이용 가능한 것으로 계산하고, 집계는 경북 칸 ${S.cells.toLocaleString('ko-KR')}개만. 울릉군은 범위 밖. 기둥 높이는 인구의 제곱근에 비례합니다.</p>`
+    + `칸·응급실은 ${S.assumptions.snap_m / 1000} km 안 가장 가까운 도로에 붙이고 그 거리를 ${S.assumptions.access_kmh} km/h로 더함. 정체·신호 없음. 경계 밖(대구·강원 등) 응급실도 이용 가능한 것으로 계산하고, 집계는 경북 칸 ${S.cells.toLocaleString('ko-KR')}개만. 울릉군은 섬 안 도로만으로 계산하고 육지 응급실은 못 닿는 것으로 셉니다(실제로는 배·헬기 이송). 기둥 높이는 인구의 제곱근에 비례합니다.</p>`
     + `<p><b>자료.</b> 인구 WorldPop 2020 (CC BY 4.0) · 도로 © OpenStreetMap contributors, HOT 국가별 내보내기(HDX, ODbL) · 응급실 표시 OSM · 권역응급의료센터 표 위키백과 · 배경 지도 OpenFreeMap / OpenMapTiles. 계산 ${S.built}.</p>`
     + `<p><b>만든 도구.</b> deck.gl · MapLibre GL JS · Pretendard (모두 무료 오픈소스). 3D 기둥 표현은 Spencer Schien·Kontur 인구 '스파이크 지도'와 deck.gl ColumnLayer 예제를 참고했습니다. `
     + `<a href="https://github.com/0ju12/data-projects/tree/main/er-access">코드와 방법</a></p>`;

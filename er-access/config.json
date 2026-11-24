@@ -1,19 +1,86 @@
 {
   "region": "경상북도",
-  "bbox": [35.57, 127.80, 37.55, 129.60],
-  "road_classes": ["motorway", "trunk", "primary", "secondary", "tertiary", "unclassified"],
+  "bbox": [
+    35.57,
+    127.8,
+    37.55,
+    129.6
+  ],
+  "road_classes": [
+    "motorway",
+    "trunk",
+    "primary",
+    "secondary",
+    "tertiary",
+    "unclassified"
+  ],
   "tile_deg": 0.25,
   "speeds_kmh": {
-    "motorway": 90, "trunk": 70, "primary": 50, "secondary": 45, "tertiary": 40,
-    "unclassified": 30, "residential": 25
+    "motorway": 90,
+    "trunk": 70,
+    "primary": 50,
+    "secondary": 45,
+    "tertiary": 40,
+    "unclassified": 30,
+    "residential": 25
   },
   "snap_m": 1500,
   "access_kmh": 20,
   "cutoff_min": 240,
   "targets": [
-    {"name": "지역응급의료센터 이상", "tiers": ["regional", "local_center"], "requires": ["local_center"], "minutes": 30},
-    {"name": "권역응급의료센터", "tiers": ["regional"], "minutes": 60},
-    {"name": "응급실 아무 곳", "tiers": ["regional", "local_center", "local_institution", "other"], "minutes": 30}
+    {
+      "name": "지역응급의료센터 이상",
+      "tiers": [
+        "regional",
+        "local_center"
+      ],
+      "requires": [
+        "local_center"
+      ],
+      "minutes": 30,
+      "vulnerability": true
+    },
+    {
+      "name": "권역응급의료센터",
+      "tiers": [
+        "regional"
+      ],
+      "minutes": 60,
+      "vulnerability": true
+    },
+    {
+      "name": "응급실 아무 곳",
+      "tiers": [
+        "regional",
+        "local_center",
+        "local_institution",
+        "other"
+      ],
+      "minutes": 30,
+      "vulnerability": false
+    }
   ],
-  "_note": "bbox 는 [남, 서, 북, 동]. 경북 경계 상자라 대구·울산·충북·강원 일부가 섞이며, 경계 밖 응급실도 이용 가능한 것으로 보기 위해 일부러 넓게 둔다. 시군구 경계로 자르는 일은 다음 단계. 30/60분 기준은 보건복지부 응급의료 취약지 정의(지역센터 30분·권역센터 60분)를 따른다."
+  "_note": "bbox 는 [남, 서, 북, 동]. 경로는 상자 전체(이웃 시도 포함)로 풀고 집계는 경북 시군 칸만 한다. 응급의료 취약지: 지역응급의료센터 30분 안 또는 권역응급의료센터 60분 안에 닿지 못하는 인구가 27% 이상인 시군구 (보건복지부 고시 「응급의료분야 의료취약지 지정」, 2024-261호 기준으로 보도된 기준).",
+  "islands": [
+    {
+      "name": "울릉군",
+      "bbox": [
+        37.43,
+        130.75,
+        37.57,
+        130.95
+      ],
+      "road_classes": [
+        "motorway",
+        "trunk",
+        "primary",
+        "secondary",
+        "tertiary",
+        "unclassified",
+        "residential"
+      ],
+      "note": "섬 안 도로만으로 계산. 육지의 응급실(권역센터 포함)은 도로로 갈 수 없어 '못 닿음' 으로 센다 (실제로는 배·헬기 이송)."
+    }
+  ],
+  "vulnerable_share": 0.27
 }

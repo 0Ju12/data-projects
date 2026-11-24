@@ -100,29 +100,57 @@ def save(rows: list[dict], path: Path) -> None:
             w.writerow([r["name"], f"{r['lat']:.6f}", f"{r['lon']:.6f}", TIERS.get(r["tier"], ("",))[0]])
 
 
-API = "https://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytListInfoInqire"
+BASE = "https://apis.data.go.kr/B552657/ErmctInfoInqireService"
+API = f"{BASE}/getEgytListInfoInqire"                    # 응급의료기관 목록
+BEDS_API = f"{BASE}/getEmrrmRltmUsefulSckbdInfoInqire"   # 응급실 실시간 가용 병상
 
 
-def fetch(service_key: str, out: Path, rows_per_page: int = 500) -> int:
-    """응급의료기관 목록 전체를 받아 CSV 로 저장. 저장한 행 수를 돌려준다."""
+def parse_items(xml_bytes: bytes) -> tuple[list[dict], int]:
+    """공공데이터포털 XML 응답 → (항목 목록, totalCount). 오류 코드는 예외로."""
+    root = ET.fromstring(xml_bytes)
+    code = root.findtext(".//resultCode")
+    if code not in (None, "00"):
+        raise RuntimeError(f"API 오류 {code}: {root.findtext('.//resultMsg')}")
+    items = [{c.tag: (c.text or "").strip() for c in it} for it in root.iter("item")]
+    return items, int(root.findtext(".//totalCount") or 0)
+
+
+def _all_pages(url: str, params: dict, rows_per_page: int = 500, opener=urllib.request.urlopen) -> list[dict]:
     items, page = [], 1
     while True:
-        q = urllib.parse.urlencode({"serviceKey": service_key, "pageNo": page, "numOfRows": rows_per_page})
-        with urllib.request.urlopen(f"{API}?{q}", timeout=60) as r:
-            root = ET.fromstring(r.read())
-        code = root.findtext(".//resultCode")
-        if code not in (None, "00"):
-            raise RuntimeError(f"API 오류 {code}: {root.findtext('.//resultMsg')}")
-        batch = [{c.tag: (c.text or "").strip() for c in it} for it in root.iter("item")]
+        q = urllib.parse.urlencode({**params, "pageNo": page, "numOfRows": rows_per_page})
+        with opener(f"{url}?{q}", timeout=60) as r:
+            batch, total = parse_items(r.read())
         items += batch
-        total = int(root.findtext(".//totalCount") or 0)
         if not batch or len(items) >= total:
-            break
+            return items
         page += 1
-    cols = sorted({k for it in items for k in it})
+
+
+def _write_csv(items: list[dict], out: Path, extra: dict | None = None, append: bool = False) -> int:
+    rows = [{**(extra or {}), **it} for it in items]
     out.parent.mkdir(parents=True, exist_ok=True)
+    cols = sorted({k for r in rows for k in r})
+    if append and out.exists():
+        with open(out, encoding="utf-8") as f:
+            old = list(csv.DictReader(f))
+        cols = sorted(set(cols) | {k for r in old for k in r})
+        rows = old + rows
     with open(out, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=cols)
         w.writeheader()
-        w.writerows(items)
+        w.writerows(rows)
     return len(items)
+
+
+def fetch(service_key: str, out: Path, rows_per_page: int = 500, opener=urllib.request.urlopen) -> int:
+    """응급의료기관 목록 전체를 받아 CSV 로 저장. 저장한 행 수를 돌려준다."""
+    return _write_csv(_all_pages(API, {"serviceKey": service_key}, rows_per_page, opener), out)
+
+
+def fetch_beds(service_key: str, out: Path, sido: str = "경상북도", when: str = "", opener=urllib.request.urlopen) -> int:
+    """응급실 실시간 가용 병상 한 번 찍기 → out 에 이어 붙임 (수집 시각 열 'collected_at' 추가).
+    정기적으로 돌리면(예: 매시) 시간대·요일별 혼잡을 볼 수 있다. 응답 항목은 이름 그대로 모두 저장한다
+    (명세서상 hvec = 응급실 가용 병상 수로 알려져 있으나 받은 뒤 확인할 것)."""
+    items = _all_pages(BEDS_API, {"serviceKey": service_key, "STAGE1": sido}, 500, opener)
+    return _write_csv(items, out, {"collected_at": when}, append=True)
