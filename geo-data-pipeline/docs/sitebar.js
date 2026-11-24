@@ -13,6 +13,7 @@
     ['api-watch/', 'API Watch'],
     ['power/', '전력 수요 예측'],
     ['fire/', '산불 위험 지도'],
+    ['jobs/', '신입 공고 달력'],
   ];
   var here = location.pathname.replace(/index\.html$/, '');
   var root = new URL(base, location.href).pathname;

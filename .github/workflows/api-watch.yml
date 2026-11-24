@@ -52,6 +52,7 @@ jobs:
           if [ -f warehouse/docs/index.html ]; then cp -r warehouse/docs _pages/warehouse; fi
           if [ -f energy-transition/docs/index.html ]; then cp -r energy-transition/docs _pages/energy; fi
           cp -r api-watch/public _pages/api-watch
+          cp -r job-calendar/docs _pages/jobs
           test -s _pages/api-watch/report.json
           test -s _pages/api-watch/index.html
       - uses: actions/upload-pages-artifact@v3
