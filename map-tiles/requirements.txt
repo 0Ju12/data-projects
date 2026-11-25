@@ -1,0 +1,4 @@
+# 굽기는 표준 라이브러리만. 아래는 테스트에서 공식 구현으로 거꾸로 읽어 확인하는 용도
+pytest
+mapbox-vector-tile>=2.1
+pmtiles>=3.4

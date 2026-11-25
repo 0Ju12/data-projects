@@ -23,15 +23,22 @@
 - [er-access](er-access/): 1 km 격자마다 가장 가까운 응급실까지의 차량 이동 시간을 OSM 도로망(HOT 한국 내보내기)으로 계산해 경북의 응급의료 취약 인구와 취약 시군(27% 기준)을 판정합니다. deck.gl 3D 지도(높이 = 인구, 색 = 이동 시간) · [응급실 접근성 3D 지도](https://0ju12.github.io/data-projects/er/). 임시 응급실 목록(권역센터 5곳 + OSM 등 13곳)으로 낸 첫 결과: 권역센터 60분 안 91.5%, 취약 8곳 / 22 (문경·봉화·상주·영덕·영양·울릉·울진·청송). 공식 목록·실시간 병상은 한국에서 `korea-fetch` 한 번.
 - [crash-hotspots](crash-hotspots/): 사망 교통사고 지점을 UTM-K 1 km 격자에 모아 Getis-Ord Gi\* 와 거짓 발견 비율 보정(BH)으로 우연보다 많이 몰린 구간을 찾고, 공식 사고 다발 지역과 겹침을 셉니다. 엔진·대조·3D 대시보드까지 완성, 사고 자료(공공데이터포털, 한국에서 받기)만 넣으면 됩니다.
 
+개발 도구·서비스 (위 프로젝트들의 코드와 결과를 다른 사람도 쓸 수 있게 만든 것)
+- [public-data-mcp](public-data-mcp/): 공공데이터포털 API 를 AI 가 안전하게 부르는 MCP 서버. 등록된 API·인자만 허용, 인증키는 환경변수로만 받고 결과·오류·캐시 어디에도 남기지 않음, 포털 오류 코드 17개를 원인·해결로 풀어 줌, 페이지 넘김·캐시. 실제 MCP(stdio) 왕복까지 테스트.
+- [krgeo](krgeo/): 한국 공간 데이터 파이썬 패키지. UTM-K 변환(pyproj 와 0.01 m 안), HOT OSM 도로 → 이동 시간 그래프, 행정구역 표시 보정(울진·군위·달성), 격자 접근성, Gi\* 핫스팟. 핵심은 표준 라이브러리만, wheel 빌드·태그 시 PyPI 게시 CI.
+- [map-tiles](map-tiles/): 지진·산불·응급실 자료를 벡터 타일 파일 하나(PMTiles)로 굽기. MVT 인코더와 PMTiles v3 작성기를 직접 구현하고 공식 구현으로 거꾸로 읽어 검증 · [타일 지도](https://0ju12.github.io/data-projects/tiles/) (처음 화면에서 전체 2.5 MB 중 3% 만 받음).
+- [pipeline-status](pipeline-status/): 워크플로 실행 기록·숨은 단계 실패·산출물 신선도 상태판과 실패 알림 이슈 · [파이프라인 상태](https://0ju12.github.io/data-projects/status/). `continue-on-error` 단계는 API 에서도 성공으로 보여 `steps.*.outcome` 과 실패 주석으로 찾음.
+- [er-finder](er-finder/): 가까운 응급실 찾기 웹앱(PWA). 위치 → 차로 가장 빨리 닿는 응급실과 권역센터, 카카오맵 길찾기, 오프라인 동작 · [가까운 응급실](https://0ju12.github.io/data-projects/near/).
+
 공통으로 지킨 것
 - **평가를 정직하게**: 시계열은 시간 순서로 나눠 검증하고, 잘 안 된 결과(부품별 비지도 탐지의 오경보, 연휴 다음 날 예측 오차)도 README에 남겼습니다.
 - **재처리 안전성**: 같은 데이터를 여러 번 넣어도 결과가 같게(멱등), 원본은 체크섬으로 확인.
 - **비밀값 관리**: 인증키는 환경변수·GitHub Secrets로만 받습니다.
 
 ```bash
-cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 42 · energy 5 · er-access 23 · crash 13
+cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 42 · energy 5 · er-access 24 · crash 13 · public-data-mcp 12 · krgeo 8 · map-tiles 9 · pipeline-status 7 · er-finder 5
 ```
 
-GitHub Actions: `tests`(폴더별 테스트 + Airflow DAG 1회 실행), `geo daily update`(매일 수집 → 지진 대시보드·산불 위험 지도·분석 웨어하우스·전력 전환 대시보드를 갱신하고 전력 예측 탐색기·API 관제판과 함께 GitHub Pages로 배포), `dart build mart`(인증키가 있을 때 매월).
+GitHub Actions: `tests`(폴더별 테스트 + Airflow DAG 1회 실행), `krgeo`(파이썬 3.10~3.13 + wheel), `pipeline status`(점검·알림 이슈), `geo daily update`(매일 수집 → 지진 대시보드·산불 위험 지도·분석 웨어하우스·전력 전환 대시보드를 갱신하고 전력 예측 탐색기·API 관제판과 함께 GitHub Pages로 배포), `dart build mart`(인증키가 있을 때 매월).
 
 데이터 출처·라이선스는 각 폴더 README에 적었습니다 (USGS 공공 데이터, UCI CC BY 4.0, 공공데이터포털, Open-Meteo CC BY 4.0, OpenDART).

@@ -14,6 +14,9 @@
     ['power/', '전력 수요 예측'],
     ['fire/', '산불 위험 지도'],
     ['er/', '응급실 접근성'],
+    ['near/', '가까운 응급실'],
+    ['tiles/', '타일 지도'],
+    ['status/', '파이프라인 상태'],
     ['jobs/', '신입 공고 달력'],
   ];
   var here = location.pathname.replace(/index\.html$/, '');

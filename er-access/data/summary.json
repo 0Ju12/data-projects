@@ -1,5 +1,5 @@
 {
- "built": "2026-11-24 15:07 KST",
+ "built": "2026-11-25 10:09 KST",
  "region": "경상북도",
  "bbox": [
   35.57,
@@ -867,6 +867,6 @@
    "place": "화동면"
   }
  ],
- "seconds": 40.4,
- "seconds_network": 34.0
+ "seconds": 65.7,
+ "seconds_network": 59.4
 }

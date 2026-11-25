@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "krgeo"
+version = "0.1.0"
+description = "한국 공간 데이터 도구: UTM-K 변환, HOT OSM 도로 그래프, 행정구역 보정, 격자 접근성, Gi* 핫스팟"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Young-Ju Lee"}]
+keywords = ["korea", "gis", "utm-k", "epsg-5179", "openstreetmap", "accessibility", "hotspot"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering :: GIS",
+  "Natural Language :: Korean",
+]
+dependencies = []
+
+[project.optional-dependencies]
+stats = ["numpy>=1.24"]
+test = ["pytest", "numpy>=1.24"]
+
+[project.urls]
+Source = "https://github.com/0Ju12/data-projects/tree/main/krgeo"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+krgeo = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

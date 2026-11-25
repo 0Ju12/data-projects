@@ -1,0 +1,112 @@
+# 공공데이터포털(data.go.kr) API 등록부 — 서버는 여기 적힌 API·인자만 호출합니다.
+#
+# verified: 실제 호출로 응답 형식을 확인했는지. 이 등록부를 만든 환경(해외 IP)에서는 apis.data.go.kr 에
+#   연결되지 않아 모두 false 입니다. 응답은 받은 항목 이름 그대로 돌려주므로, 한국에서 처음 호출해 보고
+#   items/total 위치나 인자 이름이 다르면 이 파일만 고치면 됩니다.
+# key_param: 인증키를 넣는 쿼리 인자 이름 (공공데이터포털은 serviceKey).
+# items / total: 응답에서 항목 목록과 전체 건수를 찾는 경로. XML 은 태그 이름, JSON 은 점으로 이은 키.
+# cache_seconds: 같은 인자로 다시 부르면 이 시간 동안은 캐시에서 돌려줌 (실시간 자료는 짧게).
+
+apis:
+  - id: er_list
+    title: 응급의료기관 목록
+    provider: 국립중앙의료원
+    doc: https://www.data.go.kr/data/15000563/openapi.do
+    url: https://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytListInfoInqire
+    format: xml
+    items: item
+    total: totalCount
+    page_param: pageNo
+    size_param: numOfRows
+    cache_seconds: 86400
+    verified: false
+    params:
+      - {name: Q0, required: false, description: "시도 (예: 경상북도)"}
+      - {name: Q1, required: false, description: "시군구 (예: 안동시)"}
+      - {name: QN, required: false, description: "기관명 일부"}
+
+  - id: er_beds
+    title: 응급실 실시간 가용 병상
+    provider: 국립중앙의료원
+    doc: https://www.data.go.kr/data/15000563/openapi.do
+    url: https://apis.data.go.kr/B552657/ErmctInfoInqireService/getEmrrmRltmUsefulSckbdInfoInqire
+    format: xml
+    items: item
+    total: totalCount
+    page_param: pageNo
+    size_param: numOfRows
+    cache_seconds: 300
+    verified: false
+    params:
+      - {name: STAGE1, required: true, description: "시도 (예: 경상북도)"}
+      - {name: STAGE2, required: false, description: "시군구 (예: 포항시)"}
+
+  - id: air_sido
+    title: 시도별 실시간 대기오염 측정 정보
+    provider: 한국환경공단 에어코리아
+    doc: https://www.data.go.kr/data/15073861/openapi.do
+    url: https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty
+    format: json
+    fixed: {returnType: json, ver: "1.0"}
+    items: response.body.items
+    total: response.body.totalCount
+    page_param: pageNo
+    size_param: numOfRows
+    cache_seconds: 600
+    verified: false
+    params:
+      - {name: sidoName, required: true, description: "시도 이름 (예: 경북, 서울, 전국)"}
+
+  - id: weather_forecast
+    title: 기상청 단기예보 (동네예보)
+    provider: 기상청
+    doc: https://www.data.go.kr/data/15084084/openapi.do
+    url: https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst
+    format: json
+    fixed: {dataType: JSON}
+    items: response.body.items.item
+    total: response.body.totalCount
+    page_param: pageNo
+    size_param: numOfRows
+    cache_seconds: 1800
+    verified: false
+    params:
+      - {name: base_date, required: true, description: "발표 날짜 YYYYMMDD"}
+      - {name: base_time, required: true, description: "발표 시각 HHMM (0200, 0500, … 2300)"}
+      - {name: nx, required: true, description: "예보 격자 X (기상청 격자, 위경도 아님)"}
+      - {name: ny, required: true, description: "예보 격자 Y"}
+
+  - id: weather_now
+    title: 기상청 초단기실황
+    provider: 기상청
+    doc: https://www.data.go.kr/data/15084084/openapi.do
+    url: https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst
+    format: json
+    fixed: {dataType: JSON}
+    items: response.body.items.item
+    total: response.body.totalCount
+    page_param: pageNo
+    size_param: numOfRows
+    cache_seconds: 600
+    verified: false
+    params:
+      - {name: base_date, required: true, description: "기준 날짜 YYYYMMDD"}
+      - {name: base_time, required: true, description: "기준 시각 HHMM (정시)"}
+      - {name: nx, required: true, description: "예보 격자 X"}
+      - {name: ny, required: true, description: "예보 격자 Y"}
+
+  - id: holidays
+    title: 공휴일 정보
+    provider: 한국천문연구원
+    doc: https://www.data.go.kr/data/15012690/openapi.do
+    url: https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo
+    format: xml
+    items: item
+    total: totalCount
+    page_param: pageNo
+    size_param: numOfRows
+    cache_seconds: 604800
+    verified: false
+    params:
+      - {name: solYear, required: true, description: "연도 YYYY"}
+      - {name: solMonth, required: false, description: "월 MM"}

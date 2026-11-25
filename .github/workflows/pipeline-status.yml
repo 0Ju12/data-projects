@@ -1,0 +1,22 @@
+name: pipeline status
+on:
+  workflow_run:                       # 매일 갱신·테스트가 끝날 때마다
+    workflows: ["geo daily update", "tests"]
+    types: [completed]
+    branches: [main]
+  schedule: [{ cron: "37 */6 * * *" }]   # 매시간 도는 API Watch 의 신선도는 6시간마다 확인
+  workflow_dispatch:
+permissions: { contents: read, actions: read, issues: write }
+concurrency: { group: pipeline-status, cancel-in-progress: false }
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: pipeline-status } }
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }           # 방금 갱신이 올린 산출물까지 보도록 최신 main
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: 점검하고 문제가 있으면 pipeline-alert 이슈 열기·고치기, 없어지면 닫기
+        env: { GITHUB_TOKEN: "${{ github.token }}" }
+        run: python -m status.collect --repo "${{ github.repository }}" --alert

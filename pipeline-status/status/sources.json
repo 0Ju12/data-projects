@@ -1,0 +1,16 @@
+{
+ "_note": "산출물마다 마지막 갱신 시각을 어디서 읽고, 몇 시간 지나면 늦은 것으로 볼지. tz 는 그 시각이 적힌 기준 시간대 (date 는 그날 00:00 으로 봄).",
+ "checks": [
+  {"id": "quakes", "name": "지진 목록", "path": "geo-data-pipeline/data/summary.json", "kind": "json", "key": "updated", "tz": "UTC", "max_age_h": 30, "page": ""},
+  {"id": "fire", "name": "산불 탐지·화재기상지수", "path": "wildfire-watch/data/summary.json", "kind": "json", "key": "updated", "tz": "KST", "max_age_h": 48, "page": "fire/",
+   "partial": {"key": "fetch", "zero_is_warn": ["N20", "N21", "SNPP"], "ok_values": {"weather": "ok"}}},
+  {"id": "warehouse", "name": "분석 웨어하우스 (dbt)", "path": "warehouse/runs/history.csv", "kind": "csv_last", "key": "run_at_utc", "tz": "UTC", "max_age_h": 30, "page": "warehouse/",
+   "row_checks": {"status": "success", "tests_fail": "0"}},
+  {"id": "jobs", "name": "신입 공고 달력", "path": "job-calendar/docs/jobs.json", "kind": "json", "key": "updated", "tz": "KST", "max_age_h": 48, "page": "jobs/"},
+  {"id": "api", "name": "API Watch 검사", "path": "api-watch/public/report.json", "kind": "json", "key": "last_check_at", "tz": "UTC", "max_age_h": 3, "page": "api-watch/"},
+  {"id": "energy", "name": "전력 전환 (Ember 월별)", "path": "energy-transition/data/ember_monthly.csv", "kind": "csv_max", "key": "month", "tz": "UTC", "max_age_h": 3600, "page": "energy/",
+   "note": "월별 자료는 2~3달 늦게 나옴"},
+  {"id": "er", "name": "응급실 접근성", "path": "er-access/data/summary.json", "kind": "json", "key": "built", "tz": "KST", "max_age_h": null, "page": "er/",
+   "note": "공식 목록을 받으면 손으로 다시 계산"}
+ ]
+}

@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>가까운 응급실</title>
+<meta name="description" content="지금 위치에서 차로 가장 빨리 닿는 응급실과 권역응급의료센터 (경상북도). 오프라인에서도 동작합니다.">
+<meta name="theme-color" content="#d63027">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" defer></script>
+<script src="finder.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f4f3f0;--card:#fcfcfb;--text:#0b0b0b;--muted:#52514e;--faint:#6e6d68;--line:#e2e0da;--soft:#ecebe6;
+  --red:#d63027;--red-ink:#ffffff;--red-bg:#fdebe8;--red-line:#f3c3bb;--accent:#2a78d6;--ok:#1f8a5b;--warn-bg:#fff4e5;--warn-ink:#6b4310;--warn-line:#f0d3a8;
+  --shadow:0 10px 30px rgba(20,18,12,.08)
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0d0d0c;--card:#171716;--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2c2c29;--soft:#22221f;
+  --red:#e2483c;--red-ink:#ffffff;--red-bg:#2e1311;--red-line:#5a2520;--accent:#5fa2f0;--ok:#47c08a;--warn-bg:#2a1f12;--warn-ink:#f3d6a6;--warn-line:#5b4220;
+  --shadow:0 10px 30px rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0d0d0c;--card:#171716;--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2c2c29;--soft:#22221f;
+  --red:#e2483c;--red-ink:#ffffff;--red-bg:#2e1311;--red-line:#5a2520;--accent:#5fa2f0;--ok:#47c08a;--warn-bg:#2a1f12;--warn-ink:#f3d6a6;--warn-line:#5b4220;
+  --shadow:0 10px 30px rgba(0,0,0,.4)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font:16px/1.55 "Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+a{color:inherit}
+.app{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);grid-template-rows:auto 1fr}
+.side{grid-column:1;grid-row:1;padding:20px 20px 0;padding-left:max(20px,env(safe-area-inset-left))}
+.foot{grid-column:1;grid-row:2;padding:0 20px 28px;padding-left:max(20px,env(safe-area-inset-left))}
+.mapw{grid-column:2;grid-row:1/3;position:sticky;top:0;height:100vh;border-left:1px solid var(--line)}
+#map{position:absolute;inset:0}
+@media (max-width:860px){.app{grid-template-columns:1fr;grid-template-rows:auto}.side,.foot,.mapw{grid-column:1;grid-row:auto}.side{padding:16px 16px 0}.foot{padding:0 16px 24px}
+  .mapw{position:relative;height:56vh;border-left:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:16px 0 0}}
+.head{display:flex;gap:12px;align-items:center;margin:0 0 14px}
+.head img{width:40px;height:40px;border-radius:10px}
+.head h1{font-size:22px;letter-spacing:-.03em;margin:0;line-height:1.2;font-weight:800}
+.head p{margin:0;color:var(--faint);font-size:13px}
+.sos{display:flex;gap:12px;align-items:center;justify-content:space-between;background:var(--red-bg);border:1px solid var(--red-line);border-radius:14px;padding:10px 10px 10px 14px;margin:0 0 14px}
+.sos p{margin:0;font-size:14px;line-height:1.4}
+.sos b{color:var(--red)}
+.call{flex:none;background:var(--red);color:var(--red-ink);text-decoration:none;font-weight:800;border-radius:10px;padding:10px 14px;font-size:16px;white-space:nowrap}
+.go{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:14px;background:var(--text);color:var(--bg);font:inherit;font-size:17px;font-weight:800;padding:15px;cursor:pointer}
+.go:disabled{opacity:.6;cursor:wait}
+.go svg{width:20px;height:20px}
+.or{font-size:13px;color:var(--faint);margin:8px 0 0;text-align:center}
+.msg{font-size:14px;margin:12px 0 0;padding:10px 12px;border-radius:12px;background:var(--soft);color:var(--muted);display:none}
+.msg.show{display:block}.msg.warn{background:var(--warn-bg);color:var(--warn-ink);border:1px solid var(--warn-line)}
+.res{display:grid;gap:12px;margin:16px 0 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow)}
+.card .k{font-size:12.5px;color:var(--faint);font-weight:700;display:flex;align-items:center;gap:6px}
+.card .k i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.card h2{font-size:19px;letter-spacing:-.02em;margin:4px 0 2px;line-height:1.3}
+.card .tier{font-size:12.5px;color:var(--muted)}
+.mins{display:flex;align-items:baseline;gap:8px;margin:8px 0 2px;flex-wrap:wrap}
+.mins b{font-size:36px;font-weight:800;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.mins span{font-size:13px;color:var(--faint)}
+.beds{font-size:13px;margin:6px 0 0;color:var(--ok);font-weight:700}
+.btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:12px 0 0}
+.btns a{display:block;text-align:center;text-decoration:none;font-size:13.5px;font-weight:700;border-radius:10px;padding:9px 4px;background:var(--soft);color:var(--text);border:1px solid var(--line)}
+.btns a.main{background:#fee500;color:#191919;border-color:#e8d200}
+.list{margin:0;padding:0;list-style:none;font-size:14px}
+.list li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.list li:last-child{border-bottom:0}
+.list li span:last-child{color:var(--faint);white-space:nowrap;font-variant-numeric:tabular-nums}
+.list button{all:unset;cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+details summary{cursor:pointer;font-weight:700;font-size:14px}
+.note{font-size:12.5px;color:var(--faint);line-height:1.6;margin:16px 0 0}
+.note p{margin:6px 0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 0}
+.chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted);background:var(--card)}
+.chip.on{color:var(--ok);border-color:currentColor}
+.install{all:unset;cursor:pointer;font-size:12px;border-radius:999px;padding:3px 10px;background:var(--accent);color:#fff;display:none}
+.pin{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);cursor:pointer}
+.pin b{width:10px;height:10px;border-radius:50%;background:#fff;display:block}
+.me{width:18px;height:18px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 25%,transparent)}
+.maplibregl-popup-content{background:var(--card);color:var(--text);border-radius:10px;font:13px/1.45 "Pretendard Variable",Pretendard,system-ui,sans-serif;padding:8px 10px}
+.maplibregl-popup-tip{display:none}
+.offmap{position:absolute;inset:0;display:none;place-items:center;color:var(--faint);font-size:14px;text-align:center;padding:20px}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="side">
+    <div class="head"><img src="icons/icon.svg" alt=""><div><h1>가까운 응급실</h1><p>경상북도 · 차로 가장 빨리 닿는 곳</p></div></div>
+    <div class="sos"><p><b>숨쉬기 힘들거나, 의식이 없거나, 피가 멈추지 않으면</b> 직접 가지 말고 119 를 부르세요.</p><a class="call" href="tel:119">119 전화</a></div>
+    <button class="go" id="go" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>내 위치로 찾기</button>
+    <p class="or">또는 지도에서 위치를 누르세요</p>
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    <div class="res" id="res"></div>
+  </section>
+  <section class="mapw"><div id="map" role="region" aria-label="응급실 지도"></div><div class="offmap" id="offmap">지도는 인터넷이 연결돼야 보입니다.<br>응급실 찾기는 오프라인에서도 됩니다.</div></section>
+  <section class="foot">
+    <div class="chips"><span class="chip" id="net">자료 불러오는 중</span><span class="chip" id="built">–</span><button class="install" id="install" type="button">홈 화면에 추가</button></div>
+    <div class="note">
+      <p><b>어떻게 계산했나</b>: 1 km 칸마다 OpenStreetMap 도로망(HOT 내보내기)에서 응급실까지 차로 가는 가장 빠른 길을 미리 계산해 두었습니다. 도로 등급별 제한속도로 막힘 없이 달린다고 가정하므로 실제로는 더 걸릴 수 있습니다. 위치는 이 기기 안에서만 쓰고 어디로도 보내지 않습니다.</p>
+      <p><b>한계</b>: 응급실 목록은 권역응급의료센터 5곳과 OSM 등에서 모은 임시 목록 18곳입니다. 공식 목록(공공데이터포털)으로 바꾸기 전이라 빠진 곳이 있을 수 있습니다. 진료 가능 여부와 남은 병상은 가기 전에 전화나 119 로 확인하세요.</p>
+      <p>계산 방법과 시군별 결과: <a href="../er/">응급실 접근성 지도</a></p>
+    </div>
+  </section>
+</div>
+<script>
+(function(){
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+if(!standalone){var sb=document.createElement('script');sb.src='../sitebar.js';sb.defer=true;sb.onload=function(){var b=document.querySelector('.dpb');if(b)document.documentElement.style.setProperty('--bar',b.offsetHeight+'px')};document.head.appendChild(sb)}
+var F=null, BEDS=null, map=null, markers=[], here=null;
+var css=getComputedStyle(document.documentElement), col=function(n){return css.getPropertyValue('--'+n).trim()};
+var msg=function(t,warn){var m=document.getElementById('msg');m.textContent=t||'';m.className='msg'+(t?' show':'')+(warn?' warn':'')};
+var km=function(x){return x<1?Math.round(x*1000)+' m':x.toFixed(x<10?1:0)+' km'};
+
+function card(t,r,color){
+  var e=t.er;
+  if(!e)return'<div class="card"><div class="k"><i style="background:'+color+'"></i>'+esc(t.name)+'</div><h2>계산되지 않은 칸</h2><p class="tier">도로에서 너무 멀거나 기준 시간(4시간) 안에 닿는 곳이 없습니다. 아래 직선 거리 목록을 보세요.</p></div>';
+  var L=Finder.links(e,here), bed=BEDS&&BEDS.by_name[e.name];
+  return'<div class="card"><div class="k"><i style="background:'+color+'"></i>'+esc(t.label)+'</div><h2>'+esc(e.name)+'</h2><div class="tier">'+esc(e.tierName)+'</div>'+
+    '<div class="mins"><b>약 '+esc(Finder.fmtMin(t.minutes))+'</b><span>차로, 막힘 없을 때 · 직선 '+km(e.straightKm)+'</span></div>'+
+    (bed&&bed.hvec!=null?'<div class="beds">응급실 가용 병상 '+esc(bed.hvec)+' · '+esc(bed.collected_at)+' 기준</div>':'')+
+    '<div class="btns"><a class="main" href="'+L.kakao+'" target="_blank" rel="noopener">카카오맵 길찾기</a><a href="'+L.naver+'" target="_blank" rel="noopener">네이버 지도</a><a href="'+L.google+'" target="_blank" rel="noopener">구글 지도</a></div></div>';
+}
+
+function show(lat,lon,how){
+  if(!F){msg('응급실 자료를 아직 불러오지 못했습니다. 잠시 뒤 다시 눌러 주세요.',true);return}
+  here=[+lat.toFixed(5),+lon.toFixed(5)];
+  var r=Finder.find(F,lat,lon), box=document.getElementById('res'), html='';
+  var named=r.targets.map(function(t){return Object.assign({},t,{label:/아무/.test(t.name)?'가장 빨리 닿는 응급실':'중증이면: 가장 가까운 권역응급의료센터',color:/아무/.test(t.name)?col('red'):col('accent')})});
+  named.sort(function(a,b){return /아무/.test(a.name)?-1:/아무/.test(b.name)?1:0});
+  if(!r.inGrid){
+    msg('이 위치는 계산한 범위(경상북도 사람이 사는 칸) 밖입니다. 직선 거리로 가까운 곳만 보여 드립니다.',true);
+  }else{
+    msg(how+(r.exact?'':' · 사람이 사는 가장 가까운 칸('+km(r.snappedM/1000)+')으로 계산했습니다'));
+    if(named.length>1&&named[0].er&&named[1].er&&named[0].er.index===named[1].er.index){
+      named[0].label='가장 빨리 닿는 응급실 · 가장 가까운 권역응급의료센터이기도 합니다';named=[named[0]];
+    }
+    html+=named.map(function(t){return card(t,r,t.color)}).join('');
+  }
+  html+='<div class="card"><details'+(r.inGrid?'':' open')+'><summary>직선 거리로 가까운 곳 '+Math.min(6,r.byDistance.length)+'곳</summary><ul class="list">'+
+    r.byDistance.slice(0,6).map(function(e){return'<li><span><button type="button" data-er="'+e.index+'">'+esc(e.name)+'</button> <small style="color:var(--faint)">'+esc(e.tierName)+'</small></span><span>'+km(e.straightKm)+'</span></li>'}).join('')+'</ul></details></div>';
+  box.innerHTML=html;
+  box.querySelectorAll('[data-er]').forEach(function(b){b.addEventListener('click',function(){var e=F.grid.ers[+b.dataset.er];if(map)map.flyTo({center:[e[2],e[1]],zoom:12})})});
+  drawMap(lat,lon,r.inGrid?named.filter(function(t){return t.er}):r.byDistance.slice(0,3).map(function(e){return{er:e,minutes:null,color:col('faint')}}));
+  if(innerWidth<=860)box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function drawMap(lat,lon,ts){
+  if(!map)return;
+  markers.forEach(function(m){m.remove()});markers=[];
+  var me=document.createElement('div');me.className='me';markers.push(new maplibregl.Marker({element:me}).setLngLat([lon,lat]).addTo(map));
+  var b=new maplibregl.LngLatBounds([lon,lat],[lon,lat]), lines=[];
+  ts.forEach(function(t,n){var e=t.er,el=document.createElement('div');el.className='pin';el.style.background=t.color;el.innerHTML='<b></b>';el.setAttribute('aria-label',e.name);
+    markers.push(new maplibregl.Marker({element:el,anchor:'bottom-left',offset:[-4,4]}).setLngLat([e.lon,e.lat]).setPopup(new maplibregl.Popup({offset:18}).setHTML('<b>'+esc(e.name)+'</b><br>'+(t.minutes!=null?'약 '+esc(Finder.fmtMin(t.minutes)):'직선 '+km(e.straightKm))+' · '+esc(e.tierName))).addTo(map));
+    b.extend([e.lon,e.lat]);lines.push({type:'Feature',properties:{c:t.color},geometry:{type:'LineString',coordinates:[[lon,lat],[e.lon,e.lat]]}})});
+  var src=map.getSource('lines'), fc={type:'FeatureCollection',features:lines};
+  if(src)src.setData(fc);
+  map.resize();
+  map.fitBounds(b,{padding:{top:60,bottom:60,left:60,right:60},maxZoom:12.5,duration:600});
+}
+
+function initMap(){
+  if(typeof maplibregl==='undefined'||!navigator.onLine){document.getElementById('offmap').style.display='grid';return}
+  var dark=matchMedia('(prefers-color-scheme: dark)').matches&&document.documentElement.dataset.theme!=='light';
+  map=new maplibregl.Map({container:'map',style:'https://tiles.openfreemap.org/styles/'+(dark?'dark':'positron'),center:[128.75,36.35],zoom:7.1,attributionControl:{compact:true}});
+  map.addControl(new maplibregl.NavigationControl({showCompass:false}),'top-right');
+  window._map=map;
+  map.on('load',function(){
+    map.addSource('lines',{type:'geojson',data:{type:'FeatureCollection',features:[]}});
+    map.addLayer({id:'lines',type:'line',source:'lines',paint:{'line-color':['get','c'],'line-width':2,'line-dasharray':[2,2],'line-opacity':.8}});
+    mapReady=true;addErs();
+  });
+  map.on('click',function(e){if(e.defaultPrevented)return;show(e.lngLat.lat,e.lngLat.lng,'지도에서 고른 위치')});
+}
+var mapReady=false;
+function addErs(){
+    if(F&&map&&mapReady&&!map.getSource('ers')){map.addSource('ers',{type:'geojson',data:{type:'FeatureCollection',features:F.grid.ers.map(function(e){return{type:'Feature',properties:{n:e[0],t:e[4],r:e[3]==='regional'},geometry:{type:'Point',coordinates:[e[2],e[1]]}}})}});
+      map.addLayer({id:'ers',type:'circle',source:'ers',paint:{'circle-radius':['case',['get','r'],6,4.5],'circle-color':['case',['get','r'],col('accent'),col('red')],'circle-stroke-color':'#fff','circle-stroke-width':1.5}});
+      map.on('click','ers',function(e){var p=e.features[0].properties;new maplibregl.Popup().setLngLat(e.lngLat).setHTML('<b>'+esc(p.n)+'</b><br>'+esc(p.t)).addTo(map);e.preventDefault()})}
+}
+
+document.getElementById('go').addEventListener('click',function(){
+  if(!navigator.geolocation){msg('이 브라우저는 위치를 지원하지 않습니다. 지도에서 위치를 눌러 주세요.',true);return}
+  var b=this;b.disabled=true;msg('위치를 찾는 중…');
+  navigator.geolocation.getCurrentPosition(function(p){b.disabled=false;show(p.coords.latitude,p.coords.longitude,'현재 위치 (오차 약 '+Math.round(p.coords.accuracy)+' m)')},
+    function(err){b.disabled=false;msg(err.code===1?'위치 권한이 꺼져 있습니다. 브라우저 설정에서 허용하거나 지도에서 위치를 눌러 주세요.':'위치를 찾지 못했습니다. 지도에서 위치를 눌러 주세요.',true)},
+    {enableHighAccuracy:true,timeout:12000,maximumAge:60000});
+});
+
+function setNet(){var n=document.getElementById('net');n.textContent=navigator.onLine?'온라인':'오프라인 — 저장해 둔 자료로 찾기';n.className='chip'+(navigator.onLine?'':' on')}
+addEventListener('online',setNet);addEventListener('offline',setNet);
+
+fetch('grid.json').then(function(r){return r.json()}).then(function(g){
+  F=Finder.load(g);setNet();
+  if(g.beds)fetch('beds.json').then(function(r){return r.ok?r.json():null}).then(function(b){BEDS=b}).catch(function(){});
+  document.getElementById('built').textContent='계산 '+(g.built||'–')+(g.er_source==='official'?' · 공식 목록':' · 임시 목록');
+  addErs();
+}).catch(function(){msg('응급실 자료를 불러오지 못했습니다. 인터넷 연결을 확인하세요.',true)});
+
+
+addEventListener('DOMContentLoaded',initMap);
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').then(function(){var n=document.getElementById('net');if(navigator.onLine)n.textContent='온라인 · 오프라인에서도 동작'}).catch(function(){})});
+var deferred=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;document.getElementById('install').style.display='inline-block'});
+document.getElementById('install').addEventListener('click',function(){if(deferred){deferred.prompt();deferred=null;this.style.display='none'}});
+})();
+</script>
+</body>
+</html>
