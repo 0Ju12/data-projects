@@ -115,7 +115,7 @@ footer{padding:36px 0 60px;font-size:12.5px;color:var(--muted);line-height:1.7}
   분석 쿼리와 수집 코드: <a href="https://github.com/0Ju12/data-projects/tree/main/energy-transition">github.com/0Ju12/data-projects/energy-transition</a> · 같은 저장소의 <a href="../warehouse/">전력 수요·채용 공고 분석</a> · <a href="../power/">하루 전 전력 수요 예측</a>
 </div></footer>
 <div id="tip" role="status"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
 <script>
 const D=__DATA__;
 const G=D.meta.groups, GK={'석탄':'coal','원자력':'nuclear','가스':'gas','기타':'other','풍력':'wind','태양광':'solar'}, col=g=>`var(--${GK[g]})`;

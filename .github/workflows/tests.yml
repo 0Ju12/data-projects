@@ -51,3 +51,11 @@ jobs:
           airflow dags test warehouse_daily 2026-11-13 2>&1 | tee af.log | grep -E "Done. Returned|DagRun Finished|Marking run|Error|error:" | cut -c1-400
           grep -q "state:running.*successful\|Marking run.*successful" af.log
           test -f exports/fct_demand_hourly/demand_date=2025-11-13/part.parquet
+
+  cdn-integrity:         # 지도·차트 페이지의 CDN 스크립트가 고정한 SRI 해시와 실제 파일이 같은지
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python scripts/check_sri.py --fetch
