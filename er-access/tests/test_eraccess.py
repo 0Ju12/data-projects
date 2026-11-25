@@ -298,3 +298,14 @@ def test_vulnerable_uses_only_computable_criteria():
     v = access.vulnerable(row, targets, 0.27)
     assert v["is_vulnerable"] is True and v["basis"] == ["A"] and v["missing"] == ["B"] and v["outside"]["A"] == 0.3
     assert access.vulnerable({"A": {"share_within": 0.8}}, targets)["is_vulnerable"] is False
+
+
+def test_finder_page_keeps_only_computed_targets():
+    from eraccess.cli import finder_page
+    cells = [{"lat": 36.01234, "lon": 128.98765, "pop": 5}, {"lat": 36.1, "lon": 129.0, "pop": 1}]
+    ers = [{"name": "가", "lat": 36.0, "lon": 129.0, "tier": "regional"}]
+    targets = [{"name": "지역센터", "tiers": ["local_center"]}, {"name": "아무 곳", "tiers": ["regional", "other"]}]
+    page = finder_page(cells, [(None, None), ([12.34, None], [0, None])], ers, targets, {"built": "b", "er_source": "provisional"})
+    assert [t["name"] for t in page["targets"]] == ["아무 곳"]
+    assert page["cells"] == [[36.0123, 128.9877, 12.3, 0], [36.1, 129.0, None, None]]
+    assert page["ers"] == [["가", 36.0, 129.0, "regional"]]

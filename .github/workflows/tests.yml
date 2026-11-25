@@ -23,6 +23,7 @@ jobs:
           - { dir: krgeo,             deps: "-e .[test]" }
           - { dir: map-tiles,         deps: "-r requirements.txt" }
           - { dir: pipeline-status,   deps: "pytest" }
+          - { dir: er-finder,         deps: "pytest" }
     defaults: { run: { working-directory: "${{ matrix.dir }}" } }
     steps:
       - uses: actions/checkout@v4

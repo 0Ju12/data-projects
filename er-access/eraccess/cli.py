@@ -221,7 +221,24 @@ def build(cfg: dict) -> dict:
             "cell_deg": 1 / 120, "cells": rows, "places": [p for p in places if p[1] == "city"]}
     DOCS.mkdir(exist_ok=True)
     (DOCS / "data.json").write_text(json.dumps(page, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    # 가까운 응급실 찾기(er-finder)용: 칸마다 대상별 [분, 가장 가까운 응급실 번호]
+    finder = finder_page(cells, per_target, ers, cfg["targets"], summary)
+    (DOCS / "finder.json").write_text(json.dumps(finder, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return summary
+
+
+def finder_page(cells: list[dict], per_target: list, ers: list[dict], targets: list[dict], summary: dict) -> dict:
+    """칸 [위도, 경도, 대상1 분, 대상1 응급실 번호, 대상2 분, …]. 계산하지 않은 대상(available=False)은 열에서 뺀다."""
+    used = [(t, pt) for t, pt in zip(targets, per_target) if pt[0] is not None]
+    rows = []
+    for k, c in enumerate(cells):
+        row = [round(c["lat"], 4), round(c["lon"], 4)]
+        for _, (mins, near) in used:
+            row += [None if mins[k] is None else round(mins[k], 1), near[k]]
+        rows.append(row)
+    return {"built": summary.get("built"), "er_source": summary.get("er_source"), "cell_deg": 1 / 120,
+            "targets": [{"name": t["name"], "tiers": t["tiers"]} for t, _ in used],
+            "ers": [[e["name"], round(e["lat"], 5), round(e["lon"], 5), e["tier"]] for e in ers], "cells": rows}
 
 
 def main(argv: list[str]) -> None:
