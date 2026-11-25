@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>산불 위험 3D 지도</title>
-<meta name="description" content="기상으로 계산한 화재기상지수(FFWI)를 3D 기둥으로, 위성이 실제로 탐지한 열원을 점으로 매일 같은 지도에 놓고 비교하는 지도">
+<title>산불 위험 지도</title>
+<meta name="description" content="기상으로 계산한 화재기상지수(FFWI)를 부드러운 색 면으로, 위성이 실제로 탐지한 열원을 점으로 매일 같은 지도에 놓고 비교하는 지도">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
@@ -41,8 +41,8 @@ input[type=range]{flex:1;min-width:100px;accent-color:var(--accent)}
 .seg{display:flex;gap:4px;background:var(--soft);border-radius:12px;padding:4px}
 .seg button{flex:1;border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;font-weight:600;padding:7px 10px;border-radius:9px;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
-.ramp{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin:2px 0 4px}.ramp i{height:10px;border-radius:3px;display:block}
-.ramp-l{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;font-size:11px;color:var(--faint)}
+.ramp{height:10px;border-radius:5px;margin:2px 0 5px;background:linear-gradient(90deg,var(--f1),var(--f2) 25%,var(--f3) 50%,var(--f4) 75%,var(--f5))}
+.ramp-l{display:flex;justify-content:space-between;font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
 .leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:10px}
 .leg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
 .hint{font-size:12px;color:var(--faint);margin:10px 0 0;line-height:1.5;min-height:1.5em}
@@ -61,26 +61,25 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px 4px;b
 td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
 .faint{color:var(--faint);font-size:12.5px}
 :focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.hov{position:absolute;z-index:3;pointer-events:none;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;line-height:1.5;box-shadow:var(--shadow);max-width:280px}.hov span{color:var(--muted)}
 .deck-tooltip{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif !important}
 </style>
 <script src="../sitebar.js" defer></script></head>
 <body>
 <section class="hero">
-  <div id="map" aria-label="산불 위험 3D 지도"></div>
+  <div id="map" aria-label="산불 위험 지도"></div>
   <div class="panel">
     <p class="eyebrow">NASA FIRMS · Open-Meteo · 매일 갱신</p>
-    <h1>산불 위험, 높이로 보기</h1>
-    <p class="lede">기둥 하나가 0.25° 칸(약 25 km)입니다. <b>높이와 색은 날씨로 계산한 화재기상지수</b>, 점은 그날 <b>위성이 실제로 잡은 열원</b>입니다. 높은 기둥 위에 불이 더 났는지를 매일 기록합니다.</p>
+    <h1>산불 위험 지도</h1>
+    <p class="lede">날씨로 계산한 <b>화재기상지수</b>를 0.25° 칸(약 25 km)마다 구해 부드럽게 이어 칠했습니다. 점은 그날 <b>위성이 실제로 잡은 열원</b>입니다. 색이 짙은 곳에서 불이 더 났는지를 매일 기록합니다.</p>
     <div class="label">날짜</div>
     <div class="row"><button class="btn" id="prev" aria-label="전날">←</button><input type="range" id="day" min="0" max="0" value="0" aria-label="날짜"><button class="btn" id="next" aria-label="다음 날">→</button><button class="btn" id="play" aria-label="날짜 이어 보기">▶</button></div>
     <div class="dayline"><b id="dlabel"></b><span class="tagf" id="dkind"></span></div>
-    <div class="label">보기</div>
-    <div class="seg" id="view"><button data-v="3d" aria-pressed="true">3D 기둥</button><button data-v="2d" aria-pressed="false">평면</button></div>
     <div class="label">화재기상지수 (FFWI)</div>
-    <div class="ramp"><i style="background:var(--f1)"></i><i style="background:var(--f2)"></i><i style="background:var(--f3)"></i><i style="background:var(--f4)"></i><i style="background:var(--f5)"></i></div>
-    <div class="ramp-l"><span>10 미만</span><span>10–20</span><span>20–30</span><span>30–40</span><span>40 이상</span></div>
+    <div class="ramp" aria-hidden="true"></div>
+    <div class="ramp-l"><span>0</span><span>10</span><span>20</span><span>30</span><span>40+</span></div>
     <div class="leg"><span><i style="background:var(--fire);box-shadow:0 0 0 2px var(--card)"></i>화재 의심 탐지</span><span><i style="background:transparent;border:1.5px solid var(--static)"></i>상시 열원(공장 등)</span></div>
-    <p class="hint" id="tip">기둥에 마우스를 올리면 그날 기상 값이 나옵니다.</p>
+    <p class="hint" id="tip">지도에 마우스를 올리면 그 지점의 그날 기상 값이 나옵니다. 가는 선은 지수 10·20·30·40 경계입니다.</p>
   </div>
   <div class="stat" id="stat"></div>
 </section>
@@ -104,66 +103,113 @@ var hex=function(h){var n=parseInt(h.slice(1),16);return[n>>16&255,n>>8&255,n&25
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var D;
 try{D=await (await fetch('data.json')).json()}catch(e){$('map').textContent='자료를 불러오지 못했습니다.';return}
-var cur=Math.max(0,D.days.indexOf(D.today)), flat=false, timer=null;
+var cur=Math.max(0,D.days.indexOf(D.today)), timer=null;
 var band=function(v){return v<10?0:v<20?1:v<30?2:v<40?3:4};
 
-// 칸 → 사각형 (0.25° 칸의 남서 모서리가 칸 이름)
-var CELLS=D.cells.map(function(c){var p=c.split('_'),la=+p[0],lo=+p[1],s=D.step,g=s*.27;   // 칸 가장자리 27%씩 비워 가는 기둥으로
-  return{id:c,poly:[[lo+g,la+g],[lo+s-g,la+g],[lo+s-g,la+s-g],[lo+g,la+s-g]]}});
-
 var small=matchMedia('(max-width:760px)').matches;
-var HOME={center:[127.9,36.0],zoom:small?5.7:6.75,pitch:48,bearing:-12};
+var HOME={center:[127.8,36.0],zoom:small?5.8:6.75,pitch:0,bearing:0};
 var style=function(){return 'https://tiles.openfreemap.org/styles/'+(dark()?'dark':'positron')};
 var map=new maplibregl.Map({container:'map',style:style(),center:HOME.center,zoom:HOME.zoom,pitch:HOME.pitch,bearing:HOME.bearing,maxPitch:72,attributionControl:{compact:true}});
 map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),'top-right');
 if(!small)map.setPadding({left:400,top:0,right:0,bottom:0});
 var KOREA={type:'Polygon',coordinates:[[[124.5,33.0],[131.0,33.0],[131.0,38.4],[124.5,38.4],[124.5,33.0]]]};
-function quietBase(){   // 이 지도의 주인공은 기둥이라, 배경 글자는 한국 지명만
+function quietBase(){   // 주인공은 위험도 색이라, 배경 글자는 한국 지명만
   (map.getStyle().layers||[]).forEach(function(l){
+    if(l.type==='line'&&/road|highway|motorway|tunnel|bridge|rail|transport|aeroway|path|ferry/.test(l.id)){map.setLayoutProperty(l.id,'visibility','none');return}   // 도로·철도는 위험도 색을 가린다
     if(l.type!=='symbol')return;
     if(/place|city|town|village/.test(l.id)&&!/country|continent|state/.test(l.id)){
       var f=map.getFilter(l.id);map.setFilter(l.id,f?['all',f,['within',KOREA]]:['within',KOREA]);
     }else map.setLayoutProperty(l.id,'visibility','none');
   })}
-map.on('style.load',quietBase);
+map.on('style.load',function(){quietBase();putField()});
+var hov=document.createElement('div');hov.className='hov';hov.hidden=true;document.getElementById('map').appendChild(hov);
+map.on('mousemove',function(e){var c=cellOf(e.lngLat.lat,e.lngLat.lng),v=(D.weather[D.days[cur]]||{})[c];
+  if(!v){hov.hidden=true;return}
+  hov.innerHTML='<b>'+esc(D.near[c])+'</b> · 지수 <b>'+v[0]+'</b><br><span>최고 '+v[1]+'℃ · 최저 습도 '+v[2]+'% · 최대 풍속 '+v[3]+' km/h · 강수 '+v[4]+' mm</span>';
+  hov.style.left=(e.point.x+14)+'px';hov.style.top=(e.point.y+14)+'px';hov.hidden=false});
+map.on('mouseout',function(){hov.hidden=true});
 var overlay=new deck.MapboxOverlay({interleaved:false,layers:[],getTooltip:tooltip});
 map.addControl(overlay);
 
-function layers(){
-  var day=D.days[cur], wx=D.weather[day]||{}, ramp=['--f1','--f2','--f3','--f4','--f5'].map(function(v){return hex(css(v))});
-  var fire=hex(css('--fire')), ring=hex(css('--card')), stat=hex(css('--static'));
-  var det=D.detections.filter(function(d){return d[0]===day});
-  var Z=function(c){var v=wx[c.id];return v?v[0]*650:0};             // 지수 1 = 650 m 높이
-  return [
-    new deck.PolygonLayer({id:'ffwi',data:CELLS.filter(function(c){return wx[c.id]}),getPolygon:function(c){return c.poly},extruded:!flat,
-      getElevation:Z,elevationScale:flat?0:1,getFillColor:function(c){var v=wx[c.id];return v?ramp[band(v[0])]:[0,0,0,0]},
-      getLineColor:dark()?[13,13,12]:[252,252,251],lineWidthMinPixels:1,stroked:true,wireframe:false,
-      material:{ambient:.62,diffuse:.5,shininess:24,specularColor:[60,60,60]},pickable:true,autoHighlight:true,highlightColor:dark()?[255,255,255,80]:[0,0,0,60],
-      updateTriggers:{getElevation:cur,getFillColor:[cur,dark()]},transitions:{getElevation:{duration:650,easing:function(t){return t*(2-t)}},getFillColor:450,elevationScale:600}}),
-    // 탐지 점은 기둥 꼭대기 높이에 띄워 기둥에 가리지 않게
-    new deck.ScatterplotLayer({id:'static',data:det.filter(function(d){return d[3]}),getPosition:function(d){return[d[2],d[1],flat?0:elevAt(d)+800]},
-      getRadius:5,radiusUnits:'pixels',filled:false,stroked:true,getLineColor:stat,lineWidthUnits:'pixels',getLineWidth:1.5,parameters:{depthTest:false},
-      updateTriggers:{getPosition:[cur,flat],getLineColor:dark()}}),
-    new deck.ScatterplotLayer({id:'fire',data:det.filter(function(d){return !d[3]}),getPosition:function(d){return[d[2],d[1],flat?0:elevAt(d)+800]},
-      getRadius:6,radiusUnits:'pixels',getFillColor:fire,stroked:true,getLineColor:ring,lineWidthUnits:'pixels',getLineWidth:2,pickable:true,parameters:{depthTest:false},
-      updateTriggers:{getPosition:[cur,flat],getFillColor:dark(),getLineColor:dark()}})];
+// 0.25° 칸 값을 부드럽게 이은 색 면. 배경 지도의 '바다' 레이어 아래에 넣어 바다가 덮게 하므로 실제 해안선을 따라 잘린다.
+// 웹 메르카토르에서 위도 간격이 늘어나므로 행마다 위도를 역산해 칸 좌표에 맞춘다.
+var B=D.bbox, S=D.step, NI=Math.round((B[1]-B[0])/S), NJ=Math.round((B[3]-B[2])/S);
+var MY=function(lat){var r=lat*Math.PI/180;return Math.log(Math.tan(Math.PI/4+r/2))};
+var IW=640, IH=Math.round(IW*(MY(B[1])-MY(B[0]))/((B[3]-B[2])*Math.PI/180));
+var cnv=document.createElement('canvas'); cnv.width=IW; cnv.height=IH;
+var smooth=function(t){return t*t*(3-2*t)};
+function grid(day){   // 육지 칸 값 + 바다 쪽으로 한 칸 이웃 평균으로 채움 (쓰시마처럼 가까운 이웃 나라 땅까지 번지지 않게 한 칸만) (해안에 빈틈이 생기지 않게; 바다는 어차피 바다 레이어가 덮음)
+  var wx=D.weather[day]||{}, V=new Float32Array(NI*NJ), M=new Uint8Array(NI*NJ);
+  for(var i=0;i<NI;i++)for(var j=0;j<NJ;j++){var w=wx[(B[0]+i*S).toFixed(2)+'_'+(B[2]+j*S).toFixed(2)];if(w){V[i*NJ+j]=w[0];M[i*NJ+j]=2}}
+  for(var pass=0;pass<1;pass++){var add=[];
+    for(var i2=0;i2<NI;i2++)for(var j2=0;j2<NJ;j2++){if(M[i2*NJ+j2])continue;var sm=0,n=0;
+      for(var di=-1;di<=1;di++)for(var dj=-1;dj<=1;dj++){var a=i2+di,b=j2+dj;if(a<0||b<0||a>=NI||b>=NJ||!M[a*NJ+b])continue;sm+=V[a*NJ+b];n++}
+      if(n)add.push([i2*NJ+j2,sm/n])}
+    add.forEach(function(x){V[x[0]]=x[1];M[x[0]]=1})}
+  return {V:V,M:M};
 }
-function cellOf(lat,lon){var s=D.step,la=Math.floor(lat/s)*s,lo=Math.floor(lon/s)*s;return la.toFixed(2)+'_'+lo.toFixed(2)}
-function elevAt(d){var v=(D.weather[D.days[cur]]||{})[cellOf(d[1],d[2])];return v?v[0]*650:0}
+function field(day){
+  var G=grid(day), V=G.V, M=G.M;
+  var ramp=['--f1','--f2','--f3','--f4','--f5'].map(function(v){return hex(css(v))}), line=dark()?[255,255,255]:[40,24,14];
+  var ctx=cnv.getContext('2d'), img=ctx.createImageData(IW,IH), px=img.data, val=new Float32Array(IW*IH), al=new Float32Array(IW*IH);
+  var y0=MY(B[0]), y1=MY(B[1]);
+  for(var py=0;py<IH;py++){
+    var lat=Math.atan(Math.sinh(y1-(py+.5)/IH*(y1-y0)))*180/Math.PI, gi=(lat-B[0])/S-.5, i0=Math.floor(gi), fi=smooth(Math.min(1,Math.max(0,gi-i0)));
+    for(var qx=0;qx<IW;qx++){
+      var lon=B[2]+(qx+.5)/IW*(B[3]-B[2]), gj=(lon-B[2])/S-.5, j0=Math.floor(gj), fj=smooth(Math.min(1,Math.max(0,gj-j0)));
+      var sw=0,sv=0;
+      for(var a=0;a<2;a++)for(var b=0;b<2;b++){var ii=i0+a,jj=j0+b;if(ii<0||jj<0||ii>=NI||jj>=NJ||!M[ii*NJ+jj])continue;
+        var w=(a?fi:1-fi)*(b?fj:1-fj);sw+=w;sv+=w*V[ii*NJ+jj]}
+      var o=py*IW+qx; al[o]=sw; val[o]=sw>0?sv/sw:0;
+    }
+  }
+  var bnd=function(x){return Math.min(4,Math.floor(x/10))};
+  for(var o2=0;o2<IW*IH;o2++){
+    var v=val[o2], t=Math.min(4,Math.max(0,v/10-.5)), k0=Math.floor(Math.min(3,t)), f=t-k0, c0=ramp[k0], c1=ramp[k0+1];
+    var A=Math.min(1,Math.max(0,al[o2]*2-.4));
+    var r=c0[0]+(c1[0]-c0[0])*f, g=c0[1]+(c1[1]-c0[1])*f, bl=c0[2]+(c1[2]-c0[2])*f;
+    var qx2=o2%IW;   // 지수 10·20·30·40 경계: 오른쪽·아래 이웃과 구간이 다르면 옅은 선
+    if(A>.5&&qx2<IW-1&&o2+IW<IW*IH){var b0=bnd(v);if(bnd(val[o2+1])!==b0||bnd(val[o2+IW])!==b0){r=r*.7+line[0]*.3;g=g*.7+line[1]*.3;bl=bl*.7+line[2]*.3}}
+    px[o2*4]=r;px[o2*4+1]=g;px[o2*4+2]=bl;px[o2*4+3]=A*255;
+  }
+  ctx.putImageData(img,0,0);
+  return cnv.toDataURL('image/png');
+}
+var FIELD={};
+function fieldFor(day){var k=day+(dark()?'d':'l');return FIELD[k]||(FIELD[k]=field(day))}
+function waterLayer(){var L=map.getStyle().layers||[];for(var i=0;i<L.length;i++)if(/water/.test(L[i].id)&&L[i].type==='fill')return L[i].id}
+function putField(){
+  if(!map.getStyle()||!map.getStyle().layers)return;
+  try{
+  var url=fieldFor(D.days[cur]), src=map.getSource('ffwi');
+  if(src)src.updateImage({url:url});
+  else{map.addSource('ffwi',{type:'image',url:url,coordinates:[[B[2],B[1]],[B[3],B[1]],[B[3],B[0]],[B[2],B[0]]]});
+    map.addLayer({id:'ffwi',type:'raster',source:'ffwi',paint:{'raster-opacity':.9,'raster-resampling':'linear','raster-fade-duration':250}},waterLayer())}
+  }catch(e){}   // 스타일이 아직 다 안 붙었으면 다음 'load'·'styledata' 에서 다시
+}
+map.on('load',putField);
+function layers(){
+  var day=D.days[cur], fire=hex(css('--fire')), ring=hex(css('--card')), stat=hex(css('--static'));
+  var det=D.detections.filter(function(d){return d[0]===day});
+  return [
+    new deck.ScatterplotLayer({id:'static',data:det.filter(function(d){return d[3]}),getPosition:function(d){return[d[2],d[1]]},
+      getRadius:5,radiusUnits:'pixels',filled:false,stroked:true,getLineColor:stat,lineWidthUnits:'pixels',getLineWidth:1.5,
+      updateTriggers:{getLineColor:dark()}}),
+    new deck.ScatterplotLayer({id:'fire',data:det.filter(function(d){return !d[3]}),getPosition:function(d){return[d[2],d[1]]},
+      getRadius:6,radiusUnits:'pixels',getFillColor:fire,stroked:true,getLineColor:ring,lineWidthUnits:'pixels',getLineWidth:2,pickable:true,
+      updateTriggers:{getFillColor:dark(),getLineColor:dark()}})];
+}
+function cellOf(lat,lon){var la=Math.floor(lat/S)*S,lo=Math.floor(lon/S)*S;return la.toFixed(2)+'_'+lo.toFixed(2)}
 
-function tooltip(o){if(!o.object)return null;
-  var box={backgroundColor:css('--card'),color:css('--text'),border:'1px solid '+css('--line'),borderRadius:'10px',padding:'8px 10px',fontSize:'13px',boxShadow:css('--shadow')};
-  if(o.layer.id==='fire'){var d=o.object;return{html:'<b>화재 의심 탐지</b><br>위성 '+esc(d[4])+' · FRP '+esc(d[5])+' MW',style:box}}
-  if(o.layer.id!=='ffwi')return null;
-  var c=o.object.id,v=D.weather[D.days[cur]][c];
-  return{html:'<b>'+esc(D.near[c])+'</b> · 지수 <b>'+v[0]+'</b><br><span style="color:'+css('--muted')+'">최고 '+v[1]+'℃ · 최저 습도 '+v[2]+'% · 최대 풍속 '+v[3]+' km/h · 강수 '+v[4]+' mm</span>',style:box}}
+function tooltip(o){if(!o.object||o.layer.id!=='fire')return null;var d=o.object;
+  return{html:'<b>화재 의심 탐지</b><br>위성 '+esc(d[4])+' · FRP '+esc(d[5])+' MW',style:{backgroundColor:css('--card'),color:css('--text'),border:'1px solid '+css('--line'),borderRadius:'10px',padding:'8px 10px',fontSize:'13px',boxShadow:css('--shadow')}}}
 
 function draw(){
   var day=D.days[cur], wx=D.weather[day]||{}, fc=D.forecast_from&&day>=D.forecast_from;
   $('day').value=cur;
   $('dlabel').textContent=day+' ('+'일월화수목금토'[new Date(day+'T00:00:00').getDay()]+')'+(day===D.today?' · 오늘':'');
   $('dkind').textContent=fc?'예보':'지난 날';
-  overlay.setProps({layers:layers()});
+  overlay.setProps({layers:layers()});putField();
   var det=D.detections.filter(function(d){return d[0]===day}), nf=det.filter(function(d){return !d[3]}).length, ns=det.length-nf;
   var vals=D.cells.map(function(c){return wx[c]?wx[c][0]:null}).filter(function(v){return v!=null}), mx=Math.max.apply(null,vals);
   $('stat').innerHTML='<div class="k">'+day+(fc?' 예보':'')+' · 가장 높은 지수</div><div class="v">'+(vals.length?mx.toFixed(1):'—')+'</div>'
@@ -173,7 +219,7 @@ function draw(){
   $('top').innerHTML='<tr><th>지역</th><th class="n">지수</th><th class="n">습도</th><th class="n">풍속</th></tr>'+rank.map(function(c){var v=wx[c];
     return '<tr data-c="'+c+'" style="cursor:pointer"><td>'+esc(D.near[c])+'</td><td class="n">'+v[0]+'</td><td class="n">'+v[2]+'%</td><td class="n">'+v[3]+'</td></tr>'}).join('');
   [].forEach.call(document.querySelectorAll('#top [data-c]'),function(tr){tr.onclick=function(){var p=tr.dataset.c.split('_');
-    map.flyTo({center:[+p[1]+D.step/2,+p[0]+D.step/2],zoom:small?7:8,pitch:flat?0:60,duration:1400});document.querySelector('.hero').scrollIntoView({behavior:'smooth'})}});
+    map.flyTo({center:[+p[1]+D.step/2,+p[0]+D.step/2],zoom:small?7:8,duration:1400});document.querySelector('.hero').scrollIntoView({behavior:'smooth'})}});
 }
 function side(){var s=D.summary,e=s.evaluation,k=function(a,b){return '<div class="kpi"><b>'+a+'</b><span>'+b+'</span></div>'};
   if(e){$('ev').innerHTML=k(e.auc==null?'—':e.auc.toFixed(2),'AUC (0.5 = 무작위)')+k(e.top20_hit==null?'—':Math.round(e.top20_hit*100)+'%','지수 상위 20% 칸에 든 화재 칸')+k(e.positive_cell_days,'화재 의심 칸·날')+k(e.days+'일','평가 기간');
@@ -191,9 +237,7 @@ function stop(){if(timer){clearInterval(timer);timer=null;$('play').textContent=
 $('play').onclick=function(){if(timer){stop();return}
   if(cur>=D.days.length-1)cur=0;$('play').textContent='❚❚';
   timer=setInterval(function(){if(cur>=D.days.length-1){stop();return}cur++;draw()},900)};
-document.querySelectorAll('#view button').forEach(function(b){b.onclick=function(){flat=b.dataset.v==='2d';
-  document.querySelectorAll('#view button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
-  map.easeTo({pitch:flat?0:HOME.pitch,bearing:flat?0:HOME.bearing,duration:900});draw()}});
+
 side();draw();
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){map.setStyle(style());draw()});
 })();
