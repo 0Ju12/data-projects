@@ -108,15 +108,24 @@ var cur=Math.max(0,D.days.indexOf(D.today)), flat=false, timer=null;
 var band=function(v){return v<10?0:v<20?1:v<30?2:v<40?3:4};
 
 // 칸 → 사각형 (0.25° 칸의 남서 모서리가 칸 이름)
-var CELLS=D.cells.map(function(c){var p=c.split('_'),la=+p[0],lo=+p[1],s=D.step,g=s*.04;
+var CELLS=D.cells.map(function(c){var p=c.split('_'),la=+p[0],lo=+p[1],s=D.step,g=s*.27;   // 칸 가장자리 27%씩 비워 가는 기둥으로
   return{id:c,poly:[[lo+g,la+g],[lo+s-g,la+g],[lo+s-g,la+s-g],[lo+g,la+s-g]]}});
 
 var small=matchMedia('(max-width:760px)').matches;
-var HOME={center:[127.75,35.95],zoom:small?5.6:6.55,pitch:58,bearing:-20};
+var HOME={center:[127.9,36.0],zoom:small?5.7:6.75,pitch:48,bearing:-12};
 var style=function(){return 'https://tiles.openfreemap.org/styles/'+(dark()?'dark':'positron')};
 var map=new maplibregl.Map({container:'map',style:style(),center:HOME.center,zoom:HOME.zoom,pitch:HOME.pitch,bearing:HOME.bearing,maxPitch:72,attributionControl:{compact:true}});
 map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),'top-right');
 if(!small)map.setPadding({left:400,top:0,right:0,bottom:0});
+var KOREA={type:'Polygon',coordinates:[[[124.5,33.0],[131.0,33.0],[131.0,38.4],[124.5,38.4],[124.5,33.0]]]};
+function quietBase(){   // 이 지도의 주인공은 기둥이라, 배경 글자는 한국 지명만
+  (map.getStyle().layers||[]).forEach(function(l){
+    if(l.type!=='symbol')return;
+    if(/place|city|town|village/.test(l.id)&&!/country|continent|state/.test(l.id)){
+      var f=map.getFilter(l.id);map.setFilter(l.id,f?['all',f,['within',KOREA]]:['within',KOREA]);
+    }else map.setLayoutProperty(l.id,'visibility','none');
+  })}
+map.on('style.load',quietBase);
 var overlay=new deck.MapboxOverlay({interleaved:false,layers:[],getTooltip:tooltip});
 map.addControl(overlay);
 
@@ -124,12 +133,12 @@ function layers(){
   var day=D.days[cur], wx=D.weather[day]||{}, ramp=['--f1','--f2','--f3','--f4','--f5'].map(function(v){return hex(css(v))});
   var fire=hex(css('--fire')), ring=hex(css('--card')), stat=hex(css('--static'));
   var det=D.detections.filter(function(d){return d[0]===day});
-  var Z=function(c){var v=wx[c.id];return v?v[0]*1300:0};             // 지수 1 = 1.3 km 높이
+  var Z=function(c){var v=wx[c.id];return v?v[0]*650:0};             // 지수 1 = 650 m 높이
   return [
     new deck.PolygonLayer({id:'ffwi',data:CELLS.filter(function(c){return wx[c.id]}),getPolygon:function(c){return c.poly},extruded:!flat,
       getElevation:Z,elevationScale:flat?0:1,getFillColor:function(c){var v=wx[c.id];return v?ramp[band(v[0])]:[0,0,0,0]},
       getLineColor:dark()?[13,13,12]:[252,252,251],lineWidthMinPixels:1,stroked:true,wireframe:false,
-      material:{ambient:.5,diffuse:.6,shininess:16,specularColor:[50,50,50]},pickable:true,autoHighlight:true,highlightColor:dark()?[255,255,255,80]:[0,0,0,60],
+      material:{ambient:.62,diffuse:.5,shininess:24,specularColor:[60,60,60]},pickable:true,autoHighlight:true,highlightColor:dark()?[255,255,255,80]:[0,0,0,60],
       updateTriggers:{getElevation:cur,getFillColor:[cur,dark()]},transitions:{getElevation:{duration:650,easing:function(t){return t*(2-t)}},getFillColor:450,elevationScale:600}}),
     // 탐지 점은 기둥 꼭대기 높이에 띄워 기둥에 가리지 않게
     new deck.ScatterplotLayer({id:'static',data:det.filter(function(d){return d[3]}),getPosition:function(d){return[d[2],d[1],flat?0:elevAt(d)+800]},
@@ -140,7 +149,7 @@ function layers(){
       updateTriggers:{getPosition:[cur,flat],getFillColor:dark(),getLineColor:dark()}})];
 }
 function cellOf(lat,lon){var s=D.step,la=Math.floor(lat/s)*s,lo=Math.floor(lon/s)*s;return la.toFixed(2)+'_'+lo.toFixed(2)}
-function elevAt(d){var v=(D.weather[D.days[cur]]||{})[cellOf(d[1],d[2])];return v?v[0]*1300:0}
+function elevAt(d){var v=(D.weather[D.days[cur]]||{})[cellOf(d[1],d[2])];return v?v[0]*650:0}
 
 function tooltip(o){if(!o.object)return null;
   var box={backgroundColor:css('--card'),color:css('--text'),border:'1px solid '+css('--line'),borderRadius:'10px',padding:'8px 10px',fontSize:'13px',boxShadow:css('--shadow')};
