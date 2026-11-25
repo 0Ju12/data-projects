@@ -19,6 +19,7 @@ jobs:
           - { dir: job-calendar,      deps: "pytest" }
           - { dir: er-access,         deps: "pytest" }
           - { dir: crash-hotspots,    deps: "pytest numpy" }
+          - { dir: public-data-mcp,   deps: "-r requirements.txt" }
     defaults: { run: { working-directory: "${{ matrix.dir }}" } }
     steps:
       - uses: actions/checkout@v4
