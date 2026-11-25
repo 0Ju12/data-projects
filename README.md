@@ -9,7 +9,7 @@
 | [sensor-anomaly](sensor-anomaly/) | 유압 설비 부품별 이상 탐지·스트리밍 경보·지도학습 진단 | UCI 유압 설비 (2,205 사이클 × 17 센서) | 무작위 분할 0.99 → 시간 구간 분할에서 RF 0.46, LDA 1.00 (밸브) |
 | [power-demand](power-demand/) | 하루 전 전국 시간별 전력 수요 예측 · [예측 탐색기](https://0ju12.github.io/data-projects/power/) | 전력거래소 2025 시간별 수요 + 기온 | 앙상블 MAPE 3.23% · 일 최대수요 2.64% |
 | [dart-analyzer](dart-analyzer/) | 전자공시 데이터 마트(SQL 뷰)와 사업보고서 근거 검색 | OpenDART | 피벗·LAG·RANK 뷰, 2-gram BM25 근거 검색 (인증키로 실행) |
-| [wildfire-watch](wildfire-watch/) | 화재기상지수(FFWI)와 위성 화재 탐지를 매일 모아 비교 · [산불 위험 3D 지도](https://0ju12.github.io/data-projects/fire/) | NASA FIRMS VIIRS + Open-Meteo | 탐지의 90%는 제철소 등 상시 열원 → 가려내는 규칙 · 지수 평가는 아직 표본 부족(AUC 0.57, 양성 10건) |
+| [wildfire-watch](wildfire-watch/) | 화재기상지수(FFWI)와 위성 화재 탐지를 매일 모아 비교 · [산불 위험 지도](https://0ju12.github.io/data-projects/fire/) | NASA FIRMS VIIRS + Open-Meteo | 탐지의 90%는 제철소 등 상시 열원 → 가려내는 규칙 · 지수 평가는 아직 표본 부족(AUC 0.57, 양성 10건) |
 | [data-agent](data-agent/) | 위 결과들을 LLM이 SQL로 조회하는 MCP 서버 + 답 속 숫자 검증 | 이 저장소의 산출물 (SQLite) | 읽기 전용 SQL 안전장치 · 틀린 숫자·지어낸 계산을 막는 검사 (LLM 연결 평가는 미실시) |
 | [warehouse](warehouse/) | 2025년 전력 수요·기온·일사량과 데이터 직무 채용 공고로 질문 8개를 세우고 dbt 분석 표로 답함 · [분석 대시보드](https://0ju12.github.io/data-projects/warehouse/) | 전력거래소 수요 · Open-Meteo 기온·일사량 · Remote OK·Arbeitnow 공고 (+ 부가: 지진·재해 경보·시세·패키지 통계) | 평일 기온 17.5℃ 위 1℃당 +1,636 MW · 13℃ 아래 +969 MW (R² 0.83) · 쉬는 날 −10.8~16.7% · 일사량 100 W/m²당 한낮 수요 −2,704 MW (해가 진 20~23시 대조군 +11 MW) · 직무별 기술 언급률 · 모델 44개(분석 표 12개) · dbt 테스트 129개 |
 | [energy-transition](energy-transition/) | 한국 발전 구성 25년·석탄 감소 속도·태양광 계절성·탄소 집약도를 12개국과 비교 · [대시보드](https://0ju12.github.io/data-projects/energy/) | Ember 월별 발전량 · Our World in Data 연간 에너지 (CC BY, 키 없음) | 석탄 46.3%(2009) → 31.1%(2025) · 태양광 5월 7.6% vs 12월 3.4% · D3 연도 재생 산점도 · SQL 쿼리 7개 |
