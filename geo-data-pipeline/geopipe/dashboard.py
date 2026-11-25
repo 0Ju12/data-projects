@@ -63,8 +63,8 @@ PAGE = r"""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name
 <meta name="description" content="USGS 지진 목록을 매일 모아, 진원을 실제 깊이만큼 지도 아래에 그린 동아시아 3D 지진 지도와 분석">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-<script src="https://unpkg.com/deck.gl@9.0.38/dist.min.js"></script>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" integrity="sha384-SYKAG6cglRMN0RVvhNeBY0r3FYKNOJtznwA0v7B5Vp9tr31xAHsZC0DqkQ/pZDmj" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/deck.gl@9.0.38/dist.min.js" integrity="sha384-tEG529toczQRv/bqd2PyHy5vTO49FMjQri0c1oB44gSkYiNouZz8L9yNTVx0YGl+" crossorigin="anonymous"></script>
 <script src="sitebar.js" defer></script>
 <style>
 :root{color-scheme:light;--bg:#f4f3f0;--card:#fcfcfb;--glass:rgba(252,252,251,.86);--text:#0b0b0b;--muted:#52514e;--faint:#6e6d68;--line:#e2e0da;--soft:#ecebe6;
