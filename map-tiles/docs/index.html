@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>공개 데이터 타일 지도</title>
+<meta name="description" content="지진·산불 위험·응급실 접근성을 벡터 타일 파일 하나(PMTiles)로 구워 필요한 타일만 범위 요청으로 받아 그리는 지도">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/pmtiles@4.3.0/dist/pmtiles.js"></script>
+<script src="../sitebar.js" defer></script>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f4f3f0;--card:#fcfcfb;--glass:rgba(252,252,251,.88);--text:#0b0b0b;--muted:#52514e;--faint:#6e6d68;--line:#e2e0da;--soft:#ecebe6;
+  --accent:#2a78d6;--shadow:0 10px 30px rgba(20,18,12,.10);
+  --er1:#2f9e6e;--er2:#9cc96b;--er3:#f2d16b;--er4:#f39a5a;--er5:#d9502c;--er6:#8f2a14;--none:#bdbcb6;
+  --fire0:#fff3c4;--fire1:#fbb45c;--fire2:#e8542a;--fire3:#9c1d12;
+  --q1:#f5b041;--q2:#e5603a;--q3:#9b2d6e;--q4:#3b2a8a;
+  --site:#0b0b0b;--halo:#ffffff
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0d0d0c;--card:#171716;--glass:rgba(23,23,22,.84);--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2c2c29;--soft:#22221f;
+  --accent:#3987e5;--shadow:0 10px 30px rgba(0,0,0,.45);
+  --er1:#3fb883;--er2:#a6d276;--er3:#f2d16b;--er4:#f49c5c;--er5:#ec6a40;--er6:#ff9b7d;--none:#45443f;
+  --fire0:#5a4613;--fire1:#b8742a;--fire2:#ee6a3a;--fire3:#ffb08a;
+  --q1:#f5b041;--q2:#f07a52;--q3:#d65aa5;--q4:#9d8cff;
+  --site:#f0efec;--halo:#0d0d0c}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0d0d0c;--card:#171716;--glass:rgba(23,23,22,.84);--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2c2c29;--soft:#22221f;
+  --accent:#3987e5;--shadow:0 10px 30px rgba(0,0,0,.45);
+  --er1:#3fb883;--er2:#a6d276;--er3:#f2d16b;--er4:#f49c5c;--er5:#ec6a40;--er6:#ff9b7d;--none:#45443f;
+  --fire0:#5a4613;--fire1:#b8742a;--fire2:#ee6a3a;--fire3:#ffb08a;
+  --q1:#f5b041;--q2:#f07a52;--q3:#d65aa5;--q4:#9d8cff;
+  --site:#f0efec;--halo:#0d0d0c}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font:15px/1.6 "Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.hero{position:relative;height:calc(100vh - 42px);min-height:560px;border-bottom:1px solid var(--line)}
+#map{position:absolute;inset:0}
+.panel{position:absolute;top:16px;left:16px;width:min(360px,calc(100% - 32px));background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--line);border-radius:18px;padding:18px 18px 12px;box-shadow:var(--shadow);z-index:2;max-height:calc(100% - 32px);overflow:auto}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 4px}
+h1{font-size:clamp(22px,3vw,28px);letter-spacing:-.035em;line-height:1.15;margin:0 0 8px;font-weight:800}
+.lede{color:var(--muted);font-size:13.5px;margin:0 0 12px}
+.layers{display:grid;gap:2px;margin:0 0 4px}
+.lr{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;align-items:start;padding:9px 6px;border-radius:12px;cursor:pointer}
+.lr:hover{background:var(--soft)}
+.lr input{appearance:none;-webkit-appearance:none;width:34px;height:20px;border-radius:10px;background:var(--line);position:relative;margin:1px 0 0;cursor:pointer;transition:background .15s}
+.lr input::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+.lr input:checked{background:var(--accent)}
+.lr input:checked::after{transform:translateX(14px)}
+.lr input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lr b{font-size:14px;display:block;line-height:1.3}
+.lr small{display:block;color:var(--faint);font-size:12px;line-height:1.45;margin-top:1px}
+.lr .key{grid-column:2;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--faint);flex-wrap:wrap}
+.ramp{display:inline-flex;gap:2px}
+.ramp i{width:18px;height:8px;border-radius:2px;display:block}
+.dot{display:inline-block;border-radius:50%;vertical-align:middle}
+.lr.off .key,.lr.off small{opacity:.45}
+.seg{display:flex;flex-wrap:wrap;gap:3px;background:var(--soft);border-radius:10px;padding:3px;grid-column:2;margin-top:4px}
+.seg button{flex:1 1 auto;border:0;background:transparent;color:var(--muted);font:inherit;font-size:12px;font-weight:600;padding:5px 8px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg button:disabled{opacity:.4;cursor:not-allowed}
+.hint{font-size:12px;color:var(--faint);margin:8px 0 0;line-height:1.5}
+.net{position:absolute;right:16px;bottom:28px;z-index:2;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);
+  border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);min-width:220px}
+.net .k{font-size:12px;color:var(--faint);font-weight:600}
+.net .v{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.net .v span{font-size:15px;color:var(--faint);font-weight:700}
+.net .d{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.net .bar{height:5px;border-radius:3px;background:var(--soft);margin:8px 0 4px;overflow:hidden}
+.net .bar b{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.maplibregl-popup-content{background:var(--card);color:var(--text);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow);font:13px/1.5 "Pretendard Variable",Pretendard,system-ui,sans-serif;border:1px solid var(--line)}
+.maplibregl-popup-tip{display:none}
+.maplibregl-popup-close-button{color:var(--faint);font-size:16px;padding:0 6px}
+.pop b{font-size:14px}
+.pop .m{color:var(--muted)}
+.maplibregl-ctrl-attrib{font-size:11px}
+.w{max-width:1160px;margin:0 auto;padding:28px 16px 56px}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 20px}
+@media (max-width:1000px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:560px){.tiles{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.tile .k{color:var(--muted);font-size:13px;font-weight:600}
+.tile .v{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.2;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.tile .d{color:var(--faint);font-size:13px}
+.lay{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.lay{grid-template-columns:1fr}}
+h2{font-size:17px;letter-spacing:-.02em;margin:0 0 4px}
+.sub2{color:var(--faint);font-size:13px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--faint);font-weight:600;font-size:12px}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+code{font:12.5px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--soft);padding:1px 5px;border-radius:5px}
+ol.steps{margin:6px 0 0;padding-left:20px;color:var(--muted);font-size:14px}
+ol.steps li{margin:4px 0}
+.foot{color:var(--faint);font-size:13px;margin:22px 0 0;max-width:86ch;line-height:1.7}
+@media (max-width:760px){.hero{height:auto;min-height:0;display:flex;flex-direction:column}#map{position:relative;height:64vh;order:2}
+  .panel{position:relative;inset:auto;width:auto;margin:12px 16px;max-height:none;order:1}.net{position:relative;right:auto;bottom:auto;margin:12px 16px 16px;order:3}}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div id="map" role="region" aria-label="공개 데이터 타일 지도"></div>
+  <aside class="panel">
+    <p class="eyebrow">Vector tiles · PMTiles</p>
+    <h1>파일 하나로 그리는 지도</h1>
+    <p class="lede">지진·산불 위험·응급실 접근성을 벡터 타일 파일 하나로 구웠습니다. 지도는 지금 보이는 타일만 그 파일에서 잘라 받습니다. 타일 서버가 없습니다.</p>
+    <div class="layers" id="layers"></div>
+    <p class="hint">칸이나 점을 누르면 값이 나옵니다. 확대할수록 응급실 칸이 1 km 단위로 자세해집니다.</p>
+  </aside>
+  <div class="net" aria-live="polite">
+    <div class="k">지금까지 받은 타일 자료</div>
+    <div class="v" id="got">0 <span>KB</span></div>
+    <div class="bar"><b id="gotbar"></b></div>
+    <div class="d" id="gotd">전체 파일 …</div>
+  </div>
+</section>
+<main class="w">
+  <div class="tiles">
+    <div class="card tile"><div class="k">타일</div><div class="v" id="t-n">–</div><div class="d" id="t-nd">줌 –</div></div>
+    <div class="card tile"><div class="k">파일 크기</div><div class="v" id="t-b">–</div><div class="d">gzip 타일 + 위치 목록</div></div>
+    <div class="card tile"><div class="k">레이어</div><div class="v" id="t-l">–</div><div class="d" id="t-ld">–</div></div>
+    <div class="card tile"><div class="k">구운 시각</div><div class="v" id="t-g" style="font-size:22px">–</div><div class="d">매일 지진·산불 갱신 뒤 다시 구움</div></div>
+  </div>
+  <div class="lay">
+    <div class="card">
+      <h2>어떻게 만들었나</h2>
+      <p class="sub2">파이썬 표준 라이브러리만 씀 (tippecanoe·GDAL 없음)</p>
+      <ol class="steps">
+        <li>세 프로젝트의 산출물(지진 목록, 산불 data.json, 응급실 격자)을 읽어 줌마다 웹 메르카토르 타일로 자릅니다. 타일 경계에서 원이 끊기지 않게 이웃 영역 64 단위를 겹쳐 넣습니다.</li>
+        <li>타일마다 <a href="https://github.com/mapbox/vector-tile-spec/tree/master/2.1">MVT 2.1</a> 을 protobuf 로 직접 인코딩합니다 (zigzag 좌표, 다각형 바깥 고리는 시계 방향).</li>
+        <li>모든 타일을 <a href="https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md">PMTiles v3</a> 한 파일에 담습니다. 타일 번호는 힐베르트 곡선 순서이고, 같은 내용의 타일은 한 번만 저장합니다.</li>
+        <li>브라우저는 pmtiles.js 로 파일 앞 16 KB(머리글·목록)를 읽은 뒤 필요한 타일만 HTTP 범위 요청으로 받습니다. GitHub Pages 같은 정적 호스팅이면 됩니다.</li>
+      </ol>
+      <p class="hint">검증: 테스트에서 공식 파이썬 구현(mapbox-vector-tile, pmtiles)으로 거꾸로 읽어 좌표·속성·타일 번호가 같은지 확인합니다.</p>
+    </div>
+    <div class="card">
+      <h2>레이어</h2>
+      <p class="sub2" id="srcd">원본 자료와 줌 범위</p>
+      <table><thead><tr><th>레이어</th><th>원본</th><th class="r">줌</th></tr></thead><tbody id="lt"></tbody></table>
+    </div>
+  </div>
+  <p class="foot">자료: 지진 USGS FDSN · 산불 탐지 NASA FIRMS VIIRS, 화재기상지수 Open-Meteo 로 계산 · 응급실 접근성 OSM 도로망(HOT 내보내기)과 GHSL 인구로 계산한 이동 시간 (응급실 목록은 임시, 공식 목록이 아님) · 배경 지도 OpenFreeMap © OpenStreetMap.</p>
+</main>
+<script>
+(function(){
+var dark=matchMedia('(prefers-color-scheme: dark)').matches&&document.documentElement.dataset.theme!=='light'||document.documentElement.dataset.theme==='dark';
+var css=getComputedStyle(document.documentElement), v=function(n){return css.getPropertyValue('--'+n).trim()};
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var fmtB=function(b){return b>=1048576?[(b/1048576).toFixed(2),'MB']:[Math.round(b/1024),'KB']};
+var FILE=new URL('korea.pmtiles',location.href).href;
+
+var protocol=new pmtiles.Protocol();
+maplibregl.addProtocol('pmtiles',protocol.tile);
+
+var ER_STOPS=[10,20,30,45,60], ER_C=['er1','er2','er3','er4','er5','er6'].map(v);
+var erColor=function(key){var e=['step',['get',key],ER_C[0]];ER_STOPS.forEach(function(s,i){e.push(s,ER_C[i+1])});return['case',['has',key],e,v('none')]};
+var TARGETS=[['m_any','아무 응급실'],['m_center','지역센터 이상'],['m_regional','권역센터']], target='m_any';
+
+var LAYERS=[
+  {id:'er',name:'응급실까지 차로 몇 분',desc:'경북 1 km 칸, 가장 가까운 응급실까지 이동 시간',ids:['er-cells','er-sites','er-labels'],on:true,
+   key:'<span class="ramp">'+ER_C.map(function(c){return'<i style="background:'+c+'"></i>'}).join('')+'</span> 10·20·30·45·60분',seg:true},
+  {id:'fire',name:'오늘 산불 위험',desc:'화재기상지수(FFWI) 0.25° 칸 · 최근 7일 위성 화재 탐지',ids:['fire-grid','fire-points'],on:false,
+   key:'<span class="ramp">'+['fire0','fire1','fire2','fire3'].map(function(c){return'<i style="background:'+v(c)+'"></i>'}).join('')+'</span> 지수 0 → 50 · <span class="dot" style="width:8px;height:8px;background:'+v('fire2')+'"></span> 화재 <span class="dot" style="width:8px;height:8px;background:var(--faint)"></span> 상시 열원'},
+  {id:'quakes',name:'지진 진앙',desc:'동아시아 규모 4 이상, 원 크기 = 규모, 색 = 깊이',ids:['quakes'],on:true,
+   key:['q1','q2','q3','q4'].map(function(c,i){return'<span class="dot" style="width:9px;height:9px;background:'+v(c)+'"></span> '+['~30','~70','~300','300+'][i]}).join(' ')+' km'}
+];
+
+var box=document.getElementById('layers');
+LAYERS.forEach(function(L){
+  var row=document.createElement('label');row.className='lr'+(L.on?'':' off');
+  row.innerHTML='<input type="checkbox" '+(L.on?'checked':'')+' aria-label="'+esc(L.name)+' 켜기"><div><b>'+esc(L.name)+'</b><small>'+esc(L.desc)+'</small></div><div class="key">'+L.key+'</div>'+
+    (L.seg?'<div class="seg" role="group" aria-label="기준 응급실">'+TARGETS.map(function(t){return'<button type="button" data-t="'+t[0]+'" aria-pressed="'+(t[0]===target)+'">'+t[1]+'</button>'}).join('')+'</div>':'');
+  row.querySelector('input').addEventListener('change',function(e){L.on=e.target.checked;row.classList.toggle('off',!L.on);apply()});
+  if(L.seg)row.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(ev){ev.preventDefault();target=b.dataset.t;
+    row.querySelectorAll('.seg button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});if(map.getLayer('er-cells'))map.setPaintProperty('er-cells','fill-color',erColor(target))})});
+  box.appendChild(row);
+});
+
+var map=new maplibregl.Map({container:'map',style:'https://tiles.openfreemap.org/styles/'+(dark?'dark':'positron'),center:[128.4,36.3],zoom:6.3,minZoom:3,maxZoom:14,
+  attributionControl:{compact:true},cooperativeGestures:false});
+map.addControl(new maplibregl.NavigationControl({showCompass:false}),'top-right');
+window._map=map;
+
+function firstSymbol(){var ls=map.getStyle().layers;for(var i=0;i<ls.length;i++){if(ls[i].type==='symbol')return ls[i].id}}
+function waterAbove(){var ls=map.getStyle().layers;for(var i=0;i<ls.length;i++){if(/water/.test(ls[i].id)&&ls[i].type==='fill')return ls[i+1]&&ls[i+1].id}}
+function apply(){LAYERS.forEach(function(L){L.ids.forEach(function(id){if(map.getLayer(id))map.setLayoutProperty(id,'visibility',L.on?'visible':'none')})})}
+
+map.on('load',function(){
+  map.addSource('kp',{type:'vector',url:'pmtiles://'+FILE});
+  var sym=firstSymbol();
+  map.addLayer({id:'fire-grid',type:'fill',source:'kp','source-layer':'fire_grid',
+    paint:{'fill-color':['interpolate',['linear'],['get','ffwi'],0,v('fire0'),15,v('fire1'),30,v('fire2'),50,v('fire3')],'fill-opacity':.62,'fill-antialias':false}},waterAbove()||sym);
+  map.addLayer({id:'er-cells',type:'fill',source:'kp','source-layer':'er_cells',
+    paint:{'fill-color':erColor(target),'fill-opacity':['interpolate',['linear'],['zoom'],6,.78,11,.62],'fill-antialias':false}},sym);
+  map.addLayer({id:'fire-points',type:'circle',source:'kp','source-layer':'fire_points',
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],5,2.5,10,6],'circle-color':['case',['get','static'],v('faint'),v('fire2')],
+      'circle-stroke-color':v('halo'),'circle-stroke-width':1,'circle-opacity':['case',['get','static'],.55,.95]}});
+  map.addLayer({id:'quakes',type:'circle',source:'kp','source-layer':'quakes',
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],3,['interpolate',['exponential',1.6],['get','mag'],4,1.6,7,9],8,['interpolate',['exponential',1.6],['get','mag'],4,4,7,22]],
+      'circle-color':['step',['get','depth'],v('q1'),30,v('q2'),70,v('q3'),300,v('q4')],'circle-opacity':.78,
+      'circle-stroke-color':v('halo'),'circle-stroke-width':['interpolate',['linear'],['zoom'],3,.4,8,1]}});
+  map.addLayer({id:'er-sites',type:'circle',source:'kp','source-layer':'er_sites',
+    paint:{'circle-radius':['case',['==',['get','tier'],'regional'],6.5,4.5],'circle-color':v('site'),'circle-stroke-color':v('halo'),'circle-stroke-width':2}});
+  map.addLayer({id:'er-labels',type:'symbol',source:'kp','source-layer':'er_sites',minzoom:8,
+    layout:{'text-field':['get','name'],'text-size':12,'text-offset':[0,1.1],'text-anchor':'top','text-font':['Noto Sans Regular'],'text-optional':true},
+    paint:{'text-color':v('text'),'text-halo-color':v('halo'),'text-halo-width':1.6}});
+  apply();
+});
+
+function row(k,val){return val==null||val===''?'':'<div class="m">'+k+' <b>'+esc(val)+'</b></div>'}
+var popup=new maplibregl.Popup({closeButton:true,maxWidth:'280px'});
+map.on('click',function(e){
+  var f=map.queryRenderedFeatures(e.point,{layers:['quakes','er-sites','fire-points','er-cells','fire-grid'].filter(function(id){return map.getLayer(id)&&map.getLayoutProperty(id,'visibility')!=='none'})})[0];
+  if(!f)return; var p=f.properties, h='';
+  if(f.layer.id==='quakes')h='<b>규모 '+p.mag+'</b>'+row('깊이',p.depth+' km')+row('시각 (KST)',p.time)+'<div class="m">'+esc(p.place)+'</div>';
+  else if(f.layer.id==='er-sites')h='<b>'+esc(p.name)+'</b>'+row('구분',{regional:'권역응급의료센터',local_center:'지역응급의료센터',local_institution:'지역응급의료기관'}[p.tier]||'기타 응급실 (임시 목록)');
+  else if(f.layer.id==='fire-points')h='<b>'+(p.static==='true'||p.static===true?'상시 열원 (공장 등)':'화재 탐지')+'</b>'+row('날짜',p.day)+row('복사열(FRP)',p.frp+' MW');
+  else if(f.layer.id==='er-cells')h='<b>인구 '+Number(p.pop).toLocaleString()+'명</b>'+TARGETS.map(function(t){return row(t[1]+'까지',p[t[0]]!=null?p[t[0]]+'분':'계산 안 됨')}).join('')+(map.getZoom()<8?'<div class="m">축소 상태라 여러 칸을 합친 값 (인구 가중 평균)</div>':'');
+  else h='<b>'+esc(p.near)+' · 지수 '+p.ffwi+'</b>'+row('최고 기온',p.tmax+'℃')+row('최저 습도',p.rh+'%')+row('최대 풍속',p.wind+' km/h')+row('강수',p.rain+' mm');
+  popup.setLngLat(e.lngLat).setHTML('<div class="pop">'+h+'</div>').addTo(map);
+});
+map.on('mousemove',function(e){var hit=map.queryRenderedFeatures(e.point,{layers:['quakes','er-sites','fire-points'].filter(function(id){return map.getLayer(id)})}).length;map.getCanvas().style.cursor=hit?'pointer':''});
+
+// 받은 양: 같은 파일에 대한 범위 요청들의 전송 크기 합
+var total=0;
+function tally(){var got=0,n=0;performance.getEntriesByType('resource').forEach(function(r){if(r.name.split('?')[0]===FILE){got+=r.transferSize||r.encodedBodySize||0;n++}});
+  var g=fmtB(got);document.getElementById('got').innerHTML=g[0]+' <span>'+g[1]+'</span>';
+  if(total){document.getElementById('gotbar').style.width=Math.min(100,got/total*100)+'%';var t=fmtB(total);
+    document.getElementById('gotd').textContent='전체 '+t[0]+' '+t[1]+' 중 '+(got/total*100).toFixed(1)+'% · 요청 '+n+'번'}}
+setInterval(tally,800); map.on('idle',tally);
+
+fetch('layers.json').then(function(r){return r.json()}).then(function(d){
+  var s=d.stats; total=s.bytes; var b=fmtB(s.bytes);
+  document.getElementById('t-n').textContent=s.tiles.toLocaleString();
+  document.getElementById('t-nd').textContent='줌 '+s.minzoom+'–'+s.maxzoom+' · 고유 '+s.unique.toLocaleString()+'개';
+  document.getElementById('t-b').innerHTML=b[0]+' <span style="font-size:16px;color:var(--faint)">'+b[1]+'</span>';
+  document.getElementById('t-l').textContent=d.vector_layers.length;
+  document.getElementById('t-ld').textContent=d.vector_layers.map(function(l){return l.id}).join(' · ');
+  document.getElementById('t-g').textContent=d.generated;
+  // 해당 등급 응급실이 목록에 없어 값이 하나도 없는 기준은 고를 수 없게
+  ((d.sources.er||{}).targets||[]).forEach(function(t){if(!t.cells_with_value){var b=document.querySelector('.seg button[data-t="'+t.key+'"]');
+    if(b){b.disabled=true;b.title='임시 응급실 목록에 이 등급이 없어 계산하지 않았습니다'}}});
+  var src=d.sources||{}, S={
+    quakes:['지진 진앙',src.quakes?src.quakes.events.toLocaleString()+'건, 마지막 '+src.quakes.last:''],
+    fire_grid:['화재기상지수 칸',src.fire?src.fire.day+' · '+src.fire.grid_cells+'칸':''],
+    fire_points:['위성 화재 탐지',src.fire?src.fire.since+' ~ '+src.fire.day+' · '+src.fire.detections+'건':''],
+    er_cells:['응급실 이동 시간 칸',src.er?src.er.cells.toLocaleString()+'칸 (1 km) · '+src.er.built:''],
+    er_sites:['응급실 위치',src.er?src.er.sites+'곳 ('+(src.er.er_source==='official'?'공식 목록':'임시 목록')+')':'']};
+  document.getElementById('lt').innerHTML=d.vector_layers.map(function(l){var x=S[l.id]||[l.id,''];
+    return'<tr><td><b>'+esc(x[0])+'</b><br><code>'+esc(l.id)+'</code></td><td>'+esc(x[1])+'</td><td class="r">'+l.minzoom+'–'+l.maxzoom+'</td></tr>'}).join('');
+  tally();
+}).catch(function(){});
+})();
+</script>
+</body>
+</html>

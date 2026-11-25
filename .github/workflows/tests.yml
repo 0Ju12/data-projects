@@ -21,6 +21,7 @@ jobs:
           - { dir: crash-hotspots,    deps: "pytest numpy" }
           - { dir: public-data-mcp,   deps: "-r requirements.txt" }
           - { dir: krgeo,             deps: "-e .[test]" }
+          - { dir: map-tiles,         deps: "-r requirements.txt" }
     defaults: { run: { working-directory: "${{ matrix.dir }}" } }
     steps:
       - uses: actions/checkout@v4
