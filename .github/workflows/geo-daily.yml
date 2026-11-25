@@ -2,7 +2,7 @@ name: geo daily update
 on:
   schedule: [{ cron: "17 21 * * *" }]   # 매일 06:17 KST
   workflow_dispatch:
-permissions: { contents: write, pages: write, id-token: write }
+permissions: { contents: write, pages: write, id-token: write, actions: read }
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -15,10 +15,12 @@ jobs:
       - run: pip install pytest && python -m pytest -q
       - run: python -m geopipe.cli run
       - name: 산불 탐지·화재기상지수 갱신 (실패해도 지진 갱신은 계속)
+        id: fire
         continue-on-error: true
         working-directory: wildfire-watch
         run: python -m pytest -q && python -m firewatch.cli run
       - name: 웨어하우스 — dbt 모델·테스트·변경 이력, 실행 기록 (실패해도 다른 갱신은 계속)
+        id: warehouse
         continue-on-error: true
         working-directory: warehouse
         run: |
@@ -31,10 +33,12 @@ jobs:
           python -m wh.cli report || true
           exit $rc
       - name: 신입 IT 공고 달력 — 점핏·카카오·Greenhouse 공개 공고 수집 (실패해도 다른 갱신은 계속, 실패한 출처는 이전 공고 유지)
+        id: jobs
         continue-on-error: true
         working-directory: job-calendar
         run: python -m pytest -q && python -m jobcal.cli collect
       - name: 전력 전환 분석 — Ember·OWID 공개 자료 갱신 (실패해도 다른 갱신은 계속, 받기 실패 시 이전 파일 유지)
+        id: energy
         continue-on-error: true
         working-directory: energy-transition
         run: |
@@ -65,10 +69,19 @@ jobs:
           if [ -f ../er-access/docs/index.html ]; then cp -r ../er-access/docs docs/er; fi
           if [ -f ../crash-hotspots/docs/data.json ]; then cp -r ../crash-hotspots/docs docs/crash; fi   # 사고 자료로 build 한 뒤에만 공개
       - name: 타일 지도 — 세 프로젝트 산출물을 PMTiles 하나로 굽기 (/tiles/, 실패해도 다른 페이지는 배포)
+        id: tiles
         continue-on-error: true
         run: |
           rm -rf docs/tiles
           (cd ../map-tiles && python -m tiles.build) && cp -r ../map-tiles/docs docs/tiles
+      - name: 파이프라인 상태판 — 실행 기록·숨은 단계 실패·산출물 신선도 (/status/, 실패해도 배포는 계속)
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          STEP_OUTCOMES: ${{ toJSON(steps) }}   # continue-on-error 로 가려진 단계 실패(outcome)를 상태판에 넘김
+        run: |
+          rm -rf docs/status
+          (cd ../pipeline-status && python -m status.collect --repo "${{ github.repository }}") && cp -r ../pipeline-status/docs docs/status
       - uses: actions/upload-pages-artifact@v3
         with: { path: geo-data-pipeline/docs }
   deploy:
