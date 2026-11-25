@@ -345,14 +345,14 @@
 "id": "gh:coupang:7446451",
 "src": "Greenhouse",
 "co": "쿠팡",
-"title": "사내 통번역사 (한영 / 경력직)",
+"title": "[쿠팡] 사내 통번역사 (한영 / 신입 지원 가능)",
 "url": "https://www.coupang.jobs/en/jobs/?gh_jid=7446451",
 "roles": [
 "기타"
 ],
 "stacks": [],
 "loc": "Seoul, South Korea",
-"newbie": false,
+"newbie": true,
 "start": "2025-12-05",
 "end": null,
 "tech": false,
@@ -3359,14 +3359,14 @@
 "id": "gh:coupang:8280199",
 "src": "Greenhouse",
 "co": "쿠팡",
-"title": "[쿠팡] 카탈로그 품질 분석가 (경력 2년 이상)",
+"title": "[쿠팡] 카탈로그 품질 분석가 (주니어)",
 "url": "https://www.coupang.jobs/en/jobs/?gh_jid=8280199",
 "roles": [
 "QA"
 ],
 "stacks": [],
 "loc": "Seoul, South Korea",
-"newbie": false,
+"newbie": true,
 "start": "2026-10-13",
 "end": null,
 "tech": true,
@@ -4975,6 +4975,24 @@
 "end": null,
 "tech": false,
 "first_seen": "2026-11-24",
+"last_seen": "2026-11-25"
+},
+"gh:coupang:8349145": {
+"id": "gh:coupang:8349145",
+"src": "Greenhouse",
+"co": "쿠팡",
+"title": "[쿠팡] 중/소형 셀러 광고 영업 담당자 (Ads SMB Sales) (5년 이상)",
+"url": "https://www.coupang.jobs/en/jobs/?gh_jid=8349145",
+"roles": [
+"기타"
+],
+"stacks": [],
+"loc": "Seoul, South Korea",
+"newbie": false,
+"start": "2026-11-24",
+"end": null,
+"tech": false,
+"first_seen": "2026-11-25",
 "last_seen": "2026-11-25"
 },
 "gh:coupang:8349148": {
