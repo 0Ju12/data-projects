@@ -20,6 +20,7 @@ jobs:
           - { dir: er-access,         deps: "pytest" }
           - { dir: crash-hotspots,    deps: "pytest numpy" }
           - { dir: public-data-mcp,   deps: "-r requirements.txt" }
+          - { dir: krgeo,             deps: "-e .[test]" }
     defaults: { run: { working-directory: "${{ matrix.dir }}" } }
     steps:
       - uses: actions/checkout@v4
