@@ -1,11 +1,17 @@
 """python -m powerfc.run → reports/results.json, reports/forecast.png
 
 학습: 1~9월, 시험: 10~12월 (추석 연휴 포함). 시험 기간은 한 번도 학습에 쓰지 않습니다.
+
+모델 선택은 시험 구간을 보지 않고 1~9월 안에서만 합니다. 4~9월 각 달을 검증 구간으로 두고 그 이전 데이터로만
+학습하는 롤링 원점(expanding window) 교차검증 6겹의 평균 MAPE 로 후보(단일 모델 4개 + 두 모델 평균 6개)를 고른 뒤,
+고른 모델만 1~9월 전체로 다시 학습해 시험 구간에서 한 번 평가합니다. 기온은 실측값(완벽한 예보 가정)이라,
+기온을 쓰지 않는 후보 중 최선(운영 가능 수치)도 따로 고릅니다.
 """
 from __future__ import annotations
 
 import json
 from datetime import datetime, timedelta
+from itertools import combinations
 from pathlib import Path
 
 import numpy as np
@@ -18,6 +24,38 @@ from . import data, model
 
 ROOT = Path(__file__).resolve().parent.parent
 SPLIT = datetime(2025, 10, 1)
+CV_MONTHS = range(4, 10)          # 검증 구간: 4~9월 각 달 (그 달 이전 데이터로만 학습)
+MODELS = {"linear": lambda: make_pipeline(StandardScaler(), Ridge(alpha=1.0)),
+          "gbm": lambda: HistGradientBoostingRegressor(max_iter=400, learning_rate=0.05, random_state=0)}
+
+
+def candidate_predictions(series, temp, lo: datetime, hi: datetime):
+    """lo 이전으로 학습해 [lo, hi) 를 예측. 단일 모델 4개 + 두 모델 평균 6개 → {이름: (시각, 실제, 예측)}"""
+    out = {}
+    for use_temp in (False, True):
+        ts, X, y = model.build_features(series, temp, use_temp)
+        tr = np.array([t < lo for t in ts])
+        te = np.array([lo <= t < hi for t in ts])
+        tte = [t for t, m in zip(ts, te) if m]
+        for name, mk in MODELS.items():
+            out[f"{name}{'+temp' if use_temp else ''}"] = (tte, y[te], mk().fit(X[tr], y[tr]).predict(X[te]))
+    for a, b in combinations(list(out), 2):
+        if out[a][0] == out[b][0]:
+            out[f"avg({a}, {b})"] = (out[a][0], out[a][1], (out[a][2] + out[b][2]) / 2)
+    return out
+
+
+def select(series, temp):
+    """롤링 원점 교차검증. 시험 구간(10~12월)은 쓰지 않음."""
+    folds = {}
+    for m in CV_MONTHS:
+        for key, (_, y, p) in candidate_predictions(series, temp, datetime(2025, m, 1), datetime(2025, m + 1, 1)).items():
+            folds.setdefault(key, []).append(model.mape(y, p))
+    cv = {k: {"mean": round(float(np.mean(v)), 2), "std": round(float(np.std(v)), 2), "folds": [round(x, 2) for x in v]}
+          for k, v in folds.items()}
+    best = min(cv, key=lambda k: cv[k]["mean"])
+    best_no_temp = min((k for k in cv if "temp" not in k), key=lambda k: cv[k]["mean"])
+    return cv, best, best_no_temp
 
 
 def evaluate(series, temp):
@@ -93,10 +131,22 @@ def main():
     series = dict(data.load_demand(ROOT / "data" / "kpx_hourly_demand_2025.csv"))
     temp = data.load_weather(ROOT / "data" / "weather_2025.csv")
     res, preds = evaluate(series, temp)
+    cv, best, best_no_temp = select(series, temp)
+    final = candidate_predictions(series, temp, SPLIT, datetime(2026, 1, 1))     # 시험 구간 평가는 여기서 한 번
+
+    def scores(key):
+        ts, y, p = final[key]
+        hol = np.array([data.is_holiday(t.date()) for t in ts])
+        return {"mape": round(model.mape(y, p), 2), "peak_mape": round(model.daily_peak_error(ts, y, p), 2),
+                "holiday_mape": round(model.mape(y[hol], p[hol]), 2), "non_holiday_mape": round(model.mape(y[~hol], p[~hol]), 2)}
     out = ROOT / "reports"
     out.mkdir(exist_ok=True)
     summary = {"hours": len(series), "train": "2025-01-08 ~ 2025-09-30", "test": "2025-10-01 ~ 2025-12-31",
-               "peak_MW": max(series.values()), "peak_time": max(series, key=series.get).isoformat(), "results": res}
+               "peak_MW": max(series.values()), "peak_time": max(series, key=series.get).isoformat(), "results": res,
+               "selection": {"method": "rolling-origin CV, validation months 2025-04..2025-09, mean MAPE",
+                             "selected": best, "selected_test": scores(best),
+                             "selected_without_temperature": best_no_temp, "selected_without_temperature_test": scores(best_no_temp),
+                             "cv": dict(sorted(cv.items(), key=lambda kv: kv[1]["mean"]))}}
     (out / "results.json").write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
     try:
         plot(preds, out)
@@ -105,6 +155,8 @@ def main():
     export(preds, temp, ROOT / "explorer" / "predictions.json")
     for k, v in res.items():
         print(f"{k:28s} MAPE {v['mape']:5.2f}%  peak {v['peak_mape']:5.2f}%  holiday {v['holiday_mape']:5.2f}%  other {v['non_holiday_mape']:5.2f}%")
+    print(f"CV 선택: {best} (CV {cv[best]['mean']}%) → 시험 {summary['selection']['selected_test']['mape']}%")
+    print(f"기온 없이 CV 선택: {best_no_temp} (CV {cv[best_no_temp]['mean']}%) → 시험 {summary['selection']['selected_without_temperature_test']['mape']}%")
 
 
 if __name__ == "__main__":

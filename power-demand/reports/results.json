@@ -41,5 +41,144 @@
    "holiday_mape": 5.38,
    "non_holiday_mape": 3.05
   }
+ },
+ "selection": {
+  "method": "rolling-origin CV, validation months 2025-04..2025-09, mean MAPE",
+  "selected": "avg(linear, gbm+temp)",
+  "selected_test": {
+   "mape": 3.23,
+   "peak_mape": 2.64,
+   "holiday_mape": 5.38,
+   "non_holiday_mape": 3.05
+  },
+  "selected_without_temperature": "avg(linear, gbm)",
+  "selected_without_temperature_test": {
+   "mape": 3.44,
+   "peak_mape": 2.88,
+   "holiday_mape": 5.32,
+   "non_holiday_mape": 3.29
+  },
+  "cv": {
+   "avg(linear, gbm+temp)": {
+    "mean": 4.45,
+    "std": 0.85,
+    "folds": [
+     4.81,
+     4.65,
+     4.91,
+     5.62,
+     3.66,
+     3.05
+    ]
+   },
+   "avg(linear, gbm)": {
+    "mean": 4.71,
+    "std": 0.84,
+    "folds": [
+     6.06,
+     5.17,
+     4.51,
+     4.98,
+     4.22,
+     3.33
+    ]
+   },
+   "avg(gbm, gbm+temp)": {
+    "mean": 4.78,
+    "std": 1.07,
+    "folds": [
+     4.68,
+     6.08,
+     5.7,
+     5.41,
+     3.58,
+     3.21
+    ]
+   },
+   "gbm": {
+    "mean": 4.87,
+    "std": 0.75,
+    "folds": [
+     5.07,
+     5.78,
+     5.17,
+     5.46,
+     4.18,
+     3.59
+    ]
+   },
+   "avg(gbm, linear+temp)": {
+    "mean": 4.88,
+    "std": 0.89,
+    "folds": [
+     4.54,
+     5.53,
+     5.49,
+     5.35,
+     5.34,
+     3.03
+    ]
+   },
+   "avg(linear, linear+temp)": {
+    "mean": 5.4,
+    "std": 0.89,
+    "folds": [
+     5.74,
+     5.43,
+     5.12,
+     6.08,
+     6.4,
+     3.65
+    ]
+   },
+   "gbm+temp": {
+    "mean": 5.5,
+    "std": 1.67,
+    "folds": [
+     5.32,
+     7.25,
+     7.39,
+     6.36,
+     3.53,
+     3.15
+    ]
+   },
+   "avg(linear+temp, gbm+temp)": {
+    "mean": 5.51,
+    "std": 1.38,
+    "folds": [
+     4.79,
+     6.38,
+     7.31,
+     6.58,
+     4.77,
+     3.24
+    ]
+   },
+   "linear": {
+    "mean": 5.78,
+    "std": 1.69,
+    "folds": [
+     8.99,
+     6.66,
+     4.81,
+     5.56,
+     5.05,
+     3.63
+    ]
+   },
+   "linear+temp": {
+    "mean": 7.18,
+    "std": 1.39,
+    "folds": [
+     5.61,
+     6.91,
+     9.03,
+     8.09,
+     8.19,
+     5.23
+    ]
+   }
+  }
  }
 }

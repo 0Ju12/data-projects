@@ -51,3 +51,14 @@ def test_explorer_predictions_match_report():
     a = np.array(p["actual"], float)
     ens = np.array(p["models"]["ens"], float)
     assert abs(model.mape(a, ens) - rep["results"]["ensemble(linear, gbm+temp)"]["mape"]) < 0.02
+
+
+def test_model_selection_never_sees_the_test_period():
+    """모델 선택(롤링 CV)은 10월 이전만 쓰고, 고른 모델의 시험 점수가 보고서와 같은지"""
+    import json
+    from powerfc import run
+    assert max(run.CV_MONTHS) + 1 <= run.SPLIT.month
+    sel = json.loads((ROOT / "reports" / "results.json").read_text(encoding="utf-8"))["selection"]
+    assert sel["selected"] in sel["cv"] and "temp" not in sel["selected_without_temperature"]
+    assert sel["cv"][sel["selected"]]["mean"] == min(v["mean"] for v in sel["cv"].values())
+    assert all(len(v["folds"]) == len(run.CV_MONTHS) for v in sel["cv"].values())
