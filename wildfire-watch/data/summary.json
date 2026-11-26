@@ -1,30 +1,30 @@
 {
- "updated": "2026-11-25",
- "detections": 858,
- "static_detections": 784,
- "fire_detections": 74,
- "fire_detections_on_land": 24,
- "static_sources": 54,
+ "updated": "2026-11-26",
+ "detections": 944,
+ "static_detections": 874,
+ "fire_detections": 70,
+ "fire_detections_on_land": 22,
+ "static_sources": 57,
  "detection_days": [
   "2026-11-03",
-  "2026-11-25"
+  "2026-11-26"
  ],
  "evaluation": {
   "first": "2026-11-04",
-  "last": "2026-11-24",
-  "days": 21,
-  "cell_days": 3213,
-  "positive_cell_days": 17,
-  "auc": 0.518,
-  "top20_hit": 0.118,
-  "mean_ffwi_pos": 13.5,
-  "mean_ffwi_neg": 14.5
+  "last": "2026-11-25",
+  "days": 22,
+  "cell_days": 3366,
+  "positive_cell_days": 16,
+  "auc": 0.482,
+  "top20_hit": 0.062,
+  "mean_ffwi_pos": 12.8,
+  "mean_ffwi_neg": 14.6
  },
  "fetch": {
-  "N20": 145,
-  "N21": 153,
+  "N20": 188,
+  "N21": 176,
   "SNPP": 0,
-  "new": 0,
+  "new": 86,
   "weather": "ok"
  }
 }
