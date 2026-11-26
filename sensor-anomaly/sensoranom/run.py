@@ -3,6 +3,7 @@
 1) 부품별 이상 탐지: 정상 사이클(시간 순 앞 70%)로 학습 → 나머지 사이클에서 ROC-AUC, 1% 오경보 임계값의 상태·심각도별 탐지율
 2) 스트리밍 경보: 사이클을 원래 순서대로 흘려보내며 k=1·3 연속 규칙의 경보 지연과 정상 구간 오경보
 3) 지도학습 진단: 무작위 분할 vs 연속 구간 분할 정확도 비교 (이웃 사이클이 거의 같아 무작위 분할은 성능을 부풀림)
+4) 시계열 교차검증: 10구간 중 5~9번째를 차례로 시험 구간으로 두는 전진 연쇄 5겹 + 연속 구간 분할 정확도의 블록 부트스트랩 95% 신뢰구간
 """
 from __future__ import annotations
 
@@ -11,7 +12,7 @@ from pathlib import Path
 
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import f1_score, roc_auc_score
+from sklearn.metrics import balanced_accuracy_score, f1_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 
 from . import data, detect
@@ -99,6 +100,39 @@ def diagnosis(X, Y, seed=0):
     return out
 
 
+def diagnosis_cv(X, Y, seed=0):
+    """전진 연쇄 5겹: 단일 시험 구간 하나에 결론이 기대지 않는지 확인. 정확도·균형 정확도·macro-F1 의 겹별 값과 평균±표준편차,
+    그리고 기존 연속 구간 분할(마지막 3구간) 정확도의 블록 부트스트랩 95% 신뢰구간"""
+    from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+    from sklearn.pipeline import make_pipeline
+    from sklearn.preprocessing import StandardScaler
+    models = {"random_forest": lambda: RandomForestClassifier(n_estimators=300, random_state=seed, n_jobs=-1),
+              "lda": lambda: make_pipeline(StandardScaler(), LinearDiscriminantAnalysis())}
+    folds = detect.forward_chain_folds(len(X))
+    tr_b, te_b = detect.block_split(len(X))
+    out = {}
+    for comp, c in COLS.items():
+        y = Y[:, c].astype(int)
+        res = {}
+        for mname, mk in models.items():
+            per = {"accuracy": [], "balanced_accuracy": [], "macro_f1": [], "unseen_test_classes": []}
+            for tr, te in folds:
+                p = mk().fit(X[tr], y[tr]).predict(X[te])
+                per["accuracy"].append(float((p == y[te]).mean()))
+                per["balanced_accuracy"].append(float(balanced_accuracy_score(y[te], p)))
+                per["macro_f1"].append(float(f1_score(y[te], p, average="macro")))
+                per["unseen_test_classes"].append(sorted(int(v) for v in set(y[te]) - set(y[tr])))
+            summary = {k: {"mean": round(float(np.mean(v)), 4), "std": round(float(np.std(v)), 4), "folds": [round(x, 4) for x in v]}
+                       for k, v in per.items() if k != "unseen_test_classes"}
+            summary["unseen_test_classes"] = per["unseen_test_classes"]
+            p = mk().fit(X[tr_b], y[tr_b]).predict(X[te_b])
+            lo, hi = detect.block_bootstrap_ci(p == y[te_b])
+            summary["block_split_accuracy_ci95"] = [round(lo, 4), round(hi, 4)]
+            res[mname] = summary
+        out[comp] = res
+    return out
+
+
 def plots(streams, outdir: Path):
     import matplotlib
     matplotlib.use("Agg")
@@ -125,6 +159,7 @@ def main():
     res = {"dataset": {"cycles": int(len(X)), "features": int(X.shape[1])}}
     res["anomaly"], streams = anomaly(X, Y)
     res["diagnosis"] = diagnosis(X, Y)
+    res["diagnosis_cv"] = diagnosis_cv(X, Y)
     out = ROOT / "reports"
     out.mkdir(exist_ok=True)
     (out / "results.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -137,6 +172,8 @@ def main():
             print(k, mode, {"auc": m["roc_auc"], "fa": m["test_normal_false_alarm"], "det": m["test_fault_detected"], "k3": m["stream"]["k=3"]})
     for k, v in res["diagnosis"].items():
         print(k, {m: r["accuracy"] for m, r in v.items() if isinstance(r, dict)})
+    for k, v in res["diagnosis_cv"].items():
+        print("cv", k, {m: (r["accuracy"]["mean"], r["accuracy"]["std"], r["balanced_accuracy"]["mean"], r["block_split_accuracy_ci95"]) for m, r in v.items()})
     return res, plt_ok
 
 

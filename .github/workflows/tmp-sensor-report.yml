@@ -1,0 +1,23 @@
+# 임시: UCI 원본으로 sensor-anomaly 결과를 다시 계산해 로그에 출력 (PR 전에 삭제)
+name: tmp sensor report
+on:
+  push:
+    branches: [claude/project-thread-x1cc8u]
+    paths: [".github/workflows/tmp-sensor-report.yml", "sensor-anomaly/**"]
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: sensor-anomaly } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -q numpy scikit-learn matplotlib
+      - run: python -m sensoranom.run
+      - run: |
+          echo "=====RESULTS_BEGIN====="
+          base64 -w0 reports/results.json; echo
+          echo "=====RESULTS_END====="
+          echo "=====PNG_SHA====="; sha256sum reports/scores.png

@@ -45,3 +45,22 @@ def test_detector_false_alarm_close_to_target():
     assert 0.003 < fa < 0.03
     shifted = rng.normal(loc=2.0, size=(2000, 10))
     assert (det.score(shifted) > det.threshold).mean() > 0.9
+
+
+def test_forward_chain_folds_train_strictly_before_test():
+    folds = detect.forward_chain_folds(100, n_blocks=10, first_test=5)
+    assert len(folds) == 5
+    for k, (tr, te) in enumerate(folds, start=5):
+        assert tr.max() < te.min()                       # 미래로 학습하지 않음
+        assert tr.min() == 0 and te.min() == k * 10 and len(te) == 10
+
+
+def test_block_bootstrap_ci_contains_mean_and_widens_with_autocorrelation():
+    rng = np.random.default_rng(1)
+    iid = (rng.random(600) < 0.7).astype(float)
+    lo, hi = detect.block_bootstrap_ci(iid, block=1)
+    assert lo < iid.mean() < hi and hi - lo < 0.1
+    runs = np.repeat(rng.random(30) < 0.7, 20).astype(float)  # 20사이클씩 같은 값: 강한 자기상관
+    lo1, hi1 = detect.block_bootstrap_ci(runs, block=1)
+    lo20, hi20 = detect.block_bootstrap_ci(runs, block=20)
+    assert (hi20 - lo20) > 1.5 * (hi1 - lo1)
