@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-26T08:52:21.281218+00:00",
+  "last_check_at": "2026-11-26T19:15:49.069247+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.193907+00:00",
-        "duration_ms": 706.38
+        "checked_at": "2026-11-26T19:15:49.016079+00:00",
+        "duration_ms": 748.18
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.196627+00:00",
-        "duration_ms": 157.8
+        "checked_at": "2026-11-26T19:15:49.018801+00:00",
+        "duration_ms": 98.81
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.198461+00:00",
-        "duration_ms": 2044.9
+        "checked_at": "2026-11-26T19:15:49.020570+00:00",
+        "duration_ms": 287.27
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.200179+00:00",
-        "duration_ms": 242.76
+        "checked_at": "2026-11-26T19:15:49.022254+00:00",
+        "duration_ms": 205.29
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.201612+00:00",
-        "duration_ms": 68.19
+        "checked_at": "2026-11-26T19:15:49.023607+00:00",
+        "duration_ms": 460.45
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.203249+00:00",
-        "duration_ms": 312.92
+        "checked_at": "2026-11-26T19:15:49.025159+00:00",
+        "duration_ms": 424.21
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.204885+00:00",
-        "duration_ms": 2430.76
+        "checked_at": "2026-11-26T19:15:49.026793+00:00",
+        "duration_ms": 1658.99
       }
     },
     {
@@ -109,9 +109,9 @@
         "docs": "https://docs.github.com/en/rest/repos/repos#get-a-repository"
       },
       "last_run": {
-        "status": "warning",
-        "checked_at": "2026-11-26T08:52:21.206534+00:00",
-        "duration_ms": 47.57
+        "status": "critical",
+        "checked_at": "2026-11-26T19:15:49.028313+00:00",
+        "duration_ms": 46.59
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.208870+00:00",
-        "duration_ms": 155.12
+        "checked_at": "2026-11-26T19:15:49.030642+00:00",
+        "duration_ms": 158.06
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.211154+00:00",
-        "duration_ms": 90.76
+        "checked_at": "2026-11-26T19:15:49.032848+00:00",
+        "duration_ms": 104.32
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.212524+00:00",
-        "duration_ms": 729.39
+        "checked_at": "2026-11-26T19:15:49.034181+00:00",
+        "duration_ms": 722.73
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.214395+00:00",
-        "duration_ms": 567.04
+        "checked_at": "2026-11-26T19:15:49.035877+00:00",
+        "duration_ms": 561.47
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.215738+00:00",
-        "duration_ms": 89.68
+        "checked_at": "2026-11-26T19:15:49.037179+00:00",
+        "duration_ms": 227.72
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.217351+00:00",
-        "duration_ms": 44.33
+        "checked_at": "2026-11-26T19:15:49.038716+00:00",
+        "duration_ms": 38.65
       }
     },
     {
@@ -208,8 +208,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.219563+00:00",
-        "duration_ms": 949.9
+        "checked_at": "2026-11-26T19:15:49.040435+00:00",
+        "duration_ms": 1902.02
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.221375+00:00",
-        "duration_ms": 385.76
+        "checked_at": "2026-11-26T19:15:49.041969+00:00",
+        "duration_ms": 272.49
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.222940+00:00",
-        "duration_ms": 168.27
+        "checked_at": "2026-11-26T19:15:49.043538+00:00",
+        "duration_ms": 179.28
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.263176+00:00",
-        "duration_ms": 104.89
+        "checked_at": "2026-11-26T19:15:49.051218+00:00",
+        "duration_ms": 93.2
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.271084+00:00",
-        "duration_ms": 49.7
+        "checked_at": "2026-11-26T19:15:49.058970+00:00",
+        "duration_ms": 67.54
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-26T08:52:21.274813+00:00",
-        "duration_ms": 97.58
+        "checked_at": "2026-11-26T19:15:49.062731+00:00",
+        "duration_ms": 100.2
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.277158+00:00",
-        "duration_ms": 65.21
+        "checked_at": "2026-11-26T19:15:49.064974+00:00",
+        "duration_ms": 39.92
       }
     },
     {
@@ -306,83 +306,83 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T08:52:21.281218+00:00",
-        "duration_ms": 22.32
+        "checked_at": "2026-11-26T19:15:49.069247+00:00",
+        "duration_ms": 51.76
       }
     }
   ],
   "incidents": [
     {
-      "id": 29,
+      "id": 1,
       "target": "github-catalog",
       "key": "availability",
       "kind": "availability",
-      "severity": "warning",
+      "severity": "error",
       "message": "HTTP 403",
       "opened_at": "2026-11-26T08:52:21.206534+00:00",
-      "last_seen_at": "2026-11-26T08:52:21.206534+00:00",
+      "last_seen_at": "2026-11-26T19:15:49.028313+00:00",
       "resolved_at": null,
-      "occurrences": 1
+      "occurrences": 2
     },
     {
-      "id": 28,
+      "id": 29,
       "target": "rest-countries",
       "key": "json",
       "kind": "format",
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-26T08:52:21.274813+00:00",
+      "last_seen_at": "2026-11-26T19:15:49.062731+00:00",
       "resolved_at": null,
-      "occurrences": 44
+      "occurrences": 45
     }
   ],
   "ai_latest": {
-    "date": "2026-11-26",
-    "item_id": "ollama/ollama:456227993",
-    "created_at": "2026-11-25T16:02:07.056100+00:00",
+    "date": "2026-11-27",
+    "item_id": "ggml-org/llama.cpp:459181980",
+    "created_at": "2026-11-26T19:15:49.071730+00:00",
     "kind": "release",
     "label": "관심 저장소의 공식 릴리스",
-    "title": "Ollama · v0.40.18",
-    "technology": "Ollama",
-    "official_published_at": "2026-11-24T04:18:13Z",
-    "collected_at": "2026-11-25T16:02:07.056100+00:00",
-    "what": "로컬 환경에서 모델을 내려받고 실행하며 API로 호출할 수 있게 돕는 도구입니다.",
-    "why_for_you": "개인 RAG 기능에서 외부 모델 API와 로컬 모델의 품질·비용·실행 환경을 비교할 수 있습니다.",
+    "title": "llama.cpp · v1.1.0",
+    "technology": "llama.cpp",
+    "official_published_at": "2026-11-26T09:16:47Z",
+    "collected_at": "2026-11-26T19:15:49.071730+00:00",
+    "what": "여러 하드웨어 환경에서 언어 모델 추론을 실행하는 C/C++ 기반 프로젝트입니다.",
+    "why_for_you": "양자화·모델 크기·실행 환경이 지연과 품질에 미치는 영향을 직접 비교하는 학습에 적합합니다.",
     "flow": [
-      "모델 선택",
-      "로컬 실행",
-      "API 호출",
-      "RAG·서비스 연결"
+      "모델 형식 확인",
+      "양자화 조건 선택",
+      "추론 실행",
+      "품질·자원 비교"
     ],
-    "release_excerpt": "## What's Changed * mlx: fuse Inkling residual mixing on Metal by @dhiltgen in https://github.com/ollama/ollama/pull/19808 * mlxrunner: share tensor helpers and model setup across architectures by @jaingaurav in https://github.com/ollama/ollama/pull/19805 * llama.cpp: version bump b12651 + remove jetpack5 support by @pdevine in https://github.com/ollama/ollama/pull/19865 * inkling2: faster Metal decode, prefill and draft rounds by @dhiltgen in https://github.com/ollama/ollama/pull/19843 **Full Changelog**: https://",
+    "release_excerpt": "## Overview llama.cpp v1.1.0 adds the Inkling 2 family (base, Mini and DSpark), Domyn Edge 4B, Zaya1 8B, RAON-1-mini and Hy4 flash, splits DFlash speculative decoding into separate draft methods, and deprecates the old `llama_batch` API in favour of `llama_batch_ext`. It brings a large set of TTS and audio models (Kokoro, Zonos3-Mini, tiny-voca, VoxCPM2, MiniMax-Music3, YuE2, Fish S2, Higgs v3/VibeVoice-ASR and Kyutai Hibiki), token-aware chat parsing, named tool choice, automatic per-tensor quantization targeting ",
     "facts": [
       {
         "label": "공식 발표일",
-        "value": "2026-11-24T04:18:13Z"
+        "value": "2026-11-26T09:16:47Z"
       },
       {
         "label": "버전",
-        "value": "v0.40.18"
+        "value": "v1.1.0"
       },
       {
         "label": "저장소",
-        "value": "ollama/ollama"
+        "value": "ggml-org/llama.cpp"
       }
     ],
     "limits": [
-      "모델 파일 크기와 하드웨어 요구 사항을 먼저 확인해야 합니다.",
-      "로컬에서 실행된다는 사실이 모델 품질이나 데이터 보안을 자동 보장하지는 않습니다."
+      "양자화 비트 수만으로 품질이나 속도를 예측할 수 없습니다.",
+      "지원 하드웨어와 모델 형식은 릴리스 원문에서 확인해야 합니다."
     ],
-    "question": "외부 API와 로컬 모델을 같은 질문 세트로 공정하게 비교하려면 무엇을 고정해야 할까요?",
+    "question": "메모리 사용량을 줄였을 때 어떤 질문 유형에서 품질 회귀가 생겼는지 어떻게 찾을까요?",
     "sources": [
       {
         "title": "공식 릴리스 또는 프로젝트 원문",
-        "url": "https://github.com/ollama/ollama/releases/tag/v0.40.18"
+        "url": "https://github.com/ggml-org/llama.cpp/releases/tag/v1.1.0"
       },
       {
         "title": "공식 저장소",
-        "url": "https://github.com/ollama/ollama"
+        "url": "https://github.com/ggml-org/llama.cpp"
       }
     ],
     "exercise": {
@@ -399,6 +399,67 @@
     "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
   },
   "ai_archive": [
+    {
+      "date": "2026-11-27",
+      "item_id": "ggml-org/llama.cpp:459181980",
+      "created_at": "2026-11-26T19:15:49.071730+00:00",
+      "kind": "release",
+      "label": "관심 저장소의 공식 릴리스",
+      "title": "llama.cpp · v1.1.0",
+      "technology": "llama.cpp",
+      "official_published_at": "2026-11-26T09:16:47Z",
+      "collected_at": "2026-11-26T19:15:49.071730+00:00",
+      "what": "여러 하드웨어 환경에서 언어 모델 추론을 실행하는 C/C++ 기반 프로젝트입니다.",
+      "why_for_you": "양자화·모델 크기·실행 환경이 지연과 품질에 미치는 영향을 직접 비교하는 학습에 적합합니다.",
+      "flow": [
+        "모델 형식 확인",
+        "양자화 조건 선택",
+        "추론 실행",
+        "품질·자원 비교"
+      ],
+      "release_excerpt": "## Overview llama.cpp v1.1.0 adds the Inkling 2 family (base, Mini and DSpark), Domyn Edge 4B, Zaya1 8B, RAON-1-mini and Hy4 flash, splits DFlash speculative decoding into separate draft methods, and deprecates the old `llama_batch` API in favour of `llama_batch_ext`. It brings a large set of TTS and audio models (Kokoro, Zonos3-Mini, tiny-voca, VoxCPM2, MiniMax-Music3, YuE2, Fish S2, Higgs v3/VibeVoice-ASR and Kyutai Hibiki), token-aware chat parsing, named tool choice, automatic per-tensor quantization targeting ",
+      "facts": [
+        {
+          "label": "공식 발표일",
+          "value": "2026-11-26T09:16:47Z"
+        },
+        {
+          "label": "버전",
+          "value": "v1.1.0"
+        },
+        {
+          "label": "저장소",
+          "value": "ggml-org/llama.cpp"
+        }
+      ],
+      "limits": [
+        "양자화 비트 수만으로 품질이나 속도를 예측할 수 없습니다.",
+        "지원 하드웨어와 모델 형식은 릴리스 원문에서 확인해야 합니다."
+      ],
+      "question": "메모리 사용량을 줄였을 때 어떤 질문 유형에서 품질 회귀가 생겼는지 어떻게 찾을까요?",
+      "sources": [
+        {
+          "title": "공식 릴리스 또는 프로젝트 원문",
+          "url": "https://github.com/ggml-org/llama.cpp/releases/tag/v1.1.0"
+        },
+        {
+          "title": "공식 저장소",
+          "url": "https://github.com/ggml-org/llama.cpp"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    },
     {
       "date": "2026-11-26",
       "item_id": "ollama/ollama:456227993",
