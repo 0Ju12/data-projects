@@ -4,6 +4,7 @@
 - 좌표는 타일 안 정수(0..extent), 명령은 (id | count<<3), 인자는 이전 점과의 차이를 zigzag 로
 - 다각형 바깥 고리는 타일 좌표(y 아래로)에서 넓이가 양수(시계 방향)
 """
+
 from __future__ import annotations
 
 import struct
@@ -51,7 +52,13 @@ def _value(v) -> bytes:
 
 def ring_area(ring: list[tuple[int, int]]) -> float:
     """측량사 공식 넓이 (타일 좌표). 양수 = MVT 바깥 고리."""
-    return sum(ring[i][0] * ring[(i + 1) % len(ring)][1] - ring[(i + 1) % len(ring)][0] * ring[i][1] for i in range(len(ring))) / 2
+    return (
+        sum(
+            ring[i][0] * ring[(i + 1) % len(ring)][1] - ring[(i + 1) % len(ring)][0] * ring[i][1]
+            for i in range(len(ring))
+        )
+        / 2
+    )
 
 
 def encode_geometry(gtype: int, parts: list[list[tuple[int, int]]]) -> list[int]:
@@ -121,4 +128,4 @@ class Layer:
 
 
 def encode_tile(layers: list[Layer]) -> bytes:
-    return b"".join(_bytes(3, l.encode()) for l in layers if l.features)
+    return b"".join(_bytes(3, layer.encode()) for layer in layers if layer.features)

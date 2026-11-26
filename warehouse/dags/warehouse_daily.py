@@ -5,6 +5,7 @@
 - 과거 채우기: `airflow backfill create --dag-id warehouse_daily --from-date 2025-03-01 --to-date 2025-03-07`
 - dbt 는 DBT_BIN 환경변수로 다른 가상환경의 것을 씁니다 (Airflow 와 의존성이 부딪히지 않게)
 """
+
 from __future__ import annotations
 
 import sys
@@ -22,9 +23,9 @@ DB = str(ROOT / "target" / "warehouse.duckdb")
 with DAG(
     dag_id="warehouse_daily",
     start_date=datetime(2025, 1, 1),
-    schedule="20 21 * * *",          # 매일 06:20 KST — 지진 수집(06:17) 뒤
+    schedule="20 21 * * *",  # 매일 06:20 KST — 지진 수집(06:17) 뒤
     catchup=False,
-    max_active_runs=1,               # 같은 DuckDB 파일을 동시에 쓰지 않도록
+    max_active_runs=1,  # 같은 DuckDB 파일을 동시에 쓰지 않도록
     default_args={"retries": 2, "retry_delay": timedelta(seconds=20)},
     tags=["warehouse", "dbt"],
 ) as dag:
@@ -33,33 +34,39 @@ with DAG(
     def collect_jobs() -> list:
         """채용 공고 피드 수집. 한 출처가 실패해도 넘어가고, 수집 기록에 남깁니다."""
         from wh.sources import jobs
+
         return jobs.collect()
 
     @task
     def collect_market() -> dict:
         """거래소 일봉·환율 수집 (끝난 날까지, 최근 7일은 다시 받아 바꿔 넣음)"""
         from wh.sources import market
+
         return market.collect()
 
     @task
     def collect_packages() -> dict:
         from wh.sources import extras
+
         return extras.collect_packages()
 
     @task
     def collect_disasters() -> dict:
         from wh.sources import extras
+
         return extras.collect_disasters()
 
     @task(trigger_rule="all_done")
     def check_sources() -> dict:
         from wh import pipeline as P
+
         return P.check_sources()
 
     @task
     def dbt_build(src: dict) -> dict:
         from wh import pipeline as P
-        P.restore_state(DB, ROOT / "state")          # 어제까지의 변경 이력 위에 이어 쌓기
+
+        P.restore_state(DB, ROOT / "state")  # 어제까지의 변경 이력 위에 이어 쌓기
         p = P.dbt(["build"], db=DB)
         summary = P.run_results(ROOT / "target")
         if p.returncode != 0:
@@ -71,16 +78,22 @@ with DAG(
     def export_partition(summary: dict, ds: str | None = None) -> dict:
         """그날 파티션만 다시 씁니다. 수요 자료가 2025년뿐이라 실행 날짜의 월·일을 2025년으로 옮겨 내보냅니다."""
         from wh import pipeline as P
+
         return P.export_day(P.map_to_data_year(ds), DB, ROOT / "exports")
 
     @task(trigger_rule="all_done", retries=0)
     def record(ds: str | None = None, ti=None) -> None:
         """앞 단계가 실패해도 실행 기록은 남깁니다."""
         from wh import pipeline as P
+
         summary = ti.xcom_pull(task_ids="dbt_build") or {}
         exported = ti.xcom_pull(task_ids="export_partition") or {}
-        row = {"run_at_utc": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"), "logical_date": ds,
-               "status": "success" if exported else "failed", "exported_rows": exported.get("rows", "")}
+        row = {
+            "run_at_utc": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "logical_date": ds,
+            "status": "success" if exported else "failed",
+            "exported_rows": exported.get("rows", ""),
+        }
         row.update({k: v for k, v in summary.items() if k in P.RUN_FIELDS})
         if exported:
             row.update(P.table_counts(DB))
@@ -89,6 +102,7 @@ with DAG(
     @task(trigger_rule="all_done", retries=0)
     def report() -> str:
         from wh.report import build_report
+
         return str(build_report())
 
     s = check_sources()

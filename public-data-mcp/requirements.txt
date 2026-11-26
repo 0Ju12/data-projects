@@ -1,4 +1,4 @@
-mcp>=1.9,<2
+mcp>=2.3,<3
 anyio
 pyyaml
 pytest

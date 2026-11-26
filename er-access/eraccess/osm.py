@@ -3,6 +3,7 @@
 넓은 범위는 한 번에 받으면 시간 초과가 나서 타일로 나눠 받는다. 타일마다 필요한 필드만 남긴
 압축 JSON(raw/roads/*.json)으로 저장하고, 이미 받은 타일은 건너뛰므로 끊겨도 이어서 받을 수 있다.
 """
+
 from __future__ import annotations
 
 import json
@@ -24,8 +25,15 @@ ENDPOINTS = [
 
 # 도로 등급별 차량 평균 속도(km/h). 신호·정체를 감안해 제한속도보다 낮게 잡은 가정값이고 config.json 에서 바꿀 수 있다.
 DEFAULT_SPEEDS = {
-    "motorway": 90, "trunk": 70, "primary": 50, "secondary": 45, "tertiary": 40,
-    "unclassified": 30, "residential": 25, "living_street": 10, "service": 15,
+    "motorway": 90,
+    "trunk": 70,
+    "primary": 50,
+    "secondary": 45,
+    "tertiary": 40,
+    "unclassified": 30,
+    "residential": 25,
+    "living_street": 10,
+    "service": 15,
 }
 ONEWAY_BY_DEFAULT = {"motorway"}
 
@@ -34,15 +42,12 @@ def build_query(bbox: list[float], classes: list[str], timeout: int = 180) -> st
     """bbox = [남, 서, 북, 동]. 램프(_link) 도 같은 등급으로 포함."""
     pattern = "|".join(classes)
     s, w, n, e = bbox
-    return (f'[out:json][timeout:{timeout}];'
-            f'way["highway"~"^({pattern})(_link)?$"]({s},{w},{n},{e});'
-            f'(._;>;);out body qt;')
+    return f'[out:json][timeout:{timeout}];way["highway"~"^({pattern})(_link)?$"]({s},{w},{n},{e});(._;>;);out body qt;'
 
 
 def er_query(bbox: list[float]) -> str:
     s, w, n, e = bbox
-    return (f'[out:json][timeout:120];'
-            f'nwr["amenity"="hospital"]["emergency"="yes"]({s},{w},{n},{e});out center tags;')
+    return f'[out:json][timeout:120];nwr["amenity"="hospital"]["emergency"="yes"]({s},{w},{n},{e});out center tags;'
 
 
 def fetch(query: str, timeout: int = 300, tries: int = 2) -> dict:
@@ -55,9 +60,9 @@ def fetch(query: str, timeout: int = 300, tries: int = 2) -> dict:
                 with urllib.request.urlopen(req, timeout=timeout) as r:
                     data = json.load(r)
                 if "remark" in data and "error" in data["remark"].lower():
-                    raise RuntimeError(data["remark"][:200])      # 시간 초과 등은 200 으로 오고 remark 에만 적힘
+                    raise RuntimeError(data["remark"][:200])  # 시간 초과 등은 200 으로 오고 remark 에만 적힘
                 return data
-            except Exception as e:                  # 다음 미러로
+            except Exception as e:  # 다음 미러로
                 last = e
         time.sleep(10 * (attempt + 1))
     raise RuntimeError(f"Overpass 모든 엔드포인트 실패: {last}")
@@ -98,13 +103,14 @@ def _quarters(t: list[float]) -> list[list[float]]:
 
 def _done(out_dir: Path, t: list[float], depth: int, max_depth: int) -> bool:
     """이 타일이 이미 받아져 있거나, 네 조각으로 나눠 모두 받아져 있으면 True."""
-    if _tile_path(out_dir, t).exists() or (out_dir / f"{t[0]:.4f}_{t[1]:.4f}.json").exists():   # 뒤쪽은 예전 이름
+    if _tile_path(out_dir, t).exists() or (out_dir / f"{t[0]:.4f}_{t[1]:.4f}.json").exists():  # 뒤쪽은 예전 이름
         return True
     return depth < max_depth and all(_done(out_dir, q, depth + 1, max_depth) for q in _quarters(t))
 
 
-def fetch_tiled(bbox: list[float], classes: list[str], out_dir: Path, step: float = 0.25,
-                max_depth: int = 2, log=print) -> dict:
+def fetch_tiled(
+    bbox: list[float], classes: list[str], out_dir: Path, step: float = 0.25, max_depth: int = 2, log=print
+) -> dict:
     """타일마다 받고, 실패하면 4등분해 다시 시도한다 (최대 max_depth 번 나눔).
     도로가 많은 도시 타일은 응답이 커서 연결이 끊기는 일이 잦았다."""
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -115,8 +121,12 @@ def fetch_tiled(bbox: list[float], classes: list[str], out_dir: Path, step: floa
         if _done(out_dir, t, depth, max_depth):
             status["skipped"] += 1
             return
-        if not _tile_path(out_dir, t).exists() and depth < max_depth and any(_done(out_dir, q, depth + 1, max_depth) for q in _quarters(t)):
-            for q in _quarters(t):                          # 이전 실행에서 이미 나눠 받던 타일은 조각으로 이어 받기
+        if (
+            not _tile_path(out_dir, t).exists()
+            and depth < max_depth
+            and any(_done(out_dir, q, depth + 1, max_depth) for q in _quarters(t))
+        ):
+            for q in _quarters(t):  # 이전 실행에서 이미 나눠 받던 타일은 조각으로 이어 받기
                 one(q, depth + 1, label + "·")
             return
         t0 = time.time()
@@ -134,10 +144,10 @@ def fetch_tiled(bbox: list[float], classes: list[str], out_dir: Path, step: floa
         path = _tile_path(out_dir, t)
         tmp = path.with_suffix(".tmp")
         tmp.write_text(json.dumps(c, separators=(",", ":")), encoding="utf-8")
-        tmp.replace(path)                                   # 다 쓴 뒤에만 이름을 붙여, 반쯤 쓴 타일이 남지 않게
+        tmp.replace(path)  # 다 쓴 뒤에만 이름을 붙여, 반쯤 쓴 타일이 남지 않게
         status["fetched"] += 1
         log(f"{label} {t} 노드 {len(c['nodes'])} 도로 {len(c['ways'])} ({time.time() - t0:.0f}s)")
-        time.sleep(2)                                       # 공용 서버 예의
+        time.sleep(2)  # 공용 서버 예의
 
     for k, t in enumerate(todo, 1):
         one(t, 0, f"[{k}/{len(todo)}]")
@@ -170,7 +180,7 @@ def add_compact(g: RoadGraph, c: dict, speeds: dict, seen_ways: set | None = Non
     """압축 타일 하나를 그래프에 더한다. 타일 경계에 걸친 도로는 양쪽 타일에 다 들어 있어,
     같은 (노드 목록) 도로는 한 번만 더한다."""
     coords = c["nodes"]
-    for hw, direction, maxspeed, ids, *_ in c["ways"]:      # 뒤에 [시도, 시군구] 가 붙을 수 있음
+    for hw, direction, maxspeed, ids, *_ in c["ways"]:  # 뒤에 [시도, 시군구] 가 붙을 수 있음
         kmh = _speed(hw, maxspeed, speeds)
         if kmh is None:
             continue

@@ -1,4 +1,5 @@
 """python -m jobcal.cli collect   # 공고 수집 → data/postings.json 합치기 → docs/jobs.json"""
+
 import argparse
 import datetime as dt
 import sys
@@ -11,7 +12,9 @@ def main(argv=None):
     ap.add_argument("cmd", choices=["collect", "export"])
     ap.add_argument("--today", help="YYYY-MM-DD (테스트용)")
     a = ap.parse_args(argv)
-    today = dt.date.fromisoformat(a.today) if a.today else dt.datetime.now(dt.timezone(dt.timedelta(hours=9))).date()   # 한국 날짜
+    today = (
+        dt.date.fromisoformat(a.today) if a.today else dt.datetime.now(dt.timezone(dt.timedelta(hours=9))).date()
+    )  # 한국 날짜
     store = feed.load()
     log = []
     if a.cmd == "collect":

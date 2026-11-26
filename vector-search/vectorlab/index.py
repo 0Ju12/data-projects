@@ -1,7 +1,9 @@
 """Small persistent cosine index. Readers use one complete SQLite snapshot."""
-from pathlib import Path
-from contextlib import closing
+
 import sqlite3
+from contextlib import closing
+from pathlib import Path
+
 import numpy as np
 
 
@@ -54,10 +56,11 @@ def insert(db, ids, texts, matrix, centers):
     if matrix.shape[1] != centers.shape[1]:
         raise ValueError("vector dimensions do not match")
     for start in range(0, len(ids), 1024):
-        batch = matrix[start:start+1024]
+        batch = matrix[start : start + 1024]
         labels = np.argmax(batch @ centers.T, axis=1)
-        rows = ((ids[i], texts[i], v.astype("<f4").tobytes(), int(c))
-                for i, (v, c) in enumerate(zip(batch, labels), start))
+        rows = (
+            (ids[i], texts[i], v.astype("<f4").tobytes(), int(c)) for i, (v, c) in enumerate(zip(batch, labels), start)
+        )
         db.executemany("INSERT INTO docs VALUES(?,?,?,?)", rows)
 
 

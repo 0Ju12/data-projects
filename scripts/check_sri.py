@@ -1,8 +1,9 @@
 """Check that every CDN <script> in the published pages pins an SRI hash.
 
-    python scripts/check_sri.py           # offline: every CDN script has integrity + crossorigin
-    python scripts/check_sri.py --fetch   # also download each file and compare its sha384
+python scripts/check_sri.py           # offline: every CDN script has integrity + crossorigin
+python scripts/check_sri.py --fetch   # also download each file and compare its sha384
 """
+
 import base64
 import hashlib
 import re

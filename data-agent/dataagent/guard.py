@@ -6,6 +6,7 @@
 3. 실행 권한: authorizer 로 SELECT·열 읽기·함수 호출만 허용 (ATTACH, PRAGMA, 쓰기, load_extension 거부)
 그리고 행 수와 실행 시간을 제한합니다.
 """
+
 from __future__ import annotations
 
 import re
@@ -64,6 +65,11 @@ def run(db: Path, sql: str, max_rows: int = MAX_ROWS, timeout_s: float = TIMEOUT
                 raise SQLRejected(f"실행 시간이 {timeout_s:g}초를 넘어 중단했습니다. 범위를 좁혀 주세요.") from e
             raise SQLRejected(f"SQL 오류: {msg}") from e
         cols = [d[0] for d in cur.description or []]
-        return {"columns": cols, "rows": [list(r) for r in rows[:max_rows]], "row_count": min(len(rows), max_rows), "truncated": len(rows) > max_rows}
+        return {
+            "columns": cols,
+            "rows": [list(r) for r in rows[:max_rows]],
+            "row_count": min(len(rows), max_rows),
+            "truncated": len(rows) > max_rows,
+        }
     finally:
         con.close()

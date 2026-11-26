@@ -2,16 +2,15 @@ import json
 
 import numpy as np
 import pytest
-
 from crash import cli, hotspot, load
 from crash.utmk import to_utmk, to_wgs84
 
 # pyproj (EPSG:4326 → EPSG:5179) 로 구한 기준값
 REFERENCE = [
-    ((37.5665, 126.9780), (953901.165, 1952032.081)),     # 서울시청
-    ((35.1796, 129.0756), (1143467.380, 1688281.982)),    # 부산
-    ((33.4996, 126.5312), (910010.546, 1501279.789)),     # 제주
-    ((37.4800, 130.9000), (1300652.575, 1947739.115)),    # 울릉도
+    ((37.5665, 126.9780), (953901.165, 1952032.081)),  # 서울시청
+    ((35.1796, 129.0756), (1143467.380, 1688281.982)),  # 부산
+    ((33.4996, 126.5312), (910010.546, 1501279.789)),  # 제주
+    ((37.4800, 130.9000), (1300652.575, 1947739.115)),  # 울릉도
 ]
 
 
@@ -29,10 +28,14 @@ def test_utmk_origin():
 
 def test_load_cp949_wgs_columns(tmp_path):
     p = tmp_path / "c.csv"
-    p.write_bytes(("발생년월일시,사망자수,사고유형_대분류,도로형태,경도,위도\n"
-                   "2023010108,1,차대사람,단일로,126.978,37.5665\n"
-                   "2023010210,2,차대차,교차로,,\n"
-                   "2023010311,1,차량단독,단일로,10.0,10.0\n").encode("cp949"))
+    p.write_bytes(
+        (
+            "발생년월일시,사망자수,사고유형_대분류,도로형태,경도,위도\n"
+            "2023010108,1,차대사람,단일로,126.978,37.5665\n"
+            "2023010210,2,차대차,교차로,,\n"
+            "2023010311,1,차량단독,단일로,10.0,10.0\n"
+        ).encode("cp949")
+    )
     rows, st = load.load(p)
     assert st == {"file": "c.csv", "rows": 3, "kept": 1, "no_coord": 1, "outside_korea": 1}
     r = rows[0]
@@ -41,7 +44,9 @@ def test_load_cp949_wgs_columns(tmp_path):
 
 def test_load_utmk_only_columns(tmp_path):
     p = tmp_path / "u.csv"
-    p.write_text("발생년월일시,발생위치X(UTMK),발생위치Y(UTMK)\n2022050112,\"1,143,467.38\",1688281.982\n", encoding="utf-8")
+    p.write_text(
+        '발생년월일시,발생위치X(UTMK),발생위치Y(UTMK)\n2022050112,"1,143,467.38",1688281.982\n', encoding="utf-8"
+    )
     rows, _ = load.load(p)
     assert rows[0]["lat"] == pytest.approx(35.1796, abs=1e-6) and rows[0]["lon"] == pytest.approx(129.0756, abs=1e-6)
 
@@ -60,8 +65,8 @@ def pts(xy):
 def test_grid_counts_and_offsets():
     g = hotspot.make_grid(pts([(1000, 2000), (1500, 2900), (3100, 2000)]), 1000)
     assert g.counts.shape == (1, 3) and g.counts.tolist() == [[2, 0, 1]]
-    assert len(hotspot._offsets(1500, 1000)) == 9          # 자신 + 8 이웃
-    assert len(hotspot._offsets(1000, 1000)) == 5          # 자신 + 상하좌우
+    assert len(hotspot._offsets(1500, 1000)) == 9  # 자신 + 8 이웃
+    assert len(hotspot._offsets(1000, 1000)) == 5  # 자신 + 상하좌우
 
 
 def background(rng, n, size_m=40_000):
@@ -70,9 +75,9 @@ def background(rng, n, size_m=40_000):
 
 def test_gi_star_finds_planted_cluster():
     rng = np.random.default_rng(7)
-    bg = background(rng, 1500)                                       # 40×40 km 에 고르게 1,500건
+    bg = background(rng, 1500)  # 40×40 km 에 고르게 1,500건
     cx, cy = 1_020_500, 1_820_500
-    cluster = list(zip(cx + rng.normal(0, 300, 60), cy + rng.normal(0, 300, 60)))   # 한 지점에 60건
+    cluster = list(zip(cx + rng.normal(0, 300, 60), cy + rng.normal(0, 300, 60)))  # 한 지점에 60건
     g = hotspot.make_grid(pts(bg + cluster), 1000)
     z = hotspot.gi_star(g, 1500)
     hot = hotspot.bh_hot(z, 0.05)
@@ -80,7 +85,7 @@ def test_gi_star_finds_planted_cluster():
     assert len(zs) >= 1
     top = zs[0]
     x, y = to_utmk(top["lat"], top["lon"])
-    assert abs(x - cx) < 1000 and abs(y - cy) < 1000                # 가장 큰 구역 = 심어 둔 곳
+    assert abs(x - cx) < 1000 and abs(y - cy) < 1000  # 가장 큰 구역 = 심어 둔 곳
     assert top["crashes"] >= 60
 
 
@@ -88,10 +93,10 @@ def test_uniform_noise_gives_almost_no_hotspots_after_fdr():
     rng = np.random.default_rng(11)
     g = hotspot.make_grid(pts(background(rng, 3000)), 1000)
     z = hotspot.gi_star(g, 1500)
-    raw = int((z > 1.645).sum())                                   # 보정 없이 단측 0.05
+    raw = int((z > 1.645).sum())  # 보정 없이 단측 0.05
     fdr = int(hotspot.bh_hot(z, 0.05).sum())
-    assert raw > 20                                                 # 보정 없으면 우연한 핫스팟이 꽤 나온다
-    assert fdr <= 3                                                 # BH 뒤에는 거의 없다
+    assert raw > 20  # 보정 없으면 우연한 핫스팟이 꽤 나온다
+    assert fdr <= 3  # BH 뒤에는 거의 없다
 
 
 def test_build_end_to_end(tmp_path, monkeypatch):
@@ -104,11 +109,27 @@ def test_build_end_to_end(tmp_path, monkeypatch):
     (data / "crashes_2024.csv").write_text("\n".join(lines), encoding="utf-8")
     # 공식 다발 지역 2곳: 하나는 심어 둔 밀집 지점, 하나는 아무것도 없는 곳
     from crash.utmk import to_wgs84
+
     la1, lo1 = to_wgs84(1_010_500, 1_810_500)
     la2, lo2 = to_wgs84(1_035_000, 1_835_000)
-    poly = json.dumps({"type": "Polygon", "coordinates": [[[lo1 - .001, la1 - .001], [lo1 + .001, la1 - .001], [lo1 + .001, la1 + .001], [lo1 - .001, la1 - .001]]]})
-    (data / "official_2024.csv").write_text("사고연도,사고지역위치명,발생건수,위도,경도,사고다발지역폴리곤정보\n"
-                                           f'2024,가 교차로,12,{la1},{lo1},"{poly.replace(chr(34), chr(34) * 2)}"\n2024,나 부근,5,{la2},{lo2},\n', encoding="utf-8")
+    poly = json.dumps(
+        {
+            "type": "Polygon",
+            "coordinates": [
+                [
+                    [lo1 - 0.001, la1 - 0.001],
+                    [lo1 + 0.001, la1 - 0.001],
+                    [lo1 + 0.001, la1 + 0.001],
+                    [lo1 - 0.001, la1 - 0.001],
+                ]
+            ],
+        }
+    )
+    (data / "official_2024.csv").write_text(
+        "사고연도,사고지역위치명,발생건수,위도,경도,사고다발지역폴리곤정보\n"
+        f'2024,가 교차로,12,{la1},{lo1},"{poly.replace(chr(34), chr(34) * 2)}"\n2024,나 부근,5,{la2},{lo2},\n',
+        encoding="utf-8",
+    )
     monkeypatch.setattr(cli, "ROOT", tmp_path)
     monkeypatch.setattr(cli, "DATA", data)
     monkeypatch.setattr(cli, "DOCS", tmp_path / "docs")
@@ -120,14 +141,18 @@ def test_build_end_to_end(tmp_path, monkeypatch):
     assert s["official"]["inputs"][0]["with_polygon"] == 1
     page = json.loads((tmp_path / "docs" / "data.json").read_text(encoding="utf-8"))
     assert len(page["official"]) == 2 and any(c[4] == 1 for c in page["cells"])
-    assert sum(c[2] for c in page["cells"]) == 840                      # 칸별 사고 수 합 = 전체
+    assert sum(c[2] for c in page["cells"]) == 840  # 칸별 사고 수 합 = 전체
 
 
 def test_official_loader_requires_center_coordinates(tmp_path):
     from crash import official
+
     p = tmp_path / "o.csv"
     p.write_text("사고지역위치명,발생건수\n가,3\n", encoding="utf-8")
     with pytest.raises(ValueError, match="좌표"):
         official.load(p)
     assert official._ring("not json") is None
-    assert official._ring('{"type":"MultiPolygon","coordinates":[[[[127,37],[127.1,37],[127,37.1],[127,37]]]]}')[0] == (127, 37)
+    assert official._ring('{"type":"MultiPolygon","coordinates":[[[[127,37],[127.1,37],[127,37.1],[127,37]]]]}')[0] == (
+        127,
+        37,
+    )

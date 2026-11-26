@@ -24,27 +24,32 @@ pip install "git+https://github.com/0Ju12/data-projects#subdirectory=krgeo"
 
 ```python
 from krgeo import to_utmk, to_wgs84
-x, y = to_utmk(37.5665, 126.9780)          # (953901.17, 1952032.08)
+
+x, y = to_utmk(37.5665, 126.9780)  # (953901.17, 1952032.08)
 
 from krgeo import hotosm, regions, access
-roads = hotosm.read_roads("hotosm_kor_roads_lines_gpkg.gpkg",
-                          bbox=[35.5, 128.0, 37.6, 131.0],          # 남, 서, 북, 동
-                          classes=["motorway", "trunk", "primary", "secondary", "tertiary", "residential"])
+
+roads = hotosm.read_roads(
+    "hotosm_kor_roads_lines_gpkg.gpkg",
+    bbox=[35.5, 128.0, 37.6, 131.0],  # 남, 서, 북, 동
+    classes=["motorway", "trunk", "primary", "secondary", "tertiary", "residential"],
+)
 g = hotosm.to_graph(roads).largest_component()
-where = regions.node_regions(roads)        # 노드 → '안동시' 같은 경북 시군 (경북 밖은 None)
+where = regions.node_regions(roads)  # 노드 → '안동시' 같은 경북 시군 (경북 밖은 None)
 
 cells = [{"lat": 36.57, "lon": 128.73, "pop": 1200}, ...]
 hospitals = [{"name": "안동병원", "lat": 36.56, "lon": 128.70, "tier": "center"}, ...]
 net = access.Network(g, cells, snap_m=1500, access_kmh=20)
 minutes, nearest, info = net.travel_times(hospitals, tiers=["center"])
-access.coverage(cells, minutes, 30)        # {'within': ..., 'population': ..., 'share': ...}
+access.coverage(cells, minutes, 30)  # {'within': ..., 'population': ..., 'share': ...}
 ```
 
 ```python
-from krgeo import hotspot                  # pip install "krgeo[stats]"
+from krgeo import hotspot  # pip install "krgeo[stats]"
+
 grid = hotspot.make_grid([{"x": x, "y": y} for x, y in crash_points_utmk], cell=500)
 z = hotspot.gi_star(grid, band_m=750)
-zones = hotspot.zones(grid, hotspot.bh_hot(z, q=0.05), z)   # 가장 강한 구역부터
+zones = hotspot.zones(grid, hotspot.bh_hot(z, q=0.05), z)  # 가장 강한 구역부터
 ```
 
 ## 개발

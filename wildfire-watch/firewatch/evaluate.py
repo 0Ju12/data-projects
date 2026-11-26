@@ -4,6 +4,7 @@
 - AUC: 양성 칸-날의 지수가 음성 칸-날보다 높을 확률 (0.5 = 무작위와 같음)
 - 상위 20% 적중률: 날마다 지수 상위 20% 칸 안에 그날 양성 칸이 들어간 비율 (무작위면 약 20%)
 """
+
 from __future__ import annotations
 
 from collections import defaultdict
@@ -38,7 +39,7 @@ def auc(pos: list[float], neg: list[float]) -> float | None:
         j = i
         while j < len(allv) and allv[j][0] == allv[i][0]:
             j += 1
-        r = (i + j + 1) / 2                         # 같은 값은 평균 순위
+        r = (i + j + 1) / 2  # 같은 값은 평균 순위
         rank_sum += r * sum(lab for _, lab in allv[i:j])
         i = j
     return (rank_sum - len(pos) * (len(pos) + 1) / 2) / (len(pos) * len(neg))
@@ -54,13 +55,21 @@ def evaluate(weather: list[dict], detections: list[dict], first: str, last: str)
     pos, neg, hit, tot = [], [], 0, 0
     for day, cells in sorted(by_day.items()):
         ranked = sorted(cells, key=cells.get, reverse=True)
-        top = set(ranked[:max(1, round(len(ranked) * 0.2))])
+        top = set(ranked[: max(1, round(len(ranked) * 0.2))])
         for c, v in cells.items():
             (pos if c in pos_cells.get(day, ()) else neg).append(v)
         p = [c for c in pos_cells.get(day, ()) if c in cells]
         tot += len(p)
         hit += sum(1 for c in p if c in top)
     a = auc(pos, neg)
-    return {"first": first, "last": last, "days": len(by_day), "cell_days": len(pos) + len(neg), "positive_cell_days": len(pos),
-            "auc": None if a is None else round(a, 3), "top20_hit": None if not tot else round(hit / tot, 3),
-            "mean_ffwi_pos": None if not pos else round(sum(pos) / len(pos), 1), "mean_ffwi_neg": None if not neg else round(sum(neg) / len(neg), 1)}
+    return {
+        "first": first,
+        "last": last,
+        "days": len(by_day),
+        "cell_days": len(pos) + len(neg),
+        "positive_cell_days": len(pos),
+        "auc": None if a is None else round(a, 3),
+        "top20_hit": None if not tot else round(hit / tot, 3),
+        "mean_ffwi_pos": None if not pos else round(sum(pos) / len(pos), 1),
+        "mean_ffwi_neg": None if not neg else round(sum(neg) / len(neg), 1),
+    }

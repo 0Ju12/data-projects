@@ -12,15 +12,15 @@ def test_load_demand_shape_and_hour_mapping():
     s = data.load_demand(ROOT / "data" / "kpx_hourly_demand_2025.csv")
     assert len(s) == 365 * 24
     d = dict(s)
-    assert datetime(2025, 1, 1, 0) in d and datetime(2025, 12, 31, 23) in d     # '1시' 열 = 0시 시작
+    assert datetime(2025, 1, 1, 0) in d and datetime(2025, 12, 31, 23) in d  # '1시' 열 = 0시 시작
     assert d[datetime(2025, 1, 1, 0)] == 62256
 
 
 def test_day_type_holidays_and_weekend():
-    assert model.day_type(date(2025, 10, 6)) == 2      # 추석(월)
-    assert model.day_type(date(2025, 11, 8)) == 1      # 토
-    assert model.day_type(date(2025, 11, 9)) == 2      # 일
-    assert model.day_type(date(2025, 11, 10)) == 0     # 평일
+    assert model.day_type(date(2025, 10, 6)) == 2  # 추석(월)
+    assert model.day_type(date(2025, 11, 8)) == 1  # 토
+    assert model.day_type(date(2025, 11, 9)) == 2  # 일
+    assert model.day_type(date(2025, 11, 10)) == 0  # 평일
 
 
 def test_features_use_only_lags_of_24h_or_more():
@@ -38,12 +38,13 @@ def test_metrics():
     y, p = np.array([100.0, 200.0]), np.array([110.0, 180.0])
     assert np.isclose(model.mape(y, p), 10.0)
     ts = [datetime(2025, 1, 1, 1), datetime(2025, 1, 1, 2)]
-    assert np.isclose(model.daily_peak_error(ts, y, p), 10.0)    # 최대 200 vs 180
+    assert np.isclose(model.daily_peak_error(ts, y, p), 10.0)  # 최대 200 vs 180
 
 
 def test_explorer_predictions_match_report():
     """탐색기 데이터가 시험 구간 전체(92일 × 24시간)이고, 앙상블 MAPE 가 results.json 과 같은지"""
     import json
+
     p = json.loads((ROOT / "explorer" / "predictions.json").read_text(encoding="utf-8"))
     rep = json.loads((ROOT / "reports" / "results.json").read_text(encoding="utf-8"))
     assert p["n"] == 92 * 24 and len(p["actual"]) == p["n"]
@@ -51,3 +52,16 @@ def test_explorer_predictions_match_report():
     a = np.array(p["actual"], float)
     ens = np.array(p["models"]["ens"], float)
     assert abs(model.mape(a, ens) - rep["results"]["ensemble(linear, gbm+temp)"]["mape"]) < 0.02
+
+
+def test_model_selection_never_sees_the_test_period():
+    """모델 선택(롤링 CV)은 10월 이전만 쓰고, 고른 모델의 시험 점수가 보고서와 같은지"""
+    import json
+
+    from powerfc import run
+
+    assert max(run.CV_MONTHS) + 1 <= run.SPLIT.month
+    sel = json.loads((ROOT / "reports" / "results.json").read_text(encoding="utf-8"))["selection"]
+    assert sel["selected"] in sel["cv"] and "temp" not in sel["selected_without_temperature"]
+    assert sel["cv"][sel["selected"]]["mean"] == min(v["mean"] for v in sel["cv"].values())
+    assert all(len(v["folds"]) == len(run.CV_MONTHS) for v in sel["cv"].values())

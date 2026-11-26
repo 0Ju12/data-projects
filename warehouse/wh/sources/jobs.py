@@ -7,6 +7,7 @@
 
 출처 표기(이용 조건): Remote OK https://remoteok.com · Arbeitnow https://www.arbeitnow.com
 """
+
 from __future__ import annotations
 
 import csv
@@ -23,9 +24,35 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 JOBS = ROOT / "data" / "jobs.csv"
 FETCH_LOG = ROOT / "data" / "jobs_fetch_log.csv"
 UA = "data-projects-warehouse/1.0 (+https://github.com/0Ju12/data-projects)"
-FIELDS = ["source", "job_id", "title", "company", "location", "remote", "posted_at_utc", "salary_min", "salary_max",
-          "url", "skills", "skills_dict", "content_hash", "first_seen", "last_seen", "changed_on"]
-LOG_FIELDS = ["run_date", "source", "fetched", "new", "changed", "pages", "oldest_posted_utc", "newest_posted_utc", "overlap"]
+FIELDS = [
+    "source",
+    "job_id",
+    "title",
+    "company",
+    "location",
+    "remote",
+    "posted_at_utc",
+    "salary_min",
+    "salary_max",
+    "url",
+    "skills",
+    "skills_dict",
+    "content_hash",
+    "first_seen",
+    "last_seen",
+    "changed_on",
+]
+LOG_FIELDS = [
+    "run_date",
+    "source",
+    "fetched",
+    "new",
+    "changed",
+    "pages",
+    "oldest_posted_utc",
+    "newest_posted_utc",
+    "overlap",
+]
 MAX_PAGES = 8
 
 
@@ -33,7 +60,7 @@ SKILLS_CSV = ROOT / "seeds" / "skills.csv"
 TAG = re.compile(r"<[^>]+>")
 
 
-def load_skill_dict(path: Path = SKILLS_CSV) -> tuple[list[tuple[str, str, "re.Pattern"]], str]:
+def load_skill_dict(path: Path = SKILLS_CSV) -> tuple[list[tuple[str, str, re.Pattern]], str]:
     """기술 사전과 그 판 번호(내용 해시 앞 8자). scope 가 title 이면 제목에서만 찾습니다(직무 이름)."""
     raw = path.read_bytes()
     with path.open(encoding="utf-8", newline="") as f:
@@ -75,19 +102,37 @@ def norm_remoteok(x: dict, rules=()) -> dict | None:
     if not x.get("id") or not x.get("position"):
         return None
     lo, hi = int(x.get("salary_min") or 0), int(x.get("salary_max") or 0)
-    return {"source": "remoteok", "job_id": str(x["id"]), "title": clean(x["position"]), "company": clean(x.get("company")),
-            "location": clean(x.get("location")), "remote": "true", "posted_at_utc": iso(x["epoch"]),
-            "salary_min": lo or "", "salary_max": hi or "", "url": str(x.get("url") or "").replace("remoteOK.com", "remoteok.com"),
-            "skills": find_skills(clean(x["position"]), str(x.get("description") or ""), rules)}
+    return {
+        "source": "remoteok",
+        "job_id": str(x["id"]),
+        "title": clean(x["position"]),
+        "company": clean(x.get("company")),
+        "location": clean(x.get("location")),
+        "remote": "true",
+        "posted_at_utc": iso(x["epoch"]),
+        "salary_min": lo or "",
+        "salary_max": hi or "",
+        "url": str(x.get("url") or "").replace("remoteOK.com", "remoteok.com"),
+        "skills": find_skills(clean(x["position"]), str(x.get("description") or ""), rules),
+    }
 
 
 def norm_arbeitnow(x: dict, rules=()) -> dict | None:
     if not x.get("slug") or not x.get("title"):
         return None
-    return {"source": "arbeitnow", "job_id": str(x["slug"])[:160], "title": clean(x["title"]), "company": clean(x.get("company_name")),
-            "location": clean(x.get("location")), "remote": "true" if x.get("remote") else "false", "posted_at_utc": iso(x["created_at"]),
-            "salary_min": "", "salary_max": "", "url": str(x.get("url") or ""),
-            "skills": find_skills(clean(x["title"]), str(x.get("description") or ""), rules)}
+    return {
+        "source": "arbeitnow",
+        "job_id": str(x["slug"])[:160],
+        "title": clean(x["title"]),
+        "company": clean(x.get("company_name")),
+        "location": clean(x.get("location")),
+        "remote": "true" if x.get("remote") else "false",
+        "posted_at_utc": iso(x["created_at"]),
+        "salary_min": "",
+        "salary_max": "",
+        "url": str(x.get("url") or ""),
+        "skills": find_skills(clean(x["title"]), str(x.get("description") or ""), rules),
+    }
 
 
 def content_hash(r: dict) -> str:
@@ -107,7 +152,9 @@ def fetch_remoteok(get=http_json, rules=()) -> tuple[list[dict], int]:
     return rows, 1
 
 
-def fetch_arbeitnow(known: set[str], get=http_json, pause=1.0, max_pages=MAX_PAGES, first_run_pages=3, rules=()) -> tuple[list[dict], int]:
+def fetch_arbeitnow(
+    known: set[str], get=http_json, pause=1.0, max_pages=MAX_PAGES, first_run_pages=3, rules=()
+) -> tuple[list[dict], int]:
     """최신순 쪽을 넘기다가, 이미 아는 공고가 한 건이라도 나온 쪽에서 멈춥니다 (그 뒤는 지난번에 받은 구간).
 
     처음 실행(아는 공고 없음)은 first_run_pages 쪽만 받습니다.
@@ -148,7 +195,14 @@ def merge(existing: dict, fetched: list[dict], today: str, dict_version: str = "
         h = content_hash(r)
         old = existing.get(key)
         if old is None:
-            existing[key] = {**r, "skills_dict": dict_version, "content_hash": h, "first_seen": today, "last_seen": today, "changed_on": ""}
+            existing[key] = {
+                **r,
+                "skills_dict": dict_version,
+                "content_hash": h,
+                "first_seen": today,
+                "last_seen": today,
+                "changed_on": "",
+            }
             stats["new"] += 1
         else:
             changed_on = old.get("changed_on", "")
@@ -156,8 +210,15 @@ def merge(existing: dict, fetched: list[dict], today: str, dict_version: str = "
                 if changed_on != today or old.get("first_seen") != today:
                     stats["changed"] += 1
                 changed_on = today
-            existing[key] = {**old, **r, "skills_dict": dict_version, "content_hash": h, "first_seen": old["first_seen"],
-                             "last_seen": max(old["last_seen"], today), "changed_on": changed_on}
+            existing[key] = {
+                **old,
+                **r,
+                "skills_dict": dict_version,
+                "content_hash": h,
+                "first_seen": old["first_seen"],
+                "last_seen": max(old["last_seen"], today),
+                "changed_on": changed_on,
+            }
     return stats
 
 
@@ -187,13 +248,17 @@ def log_fetch(entries: list[dict], path: Path = FETCH_LOG) -> None:
         if old and not str(e["overlap"]).startswith("error"):
             # 같은 날 다시 돌린 경우: 그날 처음 실행의 판정(first_run·yes·no)을 지키고, 새로 들어온 수는 더합니다
             num = lambda v: int(v or 0)
-            e.update(fetched=max(num(old["fetched"]), num(e["fetched"])), new=num(old["new"]) + num(e["new"]),
-                     changed=num(old["changed"]) + num(e["changed"]), pages=max(num(old["pages"]), num(e["pages"])),
-                     oldest_posted_utc=min(x for x in (old["oldest_posted_utc"], e["oldest_posted_utc"]) if x),
-                     newest_posted_utc=max(old["newest_posted_utc"], e["newest_posted_utc"]),
-                     overlap=old["overlap"] if not str(old["overlap"]).startswith("error") else e["overlap"])
+            e.update(
+                fetched=max(num(old["fetched"]), num(e["fetched"])),
+                new=num(old["new"]) + num(e["new"]),
+                changed=num(old["changed"]) + num(e["changed"]),
+                pages=max(num(old["pages"]), num(e["pages"])),
+                oldest_posted_utc=min(x for x in (old["oldest_posted_utc"], e["oldest_posted_utc"]) if x),
+                newest_posted_utc=max(old["newest_posted_utc"], e["newest_posted_utc"]),
+                overlap=old["overlap"] if not str(old["overlap"]).startswith("error") else e["overlap"],
+            )
         elif old:
-            e = old      # 다시 돌린 쪽이 실패했으면 앞의 성공 기록을 지키기
+            e = old  # 다시 돌린 쪽이 실패했으면 앞의 성공 기록을 지키기
         merged.append(e)
     rows = list(prev.values()) + merged
     rows.sort(key=lambda r: (r["run_date"], r["source"]))
@@ -205,27 +270,51 @@ def log_fetch(entries: list[dict], path: Path = FETCH_LOG) -> None:
     os.replace(tmp, path)
 
 
-def collect(today: str | None = None, jobs_path: Path = JOBS, log_path: Path = FETCH_LOG, get=http_json, pause=1.0) -> list[dict]:
+def collect(
+    today: str | None = None, jobs_path: Path = JOBS, log_path: Path = FETCH_LOG, get=http_json, pause=1.0
+) -> list[dict]:
     """두 출처를 받아 합치고 수집 기록을 남깁니다. 한 출처가 실패해도 다른 출처는 계속합니다."""
     today = today or datetime.now(timezone.utc).strftime("%Y-%m-%d")
     existing = load(jobs_path)
     rules, version = load_skill_dict()
     out = []
-    for source, fetch in (("remoteok", lambda known: fetch_remoteok(get, rules)),
-                          ("arbeitnow", lambda known: fetch_arbeitnow(known, get, pause, rules=rules))):
+    for source, fetch in (
+        ("remoteok", lambda known: fetch_remoteok(get, rules)),
+        ("arbeitnow", lambda known: fetch_arbeitnow(known, get, pause, rules=rules)),
+    ):
         known = {jid for (s, jid) in existing if s == source}
         try:
             rows, pages = fetch(known)
         except Exception as e:  # 네트워크·형식 오류: 기록만 남기고 다음 출처로
-            out.append({"run_date": today, "source": source, "fetched": 0, "new": 0, "changed": 0, "pages": 0,
-                        "oldest_posted_utc": "", "newest_posted_utc": "", "overlap": f"error:{type(e).__name__}"})
+            out.append(
+                {
+                    "run_date": today,
+                    "source": source,
+                    "fetched": 0,
+                    "new": 0,
+                    "changed": 0,
+                    "pages": 0,
+                    "oldest_posted_utc": "",
+                    "newest_posted_utc": "",
+                    "overlap": f"error:{type(e).__name__}",
+                }
+            )
             continue
         overlap = any(r["job_id"] in known for r in rows)
         stats = merge(existing, rows, today, version)
         posted = sorted(r["posted_at_utc"] for r in rows)
-        out.append({"run_date": today, "source": source, "fetched": len(rows), **stats, "pages": pages,
-                    "oldest_posted_utc": posted[0] if posted else "", "newest_posted_utc": posted[-1] if posted else "",
-                    "overlap": "first_run" if not known else ("yes" if overlap else "no")})
+        out.append(
+            {
+                "run_date": today,
+                "source": source,
+                "fetched": len(rows),
+                **stats,
+                "pages": pages,
+                "oldest_posted_utc": posted[0] if posted else "",
+                "newest_posted_utc": posted[-1] if posted else "",
+                "overlap": "first_run" if not known else ("yes" if overlap else "no"),
+            }
+        )
     save(existing, jobs_path)
     log_fetch(out, log_path)
     return out

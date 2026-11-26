@@ -25,7 +25,8 @@
     var path = root + p[0];
     return here.indexOf(path) === 0 && path.length > (best ? (root + best[0]).length : -1) ? p : best;
   }, null);
-  var css = '.dpb{--dpb-bg:#f4f4f2;--dpb-ink:#0b0b0b;--dpb-ink2:#52514e;--dpb-line:#e4e2dc;--dpb-acc:#2a78d6;' +
+  var css =
+    '.dpb{--dpb-bg:#f4f3f0;--dpb-ink:#0b0b0b;--dpb-ink2:#52514e;--dpb-line:#e4e2dc;--dpb-acc:#2a78d6;' +
     'position:relative;z-index:50;background:var(--dpb-bg);border-bottom:1px solid var(--dpb-line);font:600 13px/1.4 system-ui,-apple-system,"Segoe UI","Noto Sans KR",sans-serif;word-break:keep-all}' +
     '@media (prefers-color-scheme:dark){.dpb{--dpb-bg:#111110;--dpb-ink:#f0efec;--dpb-ink2:#c3c2b7;--dpb-line:#2e2e2b;--dpb-acc:#3987e5}}' +
     '.dpb-in{max-width:1180px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:4px 16px;min-height:42px}' +
@@ -37,7 +38,7 @@
     '.dpb-nav a:focus-visible,.dpb-home:focus-visible,.dpb-pf:focus-visible{outline:2px solid var(--dpb-acc);outline-offset:-2px;border-radius:6px}' +
     '.dpb-pf{color:var(--dpb-ink2);text-decoration:none;white-space:nowrap;font-weight:500}.dpb-pf:hover{color:var(--dpb-ink)}' +
     '@media (max-width:640px){.dpb-home b{display:none}.dpb-pf{display:none}}' +
-    '.dpb.dpb-l{--dpb-bg:#f4f4f2;--dpb-ink:#0b0b0b;--dpb-ink2:#52514e;--dpb-line:#e4e2dc;--dpb-acc:#2a78d6}' +
+    '.dpb.dpb-l{--dpb-bg:#f4f3f0;--dpb-ink:#0b0b0b;--dpb-ink2:#52514e;--dpb-line:#e4e2dc;--dpb-acc:#2a78d6}' +
     '.dpb.dpb-d{--dpb-bg:#111110;--dpb-ink:#f0efec;--dpb-ink2:#c3c2b7;--dpb-line:#2e2e2b;--dpb-acc:#3987e5}' +
     '@media print{.dpb{display:none}}';
   var st = document.createElement('style');
@@ -45,10 +46,13 @@
   document.head.appendChild(st);
   var bar = document.createElement('div');
   bar.className = 'dpb';
-  bar.innerHTML = '<div class="dpb-in"><a class="dpb-home" href="https://0ju12.github.io/"><i aria-hidden="true"></i><b>이영주 · 공개 데이터 분석</b></a>' +
-    '<div class="dpb-nav" role="navigation" aria-label="공개 데이터 프로젝트">' + PAGES.map(function (p) {
+  bar.innerHTML =
+    '<div class="dpb-in"><a class="dpb-home" href="https://0ju12.github.io/"><i aria-hidden="true"></i><b>이영주 · 공개 데이터 분석</b></a>' +
+    '<div class="dpb-nav" role="navigation" aria-label="공개 데이터 프로젝트">' +
+    PAGES.map(function (p) {
       return '<a href="' + base + p[0] + '"' + (cur === p ? ' aria-current="page"' : '') + '>' + p[1] + '</a>';
-    }).join('') + '</div><a class="dpb-pf" href="https://github.com/0Ju12/data-projects">코드 ↗</a></div>';
+    }).join('') +
+    '</div><a class="dpb-pf" href="https://github.com/0Ju12/data-projects">코드 ↗</a></div>';
   document.body.insertBefore(bar, document.body.firstChild);
   // 어두운 모드가 없는 페이지에서는 막대도 밝게: 페이지 바탕의 밝기를 보고 맞춤
   try {
@@ -59,6 +63,7 @@
     }
   } catch (_) {}
   // 휴대폰에서 메뉴가 옆으로 넘칠 때 지금 페이지 항목이 보이도록
-  var nav = bar.querySelector('.dpb-nav'), on = bar.querySelector('[aria-current]');
+  var nav = bar.querySelector('.dpb-nav'),
+    on = bar.querySelector('[aria-current]');
   if (nav && on && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = Math.max(0, on.offsetLeft - nav.offsetLeft - 24);
 })();

@@ -6,12 +6,12 @@
 <title>전력 수요 예측 탐색기</title>
 <meta name="description" content="2025년 4분기 전국 시간별 전력 수요 — 하루 전 예측 모델 4종을 날짜별로 실제값과 비교해 보는 페이지">
 <style>
-:root{--bg:#f4f4f2;--card:#fcfcfb;--text:#0b0b0b;--muted:#52514e;--faint:#9aa1ab;--line:#e4e2dc;--soft:#f0f2f5;
+:root{--bg:#f4f3f0;--card:#fcfcfb;--text:#0b0b0b;--muted:#52514e;--faint:#9aa1ab;--line:#e4e2dc;--soft:#f0f2f5;
 --actual:#18181b;--ens:#059669;--gbm:#dc2626;--linear:#2563eb;--naive:#9ca3af;--hol:#f59e0b}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0e1116;--card:#161a21;--text:#eef1f5;--muted:#a3abb7;--faint:#6f7884;--line:#29303a;--soft:#1d222b;--actual:#eef1f5;--ens:#34d399;--gbm:#f87171;--linear:#60a5fa;--naive:#6b7280;--hol:#fbbf24}}
 :root[data-theme="dark"]{--bg:#0e1116;--card:#161a21;--text:#eef1f5;--muted:#a3abb7;--faint:#6f7884;--line:#29303a;--soft:#1d222b;--actual:#eef1f5;--ens:#34d399;--gbm:#f87171;--linear:#60a5fa;--naive:#6b7280;--hol:#fbbf24}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 Pretendard,"Noto Sans KR",system-ui,sans-serif;word-break:keep-all}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 Pretendard,"Noto Sans KR",system-ui,sans-serif;word-break:keep-all;font-variant-numeric:tabular-nums}
 .w{max-width:1040px;margin:0 auto;padding:28px 16px 48px}
 a{color:inherit}
 h1{font-size:clamp(26px,4vw,36px);letter-spacing:-.03em;margin:0 0 6px;line-height:1.2}

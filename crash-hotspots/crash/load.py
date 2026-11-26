@@ -6,6 +6,7 @@
 
 연도·기관마다 열 이름이 조금씩 달라 별칭으로 찾는다. 위경도 열이 없으면 UTM-K(EPSG:5179) 열을 바꿔 쓴다.
 """
+
 from __future__ import annotations
 
 import csv
@@ -57,8 +58,19 @@ def load(path: Path) -> tuple[list[dict], dict]:
     if not rows:
         return [], stats
     cols = list(rows[0].keys())
-    c = {k: pick(cols, al) for k, al in
-         {"when": WHEN, "lat": LAT, "lon": LON, "ux": UX, "uy": UY, "deaths": DEATHS, "kind": KIND, "road": ROAD}.items()}
+    c = {
+        k: pick(cols, al)
+        for k, al in {
+            "when": WHEN,
+            "lat": LAT,
+            "lon": LON,
+            "ux": UX,
+            "uy": UY,
+            "deaths": DEATHS,
+            "kind": KIND,
+            "road": ROAD,
+        }.items()
+    }
     use_wgs = c["lat"] and c["lon"]
     if not use_wgs and not (c["ux"] and c["uy"]):
         raise ValueError(f"{path}: 좌표 열(위도·경도 또는 UTM-K X·Y)을 찾지 못함 (있는 열: {cols})")
@@ -79,12 +91,17 @@ def load(path: Path) -> tuple[list[dict], dict]:
         if x is None or not (33.0 <= lat <= 38.7 and 124.5 <= lon <= 132.0):
             stats["outside_korea"] += 1
             continue
-        out.append({
-            "when": (r.get(c["when"]) or "").strip() if c["when"] else "",
-            "lat": lat, "lon": lon, "x": x, "y": y,
-            "deaths": _num(r.get(c["deaths"])) if c["deaths"] else None,
-            "kind": (r.get(c["kind"]) or "").strip() if c["kind"] else "",
-            "road": (r.get(c["road"]) or "").strip() if c["road"] else "",
-        })
+        out.append(
+            {
+                "when": (r.get(c["when"]) or "").strip() if c["when"] else "",
+                "lat": lat,
+                "lon": lon,
+                "x": x,
+                "y": y,
+                "deaths": _num(r.get(c["deaths"])) if c["deaths"] else None,
+                "kind": (r.get(c["kind"]) or "").strip() if c["kind"] else "",
+                "road": (r.get(c["road"]) or "").strip() if c["road"] else "",
+            }
+        )
     stats["kept"] = len(out)
     return out, stats

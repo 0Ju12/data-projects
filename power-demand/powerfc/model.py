@@ -9,6 +9,7 @@
 - linear: 달력(시각×평일/주말·휴일, 월) + 지연값 + 기온(냉방·난방 도일 형태) 선형 회귀
 - gbm: 같은 특징의 HistGradientBoosting
 """
+
 from __future__ import annotations
 
 from datetime import datetime, timedelta
@@ -40,7 +41,7 @@ def build_features(series: dict[datetime, float], temp: dict[datetime, float] | 
         dt = day_type(t.date())
         prev_dt = day_type((t - timedelta(days=1)).date())
         f = []
-        f += [1.0 if t.hour == h and dt == k else 0.0 for k in range(3) for h in range(24)]     # 시각 × 날 종류
+        f += [1.0 if t.hour == h and dt == k else 0.0 for k in range(3) for h in range(24)]  # 시각 × 날 종류
         f += [1.0 if t.month == m else 0.0 for m in range(1, 13)]
         f += [series[l24], series[l168], float(np.mean(prev_day)), 1.0 if prev_dt != dt else 0.0]
         if use_temp:

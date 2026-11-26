@@ -5,6 +5,7 @@ python -m wh.cli backfill 2025-03-01 2025-03-07   # 과거 날짜 다시 채우�
 python -m wh.cli report                           # 계보·테스트 결과·실행 기록 보고서 (docs/index.html)
 python -m wh.cli collect-jobs                     # 채용 공고 피드 수집 (data/jobs.csv 에 합침)
 """
+
 from __future__ import annotations
 
 import argparse
@@ -21,7 +22,9 @@ def main(argv=None) -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run")
     r.add_argument("--date", default=date.today().isoformat())
-    r.add_argument("--export-date", help="내보낼 날짜를 직접 지정 (기본: 실행 날짜의 월·일을 자료가 있는 2025년으로 옮김)")
+    r.add_argument(
+        "--export-date", help="내보낼 날짜를 직접 지정 (기본: 실행 날짜의 월·일을 자료가 있는 2025년으로 옮김)"
+    )
     b = sub.add_parser("backfill")
     b.add_argument("start")
     b.add_argument("end")
@@ -34,19 +37,45 @@ def main(argv=None) -> int:
 
     if a.cmd in ("collect-packages", "collect-disasters"):
         from .sources import extras
+
         st = extras.collect_packages() if a.cmd == "collect-packages" else extras.collect_disasters()
         print(json.dumps(st, ensure_ascii=False))
         return 0
     if a.cmd == "collect-market":
         from .sources import market
+
         st = market.collect()
-        print("끝난 날", st["end"], "· 새 봉", st["candles_new"], "· 고쳐진 봉", st["candles_changed"], "· 새 환율", st["fx_new"], "· 오류", st["errors"] or "없음")
+        print(
+            "끝난 날",
+            st["end"],
+            "· 새 봉",
+            st["candles_new"],
+            "· 고쳐진 봉",
+            st["candles_changed"],
+            "· 새 환율",
+            st["fx_new"],
+            "· 오류",
+            st["errors"] or "없음",
+        )
         return 1 if len(st["errors"]) >= 9 else 0
     if a.cmd == "collect-jobs":
         from .sources import jobs
+
         res = jobs.collect()
         for e in res:
-            print(e["source"], "받음", e["fetched"], "새 공고", e["new"], "바뀜", e["changed"], "쪽", e["pages"], "이어짐", e["overlap"])
+            print(
+                e["source"],
+                "받음",
+                e["fetched"],
+                "새 공고",
+                e["new"],
+                "바뀜",
+                e["changed"],
+                "쪽",
+                e["pages"],
+                "이어짐",
+                e["overlap"],
+            )
         return 1 if all(str(e["overlap"]).startswith("error") for e in res) else 0
 
     if a.cmd == "run":

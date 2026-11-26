@@ -1,0 +1,13 @@
+# 고정 버전. 갱신: uv pip compile --python-version 3.12 requirements.txt -o requirements.lock
+duckdb==2.0.1
+    # via -r requirements.txt
+iniconfig==2.3.1
+    # via pytest
+packaging==26.4
+    # via pytest
+pluggy==1.7.0
+    # via pytest
+pygments==2.21.0
+    # via pytest
+pytest==9.2.0
+    # via -r requirements.txt

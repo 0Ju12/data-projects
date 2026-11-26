@@ -1,7 +1,9 @@
 """Offline character n-gram baseline; public API also accepts pretrained vectors."""
+
 import hashlib
 import re
 import unicodedata
+
 import numpy as np
 
 ENCODER = "signed-char-ngram-v1"
@@ -14,7 +16,7 @@ def encode(text, dim=512):
         padded = "^" + word + "$"
         for n in (2, 3):
             for i in range(len(padded) - n + 1):
-                token = padded[i:i+n].encode("utf-8")
+                token = padded[i : i + n].encode("utf-8")
                 digest = hashlib.blake2s(token, digest_size=8).digest()
                 result[int.from_bytes(digest[:4], "little") % dim] += 1 if digest[4] & 1 else -1
     if not result.any():

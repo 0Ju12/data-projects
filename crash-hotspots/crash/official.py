@@ -4,6 +4,7 @@
 표준데이터 항목에는 다발지역 중심 위도·경도와 다발지역 폴리곤이 있다고 안내돼 있다. 폴리곤 열의 형식은
 받은 뒤 확인해야 해서, GeoJSON 문자열이면 쓰고 아니면 중심점만 쓴다.
 """
+
 from __future__ import annotations
 
 import json
@@ -42,8 +43,18 @@ def load(path: Path) -> tuple[list[dict], dict]:
     if not rows:
         return [], stats
     cols = list(rows[0].keys())
-    c = {k: pick(cols, al) for k, al in {"name": NAME, "year": YEAR, "count": COUNT, "deaths": DEATHS,
-                                         "lat": LAT, "lon": LON, "poly": POLY}.items()}
+    c = {
+        k: pick(cols, al)
+        for k, al in {
+            "name": NAME,
+            "year": YEAR,
+            "count": COUNT,
+            "deaths": DEATHS,
+            "lat": LAT,
+            "lon": LON,
+            "poly": POLY,
+        }.items()
+    }
     if not (c["lat"] and c["lon"]):
         raise ValueError(f"{path}: 다발지역 중심 좌표(위도·경도) 열이 없음 (있는 열: {cols})")
     out = []
@@ -54,9 +65,19 @@ def load(path: Path) -> tuple[list[dict], dict]:
         ring = _ring(r.get(c["poly"], "")) if c["poly"] else None
         stats["with_polygon"] += ring is not None
         x, y = to_utmk(lat, lon)
-        out.append({"name": (r.get(c["name"]) or "").strip() if c["name"] else "", "year": (r.get(c["year"]) or "").strip() if c["year"] else "",
-                    "count": _num(r.get(c["count"])) if c["count"] else None, "deaths": _num(r.get(c["deaths"])) if c["deaths"] else None,
-                    "lat": lat, "lon": lon, "x": x, "y": y, "ring": ring})
+        out.append(
+            {
+                "name": (r.get(c["name"]) or "").strip() if c["name"] else "",
+                "year": (r.get(c["year"]) or "").strip() if c["year"] else "",
+                "count": _num(r.get(c["count"])) if c["count"] else None,
+                "deaths": _num(r.get(c["deaths"])) if c["deaths"] else None,
+                "lat": lat,
+                "lon": lon,
+                "x": x,
+                "y": y,
+                "ring": ring,
+            }
+        )
     stats["kept"] = len(out)
     return out, stats
 
@@ -67,6 +88,7 @@ def compare(spots: list[dict], grid, hot, near_m: float = 500.0) -> dict:
     - 내 핫스팟 칸 중 공식 다발 지역 중심이 near_m 안에 있는 비율
     공식 다발 지역은 '사망·부상 사고 전체' 기준이고 이 분석은 '사망 사고' 기준이라, 겹침이 낮아도 이상하지 않다."""
     import numpy as np
+
     hi, hj = np.nonzero(hot)
     centers = [(grid.x0 + (j + 0.5) * grid.cell, grid.y0 + (i + 0.5) * grid.cell) for i, j in zip(hi, hj)]
     half = grid.cell / 2
@@ -75,7 +97,11 @@ def compare(spots: list[dict], grid, hot, near_m: float = 500.0) -> dict:
         return any(abs(x - cx) <= half + near_m and abs(y - cy) <= half + near_m for cx, cy in centers)
 
     covered = [s for s in spots if near_hot(s["x"], s["y"])]
-    hot_with_spot = sum(1 for cx, cy in centers if any(abs(s["x"] - cx) <= half + near_m and abs(s["y"] - cy) <= half + near_m for s in spots))
+    hot_with_spot = sum(
+        1
+        for cx, cy in centers
+        if any(abs(s["x"] - cx) <= half + near_m and abs(s["y"] - cy) <= half + near_m for s in spots)
+    )
     return {
         "official_spots": len(spots),
         "official_in_hotspots": len(covered),

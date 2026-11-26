@@ -4,6 +4,7 @@
 - last_seen: 마지막으로 목록에 있던 날. 마감 전인데 목록에서 사라지면 조기 마감으로 보고 이틀 뒤 뺌
 - 마감이 지난 공고는 달력에서 지난 날을 볼 수 있게 30일 동안 남김
 """
+
 import datetime as dt
 import json
 from pathlib import Path
@@ -11,8 +12,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 STORE = ROOT / "data" / "postings.json"
 OUT = ROOT / "docs" / "jobs.json"
-KEEP_PAST = 30      # 마감 지난 공고를 남기는 날 수
-GONE_AFTER = 2      # 목록에서 사라진 뒤 빼기까지 기다리는 날 수
+KEEP_PAST = 30  # 마감 지난 공고를 남기는 날 수
+GONE_AFTER = 2  # 목록에서 사라진 뒤 빼기까지 기다리는 날 수
 
 
 def load(path=STORE):
@@ -66,9 +67,33 @@ def export(store, log, today, path=OUT):
         if not r.get("start"):
             r["start"] = r.get("first_seen")
         if r.get("end") is None and r.get("last_seen") != today.isoformat():
-            r["gone"] = True   # 상시 공고가 오늘 목록에 없었음 (곧 정리됨)
-    data = {"updated": today.isoformat(), "sources": log, "count": len(rows),
-            "postings": [{k: r.get(k) for k in ("id", "src", "co", "title", "url", "roles", "stacks", "loc", "newbie", "start", "end", "tech", "first_seen")} for r in rows]}
+            r["gone"] = True  # 상시 공고가 오늘 목록에 없었음 (곧 정리됨)
+    data = {
+        "updated": today.isoformat(),
+        "sources": log,
+        "count": len(rows),
+        "postings": [
+            {
+                k: r.get(k)
+                for k in (
+                    "id",
+                    "src",
+                    "co",
+                    "title",
+                    "url",
+                    "roles",
+                    "stacks",
+                    "loc",
+                    "newbie",
+                    "start",
+                    "end",
+                    "tech",
+                    "first_seen",
+                )
+            }
+            for r in rows
+        ],
+    }
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     Path(path).write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return data

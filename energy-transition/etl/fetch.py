@@ -5,6 +5,7 @@
 둘 다 키 없이 받는 공개 자료(CC BY 4.0)입니다. 원본은 각각 약 30MB·9MB 라 통째로 저장하지 않고,
 받으면서 바로 걸러 수백 KB 로 줄입니다. 받다가 실패하거나 약속한 열이 없으면 이전 파일을 그대로 둡니다.
 """
+
 from __future__ import annotations
 
 import csv
@@ -15,7 +16,7 @@ import tempfile
 import urllib.request
 from pathlib import Path
 
-from .sources import EMBER_FROM, COUNTRIES, EMBER_COLS, EMBER_SOURCES, EMBER_URL, OWID_COLS, OWID_FROM_YEAR, OWID_URL
+from .sources import COUNTRIES, EMBER_COLS, EMBER_FROM, EMBER_SOURCES, EMBER_URL, OWID_COLS, OWID_FROM_YEAR, OWID_URL
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
@@ -63,8 +64,11 @@ def filter_owid(lines) -> list[list]:
     if missing:
         raise SchemaError(f"OWID 열이 바뀌었습니다: {missing}")
     keep = {o for _, o in COUNTRIES.values()}
-    out = [[row[c] for c in OWID_COLS] for row in r
-           if row["country"] in keep and row["year"].isdigit() and int(row["year"]) >= OWID_FROM_YEAR]
+    out = [
+        [row[c] for c in OWID_COLS]
+        for row in r
+        if row["country"] in keep and row["year"].isdigit() and int(row["year"]) >= OWID_FROM_YEAR
+    ]
     if not out:
         raise SchemaError("OWID 자료에서 대상 나라를 하나도 찾지 못했습니다")
     return out
@@ -77,7 +81,7 @@ def fetch_all(ember_url: str = EMBER_URL, owid_url: str = OWID_URL, data: Path =
         ("owid", owid_url, filter_owid, OWID_COLS, "owid_yearly.csv"),
     ]:
         try:
-            with (_open(url) if url.startswith("http") else open(url, encoding="utf-8", newline="")) as f:
+            with _open(url) if url.startswith("http") else open(url, encoding="utf-8", newline="") as f:
                 rows = fn(f)
             _write_atomic(data / fname, header, rows)
             report[name] = {"status": "ok", "rows": len(rows)}

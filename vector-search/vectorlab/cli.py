@@ -2,6 +2,7 @@ import argparse
 import json
 import sqlite3
 from pathlib import Path
+
 from .index import Index, append, save_new
 from .pipeline import pipeline
 from .text import ENCODER, encode
@@ -36,7 +37,7 @@ def main():
                 raise ValueError("use the embedding model used at build time via the Python API")
             hits = index.search(encode(args.query), args.k, args.probes)
             texts = dict(zip(index.ids, index.texts))
-            print(json.dumps([{"id": i, "score": s, "text": texts[i]} for i,s in hits], ensure_ascii=False, indent=2))
+            print(json.dumps([{"id": i, "score": s, "text": texts[i]} for i, s in hits], ensure_ascii=False, indent=2))
         else:
             docs = json.loads(args.documents.read_text(encoding="utf-8"))
             ids, texts = [d["id"] for d in docs], [d["text"] for d in docs]

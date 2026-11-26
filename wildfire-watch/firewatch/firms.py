@@ -2,6 +2,7 @@
 
 같은 탐지는 (위성, 날짜, 시각, 위·경도)로 구분해 여러 번 받아도 한 번만 저장합니다.
 """
+
 from __future__ import annotations
 
 import csv
@@ -30,8 +31,18 @@ def parse(text: str, sat: str) -> list[dict]:
             continue
         if not grid.in_bbox(lat, lon) or r.get("confidence", "").strip().lower() in ("low", "l"):
             continue
-        out.append({"sat": sat, "date": r["acq_date"], "time": r["acq_time"].zfill(4), "lat": round(lat, 5), "lon": round(lon, 5),
-                    "frp": r.get("frp", ""), "confidence": r.get("confidence", ""), "daynight": r.get("daynight", "")})
+        out.append(
+            {
+                "sat": sat,
+                "date": r["acq_date"],
+                "time": r["acq_time"].zfill(4),
+                "lat": round(lat, 5),
+                "lon": round(lon, 5),
+                "frp": r.get("frp", ""),
+                "confidence": r.get("confidence", ""),
+                "daynight": r.get("daynight", ""),
+            }
+        )
     return out
 
 
@@ -39,11 +50,13 @@ def fetch() -> tuple[list[dict], dict]:
     rows, status = [], {}
     for sat, url in SOURCES.items():
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "firewatch"}), timeout=120) as f:
+            with urllib.request.urlopen(
+                urllib.request.Request(url, headers={"User-Agent": "firewatch"}), timeout=120
+            ) as f:
                 got = parse(f.read().decode("utf-8", "replace"), sat)
             rows += got
             status[sat] = len(got)
-        except Exception as e:                      # 한 위성 파일이 안 받아져도 나머지는 계속
+        except Exception as e:  # 한 위성 파일이 안 받아져도 나머지는 계속
             status[sat] = f"실패: {type(e).__name__}"
     return rows, status
 

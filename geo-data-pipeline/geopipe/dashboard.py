@@ -3,6 +3,7 @@
 지도는 deck.gl + MapLibre GL 3D(진원을 실제 깊이만큼 지도 아래에 그림), 그래프는 서버에서 만든 인라인 SVG 입니다.
 모두 무료 오픈소스이고 배경 지도는 키가 필요 없는 OpenFreeMap 타일입니다.
 """
+
 from __future__ import annotations
 
 import html
@@ -24,9 +25,13 @@ def bar_svg(pairs, w=640, h=170, color="#2a78d6", every=None) -> str:
     for i, (k, v) in enumerate(pairs):
         bh = (h - 34) * v / top
         x = 32 + i * bw
-        bars.append(f'<rect x="{x:.1f}" y="{h - 20 - bh:.1f}" width="{max(bw - 1, 1):.1f}" height="{bh:.1f}" fill="{color}"><title>{_esc(k)}: {v}</title></rect>')
+        bars.append(
+            f'<rect x="{x:.1f}" y="{h - 20 - bh:.1f}" width="{max(bw - 1, 1):.1f}" height="{bh:.1f}" fill="{color}"><title>{_esc(k)}: {v}</title></rect>'
+        )
         if i % every == 0:
-            labels.append(f'<text x="{x:.1f}" y="{h - 6}" font-size="10" fill="currentColor" opacity=".6">{_esc(k)}</text>')
+            labels.append(
+                f'<text x="{x:.1f}" y="{h - 6}" font-size="10" fill="currentColor" opacity=".6">{_esc(k)}</text>'
+            )
     axis = f'<text x="0" y="12" font-size="10" fill="currentColor" opacity=".6">{top}</text>'
     return f'<svg class="chart" viewBox="0 0 {w} {h}" role="img" aria-label="막대 그래프">{axis}{"".join(bars)}{"".join(labels)}</svg>'
 
@@ -39,7 +44,10 @@ def fmd_svg(fmd, gr, w=640, h=230) -> str:
     ymax = math.log10(max(n for _, n in pts))
     X = lambda m: 40 + (m - m0) / ((m1 - m0) or 1) * (w - 60)
     Y = lambda lg: h - 26 - lg / (ymax or 1) * (h - 46)
-    dots = "".join(f'<circle cx="{X(m):.1f}" cy="{Y(math.log10(n)):.1f}" r="2.6" fill="#0f766e"><title>M≥{m}: {n}</title></circle>' for m, n in pts)
+    dots = "".join(
+        f'<circle cx="{X(m):.1f}" cy="{Y(math.log10(n)):.1f}" r="2.6" fill="#0f766e"><title>M≥{m}: {n}</title></circle>'
+        for m, n in pts
+    )
     line = ""
     if gr.get("b"):
         a, b, mc = gr["a"], gr["b"], gr["mc"]
@@ -48,9 +56,14 @@ def fmd_svg(fmd, gr, w=640, h=230) -> str:
         if len(seg) == 2:
             line = f'<line x1="{seg[0][0]:.1f}" y1="{seg[0][1]:.1f}" x2="{seg[1][0]:.1f}" y2="{seg[1][1]:.1f}" stroke="#b45309" stroke-width="2" stroke-dasharray="5 4"/>'
         line += f'<line x1="{X(mc):.1f}" y1="14" x2="{X(mc):.1f}" y2="{h - 26}" stroke="currentColor" opacity=".25"/><text x="{X(mc) + 4:.1f}" y="24" font-size="10" fill="currentColor" opacity=".7">Mc {mc}</text>'
-    ticks = "".join(f'<text x="{X(m):.1f}" y="{h - 8}" font-size="10" fill="currentColor" opacity=".6" text-anchor="middle">{m:.1f}</text>'
-                    for m in [round(m0 + i * 0.5, 1) for i in range(int((m1 - m0) / 0.5) + 1)])
-    yt = "".join(f'<text x="4" y="{Y(k) + 3:.1f}" font-size="10" fill="currentColor" opacity=".6">{10 ** k:g}</text>' for k in range(0, int(ymax) + 1))
+    ticks = "".join(
+        f'<text x="{X(m):.1f}" y="{h - 8}" font-size="10" fill="currentColor" opacity=".6" text-anchor="middle">{m:.1f}</text>'
+        for m in [round(m0 + i * 0.5, 1) for i in range(int((m1 - m0) / 0.5) + 1)]
+    )
+    yt = "".join(
+        f'<text x="4" y="{Y(k) + 3:.1f}" font-size="10" fill="currentColor" opacity=".6">{10**k:g}</text>'
+        for k in range(0, int(ymax) + 1)
+    )
     return f'<svg class="chart" viewBox="0 0 {w} {h}" role="img" aria-label="규모-누적빈도 그래프 (로그)">{yt}{ticks}{line}{dots}</svg>'
 
 
@@ -74,7 +87,7 @@ PAGE = r"""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name
 :root[data-theme="dark"]{color-scheme:dark;--bg:#0d0d0c;--card:#171716;--glass:rgba(23,23,22,.82);--text:#f0efec;--muted:#c3c2b7;--faint:#9a998f;--line:#2c2c29;--soft:#22221f;
   --d1:#184f95;--d2:#2a78d6;--d3:#5598e7;--d4:#9ec5f4;--d5:#cde2fb;--accent:#9ec5f4;--shadow:0 10px 30px rgba(0,0,0,.45)}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text)}
-body{font:15px/1.6 "Pretendard Variable",Pretendard,system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased}
+body{font:15px/1.6 "Pretendard Variable",Pretendard,system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
 a{color:inherit}
 .hero{position:relative;height:min(84vh,880px);min-height:580px;border-bottom:1px solid var(--line)}
 #map{position:absolute;inset:0}
@@ -190,19 +203,30 @@ def render(summaries: list[dict], quality: dict, events_js: list[list], updated:
     cards = []
     for s in summaries:
         gr = s["gr"]
-        gr_txt = (f'b = {gr["b"]} ± {gr["sigma"]} (Mc {gr["mc"]}, n = {gr["n"]})' if gr["b"] else _esc(gr["note"]))
-        top = "".join(f'<tr><td>{_esc(e["time_kst"])}</td><td><b>{e["mag"]}</b> {_esc(e["mag_type"])}</td><td>{e["depth_km"]:.0f} km</td><td>{_esc(e["place"])}</td></tr>' for e in s["largest"][:8])
-        cards.append(f'''<section class="card">
+        gr_txt = f"b = {gr['b']} ± {gr['sigma']} (Mc {gr['mc']}, n = {gr['n']})" if gr["b"] else _esc(gr["note"])
+        top = "".join(
+            f"<tr><td>{_esc(e['time_kst'])}</td><td><b>{e['mag']}</b> {_esc(e['mag_type'])}</td><td>{e['depth_km']:.0f} km</td><td>{_esc(e['place'])}</td></tr>"
+            for e in s["largest"][:8]
+        )
+        cards.append(f"""<section class="card">
 <h2>{_esc(s["region"])} <small>{s["n"]:,}건 · {_esc((s["first"] or "")[:10])} ~ {_esc((s["last"] or "")[:10])}</small></h2>
 <div class="g2"><div><h3>월별 발생 건수</h3>{bar_svg(s["monthly"])}</div>
 <div><h3>규모-누적빈도 (구텐베르크-리히터)</h3>{fmd_svg(s["fmd"], gr)}<p class="note">{gr_txt}. 규모 종류: {_esc(", ".join(f"{k} {v}" for k, v in sorted(s["mag_types"].items(), key=lambda x: -x[1])))} — 종류가 섞여 있어 b값은 참고용.</p></div></div>
 <div class="g2"><div><h3>깊이 분포</h3>{bar_svg(s["depth"], color="#7c3aed", every=1)}</div>
-<div><h3>큰 지진 (KST)</h3><table>{top}</table></div></div></section>''')
+<div><h3>큰 지진 (KST)</h3><table>{top}</table></div></div></section>""")
     q = quality
-    qrows = "".join(f"<tr><td>{_esc(k)}</td><td>{v:,}</td></tr>" for k, v in [
-        ("이번 실행에서 받은 이벤트", q.get("received", 0)), ("같은 실행 안 중복", q.get("duplicates", 0)), ("수정본으로 갱신", q.get("revised", 0)),
-        ("규모 없음(격리)", q.get("no_magnitude", 0)), ("좌표·깊이 범위 밖(격리)", q.get("out_of_range", 0)), ("지진이 아닌 이벤트(격리)", q.get("not_earthquake", 0)),
-        ("누적 보관 이벤트", q.get("kept", 0))])
+    qrows = "".join(
+        f"<tr><td>{_esc(k)}</td><td>{v:,}</td></tr>"
+        for k, v in [
+            ("이번 실행에서 받은 이벤트", q.get("received", 0)),
+            ("같은 실행 안 중복", q.get("duplicates", 0)),
+            ("수정본으로 갱신", q.get("revised", 0)),
+            ("규모 없음(격리)", q.get("no_magnitude", 0)),
+            ("좌표·깊이 범위 밖(격리)", q.get("out_of_range", 0)),
+            ("지진이 아닌 이벤트(격리)", q.get("not_earthquake", 0)),
+            ("누적 보관 이벤트", q.get("kept", 0)),
+        ]
+    )
     r0 = cfg["regions"][0]
     # 지도 이벤트의 장소 이름에 '</script>' 같은 문자열이 들어와도 스크립트가 끊기지 않게
     ev = json.dumps(events_js, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
@@ -213,7 +237,7 @@ def render(summaries: list[dict], quality: dict, events_js: list[list], updated:
         "__DEPTH_LABELS__": "".join(f"<span>{_esc(x)}</span>" for x in DEPTH_LABELS),
         "__MAP_DAYS__": str(cfg["map_days"]),
         "__MIN_MAG__": str(r0["min_mag"]),
-        "__MAP_NOTE__": f'{_esc(r0["name"])} M{r0["min_mag"]}+ 최근 {cfg["map_days"]}일',
+        "__MAP_NOTE__": f"{_esc(r0['name'])} M{r0['min_mag']}+ 최근 {cfg['map_days']}일",
         "__UPDATED__": _esc(updated),
         "__CARDS__": "".join(cards),
         "__QROWS__": qrows,

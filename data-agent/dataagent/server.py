@@ -6,18 +6,19 @@
 - run_sql(sql)                         읽기 전용 SELECT 실행 (최대 200행, 3초)
 - check_answer(question, sql, answer)  SQL 을 다시 실행해, 답 속 숫자가 결과에 근거가 있는지 확인
 """
+
 from __future__ import annotations
 
 import os
 import sqlite3
 from pathlib import Path
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 
 from . import build_db, guard, verify
 
 DB = Path(os.environ.get("DATAAGENT_DB", build_db.DB))
-mcp = FastMCP("data-projects")
+mcp = MCPServer("data-projects")
 
 
 def _ensure_db() -> None:
@@ -31,8 +32,10 @@ def list_tables() -> list[dict]:
     _ensure_db()
     con = sqlite3.connect(f"file:{DB.as_posix()}?mode=ro", uri=True)
     try:
-        return [{"table": t, "description": d, "rows": con.execute(f'SELECT COUNT(*) FROM "{t}"').fetchone()[0]}
-                for t, d in con.execute("SELECT table_name, description FROM _catalog WHERE column_name = ''")]
+        return [
+            {"table": t, "description": d, "rows": con.execute(f'SELECT COUNT(*) FROM "{t}"').fetchone()[0]}
+            for t, d in con.execute("SELECT table_name, description FROM _catalog WHERE column_name = ''")
+        ]
     finally:
         con.close()
 
@@ -43,7 +46,9 @@ def describe_table(name: str) -> dict:
     _ensure_db()
     con = sqlite3.connect(f"file:{DB.as_posix()}?mode=ro", uri=True)
     try:
-        cols = con.execute("SELECT column_name, description FROM _catalog WHERE table_name = ? AND column_name != ''", (name,)).fetchall()
+        cols = con.execute(
+            "SELECT column_name, description FROM _catalog WHERE table_name = ? AND column_name != ''", (name,)
+        ).fetchall()
         if not cols:
             return {"error": f"'{name}' 표가 없습니다. list_tables 로 이름을 확인하세요."}
         sample = guard.run(DB, f'SELECT * FROM "{name}" LIMIT 3')

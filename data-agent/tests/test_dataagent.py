@@ -6,7 +6,6 @@ from pathlib import Path
 
 import anyio
 import pytest
-
 from dataagent import build_db, guard, verify
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -28,18 +27,21 @@ def test_select_runs_and_limits_rows(db):
     assert guard.run(db, "WITH x AS (SELECT 1 AS a) SELECT a FROM x -- 주석")["rows"] == [[1]]
 
 
-@pytest.mark.parametrize("sql", [
-    "DROP TABLE power_hourly",
-    "DELETE FROM earthquakes",
-    "UPDATE earthquakes SET mag = 9",
-    "INSERT INTO earthquakes(id) VALUES ('x')",
-    "SELECT 1; DROP TABLE earthquakes",
-    "/* 숨김 */ PRAGMA writable_schema = 1",
-    "ATTACH DATABASE '/tmp/x.db' AS x",
-    "WITH x AS (SELECT 1) DELETE FROM earthquakes",
-    "SELECT load_extension('x')",
-    "",
-])
+@pytest.mark.parametrize(
+    "sql",
+    [
+        "DROP TABLE power_hourly",
+        "DELETE FROM earthquakes",
+        "UPDATE earthquakes SET mag = 9",
+        "INSERT INTO earthquakes(id) VALUES ('x')",
+        "SELECT 1; DROP TABLE earthquakes",
+        "/* 숨김 */ PRAGMA writable_schema = 1",
+        "ATTACH DATABASE '/tmp/x.db' AS x",
+        "WITH x AS (SELECT 1) DELETE FROM earthquakes",
+        "SELECT load_extension('x')",
+        "",
+    ],
+)
 def test_everything_but_one_select_is_rejected(db, sql):
     before = sqlite3.connect(db).execute("SELECT COUNT(*), MAX(mag) FROM earthquakes").fetchone()
     with pytest.raises(guard.SQLRejected):
@@ -55,24 +57,49 @@ def test_semicolon_inside_string_is_allowed_and_timeout_stops(db):
 
 
 def test_verify_supported_rounding_units_and_given():
-    res = {"columns": ["date", "peak_mw", "mape"], "rows": [["2025-12-26", 87193, 0.03231]], "row_count": 1, "truncated": False}
-    ok = verify.check("2025년 4분기 최대 수요는 12월 26일의 87,193 MW(약 87.2 GW)였고 오차는 3.23%입니다.", res, "2025년 4분기 최대 수요는?")
+    res = {
+        "columns": ["date", "peak_mw", "mape"],
+        "rows": [["2025-12-26", 87193, 0.03231]],
+        "row_count": 1,
+        "truncated": False,
+    }
+    ok = verify.check(
+        "2025년 4분기 최대 수요는 12월 26일의 87,193 MW(약 87.2 GW)였고 오차는 3.23%입니다.",
+        res,
+        "2025년 4분기 최대 수요는?",
+    )
     assert ok["ok"] and ok["checked"] == 7
     basis = {s["number"]: s["basis"] for s in ok["supported"]}
-    assert basis["87,193"] == "결과 값" and basis["87.2"] == "결과 값 ÷ 1000" and basis["3.23"] == "결과 값 × 100" and basis["2025"] == "결과 값"
+    assert (
+        basis["87,193"] == "결과 값"
+        and basis["87.2"] == "결과 값 ÷ 1000"
+        and basis["3.23"] == "결과 값 × 100"
+        and basis["2025"] == "결과 값"
+    )
 
 
 def test_verify_catches_wrong_and_invented_numbers():
     res = {"columns": ["n", "max_mag"], "rows": [[12, 6.3]], "row_count": 1, "truncated": False}
     bad = verify.check("규모 5 이상 지진은 21건이고 가장 큰 것은 규모 6.8입니다.", res, "규모 5 이상 지진은 몇 건?")
-    assert not bad["ok"] and [u["number"] for u in bad["unsupported"]] == ["21", "6.8"]      # 자리 바뀜, 지어낸 값
+    assert not bad["ok"] and [u["number"] for u in bad["unsupported"]] == ["21", "6.8"]  # 자리 바뀜, 지어낸 값
     assert verify.check("12건, 최대 규모 6.3", res, "")["ok"]
-    assert not verify.check("12건으로 지난달 8건보다 4건 늘었습니다.", res, "")["ok"]           # 결과에 없는 비교
-    assert verify.check("결과는 3건입니다.", {"rows": [["a"], ["b"], ["c"]], "row_count": 3, "truncated": False})["supported"][0]["basis"] == "행 수"
+    assert not verify.check("12건으로 지난달 8건보다 4건 늘었습니다.", res, "")["ok"]  # 결과에 없는 비교
+    assert (
+        verify.check("결과는 3건입니다.", {"rows": [["a"], ["b"], ["c"]], "row_count": 3, "truncated": False})[
+            "supported"
+        ][0]["basis"]
+        == "행 수"
+    )
 
 
 def test_number_extraction():
-    assert [n for _, n, _ in verify.numbers("1,234.5 MW, -3.2%, 2025-10-06, v2")] == [1234.5, -3.2, 2025.0, 10.0, 6.0]      # 날짜의 - 는 음수 부호가 아님, v2 의 2 는 숫자로 보지 않음
+    assert [n for _, n, _ in verify.numbers("1,234.5 MW, -3.2%, 2025-10-06, v2")] == [
+        1234.5,
+        -3.2,
+        2025.0,
+        10.0,
+        6.0,
+    ]  # 날짜의 - 는 음수 부호가 아님, v2 의 2 는 숫자로 보지 않음
 
 
 def test_mcp_server_over_stdio(db):
@@ -81,17 +108,36 @@ def test_mcp_server_over_stdio(db):
     from mcp.client.stdio import stdio_client
 
     async def go():
-        params = StdioServerParameters(command=sys.executable, args=["-m", "dataagent.server"], cwd=str(ROOT),
-                                       env={**os.environ, "DATAAGENT_DB": str(db), "PYTHONPATH": str(ROOT)})
+        params = StdioServerParameters(
+            command=sys.executable,
+            args=["-m", "dataagent.server"],
+            cwd=str(ROOT),
+            env={**os.environ, "DATAAGENT_DB": str(db), "PYTHONPATH": str(ROOT)},
+        )
         async with stdio_client(params) as (r, w):
             async with ClientSession(r, w) as s:
                 await s.initialize()
                 names = sorted(t.name for t in (await s.list_tools()).tools)
                 call = lambda n, a: s.call_tool(n, a)
                 tables = (await call("list_tables", {})).content
-                ok = json.loads((await call("run_sql", {"sql": "SELECT COUNT(*) AS n FROM power_hourly"})).content[0].text)
+                ok = json.loads(
+                    (await call("run_sql", {"sql": "SELECT COUNT(*) AS n FROM power_hourly"})).content[0].text
+                )
                 rej = json.loads((await call("run_sql", {"sql": "DROP TABLE power_hourly"})).content[0].text)
-                chk = json.loads((await call("check_answer", {"question": "몇 시간?", "sql": "SELECT COUNT(*) AS n FROM power_hourly", "answer": "2,280시간입니다."})).content[0].text)
+                chk = json.loads(
+                    (
+                        await call(
+                            "check_answer",
+                            {
+                                "question": "몇 시간?",
+                                "sql": "SELECT COUNT(*) AS n FROM power_hourly",
+                                "answer": "2,280시간입니다.",
+                            },
+                        )
+                    )
+                    .content[0]
+                    .text
+                )
                 return names, tables, ok, rej, chk
 
     names, tables, ok, rej, chk = anyio.run(go)

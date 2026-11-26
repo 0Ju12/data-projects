@@ -7,15 +7,32 @@ HOT 의 행정구역 표시는 경계가 오래됐거나 틀린 곳이 있어 �
 - 경북 안의 'Buk-gu' 는 포항시 북구 → 포항시
 경계 근처 칸은 붙은 도로가 이웃 시군 것이면 그쪽으로 들어갈 수 있다 (칸 1 km 수준의 오차).
 """
+
 from __future__ import annotations
 
 GYEONGBUK = {
-    "Pohang-si": "포항시", "Gyeongju-si": "경주시", "Gimcheon-si": "김천시", "Andong-si": "안동시",
-    "Gumi-si": "구미시", "Yeongju-si": "영주시", "Yeongcheon-si": "영천시", "Sangju-si": "상주시",
-    "Mungyeong-si": "문경시", "Gyeongsan-si": "경산시", "Uiseong-gun": "의성군", "Cheongsong-gun": "청송군",
-    "Yeongyang-gun": "영양군", "Yeongdeok-gun": "영덕군", "Cheongdo-gun": "청도군", "Goryeong-gun": "고령군",
-    "Seongju-gun": "성주군", "Chilgok-gun": "칠곡군", "Yecheon-gun": "예천군", "Bonghwa-gun": "봉화군",
-    "Uljin-gun": "울진군", "Ulleung-gun": "울릉군",
+    "Pohang-si": "포항시",
+    "Gyeongju-si": "경주시",
+    "Gimcheon-si": "김천시",
+    "Andong-si": "안동시",
+    "Gumi-si": "구미시",
+    "Yeongju-si": "영주시",
+    "Yeongcheon-si": "영천시",
+    "Sangju-si": "상주시",
+    "Mungyeong-si": "문경시",
+    "Gyeongsan-si": "경산시",
+    "Uiseong-gun": "의성군",
+    "Cheongsong-gun": "청송군",
+    "Yeongyang-gun": "영양군",
+    "Yeongdeok-gun": "영덕군",
+    "Cheongdo-gun": "청도군",
+    "Goryeong-gun": "고령군",
+    "Seongju-gun": "성주군",
+    "Chilgok-gun": "칠곡군",
+    "Yecheon-gun": "예천군",
+    "Bonghwa-gun": "봉화군",
+    "Uljin-gun": "울진군",
+    "Ulleung-gun": "울릉군",
 }
 FIXES = {("Gangwon", "Uljin-gun"): "울진군", ("North Gyeongsang", "Buk-gu"): "포항시"}
 
@@ -25,7 +42,7 @@ def gyeongbuk_sigun(adm1: str, adm2: str) -> str | None:
     if (adm1, adm2) in FIXES:
         return FIXES[(adm1, adm2)]
     if adm1 == "North Gyeongsang":
-        return GYEONGBUK.get(adm2)          # 달성군·군위군·수성구·창녕군 등은 None
+        return GYEONGBUK.get(adm2)  # 달성군·군위군·수성구·창녕군 등은 None
     return None
 
 

@@ -1,0 +1,15 @@
+# 저장소 전체 파이썬 서식·린트 기준. CI의 lint 작업이 `ruff format --check`와 `ruff check`를 실행합니다.
+line-length = 120
+target-version = "py310"
+extend-exclude = ["**/raw", "**/cache", "**/_pages"]
+
+[lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = [
+  "E501",  # 줄 길이는 formatter가 맞추고, 긴 문자열·SQL은 그대로 둠
+  "E731",  # 짧은 lambda 대입 허용 (모델 팩토리 표)
+  "B905",  # zip(strict=) — 3.10 대상이라 선택 적용
+]
+
+[lint.isort]
+known-first-party = ["powerfc", "sensoranom", "geopipe", "dartmart", "eraccess", "krgeo", "pubdata", "status", "watchtower", "wh"]

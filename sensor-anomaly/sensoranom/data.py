@@ -4,6 +4,7 @@
 특징: 센서마다 사이클 단위 통계 8개 → 136개 (평균·표준편차·최소·최대·5/95 백분위·기울기·RMS 변화량).
 처음 한 번 계산한 특징은 cache/features.npz 에 저장해 다시 쓰고, 원본 ZIP 은 SHA-256 으로 확인합니다.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -15,10 +16,28 @@ import numpy as np
 
 URL = "https://archive.ics.uci.edu/static/public/447/condition+monitoring+of+hydraulic+systems.zip"
 SHA256 = "24128aad2ee45eea7e6b63ebbd9992cdf25d0483a2cebefbfc13bc69079af1f2"
-SENSORS = ["PS1", "PS2", "PS3", "PS4", "PS5", "PS6", "EPS1", "FS1", "FS2", "TS1", "TS2", "TS3", "TS4", "VS1", "CE", "CP", "SE"]
+SENSORS = [
+    "PS1",
+    "PS2",
+    "PS3",
+    "PS4",
+    "PS5",
+    "PS6",
+    "EPS1",
+    "FS1",
+    "FS2",
+    "TS1",
+    "TS2",
+    "TS3",
+    "TS4",
+    "VS1",
+    "CE",
+    "CP",
+    "SE",
+]
 STATS = ["mean", "std", "min", "max", "p05", "p95", "slope", "diff_rms"]
 TARGETS = ["cooler", "valve", "pump", "accumulator", "stable"]
-NORMAL = {"cooler": 100, "valve": 100, "pump": 0, "accumulator": 130}   # 각 부품의 '최적 상태' 값 (documentation.txt)
+NORMAL = {"cooler": 100, "valve": 100, "pump": 0, "accumulator": 130}  # 각 부품의 '최적 상태' 값 (documentation.txt)
 
 
 def download(raw: Path) -> Path:
@@ -40,8 +59,18 @@ def cycle_features(x: np.ndarray) -> np.ndarray:
     tc = t - t.mean()
     slope = (x - x.mean(axis=1, keepdims=True)) @ tc / (tc @ tc)
     d = np.diff(x, axis=1)
-    return np.column_stack([x.mean(1), x.std(1), x.min(1), x.max(1), np.percentile(x, 5, axis=1), np.percentile(x, 95, axis=1),
-                            slope, np.sqrt((d ** 2).mean(1))])
+    return np.column_stack(
+        [
+            x.mean(1),
+            x.std(1),
+            x.min(1),
+            x.max(1),
+            np.percentile(x, 5, axis=1),
+            np.percentile(x, 95, axis=1),
+            slope,
+            np.sqrt((d**2).mean(1)),
+        ]
+    )
 
 
 def feature_names() -> list[str]:

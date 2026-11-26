@@ -1,10 +1,9 @@
 """수집 거르기·분석 쿼리를 작은 가짜 원본으로 확인 (네트워크 없이)."""
+
 import csv
 import json
-from pathlib import Path
 
 import pytest
-
 from etl import analyze, fetch
 from etl.sources import EMBER_COLS, OWID_COLS
 
@@ -20,10 +19,14 @@ def _ember_rows():
             shares = {"Coal": 40.0, "Gas": 30.0, "Nuclear": 20.0, "Solar": solar, "Wind": 1.0, "Hydro": 9.0 - solar}
             for src, sh in shares.items():
                 rows.append(["South Korea", f"{y}-{m:02d}-01", src, sh / 2, sh, "", "Country or economy", "Asia"])
-            rows.append(["South Korea", f"{y}-{m:02d}-01", "Total generation", 50, 100, 400 - m, "Country or economy", "Asia"])
-            rows.append(["South Korea", f"{y}-{m:02d}-01", "Fossil", 35, 70, "", "Country or economy", "Asia"])   # 묶음 행 — 버려야 함
-    rows.append(["Narnia", "2025-01-01", "Coal", 1, 100, "", "Country or economy", "Europe"])                   # 대상 아닌 나라
-    rows.append(["South Korea", "2010-01-01", "Coal", 1, 50, "", "Country or economy", "Asia"])                # 시작 달 이전
+            rows.append(
+                ["South Korea", f"{y}-{m:02d}-01", "Total generation", 50, 100, 400 - m, "Country or economy", "Asia"]
+            )
+            rows.append(
+                ["South Korea", f"{y}-{m:02d}-01", "Fossil", 35, 70, "", "Country or economy", "Asia"]
+            )  # 묶음 행 — 버려야 함
+    rows.append(["Narnia", "2025-01-01", "Coal", 1, 100, "", "Country or economy", "Europe"])  # 대상 아닌 나라
+    rows.append(["South Korea", "2010-01-01", "Coal", 1, 50, "", "Country or economy", "Asia"])  # 시작 달 이전
     return rows
 
 
@@ -34,11 +37,26 @@ def _owid_rows():
             coal = 46 - (y - 2000) * 0.5 if c == "South Korea" else max(0.0, 30 - (y - 2005) * 3)
             solar = max(0.0, (y - 2016) * 0.8) if c == "South Korea" else max(0.0, (y - 2012) * 0.6)
             row = {k: "" for k in OWID_COLS}
-            row.update(country=c, year=y, population=1, electricity_generation=300 + y - 2000, per_capita_electricity=10000,
-                       carbon_intensity_elec=500 - (y - 2000) * 3, coal_share_elec=coal, gas_share_elec=100 - coal - 1 - 30 - 1 - 0.5 - solar - 0.5, oil_share_elec=1,
-                       nuclear_share_elec=30, hydro_share_elec=1, wind_share_elec=0.5, solar_share_elec=solar, biofuel_share_elec=0.5,
-                       other_renewables_share_elec_exc_biofuel=0, low_carbon_share_elec=32 + solar, renewables_share_elec=2 + solar,
-                       fossil_share_elec=68 - solar)
+            row.update(
+                country=c,
+                year=y,
+                population=1,
+                electricity_generation=300 + y - 2000,
+                per_capita_electricity=10000,
+                carbon_intensity_elec=500 - (y - 2000) * 3,
+                coal_share_elec=coal,
+                gas_share_elec=100 - coal - 1 - 30 - 1 - 0.5 - solar - 0.5,
+                oil_share_elec=1,
+                nuclear_share_elec=30,
+                hydro_share_elec=1,
+                wind_share_elec=0.5,
+                solar_share_elec=solar,
+                biofuel_share_elec=0.5,
+                other_renewables_share_elec_exc_biofuel=0,
+                low_carbon_share_elec=32 + solar,
+                renewables_share_elec=2 + solar,
+                fossil_share_elec=68 - solar,
+            )
             out.append([row[k] for k in OWID_COLS])
     return out
 
@@ -47,9 +65,13 @@ def _owid_rows():
 def raw(tmp_path):
     e, o = tmp_path / "ember.csv", tmp_path / "owid.csv"
     with e.open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f); w.writerow(EMBER_HEADER); w.writerows(_ember_rows())
+        w = csv.writer(f)
+        w.writerow(EMBER_HEADER)
+        w.writerows(_ember_rows())
     with o.open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f); w.writerow(OWID_COLS); w.writerows(_owid_rows())
+        w = csv.writer(f)
+        w.writerow(OWID_COLS)
+        w.writerows(_owid_rows())
     return tmp_path, e, o
 
 
@@ -59,7 +81,7 @@ def test_fetch_keeps_only_target_countries_sources_and_months(raw):
     assert rep["ember"]["status"] == "ok" and rep["owid"]["status"] == "ok"
     rows = list(csv.DictReader((d / "data" / "ember_monthly.csv").open(encoding="utf-8")))
     assert {r["area"] for r in rows} == {"South Korea"}
-    assert "Fossil" not in {r["source"] for r in rows}            # 묶음 행은 겹쳐 세지 않게 버림
+    assert "Fossil" not in {r["source"] for r in rows}  # 묶음 행은 겹쳐 세지 않게 버림
     assert min(r["month"] for r in rows) >= "2015-01-01"
     assert rep["ember"]["rows"] == 4 * 12 * 7
 
@@ -89,9 +111,17 @@ def test_queries_answer_the_questions(raw):
     mix = r["mix_yearly"]
     assert all(abs(m["coal"] + m["nuclear"] + m["gas"] + m["other"] + m["wind"] + m["solar"] - 100) < 1e-6 for m in mix)
     kr = next(c for c in r["coal_change"] if c["country"] == "한국")
-    assert kr["coal_2015"] == pytest.approx(38.5) and kr["coal_last"] == pytest.approx(33.5) and kr["coal_peak_year"] == 2000
+    assert (
+        kr["coal_2015"] == pytest.approx(38.5)
+        and kr["coal_last"] == pytest.approx(33.5)
+        and kr["coal_peak_year"] == 2000
+    )
     uk = next(s for s in r["solar_growth"] if s["country"] == "영국")
-    assert (uk["first_1pct"], uk["first_5pct"], uk["first_10pct"]) == (2014, 2021, None)   # 0.6%p 씩: 2014년 1.2%, 2021년 5.4%
+    assert (uk["first_1pct"], uk["first_5pct"], uk["first_10pct"]) == (
+        2014,
+        2021,
+        None,
+    )  # 0.6%p 씩: 2014년 1.2%, 2021년 5.4%
     # 계절성: 4·5월 태양광 8%, 나머지 4%
     assert {s["solar_share"] for s in r["solar_seasonal"] if s["mon"] in (4, 5)} == {8.0}
     # 달별 구성: 다 찬 최근 4개 연도, 묶음별 합이 100

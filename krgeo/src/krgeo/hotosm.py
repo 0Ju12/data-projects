@@ -13,6 +13,7 @@ GeoPackage 는 SQLite 파일이라 표준 라이브러리 sqlite3 로 읽는다.
 좌표를 1e-7° 로 맞춘 값을 노드 번호로 쓰면 원래의 연결 관계가 그대로 살아난다.
 (입체교차처럼 노드를 공유하지 않는 곳은 좌표도 다르므로 잘못 이어지지 않는다.)
 """
+
 from __future__ import annotations
 
 import sqlite3
@@ -35,8 +36,8 @@ def _wkb_lines(buf: bytes, off: int = 0) -> tuple[list[list[tuple[float, float]]
     bo = "<" if buf[off] == 1 else ">"
     (gtype,) = struct.unpack_from(bo + "I", buf, off + 1)
     off += 5
-    t = gtype & 0x0FFFFFFF                                  # EWKB 의 Z/M 깃발 비트 제거
-    iso, base = t // 1000, t % 1000                         # ISO WKB: 1xxx=Z, 2xxx=M, 3xxx=ZM
+    t = gtype & 0x0FFFFFFF  # EWKB 의 Z/M 깃발 비트 제거
+    iso, base = t // 1000, t % 1000  # ISO WKB: 1xxx=Z, 2xxx=M, 3xxx=ZM
     has_z = bool(gtype & 0x80000000) or iso in (1, 3)
     has_m = bool(gtype & 0x40000000) or iso in (2, 3)
     dims = 2 + has_z + has_m
@@ -63,7 +64,7 @@ def _wkb_lines(buf: bytes, off: int = 0) -> tuple[list[list[tuple[float, float]]
                 off += 8 * dims
             rings.append(ring)
         return rings, off
-    if base in (5, 6):                                      # MultiLineString, MultiPolygon
+    if base in (5, 6):  # MultiLineString, MultiPolygon
         (n,) = struct.unpack_from(bo + "I", buf, off)
         off += 4
         out = []
@@ -71,7 +72,7 @@ def _wkb_lines(buf: bytes, off: int = 0) -> tuple[list[list[tuple[float, float]]
             lines, off = _wkb_lines(buf, off)
             out += lines
         return out, off
-    if base in (1, 4):                                      # 점(드물게 도로 등급이 잘못 붙은 노드) — 도로망에 쓸모없음
+    if base in (1, 4):  # 점(드물게 도로 등급이 잘못 붙은 노드) — 도로망에 쓸모없음
         return [], off
     raise ValueError(f"지원하지 않는 도형 유형 {gtype}")
 
@@ -81,7 +82,7 @@ def parse_geometry(blob: bytes) -> list[list[tuple[float, float]]]:
         raise ValueError("GeoPackage 도형이 아님")
     flags = blob[3]
     env = ENVELOPE_BYTES[(flags >> 1) & 0b111]
-    if flags & 0b10000:                                     # 빈 도형
+    if flags & 0b10000:  # 빈 도형
         return []
     return _wkb_lines(blob, 8 + env)[0]
 
@@ -104,9 +105,11 @@ def read_roads(path: Path, bbox: list[float], classes: list[str]) -> dict:
     has_rtree = con.execute("SELECT 1 FROM sqlite_master WHERE name = ?", (rtree,)).fetchone() is not None
     allowed = set(classes) | {c + "_link" for c in classes}
     sel = ", ".join(f't."{c}"' for c in want)
-    if has_rtree:                                           # 공간 색인으로 범위 안 것만
-        q = (f'SELECT t."{geom}", {sel} FROM "{table}" t JOIN "{rtree}" r ON t.rowid = r.id '
-             f'WHERE r.maxx >= ? AND r.minx <= ? AND r.maxy >= ? AND r.miny <= ?')
+    if has_rtree:  # 공간 색인으로 범위 안 것만
+        q = (
+            f'SELECT t."{geom}", {sel} FROM "{table}" t JOIN "{rtree}" r ON t.rowid = r.id '
+            f"WHERE r.maxx >= ? AND r.minx <= ? AND r.maxy >= ? AND r.miny <= ?"
+        )
         rows = con.execute(q, (w, e, s, n))
     else:
         rows = con.execute(f'SELECT t."{geom}", {sel} FROM "{table}" t')
@@ -128,15 +131,24 @@ def read_roads(path: Path, bbox: list[float], classes: list[str]) -> dict:
                 k = node_key(lat, lon)
                 nodes[str(k)] = [round(lat, 7), round(lon, 7)]
                 ids.append(k)
-            ways.append([hw, direction, maxspeed, ids, [str(tags.get("adm1_name", "")), str(tags.get("adm2_name", ""))]])
+            ways.append(
+                [hw, direction, maxspeed, ids, [str(tags.get("adm1_name", "")), str(tags.get("adm2_name", ""))]]
+            )
     con.close()
     return {"nodes": nodes, "ways": ways}
 
 
 # 도로 등급별 차량 평균 속도(km/h) — 신호·정체를 감안해 제한속도보다 낮게 잡은 가정값
 DEFAULT_SPEEDS = {
-    "motorway": 90, "trunk": 70, "primary": 50, "secondary": 45, "tertiary": 40,
-    "unclassified": 30, "residential": 25, "living_street": 10, "service": 15,
+    "motorway": 90,
+    "trunk": 70,
+    "primary": 50,
+    "secondary": 45,
+    "tertiary": 40,
+    "unclassified": 30,
+    "residential": 25,
+    "living_street": 10,
+    "service": 15,
 }
 ONEWAY_BY_DEFAULT = {"motorway"}
 
@@ -167,7 +179,7 @@ def add_compact(g: RoadGraph, c: dict, speeds: dict, seen_ways: set | None = Non
     """압축 타일 하나를 그래프에 더한다. 타일 경계에 걸친 도로는 양쪽 타일에 다 들어 있어,
     같은 (노드 목록) 도로는 한 번만 더한다."""
     coords = c["nodes"]
-    for hw, direction, maxspeed, ids, *_ in c["ways"]:      # 뒤에 [시도, 시군구] 가 붙을 수 있음
+    for hw, direction, maxspeed, ids, *_ in c["ways"]:  # 뒤에 [시도, 시군구] 가 붙을 수 있음
         kmh = _speed(hw, maxspeed, speeds)
         if kmh is None:
             continue
@@ -187,7 +199,9 @@ def add_compact(g: RoadGraph, c: dict, speeds: dict, seen_ways: set | None = Non
                 g.add_edge(b, a, sec)
 
 
-def to_graph(compact: dict, speeds: dict | None = None, seen_ways: set | None = None, g: RoadGraph | None = None) -> RoadGraph:
+def to_graph(
+    compact: dict, speeds: dict | None = None, seen_ways: set | None = None, g: RoadGraph | None = None
+) -> RoadGraph:
     """read_roads 결과(압축 형식)를 이동 시간(초) 그래프로. 일방통행·제한속도(있으면 더 낮은 쪽) 반영."""
     speeds = speeds or DEFAULT_SPEEDS
     g = g or RoadGraph()

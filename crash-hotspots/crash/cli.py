@@ -1,4 +1,5 @@
 """python -m crash.cli build      # data/crashes_*.csv (+ data/official_*.csv) → 핫스팟 → data/summary.json, docs/data.json (네트워크 없음)"""
+
 from __future__ import annotations
 
 import json
@@ -33,9 +34,12 @@ def build(cfg: dict) -> dict:
     # 핫스팟 칸 안 사고의 구성 (유형·도로 형태) — '어떤 사고가 몰리나'
     def cell_of(p):
         return int((p["y"] - g.y0) // g.cell), int((p["x"] - g.x0) // g.cell)
+
     in_hot = [p for p in points if hot[cell_of(p)]]
-    mix = {"kind": Counter(p["kind"] for p in in_hot if p["kind"]).most_common(8),
-           "road": Counter(p["road"] for p in in_hot if p["road"]).most_common(8)}
+    mix = {
+        "kind": Counter(p["kind"] for p in in_hot if p["kind"]).most_common(8),
+        "road": Counter(p["road"] for p in in_hot if p["road"]).most_common(8),
+    }
 
     spots, off_reads, cmp = [], [], None
     for f in sorted(ROOT.glob(cfg.get("official", "data/official_*.csv"))):
@@ -47,11 +51,20 @@ def build(cfg: dict) -> dict:
 
     kst = datetime.now(timezone.utc) + timedelta(hours=9)
     summary = {
-        "built": kst.strftime("%Y-%m-%d %H:%M KST"), "region": cfg["region"], "inputs": reads,
-        "crashes": len(points), "cell_m": cfg["cell_m"], "band_m": cfg["band_m"], "fdr_q": cfg["fdr_q"],
-        "study_cells": int(mask.sum()), "cells_with_crash": int((g.counts > 0).sum()),
-        "hot_cells": int(hot.sum()), "crashes_in_hot_cells": float(g.counts[hot].sum()),
-        "zones": len(zs), "top_zones": zs[:30], "hot_mix": mix,
+        "built": kst.strftime("%Y-%m-%d %H:%M KST"),
+        "region": cfg["region"],
+        "inputs": reads,
+        "crashes": len(points),
+        "cell_m": cfg["cell_m"],
+        "band_m": cfg["band_m"],
+        "fdr_q": cfg["fdr_q"],
+        "study_cells": int(mask.sum()),
+        "cells_with_crash": int((g.counts > 0).sum()),
+        "hot_cells": int(hot.sum()),
+        "crashes_in_hot_cells": float(g.counts[hot].sum()),
+        "zones": len(zs),
+        "top_zones": zs[:30],
+        "hot_mix": mix,
         "official": {"inputs": off_reads, "compare": cmp},
         "z_max": None if np.isnan(z).all() else round(float(np.nanmax(z)), 2),
     }
@@ -63,10 +76,20 @@ def build(cfg: dict) -> dict:
     for i, j in zip(*np.nonzero(g.counts > 0)):
         lat, lon = g.center(i, j)
         zv = z[i, j]
-        cells.append([round(lat, 5), round(lon, 5), round(float(g.counts[i, j]), 2),
-                      None if np.isnan(zv) else round(float(zv), 2), 1 if hot[i, j] else 0])
-    page = {"summary": summary, "cells": cells,
-            "official": [[s["name"], round(s["lat"], 5), round(s["lon"], 5), s["count"], s["year"]] for s in spots]}
+        cells.append(
+            [
+                round(lat, 5),
+                round(lon, 5),
+                round(float(g.counts[i, j]), 2),
+                None if np.isnan(zv) else round(float(zv), 2),
+                1 if hot[i, j] else 0,
+            ]
+        )
+    page = {
+        "summary": summary,
+        "cells": cells,
+        "official": [[s["name"], round(s["lat"], 5), round(s["lon"], 5), s["count"], s["year"]] for s in spots],
+    }
     DOCS.mkdir(exist_ok=True)
     (DOCS / "data.json").write_text(json.dumps(page, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return summary

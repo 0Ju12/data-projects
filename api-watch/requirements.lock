@@ -1,0 +1,21 @@
+# 고정 버전. 갱신: uv pip compile --python-version 3.12 requirements.txt -o requirements.lock
+asgiref==3.13.0
+    # via django
+django==5.2.19
+    # via -r requirements.txt
+gunicorn==23.0.0
+    # via -r requirements.txt
+packaging==26.4
+    # via gunicorn
+psycopg==3.2.13
+    # via -r requirements.txt
+psycopg-binary==3.2.13
+    # via psycopg
+pyyaml==6.0.4
+    # via -r requirements.txt
+sqlparse==0.6.1
+    # via django
+typing-extensions==4.16.0
+    # via psycopg
+whitenoise==6.12.0
+    # via -r requirements.txt
