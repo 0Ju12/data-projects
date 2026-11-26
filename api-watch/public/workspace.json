@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-26T03:01:28.005010+00:00",
+  "last_check_at": "2026-11-26T08:52:21.281218+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.940231+00:00",
-        "duration_ms": 597.25
+        "checked_at": "2026-11-26T08:52:21.193907+00:00",
+        "duration_ms": 706.38
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.943177+00:00",
-        "duration_ms": 181.6
+        "checked_at": "2026-11-26T08:52:21.196627+00:00",
+        "duration_ms": 157.8
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.945190+00:00",
-        "duration_ms": 398.99
+        "checked_at": "2026-11-26T08:52:21.198461+00:00",
+        "duration_ms": 2044.9
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.946980+00:00",
-        "duration_ms": 331.75
+        "checked_at": "2026-11-26T08:52:21.200179+00:00",
+        "duration_ms": 242.76
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.948497+00:00",
-        "duration_ms": 115.98
+        "checked_at": "2026-11-26T08:52:21.201612+00:00",
+        "duration_ms": 68.19
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.950148+00:00",
-        "duration_ms": 153.58
+        "checked_at": "2026-11-26T08:52:21.203249+00:00",
+        "duration_ms": 312.92
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.951869+00:00",
-        "duration_ms": 588.77
+        "checked_at": "2026-11-26T08:52:21.204885+00:00",
+        "duration_ms": 2430.76
       }
     },
     {
@@ -109,9 +109,9 @@
         "docs": "https://docs.github.com/en/rest/repos/repos#get-a-repository"
       },
       "last_run": {
-        "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.953548+00:00",
-        "duration_ms": 288.21
+        "status": "warning",
+        "checked_at": "2026-11-26T08:52:21.206534+00:00",
+        "duration_ms": 47.57
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.955454+00:00",
-        "duration_ms": 242.81
+        "checked_at": "2026-11-26T08:52:21.208870+00:00",
+        "duration_ms": 155.12
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.957669+00:00",
-        "duration_ms": 105.9
+        "checked_at": "2026-11-26T08:52:21.211154+00:00",
+        "duration_ms": 90.76
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.959321+00:00",
-        "duration_ms": 581.37
+        "checked_at": "2026-11-26T08:52:21.212524+00:00",
+        "duration_ms": 729.39
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.960843+00:00",
-        "duration_ms": 434.61
+        "checked_at": "2026-11-26T08:52:21.214395+00:00",
+        "duration_ms": 567.04
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.962486+00:00",
-        "duration_ms": 232.76
+        "checked_at": "2026-11-26T08:52:21.215738+00:00",
+        "duration_ms": 89.68
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.963982+00:00",
-        "duration_ms": 68.75
+        "checked_at": "2026-11-26T08:52:21.217351+00:00",
+        "duration_ms": 44.33
       }
     },
     {
@@ -207,9 +207,9 @@
         "docs": "https://openlibrary.org/dev/docs/api/search"
       },
       "last_run": {
-        "status": "warning",
-        "checked_at": "2026-11-26T03:01:27.965952+00:00",
-        "duration_ms": 6987.16
+        "status": "healthy",
+        "checked_at": "2026-11-26T08:52:21.219563+00:00",
+        "duration_ms": 949.9
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.968103+00:00",
-        "duration_ms": 294.38
+        "checked_at": "2026-11-26T08:52:21.221375+00:00",
+        "duration_ms": 385.76
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.969726+00:00",
-        "duration_ms": 331.44
+        "checked_at": "2026-11-26T08:52:21.222940+00:00",
+        "duration_ms": 168.27
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.989674+00:00",
-        "duration_ms": 98.34
+        "checked_at": "2026-11-26T08:52:21.263176+00:00",
+        "duration_ms": 104.89
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:27.996127+00:00",
-        "duration_ms": 65.53
+        "checked_at": "2026-11-26T08:52:21.271084+00:00",
+        "duration_ms": 49.7
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-26T03:01:27.999485+00:00",
-        "duration_ms": 215.84
+        "checked_at": "2026-11-26T08:52:21.274813+00:00",
+        "duration_ms": 97.58
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-26T03:01:28.001814+00:00",
-        "duration_ms": 80.8
+        "checked_at": "2026-11-26T08:52:21.277158+00:00",
+        "duration_ms": 65.21
       }
     },
     {
@@ -305,48 +305,36 @@
         "docs": "https://open-meteo.com/en/docs"
       },
       "last_run": {
-        "status": "critical",
-        "checked_at": "2026-11-26T03:01:28.005010+00:00",
-        "duration_ms": 12064.93
+        "status": "healthy",
+        "checked_at": "2026-11-26T08:52:21.281218+00:00",
+        "duration_ms": 22.32
       }
     }
   ],
   "incidents": [
     {
-      "id": 28,
-      "target": "open-library",
-      "key": "latency",
-      "kind": "latency",
+      "id": 29,
+      "target": "github-catalog",
+      "key": "availability",
+      "kind": "availability",
       "severity": "warning",
-      "message": "6987 ms · 기준 3000 ms",
-      "opened_at": "2026-11-26T03:01:27.965952+00:00",
-      "last_seen_at": "2026-11-26T03:01:27.965952+00:00",
+      "message": "HTTP 403",
+      "opened_at": "2026-11-26T08:52:21.206534+00:00",
+      "last_seen_at": "2026-11-26T08:52:21.206534+00:00",
       "resolved_at": null,
       "occurrences": 1
     },
     {
-      "id": 1,
-      "target": "weather",
-      "key": "availability",
-      "kind": "availability",
-      "severity": "error",
-      "message": "URLError · 응답을 읽지 못했습니다.",
-      "opened_at": "2026-11-26T03:00:19.711451+00:00",
-      "last_seen_at": "2026-11-26T03:01:28.005010+00:00",
-      "resolved_at": null,
-      "occurrences": 2
-    },
-    {
-      "id": 27,
+      "id": 28,
       "target": "rest-countries",
       "key": "json",
       "kind": "format",
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-26T03:01:27.999485+00:00",
+      "last_seen_at": "2026-11-26T08:52:21.274813+00:00",
       "resolved_at": null,
-      "occurrences": 43
+      "occurrences": 44
     }
   ],
   "ai_latest": {
@@ -1110,9 +1098,9 @@
   "portfolio": {
     "schema_version": 1,
     "source_repository": "0Ju12/0Ju12.github.io",
-    "source_sha": "bb6c71a38fb04c88c4b4ba8774d82e10674c2473",
-    "source_updated_at": "2026-11-26T02:59:52Z",
-    "synced_at": "2026-11-26T03:00:05.944211+00:00",
+    "source_sha": "ebe6c9fe4af4efbbec431eda8c266369ad8222e9",
+    "source_updated_at": "2026-11-26T07:06:29Z",
+    "synced_at": "2026-11-26T08:52:18.232413+00:00",
     "links": {
       "preparation": "https://0ju12.github.io/study/index.html",
       "study": "https://0ju12.github.io/study/index.html#/notes",
