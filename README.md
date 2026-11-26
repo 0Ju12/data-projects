@@ -1,44 +1,85 @@
 # data-projects — 공개 데이터로 만든 데이터·AI 프로젝트 모음
 
-에너지·자원·제조·금융 분야의 **공개 데이터**로 수집 → 정제 → 분석·모델링 → 검증까지 직접 해 본 프로젝트 9개입니다.
-각 폴더가 독립된 프로젝트이고, 폴더마다 README·테스트가 따로 있습니다.
+에너지·자원·제조·재난 분야의 **공개 데이터**로 수집 → 정제 → 웨어하우스 모델링 → 분석·예측 → 검증·관제까지 직접 만든 프로젝트 18개입니다.
+각 폴더가 독립된 프로젝트이고, 폴더마다 README·테스트·고정된 의존성(`requirements.lock`)이 있습니다.
+
+```mermaid
+flowchart LR
+  S1[전력거래소·Open-Meteo<br/>USGS 지진·채용 공고 API] --> W[("warehouse<br/>Airflow + dbt/DuckDB<br/>staging → marts")]
+  S2[USGS FDSN] --> GEO[geo-data-pipeline<br/>증분 수집·b값]
+  S3[NASA FIRMS·Open-Meteo] --> FIRE[wildfire-watch]
+  S4[UCI·전력거래소] --> ML[power-demand·sensor-anomaly<br/>시계열 CV로 검증한 모델]
+  W --> D[대시보드 12개<br/>GitHub Pages, 매일 갱신]
+  GEO --> D
+  FIRE --> D
+  ML --> D
+  W & GEO & ML --> AG[data-agent<br/>MCP + 답 속 숫자 검증]
+  OBS[pipeline-status·api-watch<br/>숨은 실패·신선도 관제] -. 감시 .-> D
+```
+
+## 대표 프로젝트
 
 | 폴더 | 내용 | 데이터 | 핵심 결과 |
 |---|---|---|---|
-| [geo-data-pipeline](geo-data-pipeline/) | 지진 목록 증분 수집·정제·b값 분석·[3D 지진 지도](https://0ju12.github.io/data-projects/) (진원을 실제 깊이에 표시), 매일 자동 갱신 | USGS FDSN (2,474건) | 동아시아 M4+ b = 1.11 ± 0.05 · 수정본 교체·격리 집계 |
-| [sensor-anomaly](sensor-anomaly/) | 유압 설비 부품별 이상 탐지·스트리밍 경보·지도학습 진단 | UCI 유압 설비 (2,205 사이클 × 17 센서) | 무작위 분할 0.99 → 시간 구간 분할에서 RF 0.46, LDA 1.00 (밸브) |
-| [power-demand](power-demand/) | 하루 전 전국 시간별 전력 수요 예측 · [예측 탐색기](https://0ju12.github.io/data-projects/power/) | 전력거래소 2025 시간별 수요 + 기온 | 앙상블 MAPE 3.23% · 일 최대수요 2.64% |
-| [dart-analyzer](dart-analyzer/) | 전자공시 데이터 마트(SQL 뷰)와 사업보고서 근거 검색 | OpenDART | 피벗·LAG·RANK 뷰, 2-gram BM25 근거 검색 (인증키로 실행) |
-| [wildfire-watch](wildfire-watch/) | 화재기상지수(FFWI)와 위성 화재 탐지를 매일 모아 비교 · [산불 위험 지도](https://0ju12.github.io/data-projects/fire/) | NASA FIRMS VIIRS + Open-Meteo | 탐지의 90%는 제철소 등 상시 열원 → 가려내는 규칙 · 지수 평가는 아직 표본 부족(AUC 0.57, 양성 10건) |
-| [data-agent](data-agent/) | 위 결과들을 LLM이 SQL로 조회하는 MCP 서버 + 답 속 숫자 검증 | 이 저장소의 산출물 (SQLite) | 읽기 전용 SQL 안전장치 · 틀린 숫자·지어낸 계산을 막는 검사 (LLM 연결 평가는 미실시) |
 | [warehouse](warehouse/) | 2025년 전력 수요·기온·일사량과 데이터 직무 채용 공고로 질문 8개를 세우고 dbt 분석 표로 답함 · [분석 대시보드](https://0ju12.github.io/data-projects/warehouse/) | 전력거래소 수요 · Open-Meteo 기온·일사량 · Remote OK·Arbeitnow 공고 (+ 부가: 지진·재해 경보·시세·패키지 통계) | 평일 기온 17.5℃ 위 1℃당 +1,636 MW · 13℃ 아래 +969 MW (R² 0.83) · 쉬는 날 −10.8~16.7% · 일사량 100 W/m²당 한낮 수요 −2,704 MW (해가 진 20~23시 대조군 +11 MW) · 직무별 기술 언급률 · 모델 44개(분석 표 12개) · dbt 테스트 129개 |
-| [energy-transition](energy-transition/) | 한국 발전 구성 25년·석탄 감소 속도·태양광 계절성·탄소 집약도를 12개국과 비교 · [대시보드](https://0ju12.github.io/data-projects/energy/) | Ember 월별 발전량 · Our World in Data 연간 에너지 (CC BY, 키 없음) | 석탄 46.3%(2009) → 31.1%(2025) · 태양광 5월 7.6% vs 12월 3.4% · D3 연도 재생 산점도 · SQL 쿼리 7개 |
+| [geo-data-pipeline](geo-data-pipeline/) | 지진 목록 증분 수집·정제·b값 분석·[3D 지진 지도](https://0ju12.github.io/data-projects/) (진원을 실제 깊이에 표시), 매일 자동 갱신 | USGS FDSN (2,474건) | 동아시아 M4+ b = 1.11 ± 0.05 · 수정본 교체·격리 집계 |
+| [power-demand](power-demand/) | 하루 전 전국 시간별 전력 수요 예측 · [예측 탐색기](https://0ju12.github.io/data-projects/power/) | 전력거래소 2025 시간별 수요 + 기온 | 롤링 CV로 고른 앙상블 MAPE 3.23% · 기온 예보 없이 3.44% · 일 최대수요 2.64% |
+| [sensor-anomaly](sensor-anomaly/) | 유압 설비 부품별 이상 탐지·스트리밍 경보·지도학습 진단 | UCI 유압 설비 (2,205 사이클 × 17 센서) | 밸브 진단: 무작위 분할 0.99는 누수로 부풀려짐 → 시계열 CV 5겹에서 RF 0.81 ± 0.10, LDA 0.99 ± 0.02 |
+
+## 운영 중인 대시보드·관제
+
+| 폴더 | 내용 | 데이터 | 핵심 결과 |
+|---|---|---|---|
 | [api-watch](api-watch/) | API 응답·최신성·구조·품질 관제 + 하루 한 개 AI 기술 학습 · [관제판](https://0ju12.github.io/data-projects/api-watch/) | 22개 공개 엔드포인트 · 한국·글로벌 API/리소스 전체 탐색 · 공식 GitHub/Hugging Face 메타데이터 | 실제 검사와 합성 장애 10종을 분리 · Django/PostgreSQL 실행 구성 · 정기 검사 표본을 가동률로 일반화하지 않음 |
+| [wildfire-watch](wildfire-watch/) | 화재기상지수(FFWI)와 위성 화재 탐지를 매일 모아 비교 · [산불 위험 지도](https://0ju12.github.io/data-projects/fire/) | NASA FIRMS VIIRS + Open-Meteo | 탐지의 90%는 제철소 등 상시 열원 → 가려내는 규칙 · 지수 평가는 아직 표본 부족(AUC 0.57, 양성 10건) |
+| [energy-transition](energy-transition/) | 한국 발전 구성 25년·석탄 감소 속도·태양광 계절성·탄소 집약도를 12개국과 비교 · [대시보드](https://0ju12.github.io/data-projects/energy/) | Ember 월별 발전량 · Our World in Data 연간 에너지 (CC BY, 키 없음) | 석탄 46.3%(2009) → 31.1%(2025) · 태양광 5월 7.6% vs 12월 3.4% · D3 연도 재생 산점도 · SQL 쿼리 7개 |
+
+- [pipeline-status](pipeline-status/): 워크플로 실행 기록·숨은 단계 실패·산출물 신선도 상태판과 실패 알림 이슈 · [파이프라인 상태](https://0ju12.github.io/data-projects/status/). `continue-on-error` 단계는 API 에서도 성공으로 보여 `steps.*.outcome` 과 실패 주석으로 찾음.
+- [er-finder](er-finder/): 가까운 응급실 찾기 웹앱(PWA). 위치 → 차로 가장 빨리 닿는 응급실과 권역센터, 카카오맵 길찾기, 오프라인 동작 · [가까운 응급실](https://0ju12.github.io/data-projects/near/).
+- 신입 IT 공고를 매일 모아 마감일 달력으로 보는 개인 취업 도구는 [job-calendar](job-calendar/)에 있습니다 · [공고 달력](https://0ju12.github.io/data-projects/jobs/) (점핏·카카오·Greenhouse 공개 API, robots.txt 준수).
+
+## 분석·AI
+
+| 폴더 | 내용 | 데이터 | 핵심 결과 |
+|---|---|---|---|
+| [dart-analyzer](dart-analyzer/) | 전자공시 데이터 마트(SQL 뷰)와 사업보고서 근거 검색 | OpenDART | 피벗·LAG·RANK 뷰, 2-gram BM25 근거 검색 (인증키로 실행) |
+| [data-agent](data-agent/) | 위 결과들을 LLM이 SQL로 조회하는 MCP 서버 + 답 속 숫자 검증 | 이 저장소의 산출물 (SQLite) | 읽기 전용 SQL 안전장치 · 틀린 숫자·지어낸 계산을 막는 검사 (LLM 연결 평가는 미실시) |
 
 벡터 검색 구현과 한국어 근거 검색 평가는 [VectorLab](vector-search/)에서 실행할 수 있습니다.
 
-신입 IT 공고를 매일 모아 마감일 달력으로 보는 개인 취업 도구는 [job-calendar](job-calendar/)에 있습니다 · [공고 달력](https://0ju12.github.io/data-projects/jobs/) (점핏·카카오·Greenhouse 공개 API, robots.txt 준수).
+## 진행 중
 
-진행 중 (공식 자료를 아직 넣지 못해 결과가 임시이거나 엔진·테스트만 있는 프로젝트)
+공식 자료를 아직 넣지 못해 결과가 임시이거나, 엔진·테스트까지만 있는 프로젝트입니다.
+
 - [er-access](er-access/): 1 km 격자마다 가장 가까운 응급실까지의 차량 이동 시간을 OSM 도로망(HOT 한국 내보내기)으로 계산해 경북의 응급의료 취약 인구와 취약 시군(27% 기준)을 판정합니다. deck.gl 3D 지도(높이 = 인구, 색 = 이동 시간) · [응급실 접근성 3D 지도](https://0ju12.github.io/data-projects/er/). 임시 응급실 목록(권역센터 5곳 + OSM 등 13곳)으로 낸 첫 결과: 권역센터 60분 안 91.5%, 취약 8곳 / 22 (문경·봉화·상주·영덕·영양·울릉·울진·청송). 공식 목록·실시간 병상은 한국에서 `korea-fetch` 한 번.
 - [crash-hotspots](crash-hotspots/): 사망 교통사고 지점을 UTM-K 1 km 격자에 모아 Getis-Ord Gi\* 와 거짓 발견 비율 보정(BH)으로 우연보다 많이 몰린 구간을 찾고, 공식 사고 다발 지역과 겹침을 셉니다. 엔진·대조·3D 대시보드까지 완성, 사고 자료(공공데이터포털, 한국에서 받기)만 넣으면 됩니다.
 
-개발 도구·서비스 (위 프로젝트들의 코드와 결과를 다른 사람도 쓸 수 있게 만든 것)
+## 라이브러리·도구
+
+위 프로젝트들의 코드와 결과를 다른 사람도 쓸 수 있게 만든 것입니다.
+
 - [public-data-mcp](public-data-mcp/): 공공데이터포털 API 를 AI 가 안전하게 부르는 MCP 서버. 등록된 API·인자만 허용, 인증키는 환경변수로만 받고 결과·오류·캐시 어디에도 남기지 않음, 포털 오류 코드 17개를 원인·해결로 풀어 줌, 페이지 넘김·캐시. 실제 MCP(stdio) 왕복까지 테스트.
 - [krgeo](krgeo/): 한국 공간 데이터 파이썬 패키지. UTM-K 변환(pyproj 와 0.01 m 안), HOT OSM 도로 → 이동 시간 그래프, 행정구역 표시 보정(울진·군위·달성), 격자 접근성, Gi\* 핫스팟. 핵심은 표준 라이브러리만, wheel 빌드·태그 시 PyPI 게시 CI.
 - [map-tiles](map-tiles/): 지진·산불·응급실 자료를 벡터 타일 파일 하나(PMTiles)로 굽기. MVT 인코더와 PMTiles v3 작성기를 직접 구현하고 공식 구현으로 거꾸로 읽어 검증 · [타일 지도](https://0ju12.github.io/data-projects/tiles/) (처음 화면에서 전체 2.5 MB 중 3% 만 받음).
-- [pipeline-status](pipeline-status/): 워크플로 실행 기록·숨은 단계 실패·산출물 신선도 상태판과 실패 알림 이슈 · [파이프라인 상태](https://0ju12.github.io/data-projects/status/). `continue-on-error` 단계는 API 에서도 성공으로 보여 `steps.*.outcome` 과 실패 주석으로 찾음.
-- [er-finder](er-finder/): 가까운 응급실 찾기 웹앱(PWA). 위치 → 차로 가장 빨리 닿는 응급실과 권역센터, 카카오맵 길찾기, 오프라인 동작 · [가까운 응급실](https://0ju12.github.io/data-projects/near/).
 
-공통으로 지킨 것
+## 공통 원칙
+
 - **평가를 정직하게**: 시계열은 시간 순서로 나눠 검증하고, 잘 안 된 결과(부품별 비지도 탐지의 오경보, 연휴 다음 날 예측 오차)도 README에 남겼습니다.
 - **재처리 안전성**: 같은 데이터를 여러 번 넣어도 결과가 같게(멱등), 원본은 체크섬으로 확인.
 - **비밀값 관리**: 인증키는 환경변수·GitHub Secrets로만 받습니다.
+- **재현 가능한 환경**: 폴더마다 `requirements.lock`(uv로 고정, Python 3.12)을 두고 CI도 같은 파일로 설치합니다.
+- **읽히는 코드**: 저장소 전체에 `ruff`(서식·린트)와 Prettier를 적용하고 CI에서 검사합니다.
+
+## 실행
 
 ```bash
-cd <폴더> && python -m pytest -q     # geo 11 · sensor 6 · power 5 · dart 17 · wildfire 8 · agent 16 · warehouse 42 · energy 5 · er-access 24 · crash 13 · public-data-mcp 12 · krgeo 8 · map-tiles 9 · pipeline-status 7 · er-finder 5
+cd <폴더>
+pip install -r requirements.lock      # 또는 uv pip sync requirements.lock
+python -m pytest -q
 ```
 
-GitHub Actions: `tests`(폴더별 테스트 + Airflow DAG 1회 실행), `krgeo`(파이썬 3.10~3.13 + wheel), `pipeline status`(점검·알림 이슈), `geo daily update`(매일 수집 → 지진 대시보드·산불 위험 지도·분석 웨어하우스·전력 전환 대시보드를 갱신하고 전력 예측 탐색기·API 관제판과 함께 GitHub Pages로 배포), `dart build mart`(인증키가 있을 때 매월).
+테스트 수: geo 11 · sensor 8 · power 6 · dart 17 · wildfire 8 · agent 16 · warehouse 42 · energy 5 · er-access 24 · crash 13 · public-data-mcp 12 · krgeo 8 · map-tiles 9 · pipeline-status 7 · er-finder 5 · job-calendar 7 · vector-search 4
+
+GitHub Actions: `tests`(폴더별 테스트 + Airflow DAG 1회 실행), `krgeo`(파이썬 3.10~3.13 + wheel), `pipeline status`(점검·알림 이슈), `geo daily update`(매일 수집 → 지진 대시보드·산불 위험 지도·분석 웨어하우스·전력 전환 대시보드를 갱신하고 전력 예측 탐색기·API 관제판과 함께 GitHub Pages로 배포), `dart build mart`(인증키가 있을 때 매월). `tests` 워크플로에는 `lint`(ruff·Prettier) 작업도 있습니다.
 
 데이터 출처·라이선스는 각 폴더 README에 적었습니다 (USGS 공공 데이터, UCI CC BY 4.0, 공공데이터포털, Open-Meteo CC BY 4.0, OpenDART).
