@@ -1,4 +1,5 @@
 """모든 테스트는 가상 데이터(tests/fixtures)와 가짜 클라이언트로 돌고, 실제 DART 에 접속하지 않습니다."""
+
 import io
 import json
 import zipfile
@@ -6,7 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from dartmart import client as dclient, parse, pipeline, search
+from dartmart import client as dclient
+from dartmart import parse, pipeline, search
 
 FIX = Path(__file__).parent / "fixtures"
 
@@ -33,7 +35,7 @@ def con(tmp_path):
     c = pipeline.connect(tmp_path / "t.sqlite")
     cfg = {"companies": {"테스트": ["예시전자", "예시에너지", "없는회사"]}}
     stats = pipeline.load(c, FakeClient(), cfg, [2024, 2025], log=lambda *a: None)
-    assert stats["companies"] == 2           # 없는회사는 건너뜀
+    assert stats["companies"] == 2  # 없는회사는 건너뜀
     return c
 
 
@@ -57,17 +59,23 @@ def test_normalize_prefers_consolidated():
 
 
 def test_metrics_view_margin_and_growth(con):
-    m = con.execute("SELECT op_margin_pct, debt_ratio_pct FROM v_metrics WHERE corp_name='예시전자' AND bsns_year=2024").fetchone()
+    m = con.execute(
+        "SELECT op_margin_pct, debt_ratio_pct FROM v_metrics WHERE corp_name='예시전자' AND bsns_year=2024"
+    ).fetchone()
     assert m == (10.0, 62.5)
-    g = con.execute("SELECT revenue_yoy_pct, op_income_yoy_pct FROM v_growth WHERE corp_name='예시전자' AND bsns_year=2025").fetchone()
+    g = con.execute(
+        "SELECT revenue_yoy_pct, op_income_yoy_pct FROM v_growth WHERE corp_name='예시전자' AND bsns_year=2025"
+    ).fetchone()
     assert g == (20.0, -10.0)
     first = con.execute("SELECT revenue_yoy_pct FROM v_growth WHERE corp_name='예시전자' AND bsns_year=2024").fetchone()
     assert first == (None,)
 
 
 def test_sector_rank(con):
-    r = con.execute("SELECT corp_name, margin_rank FROM v_sector_rank WHERE bsns_year=2024 ORDER BY margin_rank").fetchall()
-    assert [x[1] for x in r] == [1, 1]          # 둘 다 10% → 공동 1위
+    r = con.execute(
+        "SELECT corp_name, margin_rank FROM v_sector_rank WHERE bsns_year=2024 ORDER BY margin_rank"
+    ).fetchall()
+    assert [x[1] for x in r] == [1, 1]  # 둘 다 10% → 공동 1위
 
 
 def test_document_sections_skips_short_and_keeps_titles():
@@ -111,27 +119,43 @@ def _resp(body: bytes):
 
         def __exit__(self, *a):
             return False
+
     return R(body)
 
 
 def test_client_status_handling():
-    bodies = iter([json.dumps({"status": "020", "message": "limit"}).encode(), json.dumps({"status": "000", "list": [1]}).encode(),
-                   json.dumps({"status": "013", "message": "no data"}).encode(), json.dumps({"status": "100", "message": "bad"}).encode()])
-    c = dclient.Client(key="dummy", opener=lambda req, timeout=60: _resp(next(bodies)), sleep=lambda s: None, min_interval=0)
-    assert c.json("x.json", {})["list"] == [1]              # 020 → 대기 후 재시도
-    assert c.json("x.json", {})["list"] == []               # 013 → 빈 결과
+    bodies = iter(
+        [
+            json.dumps({"status": "020", "message": "limit"}).encode(),
+            json.dumps({"status": "000", "list": [1]}).encode(),
+            json.dumps({"status": "013", "message": "no data"}).encode(),
+            json.dumps({"status": "100", "message": "bad"}).encode(),
+        ]
+    )
+    c = dclient.Client(
+        key="dummy", opener=lambda req, timeout=60: _resp(next(bodies)), sleep=lambda s: None, min_interval=0
+    )
+    assert c.json("x.json", {})["list"] == [1]  # 020 → 대기 후 재시도
+    assert c.json("x.json", {})["list"] == []  # 013 → 빈 결과
     with pytest.raises(dclient.DartError):
         c.json("x.json", {})
 
 
 def test_client_zip_error_message():
-    c = dclient.Client(key="dummy", opener=lambda req, timeout=60: _resp(b'{"status":"010","message":"bad key"}'), sleep=lambda s: None, min_interval=0)
+    c = dclient.Client(
+        key="dummy",
+        opener=lambda req, timeout=60: _resp(b'{"status":"010","message":"bad key"}'),
+        sleep=lambda s: None,
+        min_interval=0,
+    )
     with pytest.raises(dclient.DartError):
         c.zip("document.xml", {"rcept_no": "1"})
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w") as z:
         z.writestr("a.xml", "<x/>")
-    c2 = dclient.Client(key="dummy", opener=lambda req, timeout=60: _resp(buf.getvalue()), sleep=lambda s: None, min_interval=0)
+    c2 = dclient.Client(
+        key="dummy", opener=lambda req, timeout=60: _resp(buf.getvalue()), sleep=lambda s: None, min_interval=0
+    )
     assert c2.document("1") == [b"<x/>"]
 
 
@@ -141,8 +165,10 @@ def test_report_table(con):
 
 
 def test_resolve_with_stock_code_disambiguates():
-    corps = FakeClient().corp_codes() + [{"corp_code": "00000009", "corp_name": "예시전자", "stock_code": "999999", "modify_date": ""}]
-    assert pipeline.resolve(corps, ["예시전자"], log=lambda *a: None) == {}          # 상장사 2곳 → 건너뜀
+    corps = FakeClient().corp_codes() + [
+        {"corp_code": "00000009", "corp_name": "예시전자", "stock_code": "999999", "modify_date": ""}
+    ]
+    assert pipeline.resolve(corps, ["예시전자"], log=lambda *a: None) == {}  # 상장사 2곳 → 건너뜀
     got = pipeline.resolve(corps, ["예시전자#999999"], log=lambda *a: None)
     assert got["예시전자"]["corp_code"] == "00000009"
 
@@ -151,6 +177,7 @@ def test_missing_document_is_skipped(tmp_path):
     class NoDoc(FakeClient):
         def document(self, rcept_no):
             raise dclient.NoFile("document.xml: 파일 없음 (014)")
+
     c = pipeline.connect(tmp_path / "t.sqlite")
     stats = pipeline.load(c, NoDoc(), {"companies": {"t": ["예시전자"]}}, [2024], log=lambda *a: None)
     assert stats["companies"] == 1 and stats["paragraphs"] == 0 and stats["financial_rows"] > 0

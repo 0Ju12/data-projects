@@ -6,6 +6,7 @@
 - 경보: 점수가 임계값을 k 사이클 연속 넘을 때만 (한 번 튀는 값은 무시) — 지연과 오경보의 균형
 - 분할: 사이클은 시간 순서대로 이웃끼리 거의 같으므로 무작위가 아니라 연속 구간(block) 단위로 나눔
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -29,7 +30,9 @@ def forward_chain_folds(n: int, n_blocks: int = 10, first_test: int = 5) -> list
     return [(np.arange(0, edges[k]), np.arange(edges[k], edges[k + 1])) for k in range(first_test, n_blocks)]
 
 
-def block_bootstrap_ci(correct: np.ndarray, block: int = 20, n_boot: int = 2000, alpha: float = 0.05, seed: int = 0) -> tuple[float, float]:
+def block_bootstrap_ci(
+    correct: np.ndarray, block: int = 20, n_boot: int = 2000, alpha: float = 0.05, seed: int = 0
+) -> tuple[float, float]:
     """정답 여부(0/1, 시간 순)의 이동 블록 부트스트랩 신뢰구간. 이웃 사이클의 자기상관을 블록째 다시 뽑아 보존"""
     correct = np.asarray(correct, float)
     n = len(correct)

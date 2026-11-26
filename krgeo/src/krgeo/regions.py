@@ -11,22 +11,52 @@ HOT 국가별 OSM 내보내기(HDX hotosm_kor_*)는 도로·시설마다 adm1_na
     >>> fix_admin("Gangwon", "Uljin-gun")
     ('경상북도', '울진군')
 """
+
 from __future__ import annotations
 
 SIDO = {
-    "Seoul": "서울특별시", "Busan": "부산광역시", "Daegu": "대구광역시", "Incheon": "인천광역시", "Gwangju": "광주광역시",
-    "Daejeon": "대전광역시", "Ulsan": "울산광역시", "Sejong": "세종특별자치시", "Gyeonggi": "경기도", "Gangwon": "강원특별자치도",
-    "North Chungcheong": "충청북도", "South Chungcheong": "충청남도", "North Jeolla": "전북특별자치도", "South Jeolla": "전라남도",
-    "North Gyeongsang": "경상북도", "South Gyeongsang": "경상남도", "Jeju": "제주특별자치도",
+    "Seoul": "서울특별시",
+    "Busan": "부산광역시",
+    "Daegu": "대구광역시",
+    "Incheon": "인천광역시",
+    "Gwangju": "광주광역시",
+    "Daejeon": "대전광역시",
+    "Ulsan": "울산광역시",
+    "Sejong": "세종특별자치시",
+    "Gyeonggi": "경기도",
+    "Gangwon": "강원특별자치도",
+    "North Chungcheong": "충청북도",
+    "South Chungcheong": "충청남도",
+    "North Jeolla": "전북특별자치도",
+    "South Jeolla": "전라남도",
+    "North Gyeongsang": "경상북도",
+    "South Gyeongsang": "경상남도",
+    "Jeju": "제주특별자치도",
 }
 
 GYEONGBUK = {
-    "Pohang-si": "포항시", "Gyeongju-si": "경주시", "Gimcheon-si": "김천시", "Andong-si": "안동시",
-    "Gumi-si": "구미시", "Yeongju-si": "영주시", "Yeongcheon-si": "영천시", "Sangju-si": "상주시",
-    "Mungyeong-si": "문경시", "Gyeongsan-si": "경산시", "Uiseong-gun": "의성군", "Cheongsong-gun": "청송군",
-    "Yeongyang-gun": "영양군", "Yeongdeok-gun": "영덕군", "Cheongdo-gun": "청도군", "Goryeong-gun": "고령군",
-    "Seongju-gun": "성주군", "Chilgok-gun": "칠곡군", "Yecheon-gun": "예천군", "Bonghwa-gun": "봉화군",
-    "Uljin-gun": "울진군", "Ulleung-gun": "울릉군",
+    "Pohang-si": "포항시",
+    "Gyeongju-si": "경주시",
+    "Gimcheon-si": "김천시",
+    "Andong-si": "안동시",
+    "Gumi-si": "구미시",
+    "Yeongju-si": "영주시",
+    "Yeongcheon-si": "영천시",
+    "Sangju-si": "상주시",
+    "Mungyeong-si": "문경시",
+    "Gyeongsan-si": "경산시",
+    "Uiseong-gun": "의성군",
+    "Cheongsong-gun": "청송군",
+    "Yeongyang-gun": "영양군",
+    "Yeongdeok-gun": "영덕군",
+    "Cheongdo-gun": "청도군",
+    "Goryeong-gun": "고령군",
+    "Seongju-gun": "성주군",
+    "Chilgok-gun": "칠곡군",
+    "Yecheon-gun": "예천군",
+    "Bonghwa-gun": "봉화군",
+    "Uljin-gun": "울진군",
+    "Ulleung-gun": "울릉군",
 }
 DAEGU_FROM_GB = {"Gunwi-gun": "군위군", "Dalseong-gun": "달성군", "Suseong-gu": "수성구"}
 

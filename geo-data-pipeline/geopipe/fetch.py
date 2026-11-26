@@ -4,6 +4,7 @@
 - 네트워크 오류·5xx 는 지수 백오프로 최대 4번 재시도하고, 그래도 실패하면 예외를 그대로 올립니다
   (조용히 빈 결과를 저장하지 않음 — 빈 결과와 실패를 구분하기 위해).
 """
+
 from __future__ import annotations
 
 import json
@@ -26,7 +27,7 @@ def _get(url: str, retries: int = 4, opener=urllib.request.urlopen) -> dict:
             with opener(req, timeout=60) as r:
                 return json.loads(r.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
-            if e.code == 204:          # 조건에 맞는 이벤트 없음
+            if e.code == 204:  # 조건에 맞는 이벤트 없음
                 return {"type": "FeatureCollection", "features": []}
             if e.code < 500 or attempt == retries:
                 raise
@@ -40,10 +41,14 @@ def _get(url: str, retries: int = 4, opener=urllib.request.urlopen) -> dict:
 
 def query_params(region: dict, start: datetime, end: datetime) -> dict:
     return {
-        "format": "geojson", "orderby": "time-asc",
-        "starttime": start.strftime("%Y-%m-%dT%H:%M:%S"), "endtime": end.strftime("%Y-%m-%dT%H:%M:%S"),
-        "minlatitude": region["bbox"][0], "maxlatitude": region["bbox"][1],
-        "minlongitude": region["bbox"][2], "maxlongitude": region["bbox"][3],
+        "format": "geojson",
+        "orderby": "time-asc",
+        "starttime": start.strftime("%Y-%m-%dT%H:%M:%S"),
+        "endtime": end.strftime("%Y-%m-%dT%H:%M:%S"),
+        "minlatitude": region["bbox"][0],
+        "maxlatitude": region["bbox"][1],
+        "minlongitude": region["bbox"][2],
+        "maxlongitude": region["bbox"][3],
         "minmagnitude": region["min_mag"],
     }
 

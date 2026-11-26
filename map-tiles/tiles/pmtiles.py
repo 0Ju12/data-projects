@@ -5,6 +5,7 @@
 - 같은 내용의 타일(바다·빈 칸)은 한 번만 저장하고, 이어지는 번호는 run_length 로 묶음
 - 머리글(127 B) + 루트 목록이 첫 16 KiB 안에 들어가야 함 → 넘치면 잎(leaf) 목록으로 나눔
 """
+
 from __future__ import annotations
 
 import gzip
@@ -71,9 +72,9 @@ def _directories(entries: list[Entry]) -> tuple[bytes, bytes]:
     while True:
         leaves, root_entries, off = bytearray(), [], 0
         for i in range(0, len(entries), leaf_size):
-            chunk = entries[i:i + leaf_size]
+            chunk = entries[i : i + leaf_size]
             data = serialize_directory(chunk)
-            root_entries.append(Entry(chunk[0].tile_id, off, len(data), 0))     # run_length 0 = 잎 목록을 가리킴
+            root_entries.append(Entry(chunk[0].tile_id, off, len(data), 0))  # run_length 0 = 잎 목록을 가리킴
             leaves += data
             off += len(data)
         root = serialize_directory(root_entries)
@@ -82,8 +83,14 @@ def _directories(entries: list[Entry]) -> tuple[bytes, bytes]:
         leaf_size *= 2
 
 
-def write(path, tiles: dict[tuple[int, int, int], bytes], metadata: dict, bounds: tuple[float, float, float, float],
-          center: tuple[float, float, int], tile_compression: int = GZIP) -> dict:
+def write(
+    path,
+    tiles: dict[tuple[int, int, int], bytes],
+    metadata: dict,
+    bounds: tuple[float, float, float, float],
+    center: tuple[float, float, int],
+    tile_compression: int = GZIP,
+) -> dict:
     """tiles: (z, x, y) → MVT 바이트 (압축 전). bounds = (서, 남, 동, 북). 통계를 돌려준다."""
     items = sorted((zxy_to_tileid(z, x, y), z, data) for (z, x, y), data in tiles.items())
     blob, entries, seen = bytearray(), [], {}
@@ -108,9 +115,24 @@ def write(path, tiles: dict[tuple[int, int, int], bytes], metadata: dict, bounds
     meta_off = root_off + len(root)
     leaf_off = meta_off + len(meta)
     data_off = leaf_off + len(leaves)
-    header = b"PMTiles" + bytes([3]) + struct.pack(
-        "<QQQQQQQQQQQ", root_off, len(root), meta_off, len(meta), leaf_off, len(leaves), data_off, len(blob),
-        len(items), len(entries), len(seen))
+    header = (
+        b"PMTiles"
+        + bytes([3])
+        + struct.pack(
+            "<QQQQQQQQQQQ",
+            root_off,
+            len(root),
+            meta_off,
+            len(meta),
+            leaf_off,
+            len(leaves),
+            data_off,
+            len(blob),
+            len(items),
+            len(entries),
+            len(seen),
+        )
+    )
     w, s, e, n = bounds
     header += bytes([1, GZIP, tile_compression, MVT, min(zooms), max(zooms)])
     header += struct.pack("<iiii", round(w * 1e7), round(s * 1e7), round(e * 1e7), round(n * 1e7))
@@ -118,5 +140,12 @@ def write(path, tiles: dict[tuple[int, int, int], bytes], metadata: dict, bounds
     assert len(header) == HEADER_LEN
     with open(path, "wb") as f:
         f.write(header + root + meta + leaves + blob)
-    return {"tiles": len(items), "entries": len(entries), "unique": len(seen), "bytes": data_off + len(blob),
-            "leaf_directories": bool(leaves), "minzoom": min(zooms), "maxzoom": max(zooms)}
+    return {
+        "tiles": len(items),
+        "entries": len(entries),
+        "unique": len(seen),
+        "bytes": data_off + len(blob),
+        "leaf_directories": bool(leaves),
+        "minzoom": min(zooms),
+        "maxzoom": max(zooms),
+    }

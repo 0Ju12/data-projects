@@ -4,6 +4,7 @@
 
 쿼리 결과를 JSON 으로 화면 틀(etl/dashboard.html)에 넣어 서버 없는 정적 페이지 하나로 만듭니다.
 """
+
 from __future__ import annotations
 
 import datetime as dt
@@ -13,7 +14,15 @@ from pathlib import Path
 from .sources import COUNTRIES, EMBER_GROUP, GROUPS
 
 ROOT = Path(__file__).resolve().parent.parent
-QUERIES = ["mix_yearly", "coal_change", "solar_growth", "solar_seasonal", "mix_monthly", "intensity_monthly", "scatter_yearly"]
+QUERIES = [
+    "mix_yearly",
+    "coal_change",
+    "solar_growth",
+    "solar_seasonal",
+    "mix_monthly",
+    "intensity_monthly",
+    "scatter_yearly",
+]
 
 
 def _jsonable(v):
@@ -30,11 +39,16 @@ def _jsonable(v):
 
 def connect(data: Path):
     import duckdb
+
     con = duckdb.connect()
-    con.execute(f"create table ember as select * from read_csv('{data / 'ember_monthly.csv'}', header = true, "
-                "columns = {'area': 'varchar', 'month': 'date', 'source': 'varchar', 'generation_twh': 'double', "
-                "'share_pct': 'double', 'intensity_g_per_kwh': 'double'})")
-    con.execute(f"create table owid as select * from read_csv('{data / 'owid_yearly.csv'}', header = true, auto_detect = true)")
+    con.execute(
+        f"create table ember as select * from read_csv('{data / 'ember_monthly.csv'}', header = true, "
+        "columns = {'area': 'varchar', 'month': 'date', 'source': 'varchar', 'generation_twh': 'double', "
+        "'share_pct': 'double', 'intensity_g_per_kwh': 'double'})"
+    )
+    con.execute(
+        f"create table owid as select * from read_csv('{data / 'owid_yearly.csv'}', header = true, auto_detect = true)"
+    )
     con.execute("create table grp(source varchar, grp varchar)")
     con.executemany("insert into grp values (?, ?)", list(EMBER_GROUP.items()))
     return con
@@ -60,9 +74,12 @@ def run_queries(data: Path = ROOT / "data", sql_dir: Path = ROOT / "sql") -> dic
                 rows.append(rec)
             out[name] = rows
         out["meta"] = {
-            "ember_last_month": _jsonable(con.execute("select max(month) from ember where area = 'South Korea'").fetchone()[0]),
+            "ember_last_month": _jsonable(
+                con.execute("select max(month) from ember where area = 'South Korea'").fetchone()[0]
+            ),
             "owid_last_year": con.execute("select max(year) from owid where coal_share_elec is not null").fetchone()[0],
-            "countries": list(COUNTRIES), "groups": GROUPS,
+            "countries": list(COUNTRIES),
+            "groups": GROUPS,
         }
     finally:
         con.close()

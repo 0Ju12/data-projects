@@ -37,9 +37,15 @@ def test_clean_dedupes_and_keeps_latest_revision():
 
 def test_clean_quarantines_bad_records():
     fs = features()
-    bad_mag = json.loads(json.dumps(fs[0])); bad_mag["id"] = "x1"; bad_mag["properties"]["mag"] = None
-    bad_depth = json.loads(json.dumps(fs[0])); bad_depth["id"] = "x2"; bad_depth["geometry"]["coordinates"][2] = 9999
-    blast = json.loads(json.dumps(fs[0])); blast["id"] = "x3"; blast["properties"]["type"] = "quarry blast"
+    bad_mag = json.loads(json.dumps(fs[0]))
+    bad_mag["id"] = "x1"
+    bad_mag["properties"]["mag"] = None
+    bad_depth = json.loads(json.dumps(fs[0]))
+    bad_depth["id"] = "x2"
+    bad_depth["geometry"]["coordinates"][2] = 9999
+    blast = json.loads(json.dumps(fs[0]))
+    blast["id"] = "x3"
+    blast["properties"]["type"] = "quarry blast"
     events, q = transform.clean([bad_mag, bad_depth, blast])
     assert events == {}
     assert (q.no_magnitude, q.out_of_range, q.not_earthquake) == (1, 1, 1)
@@ -48,7 +54,9 @@ def test_clean_quarantines_bad_records():
 def test_older_revision_does_not_overwrite():
     fs = features()
     events, _ = transform.clean(fs)
-    older = json.loads(json.dumps(fs[0])); older["properties"]["updated"] -= 1000; older["properties"]["mag"] = 1.0
+    older = json.loads(json.dumps(fs[0]))
+    older["properties"]["updated"] -= 1000
+    older["properties"]["mag"] = 1.0
     events2, q = transform.clean([older], events)
     assert events2[fs[0]["id"]].mag == events[fs[0]["id"]].mag and q.revised == 0
 
@@ -86,6 +94,7 @@ def test_fetch_splits_when_too_many(monkeypatch):
     def fake_get(url, retries=4, opener=None):
         calls.append(url)
         return {"features": [{"id": url[-10:]}]}
+
     monkeypatch.setattr(fetch, "count", fake_count)
     monkeypatch.setattr(fetch, "_get", fake_get)
     out = fetch.fetch(CFG["regions"][0], datetime(2024, 1, 1), datetime(2024, 12, 31))
@@ -99,6 +108,7 @@ def test_get_retries_then_raises(monkeypatch):
     def opener(req, timeout=60):
         n["c"] += 1
         raise urllib.error.URLError("down")
+
     with pytest.raises(urllib.error.URLError):
         fetch._get("https://example.invalid", retries=2, opener=opener)
     assert n["c"] == 3
@@ -108,7 +118,9 @@ def test_offline_run_builds_outputs(tmp_path):
     out = cli.run(CFG, tmp_path / "data", tmp_path / "docs", offline=FIX, now=datetime(2026, 10, 9))
     assert out["kept"] > 0
     html = (tmp_path / "docs" / "index.html").read_text(encoding="utf-8")
-    assert "deck.gl" in html and "maplibre-gl" in html and "데이터 품질" in html and "__" not in html.split("<script>")[0]
+    assert (
+        "deck.gl" in html and "maplibre-gl" in html and "데이터 품질" in html and "__" not in html.split("<script>")[0]
+    )
     s = json.loads((tmp_path / "data" / "summary.json").read_text(encoding="utf-8"))
     assert s["regions"][0]["n"] == out["kept"]
     assert (tmp_path / "data" / "events.sqlite").exists()
@@ -116,6 +128,7 @@ def test_offline_run_builds_outputs(tmp_path):
 
 def test_monthly_counts_fills_gaps():
     from geopipe.transform import Event
+
     mk = lambda t: Event("i" + t, t, t, 0, 37, 129, 10, 3.0, "mb", "", "", "earthquake")
     out = analyze.monthly_counts([mk("2024-01-05T00:00:00Z"), mk("2024-04-01T00:00:00Z"), mk("2024-04-02T00:00:00Z")])
     assert out == [("2024-01", 1), ("2024-02", 0), ("2024-03", 0), ("2024-04", 2)]

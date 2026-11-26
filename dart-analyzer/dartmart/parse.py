@@ -1,4 +1,5 @@
 """DART 응답 정리: 회사 코드 XML, 금액 문자열, 공시 원문 XML → 절(section)·문단."""
+
 from __future__ import annotations
 
 import re
@@ -9,8 +10,15 @@ def parse_corp_codes(xml_bytes: bytes) -> list[dict]:
     root = ET.fromstring(xml_bytes)
     out = []
     for el in root.iter("list"):
-        g = lambda k: (el.findtext(k) or "").strip()
-        out.append({"corp_code": g("corp_code"), "corp_name": g("corp_name"), "stock_code": g("stock_code"), "modify_date": g("modify_date")})
+        g = lambda k, el=el: (el.findtext(k) or "").strip()
+        out.append(
+            {
+                "corp_code": g("corp_code"),
+                "corp_name": g("corp_name"),
+                "stock_code": g("stock_code"),
+                "modify_date": g("modify_date"),
+            }
+        )
     return out
 
 
@@ -30,11 +38,18 @@ def amount(s) -> int | None:
     return -v if neg else v
 
 
-ACCOUNTS = {   # 회사마다 계정명이 조금씩 달라 표준 이름으로 묶음
-    "매출액": "revenue", "수익(매출액)": "revenue", "영업수익": "revenue", "매출": "revenue",
-    "영업이익": "operating_income", "영업이익(손실)": "operating_income",
-    "당기순이익": "net_income", "당기순이익(손실)": "net_income",
-    "자산총계": "total_assets", "부채총계": "total_liabilities", "자본총계": "total_equity",
+ACCOUNTS = {  # 회사마다 계정명이 조금씩 달라 표준 이름으로 묶음
+    "매출액": "revenue",
+    "수익(매출액)": "revenue",
+    "영업수익": "revenue",
+    "매출": "revenue",
+    "영업이익": "operating_income",
+    "영업이익(손실)": "operating_income",
+    "당기순이익": "net_income",
+    "당기순이익(손실)": "net_income",
+    "자산총계": "total_assets",
+    "부채총계": "total_liabilities",
+    "자본총계": "total_equity",
 }
 
 
@@ -46,8 +61,15 @@ def normalize_financials(rows: list[dict]) -> list[dict]:
         if not std:
             continue
         key = (r["corp_code"], int(r["bsns_year"]), std)
-        rec = {"corp_code": r["corp_code"], "bsns_year": int(r["bsns_year"]), "account": std, "fs_div": r.get("fs_div", ""),
-               "amount": amount(r.get("thstrm_amount")), "prev_amount": amount(r.get("frmtrm_amount")), "rcept_no": r.get("rcept_no", "")}
+        rec = {
+            "corp_code": r["corp_code"],
+            "bsns_year": int(r["bsns_year"]),
+            "account": std,
+            "fs_div": r.get("fs_div", ""),
+            "amount": amount(r.get("thstrm_amount")),
+            "prev_amount": amount(r.get("frmtrm_amount")),
+            "rcept_no": r.get("rcept_no", ""),
+        }
         if key not in out or (out[key]["fs_div"] != "CFS" and rec["fs_div"] == "CFS"):
             out[key] = rec
     return list(out.values())

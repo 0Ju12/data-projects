@@ -9,6 +9,7 @@
    → 성공한 작업의 실패 주석(annotation)을 보고, 워크플로 안에서 돌 때는 steps.*.outcome 을 직접 받음
 3. 산출물 신선도: 프로젝트마다 남기는 갱신 시각을 읽어 기준 시간(max_age_h)과 비교
 """
+
 from __future__ import annotations
 
 import argparse
@@ -62,10 +63,17 @@ def parse_time(s: str | None) -> datetime | None:
 def _run(r: dict) -> dict:
     start, end = parse_time(r.get("run_started_at") or r.get("created_at")), parse_time(r.get("updated_at"))
     done = r.get("status") == "completed"
-    return {"id": r["id"], "number": r.get("run_number"), "status": r.get("status"), "conclusion": r.get("conclusion"),
-            "event": r.get("event"), "created_at": r.get("created_at"), "url": r.get("html_url"),
-            "duration_s": round((end - start).total_seconds()) if done and start and end else None,
-            "title": (r.get("display_title") or "")[:120]}
+    return {
+        "id": r["id"],
+        "number": r.get("run_number"),
+        "status": r.get("status"),
+        "conclusion": r.get("conclusion"),
+        "event": r.get("event"),
+        "created_at": r.get("created_at"),
+        "url": r.get("html_url"),
+        "duration_s": round((end - start).total_seconds()) if done and start and end else None,
+        "title": (r.get("display_title") or "")[:120],
+    }
 
 
 def summarize_runs(runs: list[dict]) -> dict:
@@ -78,9 +86,14 @@ def summarize_runs(runs: list[dict]) -> dict:
             break
         streak += 1
     durs = [r["duration_s"] for r in ok if r["duration_s"] is not None]
-    return {"completed": len(done), "success_rate": round(len(ok) / len(done), 3) if done else None,
-            "failure_streak": streak, "median_duration_s": round(statistics.median(durs)) if durs else None,
-            "last_success_at": ok[0]["created_at"] if ok else None, "last": runs[0] if runs else None}
+    return {
+        "completed": len(done),
+        "success_rate": round(len(ok) / len(done), 3) if done else None,
+        "failure_streak": streak,
+        "median_duration_s": round(statistics.median(durs)) if durs else None,
+        "last_success_at": ok[0]["created_at"] if ok else None,
+        "last": runs[0] if runs else None,
+    }
 
 
 def hidden_failures(jobs: list[dict], annotations: dict[int, list[dict]] | None = None) -> list[dict]:
@@ -92,13 +105,27 @@ def hidden_failures(jobs: list[dict], annotations: dict[int, list[dict]] | None 
     for j in jobs:
         for s in j.get("steps") or []:
             if s.get("conclusion") == "failure":
-                out.append({"job": j.get("name"), "step": s.get("name"), "hidden": j.get("conclusion") == "success",
-                            "url": j.get("html_url"), "source": "step"})
+                out.append(
+                    {
+                        "job": j.get("name"),
+                        "step": s.get("name"),
+                        "hidden": j.get("conclusion") == "success",
+                        "url": j.get("html_url"),
+                        "source": "step",
+                    }
+                )
         if j.get("conclusion") == "success":
             for a in (annotations or {}).get(j.get("id"), []):
                 if a.get("annotation_level") == "failure":
-                    out.append({"job": j.get("name"), "step": (a.get("title") or a.get("message") or "")[:160], "hidden": True,
-                                "url": j.get("html_url"), "source": "annotation"})
+                    out.append(
+                        {
+                            "job": j.get("name"),
+                            "step": (a.get("title") or a.get("message") or "")[:160],
+                            "hidden": True,
+                            "url": j.get("html_url"),
+                            "source": "annotation",
+                        }
+                    )
     return out
 
 
@@ -111,8 +138,18 @@ def step_outcomes(env_json: str | None, workflow: str, run_url: str | None = Non
         steps = json.loads(env_json)
     except json.JSONDecodeError:
         return []
-    return [{"workflow": workflow, "job": os.environ.get("GITHUB_JOB", ""), "step": sid, "hidden": True, "url": run_url, "source": "outcome"}
-            for sid, v in steps.items() if isinstance(v, dict) and v.get("outcome") == "failure" and v.get("conclusion") == "success"]
+    return [
+        {
+            "workflow": workflow,
+            "job": os.environ.get("GITHUB_JOB", ""),
+            "step": sid,
+            "hidden": True,
+            "url": run_url,
+            "source": "outcome",
+        }
+        for sid, v in steps.items()
+        if isinstance(v, dict) and v.get("outcome") == "failure" and v.get("conclusion") == "success"
+    ]
 
 
 def collect_actions(gh: GitHub, branch: str = "main", now: datetime | None = None) -> list[dict]:
@@ -120,11 +157,15 @@ def collect_actions(gh: GitHub, branch: str = "main", now: datetime | None = Non
     for wf in gh.get(f"/repos/{gh.repo}/actions/workflows?per_page=100")["workflows"]:
         if wf.get("state") != "active":
             continue
-        raw = gh.get(f"/repos/{gh.repo}/actions/workflows/{wf['id']}/runs?branch={branch}&per_page={RUNS}&exclude_pull_requests=true")["workflow_runs"]
+        raw = gh.get(
+            f"/repos/{gh.repo}/actions/workflows/{wf['id']}/runs?branch={branch}&per_page={RUNS}&exclude_pull_requests=true"
+        )["workflow_runs"]
         runs = [_run(r) for r in raw]
         s = summarize_runs(runs)
         steps = []
-        last_done = next((r for r in runs if r["status"] == "completed" and r["conclusion"] not in ("cancelled", "skipped")), None)
+        last_done = next(
+            (r for r in runs if r["status"] == "completed" and r["conclusion"] not in ("cancelled", "skipped")), None
+        )
         if last_done:
             jobs = gh.get(f"/repos/{gh.repo}/actions/runs/{last_done['id']}/jobs?per_page=100")["jobs"]
             ann = {}
@@ -134,8 +175,18 @@ def collect_actions(gh: GitHub, branch: str = "main", now: datetime | None = Non
                 except Exception:
                     pass
             steps = hidden_failures(jobs, ann)
-        out.append({"id": wf["id"], "name": wf["name"], "path": wf["path"], "url": wf.get("html_url"),
-                    **s, "runs": runs, "steps_checked_run": last_done["id"] if last_done else None, "failed_steps": steps})
+        out.append(
+            {
+                "id": wf["id"],
+                "name": wf["name"],
+                "path": wf["path"],
+                "url": wf.get("html_url"),
+                **s,
+                "runs": runs,
+                "steps_checked_run": last_done["id"] if last_done else None,
+                "failed_steps": steps,
+            }
+        )
     return sorted(out, key=lambda w: w["name"].lower())
 
 
@@ -166,8 +217,18 @@ def freshness(root: Path, checks: list[dict], now: datetime) -> list[dict]:
     out = []
     for c in checks:
         raw, ctx = _read_time(root, c)
-        row = {"id": c["id"], "name": c["name"], "path": c["path"], "page": c.get("page"), "max_age_h": c.get("max_age_h"),
-               "note": c.get("note"), "last": raw, "age_h": None, "state": "missing", "warnings": []}
+        row = {
+            "id": c["id"],
+            "name": c["name"],
+            "path": c["path"],
+            "page": c.get("page"),
+            "max_age_h": c.get("max_age_h"),
+            "note": c.get("note"),
+            "last": raw,
+            "age_h": None,
+            "state": "missing",
+            "warnings": [],
+        }
         if raw:
             dt = to_dt(raw, c["tz"])
             row["last_utc"] = dt.astimezone(timezone.utc).isoformat()
@@ -200,26 +261,77 @@ def problems(workflows: list[dict], fresh: list[dict]) -> list[dict]:
     for w in workflows:
         last = w.get("last") or {}
         if w["failure_streak"]:
-            out.append({"level": "fail", "key": f"wf:{w['path']}", "text": f"워크플로 '{w['name']}' 최근 {w['failure_streak']}번 연속 실패",
-                        "url": next((r["url"] for r in w["runs"] if r["conclusion"] not in (None, "success", "cancelled", "skipped")), w.get("url"))})
+            out.append(
+                {
+                    "level": "fail",
+                    "key": f"wf:{w['path']}",
+                    "text": f"워크플로 '{w['name']}' 최근 {w['failure_streak']}번 연속 실패",
+                    "url": next(
+                        (
+                            r["url"]
+                            for r in w["runs"]
+                            if r["conclusion"] not in (None, "success", "cancelled", "skipped")
+                        ),
+                        w.get("url"),
+                    ),
+                }
+            )
         for s in w["failed_steps"]:
             if s["hidden"]:
-                what = {"annotation": f"'{s['job']}' 작업은 성공했지만 실패 기록이 남음: {s['step']}",
-                        "outcome": f"이번 실행의 '{s['step']}' 단계가 실패했지만 계속 진행함 (continue-on-error)"}.get(
-                    s.get("source"), f"'{s['step']}' 단계가 실패했지만 작업은 성공으로 끝남 (continue-on-error)")
-                out.append({"level": "warn", "key": f"step:{w['path']}:{s['job']}:{s['step']}", "text": f"'{w['name']}' — {what}", "url": s["url"]})
+                what = {
+                    "annotation": f"'{s['job']}' 작업은 성공했지만 실패 기록이 남음: {s['step']}",
+                    "outcome": f"이번 실행의 '{s['step']}' 단계가 실패했지만 계속 진행함 (continue-on-error)",
+                }.get(s.get("source"), f"'{s['step']}' 단계가 실패했지만 작업은 성공으로 끝남 (continue-on-error)")
+                out.append(
+                    {
+                        "level": "warn",
+                        "key": f"step:{w['path']}:{s['job']}:{s['step']}",
+                        "text": f"'{w['name']}' — {what}",
+                        "url": s["url"],
+                    }
+                )
         if last.get("status") == "completed" and last.get("conclusion") == "cancelled":
-            out.append({"level": "warn", "key": f"cancel:{w['path']}", "text": f"'{w['name']}' 마지막 실행이 취소됨", "url": last.get("url")})
+            out.append(
+                {
+                    "level": "warn",
+                    "key": f"cancel:{w['path']}",
+                    "text": f"'{w['name']}' 마지막 실행이 취소됨",
+                    "url": last.get("url"),
+                }
+            )
     for f in fresh:
         if f["state"] == "stale":
-            out.append({"level": "fail", "key": f"stale:{f['id']}", "text": f"{f['name']} 갱신이 {f['age_h']:.0f}시간 전 (기준 {f['max_age_h']}시간)", "url": None})
+            out.append(
+                {
+                    "level": "fail",
+                    "key": f"stale:{f['id']}",
+                    "text": f"{f['name']} 갱신이 {f['age_h']:.0f}시간 전 (기준 {f['max_age_h']}시간)",
+                    "url": None,
+                }
+            )
         elif f["state"] == "missing":
-            out.append({"level": "fail", "key": f"missing:{f['id']}", "text": f"{f['name']} 갱신 시각을 읽지 못함 ({f['path']})", "url": None})
+            out.append(
+                {
+                    "level": "fail",
+                    "key": f"missing:{f['id']}",
+                    "text": f"{f['name']} 갱신 시각을 읽지 못함 ({f['path']})",
+                    "url": None,
+                }
+            )
         elif f["state"] == "fail":
-            out.append({"level": "fail", "key": f"check:{f['id']}", "text": f"{f['name']}: " + "; ".join(f["warnings"]), "url": None})
+            out.append(
+                {
+                    "level": "fail",
+                    "key": f"check:{f['id']}",
+                    "text": f"{f['name']}: " + "; ".join(f["warnings"]),
+                    "url": None,
+                }
+            )
         if f["state"] != "fail":
             for wtext in f["warnings"]:
-                out.append({"level": "warn", "key": f"partial:{f['id']}:{wtext}", "text": f"{f['name']}: {wtext}", "url": None})
+                out.append(
+                    {"level": "warn", "key": f"partial:{f['id']}:{wtext}", "text": f"{f['name']}: {wtext}", "url": None}
+                )
     return out
 
 
@@ -240,7 +352,11 @@ def issue_body(probs: list[dict], page_url: str | None, now: datetime) -> str:
             lines += [head, *[f"- {p['text']}" + (f" — [기록]({p['url']})" if p.get("url") else "") for p in items], ""]
     if page_url:
         lines.append(f"상태판: {page_url}")
-    lines += ["", "모든 문제가 없어지면 이 이슈는 자동으로 닫힙니다.", f"<!-- pipeline-status fp:{_fingerprint(probs)} -->"]
+    lines += [
+        "",
+        "모든 문제가 없어지면 이 이슈는 자동으로 닫힙니다.",
+        f"<!-- pipeline-status fp:{_fingerprint(probs)} -->",
+    ]
     return "\n".join(lines)
 
 
@@ -252,14 +368,24 @@ def alert(gh: GitHub, probs: list[dict], page_url: str | None = None, now: datet
     fails = [p for p in probs if p["level"] == "fail"]
     if not fails:
         for i in open_issues:
-            gh.request("POST", f"/repos/{gh.repo}/issues/{i['number']}/comments", {"body": "다시 점검했더니 모두 정상입니다. 닫습니다."})
-            gh.request("PATCH", f"/repos/{gh.repo}/issues/{i['number']}", {"state": "closed", "state_reason": "completed"})
+            gh.request(
+                "POST",
+                f"/repos/{gh.repo}/issues/{i['number']}/comments",
+                {"body": "다시 점검했더니 모두 정상입니다. 닫습니다."},
+            )
+            gh.request(
+                "PATCH", f"/repos/{gh.repo}/issues/{i['number']}", {"state": "closed", "state_reason": "completed"}
+            )
         return "closed" if open_issues else "ok"
     title = f"파이프라인 경보: 문제 {len(fails)}건"
     body = issue_body(probs, page_url, now)
     if not open_issues:
-        try:                                            # 라벨이 없으면 만듦 (이미 있으면 422 → 무시)
-            gh.request("POST", f"/repos/{gh.repo}/labels", {"name": LABEL, "color": "d73a4a", "description": "파이프라인 상태 점검이 연 경보"})
+        try:  # 라벨이 없으면 만듦 (이미 있으면 422 → 무시)
+            gh.request(
+                "POST",
+                f"/repos/{gh.repo}/labels",
+                {"name": LABEL, "color": "d73a4a", "description": "파이프라인 상태 점검이 연 경보"},
+            )
         except Exception:
             pass
         gh.request("POST", f"/repos/{gh.repo}/issues", {"title": title, "body": body, "labels": [LABEL]})
@@ -268,7 +394,11 @@ def alert(gh: GitHub, probs: list[dict], page_url: str | None = None, now: datet
     if f"fp:{_fingerprint(probs)}" in (i.get("body") or ""):
         return "unchanged"
     gh.request("PATCH", f"/repos/{gh.repo}/issues/{i['number']}", {"title": title, "body": body})
-    gh.request("POST", f"/repos/{gh.repo}/issues/{i['number']}/comments", {"body": "문제 목록이 바뀌었습니다:\n\n" + "\n".join(f"- {p['text']}" for p in fails)})
+    gh.request(
+        "POST",
+        f"/repos/{gh.repo}/issues/{i['number']}/comments",
+        {"body": "문제 목록이 바뀌었습니다:\n\n" + "\n".join(f"- {p['text']}" for p in fails)},
+    )
     return "updated"
 
 
@@ -281,18 +411,29 @@ def build(repo: str, gh: GitHub | None, root: Path = ROOT, now: datetime | None 
     if gh:
         try:
             workflows = collect_actions(gh, now=now)
-        except Exception as e:                          # API 가 막혀도 신선도는 냄
+        except Exception as e:  # API 가 막혀도 신선도는 냄
             api_error = f"{type(e).__name__}: {e}"[:300]
-    here = step_outcomes(os.environ.get("STEP_OUTCOMES"), os.environ.get("GITHUB_WORKFLOW", ""),
-                         f"{os.environ.get('GITHUB_SERVER_URL', 'https://github.com')}/{repo}/actions/runs/{os.environ['GITHUB_RUN_ID']}"
-                         if os.environ.get("GITHUB_RUN_ID") else None)
+    here = step_outcomes(
+        os.environ.get("STEP_OUTCOMES"),
+        os.environ.get("GITHUB_WORKFLOW", ""),
+        f"{os.environ.get('GITHUB_SERVER_URL', 'https://github.com')}/{repo}/actions/runs/{os.environ['GITHUB_RUN_ID']}"
+        if os.environ.get("GITHUB_RUN_ID")
+        else None,
+    )
     for h in here:
         w = next((w for w in workflows if w["name"] == h["workflow"]), None)
         if w is not None:
             w["failed_steps"].append(h)
     probs = problems(workflows, fresh)
-    return {"generated_at": now.isoformat(timespec="seconds"), "repo": repo, "overall": overall(probs),
-            "problems": probs, "workflows": workflows, "freshness": fresh, "api_error": api_error}
+    return {
+        "generated_at": now.isoformat(timespec="seconds"),
+        "repo": repo,
+        "overall": overall(probs),
+        "problems": probs,
+        "workflows": workflows,
+        "freshness": fresh,
+        "api_error": api_error,
+    }
 
 
 def main(argv=None) -> int:
@@ -307,8 +448,18 @@ def main(argv=None) -> int:
     report = build(a.repo, gh)
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(json.dumps({"overall": report["overall"], "problems": [p["text"] for p in report["problems"]],
-                      "workflows": len(report["workflows"]), "api_error": report["api_error"]}, ensure_ascii=False, indent=1))
+    print(
+        json.dumps(
+            {
+                "overall": report["overall"],
+                "problems": [p["text"] for p in report["problems"]],
+                "workflows": len(report["workflows"]),
+                "api_error": report["api_error"],
+            },
+            ensure_ascii=False,
+            indent=1,
+        )
+    )
     if a.alert:
         if not gh or report["api_error"]:
             print("알림 건너뜀: GitHub API 를 쓰지 못함")

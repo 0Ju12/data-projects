@@ -1,32 +1,517 @@
-import{test}from'node:test';import assert from'node:assert/strict';import vm from'node:vm';import fs from'node:fs';import*as domain from'./worker/lab-domain.js';
-function harness(fetcher=async()=>{throw Error('Unexpected external request')},portfolio=null){const elements=new Map();function node(selector){if(!elements.has(selector))elements.set(selector,{innerHTML:'',textContent:'',className:'',value:'',dataset:{},classList:{toggle(){},add(){}},setAttribute(){},removeAttribute(){},addEventListener(){},querySelectorAll(){return[]},querySelector(){return null},focus(){},select(){},setSelectionRange(){},scrollIntoView(){}});return elements.get(selector)}const source=fs.readFileSync(new URL('./worker/lab-client.js',import.meta.url),'utf8').split('// LAB_BOOTSTRAP_START')[0].replace('__LAB_BOOT__',JSON.stringify({user:{id:'fixture-owner',email:'owner@example.com'},proofs:[],portfolio})),local=new Map(),context=vm.createContext({...domain,console,structuredClone,URL,URLSearchParams,Intl,Date,Response,TextEncoder,crypto,performance,queueMicrotask,AbortController,setTimeout(){return 1},clearTimeout(){},setInterval(){return 1},clearInterval(){},localStorage:{setItem(k,v){local.set(k,v)},getItem(k){return local.get(k)||null},removeItem(k){local.delete(k)}},document:{querySelector:node,querySelectorAll(){return[]}},location:{hash:'#/home',search:''},history:{replaceState(){}},fetch:fetcher});vm.runInContext(source+'\nglobalThis.H={S,save,home,collection,renderEditor,renderMetrics,markDirty,route,sourcePanel,renderComparison,projectOptions,request,create,makeImportPayload,nextImportBatch,reloadAll,dialogBusy,importIdentity,projectPresets,selectedOwnedNote,portfolioInfo,libraryRows,filteredLibraryRows,library,libraryResults,refreshFeedView};',context);return{...context.H,elements,node,local}}
-function record(body,version=1){return{id:'note',body,version,created_at:'2026-11-16T00:00:00Z',updated_at:'2026-11-16T00:00:00Z'}}
-test('autosave serializes edits made while the previous save is in flight',async()=>{let unblock,calls=[];const h=harness(async(_path,options)=>{const input=JSON.parse(options.body);calls.push(input);if(calls.length===1)await new Promise(r=>unblock=r);return new Response(JSON.stringify({record:record(input.body,input.version+1)}),{status:200,headers:{'content-type':'application/json'}})}),body={...domain.freshRecord('reading'),facts:'first'};h.S.current=record(body);h.S.body=structuredClone(body);h.S.dirty=true;const first=h.save();await Promise.resolve();h.S.body.facts='second';h.S.dirty=true;const second=h.save();unblock();assert.equal(await first,true);assert.equal(await second,true);assert.equal(calls.length,2);assert.equal(calls[1].version,2);assert.equal(calls[1].body.facts,'second');assert.equal(h.S.current.version,3);assert.equal(h.S.dirty,false)});
-test('a conflicting save retains the unsaved body and pauses automatic overwrites',async()=>{let calls=0;const h=harness(async()=>{calls++;return new Response(JSON.stringify({error:'저장 충돌'}),{status:409})}),body={...domain.freshRecord('reading'),facts:'keep me'};h.S.current=record(body);h.S.body=structuredClone(body);h.S.dirty=true;assert.equal(await h.save(),false);assert.equal(h.S.body.facts,'keep me');assert.equal(h.S.dirty,true);assert.equal(h.S.conflict,true);assert.equal(await h.save(),false);assert.equal(calls,2);assert.ok([...h.local.values()].some(s=>s.includes('keep me')))});
-test('first-use home explains the flow and does not invent projects or achievements',async()=>{const h=harness();await h.home();const html=h.node('#view').innerHTML;assert.match(html,/첫 프로젝트 만들기/);assert.match(html,/실제 기록을 기다리는 공간/);assert.match(html,/프로젝트 선택/);assert.match(html,/면접 설명/);assert.match(html,/복습할 기록/)});
-test('every editor renders fields, backup and conflict controls with escaped user text',()=>{const h=harness();for(const kind of Object.keys(domain.KINDS)){const body={...domain.freshRecord(kind),title:'<img src=x onerror=alert(1)> 테스트'};h.S.current=record(body);h.S.body=body;h.renderEditor();const html=h.node('#view').innerHTML;assert.ok(!html.includes('<img src=x'));assert.match(html,/&lt;img src=x/);assert.match(html,/id="record-history"/);assert.match(html,/id="conflict-export"/);assert.match(html,/id="links-input"/);for(const f of domain.KINDS[kind].fields)assert.ok(html.includes('data-field="'+f+'"'),'missing field '+kind+':'+f)}});
-test('project focus limits monitors to selected API ids and exposes the matching public link',async()=>{const h=harness();const p=record({...domain.freshRecord('project'),title:'내 프로젝트',api_slugs:['weather']});p.id='project';h.S.items=[{id:'project',kind:'project',status:'active',title:p.body.title,version:1}];h.S.records.set('project',p);h.S.focus='project';h.S.feed={targets:[{slug:'weather',name:'서울 날씨',last_run:{status:'healthy',checked_at:'2026-11-16T00:00:00Z',duration_ms:150}},{slug:'other',name:'표시하면 안 됨',last_run:{status:'healthy'}}],incidents:[],ai_archive:[]};await h.home();const html=h.node('#view').innerHTML;assert.match(html,/서울 날씨/);assert.ok(!html.includes('표시하면 안 됨'));assert.match(html,/\?targets=weather/)});
-test('numeric comparison renders zero and negative values without claiming statistical improvement',()=>{const h=harness();h.S.body={metrics:[{name:'오차',baseline:0,variant:-1,unit:'m',direction:'lower'}]};h.renderComparison();assert.match(h.node('#metric-preview').innerHTML,/-1 m/);assert.match(h.node('#metric-preview').innerHTML,/절댓값/)});
-test('imported uncertain source versions are visibly marked for review',()=>{const h=harness();h.S.items=[{id:'source',kind:'experiment',title:'근거',version:1}];h.S.body={sourceIds:['source'],provenance:{sources:[{id:'source',version:0}]}};assert.match(h.sourcePanel(),/출처 버전 재확인 필요/)});
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import fs from 'node:fs';
+import * as domain from './worker/lab-domain.js';
+function harness(
+  fetcher = async () => {
+    throw Error('Unexpected external request');
+  },
+  portfolio = null,
+) {
+  const elements = new Map();
+  function node(selector) {
+    if (!elements.has(selector))
+      elements.set(selector, {
+        innerHTML: '',
+        textContent: '',
+        className: '',
+        value: '',
+        dataset: {},
+        classList: { toggle() {}, add() {} },
+        setAttribute() {},
+        removeAttribute() {},
+        addEventListener() {},
+        querySelectorAll() {
+          return [];
+        },
+        querySelector() {
+          return null;
+        },
+        focus() {},
+        select() {},
+        setSelectionRange() {},
+        scrollIntoView() {},
+      });
+    return elements.get(selector);
+  }
+  const source = fs
+      .readFileSync(new URL('./worker/lab-client.js', import.meta.url), 'utf8')
+      .split('// LAB_BOOTSTRAP_START')[0]
+      .replace(
+        '__LAB_BOOT__',
+        JSON.stringify({ user: { id: 'fixture-owner', email: 'owner@example.com' }, proofs: [], portfolio }),
+      ),
+    local = new Map(),
+    context = vm.createContext({
+      ...domain,
+      console,
+      structuredClone,
+      URL,
+      URLSearchParams,
+      Intl,
+      Date,
+      Response,
+      TextEncoder,
+      crypto,
+      performance,
+      queueMicrotask,
+      AbortController,
+      setTimeout() {
+        return 1;
+      },
+      clearTimeout() {},
+      setInterval() {
+        return 1;
+      },
+      clearInterval() {},
+      localStorage: {
+        setItem(k, v) {
+          local.set(k, v);
+        },
+        getItem(k) {
+          return local.get(k) || null;
+        },
+        removeItem(k) {
+          local.delete(k);
+        },
+      },
+      document: {
+        querySelector: node,
+        querySelectorAll() {
+          return [];
+        },
+      },
+      location: { hash: '#/home', search: '' },
+      history: { replaceState() {} },
+      fetch: fetcher,
+    });
+  vm.runInContext(
+    source +
+      '\nglobalThis.H={S,save,home,collection,renderEditor,renderMetrics,markDirty,route,sourcePanel,renderComparison,projectOptions,request,create,makeImportPayload,nextImportBatch,reloadAll,dialogBusy,importIdentity,projectPresets,selectedOwnedNote,portfolioInfo,libraryRows,filteredLibraryRows,library,libraryResults,refreshFeedView};',
+    context,
+  );
+  return { ...context.H, elements, node, local };
+}
+function record(body, version = 1) {
+  return { id: 'note', body, version, created_at: '2026-11-16T00:00:00Z', updated_at: '2026-11-16T00:00:00Z' };
+}
+test('autosave serializes edits made while the previous save is in flight', async () => {
+  let unblock,
+    calls = [];
+  const h = harness(async (_path, options) => {
+      const input = JSON.parse(options.body);
+      calls.push(input);
+      if (calls.length === 1) await new Promise((r) => (unblock = r));
+      return new Response(JSON.stringify({ record: record(input.body, input.version + 1) }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }),
+    body = { ...domain.freshRecord('reading'), facts: 'first' };
+  h.S.current = record(body);
+  h.S.body = structuredClone(body);
+  h.S.dirty = true;
+  const first = h.save();
+  await Promise.resolve();
+  h.S.body.facts = 'second';
+  h.S.dirty = true;
+  const second = h.save();
+  unblock();
+  assert.equal(await first, true);
+  assert.equal(await second, true);
+  assert.equal(calls.length, 2);
+  assert.equal(calls[1].version, 2);
+  assert.equal(calls[1].body.facts, 'second');
+  assert.equal(h.S.current.version, 3);
+  assert.equal(h.S.dirty, false);
+});
+test('a conflicting save retains the unsaved body and pauses automatic overwrites', async () => {
+  let calls = 0;
+  const h = harness(async () => {
+      calls++;
+      return new Response(JSON.stringify({ error: '저장 충돌' }), { status: 409 });
+    }),
+    body = { ...domain.freshRecord('reading'), facts: 'keep me' };
+  h.S.current = record(body);
+  h.S.body = structuredClone(body);
+  h.S.dirty = true;
+  assert.equal(await h.save(), false);
+  assert.equal(h.S.body.facts, 'keep me');
+  assert.equal(h.S.dirty, true);
+  assert.equal(h.S.conflict, true);
+  assert.equal(await h.save(), false);
+  assert.equal(calls, 2);
+  assert.ok([...h.local.values()].some((s) => s.includes('keep me')));
+});
+test('first-use home explains the flow and does not invent projects or achievements', async () => {
+  const h = harness();
+  await h.home();
+  const html = h.node('#view').innerHTML;
+  assert.match(html, /첫 프로젝트 만들기/);
+  assert.match(html, /실제 기록을 기다리는 공간/);
+  assert.match(html, /프로젝트 선택/);
+  assert.match(html, /면접 설명/);
+  assert.match(html, /복습할 기록/);
+});
+test('every editor renders fields, backup and conflict controls with escaped user text', () => {
+  const h = harness();
+  for (const kind of Object.keys(domain.KINDS)) {
+    const body = { ...domain.freshRecord(kind), title: '<img src=x onerror=alert(1)> 테스트' };
+    h.S.current = record(body);
+    h.S.body = body;
+    h.renderEditor();
+    const html = h.node('#view').innerHTML;
+    assert.ok(!html.includes('<img src=x'));
+    assert.match(html, /&lt;img src=x/);
+    assert.match(html, /id="record-history"/);
+    assert.match(html, /id="conflict-export"/);
+    assert.match(html, /id="links-input"/);
+    for (const f of domain.KINDS[kind].fields)
+      assert.ok(html.includes('data-field="' + f + '"'), 'missing field ' + kind + ':' + f);
+  }
+});
+test('project focus limits monitors to selected API ids and exposes the matching public link', async () => {
+  const h = harness();
+  const p = record({ ...domain.freshRecord('project'), title: '내 프로젝트', api_slugs: ['weather'] });
+  p.id = 'project';
+  h.S.items = [{ id: 'project', kind: 'project', status: 'active', title: p.body.title, version: 1 }];
+  h.S.records.set('project', p);
+  h.S.focus = 'project';
+  h.S.feed = {
+    targets: [
+      {
+        slug: 'weather',
+        name: '서울 날씨',
+        last_run: { status: 'healthy', checked_at: '2026-11-16T00:00:00Z', duration_ms: 150 },
+      },
+      { slug: 'other', name: '표시하면 안 됨', last_run: { status: 'healthy' } },
+    ],
+    incidents: [],
+    ai_archive: [],
+  };
+  await h.home();
+  const html = h.node('#view').innerHTML;
+  assert.match(html, /서울 날씨/);
+  assert.ok(!html.includes('표시하면 안 됨'));
+  assert.match(html, /\?targets=weather/);
+});
+test('numeric comparison renders zero and negative values without claiming statistical improvement', () => {
+  const h = harness();
+  h.S.body = { metrics: [{ name: '오차', baseline: 0, variant: -1, unit: 'm', direction: 'lower' }] };
+  h.renderComparison();
+  assert.match(h.node('#metric-preview').innerHTML, /-1 m/);
+  assert.match(h.node('#metric-preview').innerHTML, /절댓값/);
+});
+test('imported uncertain source versions are visibly marked for review', () => {
+  const h = harness();
+  h.S.items = [{ id: 'source', kind: 'experiment', title: '근거', version: 1 }];
+  h.S.body = { sourceIds: ['source'], provenance: { sources: [{ id: 'source', version: 0 }] } };
+  assert.match(h.sourcePanel(), /출처 버전 재확인 필요/);
+});
 
-test('editing a record keeps its selected archived project visible',()=>{const h=harness();h.S.items=[{id:'archived-project',kind:'project',title:'이전 프로젝트',status:'archived'}];assert.match(h.projectOptions('archived-project'),/selected/);assert.match(h.projectOptions('archived-project'),/보관/);assert.ok(!h.projectOptions('').includes('archived-project'))});
+test('editing a record keeps its selected archived project visible', () => {
+  const h = harness();
+  h.S.items = [{ id: 'archived-project', kind: 'project', title: '이전 프로젝트', status: 'archived' }];
+  assert.match(h.projectOptions('archived-project'), /selected/);
+  assert.match(h.projectOptions('archived-project'), /보관/);
+  assert.ok(!h.projectOptions('').includes('archived-project'));
+});
 
-test('invalid in-progress fields stay local without issuing a failing save request',async()=>{let calls=0;const h=harness(async()=>{calls++;throw Error('must not fetch')}),body={...domain.freshRecord('reading'),date:''};h.S.current=record(domain.freshRecord('reading'));h.S.body=body;h.S.dirty=true;assert.equal(await h.save(),false);assert.equal(calls,0);assert.equal(h.S.dirty,true);assert.match(h.node('#save-status').textContent,/날짜/)});
-test('a lost successful save response is reconciled without creating a false conflict',async()=>{let server=null;const h=harness(async(_path,options={})=>{if(options.method==='PUT'){const input=JSON.parse(options.body);if(!server){server=record(domain.checkedRecord(input.body),2);throw Error('response lost')}return new Response(JSON.stringify({error:'conflict'}),{status:409})}return new Response(JSON.stringify(server))}),body={...domain.freshRecord('reading'),facts:'실제로 저장됨'};h.S.current=record(body);h.S.body=structuredClone(body);h.S.dirty=true;assert.equal(await h.save(),false);assert.equal(await h.save(),true);assert.equal(h.S.current.version,2);assert.equal(h.S.conflict,false);assert.equal(h.S.dirty,false)});
-test('new edits following an uncertain save are applied only after verifying the earlier body',async()=>{let server=null;const h=harness(async(_path,options={})=>{if(options.method==='PUT'){const input=JSON.parse(options.body);if(!server){server=record(domain.checkedRecord(input.body),2);throw Error('response lost')}if(input.version!==server.version)return new Response(JSON.stringify({error:'conflict'}),{status:409});server=record(domain.checkedRecord(input.body),input.version+1);return new Response(JSON.stringify({record:server}))}return new Response(JSON.stringify(server))}),body={...domain.freshRecord('reading'),facts:'처음 입력'};h.S.current=record(body);h.S.body=structuredClone(body);h.S.dirty=true;await h.save();h.S.body.facts='이어 쓴 내용';assert.equal(await h.save(),true);assert.equal(server.body.facts,'이어 쓴 내용');assert.equal(server.version,3)});
-test('a genuine newer save by another device remains protected after a network error',async()=>{let server=record({...domain.freshRecord('reading'),facts:'다른 기기의 변경'},3),first=true;const h=harness(async(_path,options={})=>{if(first){first=false;throw Error('offline')}if(options.method==='PUT')return new Response(JSON.stringify({error:'conflict'}),{status:409});return new Response(JSON.stringify(server))}),body={...domain.freshRecord('reading'),facts:'내 미저장 입력'};h.S.current=record(body);h.S.body=structuredClone(body);h.S.dirty=true;await h.save();assert.equal(await h.save(),false);assert.equal(h.S.conflict,true);assert.equal(h.S.body.facts,'내 미저장 입력');assert.equal(server.body.facts,'다른 기기의 변경')});
-test('new record retry uses the same id and never duplicates a completed creation',async()=>{let server=null,ids=[];const h=harness(async(path,options={})=>{ids.push(path);if(options.method==='PUT'){const input=JSON.parse(options.body);if(!server){server={...record(domain.checkedRecord(input.body)),id:'stable-id'};throw Error('response lost')}return new Response(JSON.stringify({error:'conflict'}),{status:409})}return new Response(JSON.stringify(server))}),body=domain.freshRecord('reading');await assert.rejects(h.create(body,'stable-id'));const created=await h.create(body,'stable-id');assert.equal(created.id,'stable-id');assert.equal(new Set(ids).size,1);await assert.rejects(h.create({...body,facts:'추가 입력'},'stable-id'),e=>!!e.record)});
-test('navigation during reload cannot discard the current editor state',async()=>{const h=harness();h.S.loading=true;h.S.ready=true;h.S.current=record(domain.freshRecord('reading'));h.S.body={...h.S.current.body,facts:'보존할 입력'};h.S.dirty=true;await h.route();assert.equal(h.S.body.facts,'보존할 입력');assert.equal(h.S.dirty,true)});
-test('private records become usable without waiting for a hung public feed',async()=>{const h=harness(async path=>path.endsWith('/feed')?new Promise(()=>{}):new Response(JSON.stringify({items:[],cursor:null})));await h.reloadAll();assert.equal(h.S.ready,true);assert.equal(h.S.loading,false);assert.match(h.node('#view').innerHTML,/첫 프로젝트 만들기/)});
-test('import request budget includes UTF-8 text and only the relevant reference metadata',()=>{const h=harness(),ids=Array.from({length:1000},(_,i)=>'id-'+String(i).padStart(4,'0')+'a'.repeat(70)),rows=ids.map((id,i)=>({id,version:3,body:{...domain.freshRecord('reading'),facts:i<20?'한'.repeat(15000):'',interpretation:i<20?'글'.repeat(15000):'',application:i<20?'측'.repeat(15000):'',sourceIds:ids.slice(100,200)}})),job={rows,importId:'job',knownIds:ids,knownVersions:Object.fromEntries(ids.map(id=>[id,3]))};const batch=h.nextImportBatch(job,0),payload=JSON.parse(batch.body);assert.ok(new TextEncoder().encode(batch.body).length<=1100000);assert.ok(batch.count>0&&batch.count<50);assert.ok(payload.knownIds.length<1000);assert.ok(payload.knownIds.includes(ids[100]));assert.ok(!payload.knownIds.includes(ids[999]))});
-test('stale monitor results and older AI items have explicit freshness labels',async()=>{const h=harness();h.S.feed={last_check_at:'2020-01-01T00:00:00Z',targets:[],incidents:[],ai_archive:[],ai_latest:{date:'2020-01-01',title:'이전 자료',what:'과거 자료',sources:[]}};await h.home();assert.match(h.node('#view').innerHTML,/당시 관측값/);assert.match(h.node('#view').innerHTML,/최근 AI 학습 자료/)});
-test('dialog busy state disables accidental closing while a batch is active',()=>{const h=harness();h.dialogBusy(true);assert.equal(h.S.dialogBusy,true);assert.equal(h.node('#close-dialog').disabled,true);h.dialogBusy(false);assert.equal(h.node('#close-dialog').disabled,false)});
+test('invalid in-progress fields stay local without issuing a failing save request', async () => {
+  let calls = 0;
+  const h = harness(async () => {
+      calls++;
+      throw Error('must not fetch');
+    }),
+    body = { ...domain.freshRecord('reading'), date: '' };
+  h.S.current = record(domain.freshRecord('reading'));
+  h.S.body = body;
+  h.S.dirty = true;
+  assert.equal(await h.save(), false);
+  assert.equal(calls, 0);
+  assert.equal(h.S.dirty, true);
+  assert.match(h.node('#save-status').textContent, /날짜/);
+});
+test('a lost successful save response is reconciled without creating a false conflict', async () => {
+  let server = null;
+  const h = harness(async (_path, options = {}) => {
+      if (options.method === 'PUT') {
+        const input = JSON.parse(options.body);
+        if (!server) {
+          server = record(domain.checkedRecord(input.body), 2);
+          throw Error('response lost');
+        }
+        return new Response(JSON.stringify({ error: 'conflict' }), { status: 409 });
+      }
+      return new Response(JSON.stringify(server));
+    }),
+    body = { ...domain.freshRecord('reading'), facts: '실제로 저장됨' };
+  h.S.current = record(body);
+  h.S.body = structuredClone(body);
+  h.S.dirty = true;
+  assert.equal(await h.save(), false);
+  assert.equal(await h.save(), true);
+  assert.equal(h.S.current.version, 2);
+  assert.equal(h.S.conflict, false);
+  assert.equal(h.S.dirty, false);
+});
+test('new edits following an uncertain save are applied only after verifying the earlier body', async () => {
+  let server = null;
+  const h = harness(async (_path, options = {}) => {
+      if (options.method === 'PUT') {
+        const input = JSON.parse(options.body);
+        if (!server) {
+          server = record(domain.checkedRecord(input.body), 2);
+          throw Error('response lost');
+        }
+        if (input.version !== server.version)
+          return new Response(JSON.stringify({ error: 'conflict' }), { status: 409 });
+        server = record(domain.checkedRecord(input.body), input.version + 1);
+        return new Response(JSON.stringify({ record: server }));
+      }
+      return new Response(JSON.stringify(server));
+    }),
+    body = { ...domain.freshRecord('reading'), facts: '처음 입력' };
+  h.S.current = record(body);
+  h.S.body = structuredClone(body);
+  h.S.dirty = true;
+  await h.save();
+  h.S.body.facts = '이어 쓴 내용';
+  assert.equal(await h.save(), true);
+  assert.equal(server.body.facts, '이어 쓴 내용');
+  assert.equal(server.version, 3);
+});
+test('a genuine newer save by another device remains protected after a network error', async () => {
+  let server = record({ ...domain.freshRecord('reading'), facts: '다른 기기의 변경' }, 3),
+    first = true;
+  const h = harness(async (_path, options = {}) => {
+      if (first) {
+        first = false;
+        throw Error('offline');
+      }
+      if (options.method === 'PUT') return new Response(JSON.stringify({ error: 'conflict' }), { status: 409 });
+      return new Response(JSON.stringify(server));
+    }),
+    body = { ...domain.freshRecord('reading'), facts: '내 미저장 입력' };
+  h.S.current = record(body);
+  h.S.body = structuredClone(body);
+  h.S.dirty = true;
+  await h.save();
+  assert.equal(await h.save(), false);
+  assert.equal(h.S.conflict, true);
+  assert.equal(h.S.body.facts, '내 미저장 입력');
+  assert.equal(server.body.facts, '다른 기기의 변경');
+});
+test('new record retry uses the same id and never duplicates a completed creation', async () => {
+  let server = null,
+    ids = [];
+  const h = harness(async (path, options = {}) => {
+      ids.push(path);
+      if (options.method === 'PUT') {
+        const input = JSON.parse(options.body);
+        if (!server) {
+          server = { ...record(domain.checkedRecord(input.body)), id: 'stable-id' };
+          throw Error('response lost');
+        }
+        return new Response(JSON.stringify({ error: 'conflict' }), { status: 409 });
+      }
+      return new Response(JSON.stringify(server));
+    }),
+    body = domain.freshRecord('reading');
+  await assert.rejects(h.create(body, 'stable-id'));
+  const created = await h.create(body, 'stable-id');
+  assert.equal(created.id, 'stable-id');
+  assert.equal(new Set(ids).size, 1);
+  await assert.rejects(h.create({ ...body, facts: '추가 입력' }, 'stable-id'), (e) => !!e.record);
+});
+test('navigation during reload cannot discard the current editor state', async () => {
+  const h = harness();
+  h.S.loading = true;
+  h.S.ready = true;
+  h.S.current = record(domain.freshRecord('reading'));
+  h.S.body = { ...h.S.current.body, facts: '보존할 입력' };
+  h.S.dirty = true;
+  await h.route();
+  assert.equal(h.S.body.facts, '보존할 입력');
+  assert.equal(h.S.dirty, true);
+});
+test('private records become usable without waiting for a hung public feed', async () => {
+  const h = harness(async (path) =>
+    path.endsWith('/feed') ? new Promise(() => {}) : new Response(JSON.stringify({ items: [], cursor: null })),
+  );
+  await h.reloadAll();
+  assert.equal(h.S.ready, true);
+  assert.equal(h.S.loading, false);
+  assert.match(h.node('#view').innerHTML, /첫 프로젝트 만들기/);
+});
+test('import request budget includes UTF-8 text and only the relevant reference metadata', () => {
+  const h = harness(),
+    ids = Array.from({ length: 1000 }, (_, i) => 'id-' + String(i).padStart(4, '0') + 'a'.repeat(70)),
+    rows = ids.map((id, i) => ({
+      id,
+      version: 3,
+      body: {
+        ...domain.freshRecord('reading'),
+        facts: i < 20 ? '한'.repeat(15000) : '',
+        interpretation: i < 20 ? '글'.repeat(15000) : '',
+        application: i < 20 ? '측'.repeat(15000) : '',
+        sourceIds: ids.slice(100, 200),
+      },
+    })),
+    job = { rows, importId: 'job', knownIds: ids, knownVersions: Object.fromEntries(ids.map((id) => [id, 3])) };
+  const batch = h.nextImportBatch(job, 0),
+    payload = JSON.parse(batch.body);
+  assert.ok(new TextEncoder().encode(batch.body).length <= 1100000);
+  assert.ok(batch.count > 0 && batch.count < 50);
+  assert.ok(payload.knownIds.length < 1000);
+  assert.ok(payload.knownIds.includes(ids[100]));
+  assert.ok(!payload.knownIds.includes(ids[999]));
+});
+test('stale monitor results and older AI items have explicit freshness labels', async () => {
+  const h = harness();
+  h.S.feed = {
+    last_check_at: '2020-01-01T00:00:00Z',
+    targets: [],
+    incidents: [],
+    ai_archive: [],
+    ai_latest: { date: '2020-01-01', title: '이전 자료', what: '과거 자료', sources: [] },
+  };
+  await h.home();
+  assert.match(h.node('#view').innerHTML, /당시 관측값/);
+  assert.match(h.node('#view').innerHTML, /최근 AI 학습 자료/);
+});
+test('dialog busy state disables accidental closing while a batch is active', () => {
+  const h = harness();
+  h.dialogBusy(true);
+  assert.equal(h.S.dialogBusy, true);
+  assert.equal(h.node('#close-dialog').disabled, true);
+  h.dialogBusy(false);
+  assert.equal(h.node('#close-dialog').disabled, false);
+});
 
-test('same backup file retains a stable import identity across page reloads',async()=>{const a=harness(),b=harness();assert.equal(await a.importIdentity('same file'),await b.importIdentity('same file'));assert.notEqual(await a.importIdentity('same file'),await a.importIdentity('different file'))});
+test('same backup file retains a stable import identity across page reloads', async () => {
+  const a = harness(),
+    b = harness();
+  assert.equal(await a.importIdentity('same file'), await b.importIdentity('same file'));
+  assert.notEqual(await a.importIdentity('same file'), await a.importIdentity('different file'));
+});
 
-test('latest public project presets and authored notes are separate from existing records',async()=>{const h=harness();h.S.feed={portfolio:{synced_at:'2026-11-17T00:00:00Z',projects:[{id:'vqa',title:'갱신한 VQA',summary:'공개 설명',url:'https://example.com/vqa',stack:['PyTorch']}],links:{ai_notes:'https://0ju12.github.io/posts/ai-trend.html'},learning_notes:[{id:'small',title:'소형 모델',summary:'내 기술 정리',url:'https://example.com/note',episode:14,date:'2026-11-16'}]},targets:[],incidents:[],ai_archive:[]};assert.equal(h.projectPresets()[0].title,'갱신한 VQA');await h.home();assert.match(h.node('#view').innerHTML,/소형 모델/);assert.match(h.node('#view').innerHTML,/공식 신규 릴리스와 별개/);assert.equal(h.S.items.length,0)});
+test('latest public project presets and authored notes are separate from existing records', async () => {
+  const h = harness();
+  h.S.feed = {
+    portfolio: {
+      synced_at: '2026-11-17T00:00:00Z',
+      projects: [
+        { id: 'vqa', title: '갱신한 VQA', summary: '공개 설명', url: 'https://example.com/vqa', stack: ['PyTorch'] },
+      ],
+      links: { ai_notes: 'https://0ju12.github.io/posts/ai-trend.html' },
+      learning_notes: [
+        {
+          id: 'small',
+          title: '소형 모델',
+          summary: '내 기술 정리',
+          url: 'https://example.com/note',
+          episode: 14,
+          date: '2026-11-16',
+        },
+      ],
+    },
+    targets: [],
+    incidents: [],
+    ai_archive: [],
+  };
+  assert.equal(h.projectPresets()[0].title, '갱신한 VQA');
+  await h.home();
+  assert.match(h.node('#view').innerHTML, /소형 모델/);
+  assert.match(h.node('#view').innerHTML, /공식 신규 릴리스와 별개/);
+  assert.equal(h.S.items.length, 0);
+});
 
-test('AI library searches all articles and official sources without creating personal records',()=>{const h=harness(),n=i=>({id:'note-'+i,title:i===18?'AI 규제와 안전':'기술 '+i,summary:'검증 조건',date:'2026-11-18',episode:i,url:'https://example.com/'+i});h.S.feed={portfolio:{learning_notes:Array.from({length:18},(_,i)=>n(i+1))},ai_archive:[{item_id:'release',title:'Official release',what:'upstream change',technology:'model',date:'2026-11-17',sources:[{url:'https://github.com/example/model'}]}]};h.S.items=[{id:'existing',kind:'reading',title:'수정한 기록'}];const before=JSON.stringify(h.S.items);assert.equal(h.libraryRows().length,19);h.library();assert.match(h.node('#library-results').innerHTML,/1 \/ 2쪽/);h.node('#library-search').oninput({target:{value:'규제'}});assert.equal(h.filteredLibraryRows().length,1);assert.match(h.node('#library-results').innerHTML,/AI 규제와 안전/);h.S.librarySearch='';h.node('#library-source').onchange({target:{value:'official'}});assert.equal(h.filteredLibraryRows().length,1);assert.match(h.node('#library-results').innerHTML,/공식 자료 기반 학습/);assert.equal(JSON.stringify(h.S.items),before)});
-test('library pagination clamps after filtering and escapes source content',()=>{const h=harness();h.S.feed={portfolio:{learning_notes:Array.from({length:13},(_,i)=>({id:'n'+i,title:'<img onerror=bad()> '+i,summary:'<script>bad()</script>',date:'2026-11-18',episode:i,url:'https://example.com'}))},ai_archive:[]};h.library();h.node('#library-next').onclick();assert.equal(h.S.libraryPage,1);assert.match(h.node('#library-results').innerHTML,/2 \/ 2쪽/);h.S.librarySearch='no match';h.libraryResults();assert.equal(h.S.libraryPage,0);assert.match(h.node('#library-results').innerHTML,/조건에 맞는 자료가 없습니다/);h.S.librarySearch='';h.libraryResults();assert.ok(!h.node('#library-results').innerHTML.includes('<script>'));assert.match(h.node('#library-results').innerHTML,/&lt;img/)});
-test('late public feed refresh keeps library search and personal editor state',()=>{const h=harness();h.S.ready=true;h.S.view='library';h.S.librarySearch='keep';h.S.feed={portfolio:{learning_notes:[]},ai_archive:[]};h.refreshFeedView();assert.equal(h.S.librarySearch,'keep');assert.match(h.node('#library-results').innerHTML,/검색 결과 0개/);h.S.current=record(domain.freshRecord('reading'));h.node('#library-results').innerHTML='editing';h.refreshFeedView();assert.equal(h.node('#library-results').innerHTML,'editing')});
-test('newer shipped portfolio metadata wins over stale remote snapshot',()=>{const fallback={source_updated_at:'2026-11-18T00:00:00Z',learning_notes:[{id:'new'}]},h=harness(undefined,fallback);h.S.feed={portfolio:{source_updated_at:'2026-11-17T00:00:00Z',learning_notes:[]}};assert.equal(h.portfolioInfo().learning_notes[0].id,'new');h.S.feed.portfolio.source_updated_at='2026-11-19T00:00:00Z';assert.equal(h.portfolioInfo().learning_notes.length,0)});
+test('AI library searches all articles and official sources without creating personal records', () => {
+  const h = harness(),
+    n = (i) => ({
+      id: 'note-' + i,
+      title: i === 18 ? 'AI 규제와 안전' : '기술 ' + i,
+      summary: '검증 조건',
+      date: '2026-11-18',
+      episode: i,
+      url: 'https://example.com/' + i,
+    });
+  h.S.feed = {
+    portfolio: { learning_notes: Array.from({ length: 18 }, (_, i) => n(i + 1)) },
+    ai_archive: [
+      {
+        item_id: 'release',
+        title: 'Official release',
+        what: 'upstream change',
+        technology: 'model',
+        date: '2026-11-17',
+        sources: [{ url: 'https://github.com/example/model' }],
+      },
+    ],
+  };
+  h.S.items = [{ id: 'existing', kind: 'reading', title: '수정한 기록' }];
+  const before = JSON.stringify(h.S.items);
+  assert.equal(h.libraryRows().length, 19);
+  h.library();
+  assert.match(h.node('#library-results').innerHTML, /1 \/ 2쪽/);
+  h.node('#library-search').oninput({ target: { value: '규제' } });
+  assert.equal(h.filteredLibraryRows().length, 1);
+  assert.match(h.node('#library-results').innerHTML, /AI 규제와 안전/);
+  h.S.librarySearch = '';
+  h.node('#library-source').onchange({ target: { value: 'official' } });
+  assert.equal(h.filteredLibraryRows().length, 1);
+  assert.match(h.node('#library-results').innerHTML, /공식 자료 기반 학습/);
+  assert.equal(JSON.stringify(h.S.items), before);
+});
+test('library pagination clamps after filtering and escapes source content', () => {
+  const h = harness();
+  h.S.feed = {
+    portfolio: {
+      learning_notes: Array.from({ length: 13 }, (_, i) => ({
+        id: 'n' + i,
+        title: '<img onerror=bad()> ' + i,
+        summary: '<script>bad()</script>',
+        date: '2026-11-18',
+        episode: i,
+        url: 'https://example.com',
+      })),
+    },
+    ai_archive: [],
+  };
+  h.library();
+  h.node('#library-next').onclick();
+  assert.equal(h.S.libraryPage, 1);
+  assert.match(h.node('#library-results').innerHTML, /2 \/ 2쪽/);
+  h.S.librarySearch = 'no match';
+  h.libraryResults();
+  assert.equal(h.S.libraryPage, 0);
+  assert.match(h.node('#library-results').innerHTML, /조건에 맞는 자료가 없습니다/);
+  h.S.librarySearch = '';
+  h.libraryResults();
+  assert.ok(!h.node('#library-results').innerHTML.includes('<script>'));
+  assert.match(h.node('#library-results').innerHTML, /&lt;img/);
+});
+test('late public feed refresh keeps library search and personal editor state', () => {
+  const h = harness();
+  h.S.ready = true;
+  h.S.view = 'library';
+  h.S.librarySearch = 'keep';
+  h.S.feed = { portfolio: { learning_notes: [] }, ai_archive: [] };
+  h.refreshFeedView();
+  assert.equal(h.S.librarySearch, 'keep');
+  assert.match(h.node('#library-results').innerHTML, /검색 결과 0개/);
+  h.S.current = record(domain.freshRecord('reading'));
+  h.node('#library-results').innerHTML = 'editing';
+  h.refreshFeedView();
+  assert.equal(h.node('#library-results').innerHTML, 'editing');
+});
+test('newer shipped portfolio metadata wins over stale remote snapshot', () => {
+  const fallback = { source_updated_at: '2026-11-18T00:00:00Z', learning_notes: [{ id: 'new' }] },
+    h = harness(undefined, fallback);
+  h.S.feed = { portfolio: { source_updated_at: '2026-11-17T00:00:00Z', learning_notes: [] } };
+  assert.equal(h.portfolioInfo().learning_notes[0].id, 'new');
+  h.S.feed.portfolio.source_updated_at = '2026-11-19T00:00:00Z';
+  assert.equal(h.portfolioInfo().learning_notes.length, 0);
+});

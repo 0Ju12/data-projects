@@ -11,6 +11,7 @@ LLM 은 조회 결과를 문장으로 옮기면서 숫자를 틀리게 적거나
 그 밖의 숫자는 '근거 없음'으로 돌려줍니다. 합계·차이처럼 답에서 새로 계산한 값도 근거 없음이 되므로,
 그런 값은 SQL 에서 계산해 결과에 넣어야 합니다.
 """
+
 from __future__ import annotations
 
 import re
@@ -38,7 +39,7 @@ def result_values(result: dict) -> list[float]:
                 vals.append(float(v))
             elif isinstance(v, str):
                 vals += [n for _, n, _ in numbers(v)]
-                vals += [float(p) for p in re.findall(r"\d+", v)]      # '2025-10-06' 의 10, 6 같은 날짜 조각
+                vals += [float(p) for p in re.findall(r"\d+", v)]  # '2025-10-06' 의 10, 6 같은 날짜 조각
     return vals
 
 
@@ -63,4 +64,9 @@ def check(answer: str, result: dict, question: str = "") -> dict:
         elif a in given:
             how = "질문에 나온 값"
         (supported if how else unsupported).append({"number": raw, "basis": how} if how else {"number": raw})
-    return {"ok": not unsupported, "checked": len(supported) + len(unsupported), "supported": supported, "unsupported": unsupported}
+    return {
+        "ok": not unsupported,
+        "checked": len(supported) + len(unsupported),
+        "supported": supported,
+        "unsupported": unsupported,
+    }

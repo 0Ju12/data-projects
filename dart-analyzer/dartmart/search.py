@@ -3,6 +3,7 @@
 답은 만들어 내지 않고, 점수가 높은 원문 문단을 출처(보고서·절)와 함께 그대로 돌려줍니다.
 점수가 기준 미만이면 "근거 없음"을 돌려줘 엉뚱한 문단을 답처럼 보이지 않게 합니다.
 """
+
 from __future__ import annotations
 
 import math
@@ -14,7 +15,7 @@ def tokens(text: str) -> list[str]:
     out = []
     for w in re.findall(r"[0-9A-Za-z]+|[가-힣]+", text.lower()):
         if re.fullmatch(r"[가-힣]+", w):
-            out += [w[i:i + 2] for i in range(len(w) - 1)] or [w]
+            out += [w[i : i + 2] for i in range(len(w) - 1)] or [w]
         else:
             out.append(w)
     return out
@@ -52,6 +53,6 @@ def search(paragraphs: list[dict], query: str, k: int = 3, min_score: float | No
     bm = BM25([p["text"] for p in paragraphs])
     sc = bm.scores(query)
     qn = len(set(tokens(query))) or 1
-    floor = min_score if min_score is not None else 0.8 * qn       # 질의 토큰 수에 비례한 최소 점수
+    floor = min_score if min_score is not None else 0.8 * qn  # 질의 토큰 수에 비례한 최소 점수
     ranked = sorted(zip(sc, paragraphs), key=lambda x: -x[0])
     return [dict(p, score=round(s, 2)) for s, p in ranked[:k] if s >= floor]

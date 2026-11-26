@@ -7,6 +7,7 @@
 하루 경계가 같은 두 거래소만 묶었습니다. 빗썸 일봉은 한국 시간 0시에 끊겨(UTC 15시) 같은 '하루'가 아니므로 넣지 않았습니다.
 아직 끝나지 않은 오늘(UTC)의 봉은 값이 계속 바뀌므로 저장하지 않습니다.
 """
+
 from __future__ import annotations
 
 import csv
@@ -25,7 +26,7 @@ QUOTES = ["KRW", "JPY", "EUR"]
 C_FIELDS = ["exchange", "asset", "quote", "day_utc", "open", "high", "low", "close", "volume"]
 F_FIELDS = ["day", "base", "quote", "rate"]
 BACKFILL_DAYS = 730
-OVERLAP_DAYS = 7          # 최근 며칠은 다시 받아 바꿔 넣습니다 (늦게 고쳐진 봉·놓친 날 메우기)
+OVERLAP_DAYS = 7  # 최근 며칠은 다시 받아 바꿔 넣습니다 (늦게 고쳐진 봉·놓친 날 메우기)
 
 
 def _load(path: Path, key) -> dict:
@@ -61,9 +62,17 @@ def upbit_days(asset: str, start: date, end: date, get=http_json, pause=0.15) ->
         for c in data:
             d = c["candle_date_time_utc"][:10]
             if start.isoformat() <= d <= end.isoformat():
-                out[d] = {"exchange": "upbit", "asset": asset, "quote": "KRW", "day_utc": d, "open": _num(c["opening_price"]),
-                          "high": _num(c["high_price"]), "low": _num(c["low_price"]), "close": _num(c["trade_price"]),
-                          "volume": _num(c["candle_acc_trade_volume"])}
+                out[d] = {
+                    "exchange": "upbit",
+                    "asset": asset,
+                    "quote": "KRW",
+                    "day_utc": d,
+                    "open": _num(c["opening_price"]),
+                    "high": _num(c["high_price"]),
+                    "low": _num(c["low_price"]),
+                    "close": _num(c["trade_price"]),
+                    "volume": _num(c["candle_acc_trade_volume"]),
+                }
         oldest = date.fromisoformat(min(c["candle_date_time_utc"][:10] for c in data))
         if oldest >= to or len(data) < 200:
             break
@@ -77,13 +86,24 @@ def coinbase_days(asset: str, start: date, end: date, get=http_json, pause=0.2) 
     out, a = {}, start
     while a <= end:
         b = min(a + timedelta(days=299), end)
-        data = get(f"https://api.exchange.coinbase.com/products/{asset}-USD/candles?granularity=86400"
-                   f"&start={a.isoformat()}T00:00:00Z&end={b.isoformat()}T00:00:00Z")
+        data = get(
+            f"https://api.exchange.coinbase.com/products/{asset}-USD/candles?granularity=86400"
+            f"&start={a.isoformat()}T00:00:00Z&end={b.isoformat()}T00:00:00Z"
+        )
         for t, lo, hi, op, cl, vol in data or []:
             d = datetime.fromtimestamp(int(t), tz=timezone.utc).date().isoformat()
             if start.isoformat() <= d <= end.isoformat():
-                out[d] = {"exchange": "coinbase", "asset": asset, "quote": "USD", "day_utc": d, "open": _num(op), "high": _num(hi),
-                          "low": _num(lo), "close": _num(cl), "volume": _num(vol)}
+                out[d] = {
+                    "exchange": "coinbase",
+                    "asset": asset,
+                    "quote": "USD",
+                    "day_utc": d,
+                    "open": _num(op),
+                    "high": _num(hi),
+                    "low": _num(lo),
+                    "close": _num(cl),
+                    "volume": _num(vol),
+                }
         a = b + timedelta(days=1)
         if a <= end:
             time.sleep(pause)
@@ -91,12 +111,24 @@ def coinbase_days(asset: str, start: date, end: date, get=http_json, pause=0.2) 
 
 
 def fx_days(start: date, end: date, get=http_json) -> list[dict]:
-    data = get(f"https://api.frankfurter.dev/v1/{start.isoformat()}..{end.isoformat()}?base=USD&symbols={','.join(QUOTES)}")
-    return [{"day": d, "base": "USD", "quote": q, "rate": _num(r)} for d, m in (data.get("rates") or {}).items() for q, r in m.items()]
+    data = get(
+        f"https://api.frankfurter.dev/v1/{start.isoformat()}..{end.isoformat()}?base=USD&symbols={','.join(QUOTES)}"
+    )
+    return [
+        {"day": d, "base": "USD", "quote": q, "rate": _num(r)}
+        for d, m in (data.get("rates") or {}).items()
+        for q, r in m.items()
+    ]
 
 
-def collect(today: str | None = None, candles_path: Path = CANDLES, fx_path: Path = FX, get=http_json, pause=0.15,
-            backfill_days: int = BACKFILL_DAYS) -> dict:
+def collect(
+    today: str | None = None,
+    candles_path: Path = CANDLES,
+    fx_path: Path = FX,
+    get=http_json,
+    pause=0.15,
+    backfill_days: int = BACKFILL_DAYS,
+) -> dict:
     """끝난 날(어제 UTC)까지 받습니다. 처음에는 backfill_days 만큼, 그 뒤에는 마지막으로 가진 날의 OVERLAP_DAYS 전부터."""
     today_d = date.fromisoformat(today) if today else datetime.now(timezone.utc).date()
     end = today_d - timedelta(days=1)
@@ -106,8 +138,11 @@ def collect(today: str | None = None, candles_path: Path = CANDLES, fx_path: Pat
     for exchange, fetch in (("upbit", upbit_days), ("coinbase", coinbase_days)):
         for asset in ASSETS:
             have = [k[2] for k in candles if k[0] == exchange and k[1] == asset]
-            start = max(date.fromisoformat(max(have)) - timedelta(days=OVERLAP_DAYS), end - timedelta(days=backfill_days)) if have \
+            start = (
+                max(date.fromisoformat(max(have)) - timedelta(days=OVERLAP_DAYS), end - timedelta(days=backfill_days))
+                if have
                 else end - timedelta(days=backfill_days)
+            )
             try:
                 rows = fetch(asset, start, end, get, pause)
             except Exception as e:
@@ -121,8 +156,11 @@ def collect(today: str | None = None, candles_path: Path = CANDLES, fx_path: Pat
                     stats["candles_changed"] += 1
                 candles[k] = r
     have = [k[0] for k in fx]
-    start = max(date.fromisoformat(max(have)) - timedelta(days=OVERLAP_DAYS), end - timedelta(days=backfill_days)) if have \
+    start = (
+        max(date.fromisoformat(max(have)) - timedelta(days=OVERLAP_DAYS), end - timedelta(days=backfill_days))
+        if have
         else end - timedelta(days=backfill_days)
+    )
     try:
         for r in fx_days(start, end, get):
             if r["day"] <= end.isoformat():

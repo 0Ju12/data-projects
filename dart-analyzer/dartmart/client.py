@@ -4,6 +4,7 @@
 - 응답 status: '000' 정상, '013' 조회 데이터 없음(빈 결과로 처리), '020' 요청 한도 초과(대기 후 재시도), 그 밖은 예외.
 - 한도(일 20,000건)를 지키기 위해 요청 사이에 최소 간격을 둡니다.
 """
+
 from __future__ import annotations
 
 import io
@@ -27,10 +28,14 @@ class NoFile(DartError):
 
 
 class Client:
-    def __init__(self, key: str | None = None, opener=urllib.request.urlopen, min_interval: float = 0.15, sleep=time.sleep):
+    def __init__(
+        self, key: str | None = None, opener=urllib.request.urlopen, min_interval: float = 0.15, sleep=time.sleep
+    ):
         self.key = key or os.environ.get("DART_API_KEY", "")
         if not self.key:
-            raise DartError("DART_API_KEY 가 없습니다. https://opendart.fss.or.kr 에서 인증키를 발급해 환경변수로 넣으세요.")
+            raise DartError(
+                "DART_API_KEY 가 없습니다. https://opendart.fss.or.kr 에서 인증키를 발급해 환경변수로 넣으세요."
+            )
         self.opener, self.min_interval, self.sleep, self._last = opener, min_interval, sleep, 0.0
 
     def _raw(self, path: str, params: dict) -> bytes:
@@ -60,7 +65,7 @@ class Client:
 
     def zip(self, path: str, params: dict) -> zipfile.ZipFile:
         body = self._raw(path, params)
-        if body[:2] != b"PK":                       # 오류면 zip 대신 JSON/XML 메시지가 옴
+        if body[:2] != b"PK":  # 오류면 zip 대신 JSON/XML 메시지가 옴
             msg = body[:300].decode("utf-8", "ignore")
             if "<status>014</status>" in msg or '"status":"014"' in msg:
                 raise NoFile(f"{path}: 파일 없음 (014)")
@@ -71,6 +76,7 @@ class Client:
     def corp_codes(self) -> list[dict]:
         """전체 회사 고유번호 목록 (corpCode.xml)"""
         from .parse import parse_corp_codes
+
         z = self.zip("corpCode.xml", {})
         return parse_corp_codes(z.read(z.namelist()[0]))
 
@@ -78,8 +84,17 @@ class Client:
         """정기공시(A) 목록. 여러 쪽이면 모두 받음"""
         out, page = [], 1
         while True:
-            d = self.json("list.json", {"corp_code": corp_code, "bgn_de": bgn_de, "end_de": end_de, "pblntf_ty": kind,
-                                        "page_no": page, "page_count": 100})
+            d = self.json(
+                "list.json",
+                {
+                    "corp_code": corp_code,
+                    "bgn_de": bgn_de,
+                    "end_de": end_de,
+                    "pblntf_ty": kind,
+                    "page_no": page,
+                    "page_count": 100,
+                },
+            )
             out += d.get("list", [])
             if page >= int(d.get("total_page", 1) or 1):
                 return out
@@ -87,7 +102,9 @@ class Client:
 
     def financials(self, corp_code: str, year: int, reprt: str = "사업보고서") -> list[dict]:
         """단일회사 주요 계정 (연결·별도 둘 다 옴)"""
-        return self.json("fnlttSinglAcnt.json", {"corp_code": corp_code, "bsns_year": str(year), "reprt_code": REPRT[reprt]}).get("list", [])
+        return self.json(
+            "fnlttSinglAcnt.json", {"corp_code": corp_code, "bsns_year": str(year), "reprt_code": REPRT[reprt]}
+        ).get("list", [])
 
     def document(self, rcept_no: str) -> list[bytes]:
         """공시 원문 XML 파일들"""

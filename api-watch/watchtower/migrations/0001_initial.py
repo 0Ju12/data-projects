@@ -5,83 +5,91 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='DailyBrief',
+            name="DailyBrief",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField(unique=True)),
-                ('item_id', models.CharField(max_length=250)),
-                ('created_at', models.DateTimeField()),
-                ('payload', models.JSONField(default=dict)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("date", models.DateField(unique=True)),
+                ("item_id", models.CharField(max_length=250)),
+                ("created_at", models.DateTimeField()),
+                ("payload", models.JSONField(default=dict)),
             ],
             options={
-                'ordering': ['-date'],
+                "ordering": ["-date"],
             },
         ),
         migrations.CreateModel(
-            name='Lease',
+            name="Lease",
             fields=[
-                ('name', models.CharField(max_length=32, primary_key=True, serialize=False)),
-                ('token', models.CharField(blank=True, max_length=64)),
-                ('until', models.DateTimeField(null=True)),
+                ("name", models.CharField(max_length=32, primary_key=True, serialize=False)),
+                ("token", models.CharField(blank=True, max_length=64)),
+                ("until", models.DateTimeField(null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Target',
+            name="Target",
             fields=[
-                ('slug', models.SlugField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=160)),
-                ('spec', models.JSONField(default=dict)),
-                ('baseline', models.JSONField(default=dict)),
-                ('consecutive_failures', models.PositiveIntegerField(default=0)),
-                ('last_success', models.DateTimeField(blank=True, null=True)),
+                ("slug", models.SlugField(primary_key=True, serialize=False)),
+                ("name", models.CharField(max_length=160)),
+                ("spec", models.JSONField(default=dict)),
+                ("baseline", models.JSONField(default=dict)),
+                ("consecutive_failures", models.PositiveIntegerField(default=0)),
+                ("last_success", models.DateTimeField(blank=True, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Incident',
+            name="Incident",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('key', models.CharField(max_length=220)),
-                ('kind', models.CharField(max_length=40)),
-                ('severity', models.CharField(max_length=16)),
-                ('message', models.CharField(max_length=500)),
-                ('opened_at', models.DateTimeField()),
-                ('last_seen_at', models.DateTimeField()),
-                ('resolved_at', models.DateTimeField(blank=True, null=True)),
-                ('occurrences', models.PositiveIntegerField(default=1)),
-                ('target', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='incidents', to='watchtower.target')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("key", models.CharField(max_length=220)),
+                ("kind", models.CharField(max_length=40)),
+                ("severity", models.CharField(max_length=16)),
+                ("message", models.CharField(max_length=500)),
+                ("opened_at", models.DateTimeField()),
+                ("last_seen_at", models.DateTimeField()),
+                ("resolved_at", models.DateTimeField(blank=True, null=True)),
+                ("occurrences", models.PositiveIntegerField(default=1)),
+                (
+                    "target",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="incidents", to="watchtower.target"
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-opened_at'],
-                'indexes': [models.Index(fields=['target', 'resolved_at'], name='watchtower__target__59caa3_idx')],
+                "ordering": ["-opened_at"],
+                "indexes": [models.Index(fields=["target", "resolved_at"], name="watchtower__target__59caa3_idx")],
             },
         ),
         migrations.CreateModel(
-            name='CheckRun',
+            name="CheckRun",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('checked_at', models.DateTimeField()),
-                ('status', models.CharField(max_length=16)),
-                ('http_status', models.IntegerField(null=True)),
-                ('duration_ms', models.FloatField()),
-                ('data_at', models.DateTimeField(null=True)),
-                ('record_count', models.IntegerField(null=True)),
-                ('checks', models.JSONField(default=list)),
-                ('schema_diff', models.JSONField(default=list)),
-                ('error', models.CharField(blank=True, max_length=300)),
-                ('source', models.CharField(default='live', max_length=16)),
-                ('target', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='runs', to='watchtower.target')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("checked_at", models.DateTimeField()),
+                ("status", models.CharField(max_length=16)),
+                ("http_status", models.IntegerField(null=True)),
+                ("duration_ms", models.FloatField()),
+                ("data_at", models.DateTimeField(null=True)),
+                ("record_count", models.IntegerField(null=True)),
+                ("checks", models.JSONField(default=list)),
+                ("schema_diff", models.JSONField(default=list)),
+                ("error", models.CharField(blank=True, max_length=300)),
+                ("source", models.CharField(default="live", max_length=16)),
+                (
+                    "target",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="runs", to="watchtower.target"
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-checked_at'],
-                'indexes': [models.Index(fields=['target', '-checked_at'], name='watchtower__target__ff7d4d_idx')],
+                "ordering": ["-checked_at"],
+                "indexes": [models.Index(fields=["target", "-checked_at"], name="watchtower__target__ff7d4d_idx")],
             },
         ),
     ]

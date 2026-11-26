@@ -6,6 +6,7 @@ grid.json
 - 칸 번호 i = floor(위도 / 칸), j = floor(경도 / 칸) 를 (i0, j0) 기준 차이로
 - cells: 칸마다 [di, dj, 대상1 분×10, 대상1 응급실 번호, 대상2 …] 를 이어 붙인 정수 배열 (값 없음 = -1)
 """
+
 from __future__ import annotations
 
 import csv
@@ -17,7 +18,12 @@ ROOT = HERE.parent
 SRC = ROOT / "er-access/docs/finder.json"
 BEDS_DIR = ROOT / "er-access/data/beds"
 OUT = HERE / "docs"
-TIER_KO = {"regional": "권역응급의료센터", "local_center": "지역응급의료센터", "local_institution": "지역응급의료기관", "other": "응급실 (임시 목록)"}
+TIER_KO = {
+    "regional": "권역응급의료센터",
+    "local_center": "지역응급의료센터",
+    "local_institution": "지역응급의료기관",
+    "other": "응급실 (임시 목록)",
+}
 
 
 def compact(finder: dict) -> dict:
@@ -31,8 +37,17 @@ def compact(finder: dict) -> dict:
         for t in range(nt):
             m, k = c[2 + 2 * t], c[3 + 2 * t]
             flat += [-1 if m is None else round(m * 10), -1 if k is None else k]
-    return {"built": finder.get("built"), "er_source": finder.get("er_source"), "deg": deg, "i0": i0, "j0": j0, "stride": 2 + 2 * nt,
-            "targets": finder["targets"], "ers": [[n, la, lo, t, TIER_KO.get(t, t)] for n, la, lo, t in finder["ers"]], "cells": flat}
+    return {
+        "built": finder.get("built"),
+        "er_source": finder.get("er_source"),
+        "deg": deg,
+        "i0": i0,
+        "j0": j0,
+        "stride": 2 + 2 * nt,
+        "targets": finder["targets"],
+        "ers": [[n, la, lo, t, TIER_KO.get(t, t)] for n, la, lo, t in finder["ers"]],
+        "cells": flat,
+    }
 
 
 def latest_beds(beds_dir: Path = BEDS_DIR) -> dict | None:
@@ -61,8 +76,13 @@ def build(src: Path = SRC, out: Path = OUT) -> dict:
     (out / "grid.json").write_text(json.dumps(grid, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     if beds:
         (out / "beds.json").write_text(json.dumps(beds, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    return {"cells": len(finder["cells"]), "ers": len(grid["ers"]), "targets": [t["name"] for t in grid["targets"]],
-            "bytes": (out / "grid.json").stat().st_size, "beds": bool(beds)}
+    return {
+        "cells": len(finder["cells"]),
+        "ers": len(grid["ers"]),
+        "targets": [t["name"] for t in grid["targets"]],
+        "bytes": (out / "grid.json").stat().st_size,
+        "beds": bool(beds),
+    }
 
 
 if __name__ == "__main__":

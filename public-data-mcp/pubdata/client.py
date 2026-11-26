@@ -6,6 +6,7 @@
 - 공공데이터포털 오류 코드를 사람이 읽는 원인·해결로 바꿈 (일반 응답·게이트웨이 응답 두 형식 모두)
 - 페이지를 넘겨 가며 모으되 max_rows 에서 멈춤, 같은 호출은 등록부의 cache_seconds 동안 캐시
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -40,7 +41,10 @@ ERRORS = {
     "20": ("서비스 접근 거부", "이 API 에 활용 신청이 승인됐는지 확인하세요."),
     "21": ("일시적으로 사용할 수 없는 인증키", "공공데이터포털에서 인증키 상태를 확인하세요."),
     "22": ("요청 횟수 초과", "하루 호출 한도를 넘었습니다. 캐시된 결과를 쓰거나 내일 다시 시도하세요."),
-    "30": ("등록되지 않은 인증키", "DATA_GO_KR_KEY 에 '일반 인증키(Decoding)' 를 넣었는지, 활용 신청 후 1시간이 지났는지 확인하세요."),
+    "30": (
+        "등록되지 않은 인증키",
+        "DATA_GO_KR_KEY 에 '일반 인증키(Decoding)' 를 넣었는지, 활용 신청 후 1시간이 지났는지 확인하세요.",
+    ),
     "31": ("활용 기간 만료", "공공데이터포털에서 활용 기간을 연장하세요."),
     "32": ("등록되지 않은 IP", "인증키에 허용 IP 를 등록했다면 지금 IP 를 추가하세요."),
     "33": ("서명되지 않은 호출", "인증키 형식을 확인하세요."),
@@ -87,7 +91,13 @@ def check_params(api: dict, params: dict) -> dict:
 
 
 def build_url(api: dict, params: dict, page: int, size: int, key: str) -> str:
-    q = {**api.get("fixed", {}), **params, api["page_param"]: page, api["size_param"]: size, api.get("key_param", "serviceKey"): key}
+    q = {
+        **api.get("fixed", {}),
+        **params,
+        api["page_param"]: page,
+        api["size_param"]: size,
+        api.get("key_param", "serviceKey"): key,
+    }
     return f"{api['url']}?{urllib.parse.urlencode(q)}"
 
 
@@ -120,7 +130,7 @@ def parse(api: dict, body: bytes) -> tuple[list[dict], int | None]:
     if code not in (None, "00", "0000"):
         raise ApiError(str(code), str(_dig(data, "response.header.resultMsg") or ""))
     items = _dig(data, api["items"]) or []
-    if isinstance(items, dict):                 # 한 건이면 목록이 아니라 객체로 오는 API 가 있음
+    if isinstance(items, dict):  # 한 건이면 목록이 아니라 객체로 오는 API 가 있음
         items = [items]
     total = _dig(data, api["total"]) if api.get("total") else None
     return items, int(total) if total is not None and str(total).isdigit() else None
@@ -133,8 +143,10 @@ class Cache:
         self.con.execute("CREATE TABLE IF NOT EXISTS cache (k TEXT PRIMARY KEY, saved REAL, body TEXT)")
 
     @staticmethod
-    def key(api_id: str, params: dict, max_rows: int) -> str:     # 인증키는 넣지 않음
-        return hashlib.sha256(json.dumps([api_id, sorted(params.items()), max_rows], ensure_ascii=False).encode()).hexdigest()
+    def key(api_id: str, params: dict, max_rows: int) -> str:  # 인증키는 넣지 않음
+        return hashlib.sha256(
+            json.dumps([api_id, sorted(params.items()), max_rows], ensure_ascii=False).encode()
+        ).hexdigest()
 
     def get(self, k: str, ttl: float) -> dict | None:
         row = self.con.execute("SELECT saved, body FROM cache WHERE k = ?", (k,)).fetchone()
@@ -143,7 +155,9 @@ class Cache:
         return None
 
     def put(self, k: str, value: dict) -> None:
-        self.con.execute("INSERT OR REPLACE INTO cache VALUES (?, ?, ?)", (k, time.time(), json.dumps(value, ensure_ascii=False)))
+        self.con.execute(
+            "INSERT OR REPLACE INTO cache VALUES (?, ?, ?)", (k, time.time(), json.dumps(value, ensure_ascii=False))
+        )
         self.con.commit()
 
     def stats(self) -> dict:
@@ -151,8 +165,15 @@ class Cache:
         return {"entries": n, "oldest_age_s": round(time.time() - oldest) if oldest else None}
 
 
-def call(api: dict, params: dict, max_rows: int = 100, key: str | None = None, cache: Cache | None = None,
-         opener=urllib.request.urlopen, page_size: int = 100) -> dict:
+def call(
+    api: dict,
+    params: dict,
+    max_rows: int = 100,
+    key: str | None = None,
+    cache: Cache | None = None,
+    opener=urllib.request.urlopen,
+    page_size: int = 100,
+) -> dict:
     """API 를 불러 항목을 모은다. 돌려주는 값에는 인증키가 없다."""
     key = key if key is not None else os.environ.get(KEY_ENV, "")
     if not key:
@@ -173,7 +194,7 @@ def call(api: dict, params: dict, max_rows: int = 100, key: str | None = None, c
                 body = r.read()
         except ApiError:
             raise
-        except Exception as e:                     # 네트워크 오류 메시지에 URL(=키)이 섞일 수 있음
+        except Exception as e:  # 네트워크 오류 메시지에 URL(=키)이 섞일 수 있음
             raise RuntimeError(redact(f"{api['id']} 호출 실패: {e}", key)) from None
         batch, total = parse(api, body)
         pages += 1
@@ -181,9 +202,17 @@ def call(api: dict, params: dict, max_rows: int = 100, key: str | None = None, c
         if not batch or (total is not None and len(items) >= total) or len(batch) < size:
             break
         page += 1
-    result = {"api": api["id"], "title": api["title"], "params": params, "total": total,
-              "returned": min(len(items), max_rows), "truncated": total is not None and total > max_rows,
-              "pages": pages, "items": items[:max_rows], "verified_spec": bool(api.get("verified"))}
+    result = {
+        "api": api["id"],
+        "title": api["title"],
+        "params": params,
+        "total": total,
+        "returned": min(len(items), max_rows),
+        "truncated": total is not None and total > max_rows,
+        "pages": pages,
+        "items": items[:max_rows],
+        "verified_spec": bool(api.get("verified")),
+    }
     if cache:
         cache.put(ck, result)
     return {**result, "cached": False}

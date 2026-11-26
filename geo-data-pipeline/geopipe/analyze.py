@@ -6,6 +6,7 @@ b값 추정
 - 표준오차: Shi & Bolt (1982)  σ_b = 2.30 · b² · sqrt( Σ(M - M̄)² / (n(n-1)) )
 주의: USGS 목록은 지역에 따라 mb·Mw·ml 등 규모 종류가 섞여 있어 b값은 참고용 지표로만 씁니다.
 """
+
 from __future__ import annotations
 
 import math
@@ -49,7 +50,14 @@ def b_value(mags: list[float], mc: float | None = None, dm: float = DM) -> dict:
     sel = [m for m in mags if mc is not None and m >= mc - 1e-9]
     n = len(sel)
     if n < 30:
-        return {"mc": mc, "n": n, "b": None, "sigma": None, "a": None, "note": "Mc 이상 이벤트가 30개 미만이라 추정하지 않음"}
+        return {
+            "mc": mc,
+            "n": n,
+            "b": None,
+            "sigma": None,
+            "a": None,
+            "note": "Mc 이상 이벤트가 30개 미만이라 추정하지 않음",
+        }
     mean = sum(sel) / n
     b = math.log10(math.e) / (mean - (mc - dm / 2))
     var = sum((m - mean) ** 2 for m in sel) / (n * (n - 1))
@@ -80,14 +88,35 @@ def depth_bins(events, edges=(0, 10, 30, 70, 150, 300, 700)) -> list[tuple[str, 
 
 
 def summarize(events, region: dict) -> dict:
-    ev = [e for e in events if region["bbox"][0] <= e.lat <= region["bbox"][1] and region["bbox"][2] <= e.lon <= region["bbox"][3]
-          and e.mag >= region["min_mag"] and e.time_utc >= region.get("since", "")]
+    ev = [
+        e
+        for e in events
+        if region["bbox"][0] <= e.lat <= region["bbox"][1]
+        and region["bbox"][2] <= e.lon <= region["bbox"][3]
+        and e.mag >= region["min_mag"]
+        and e.time_utc >= region.get("since", "")
+    ]
     mags = [e.mag for e in ev]
     top = sorted(ev, key=lambda e: -e.mag)[:10]
     return {
-        "region": region["name"], "n": len(ev),
-        "first": min((e.time_utc for e in ev), default=None), "last": max((e.time_utc for e in ev), default=None),
-        "monthly": monthly_counts(ev), "fmd": cumulative_fmd(mags), "gr": b_value(mags),
-        "depth": depth_bins(ev), "mag_types": dict(Counter(e.mag_type for e in ev)),
-        "largest": [{"id": e.id, "time_kst": e.time_kst, "mag": e.mag, "mag_type": e.mag_type, "depth_km": e.depth_km, "place": e.place} for e in top],
+        "region": region["name"],
+        "n": len(ev),
+        "first": min((e.time_utc for e in ev), default=None),
+        "last": max((e.time_utc for e in ev), default=None),
+        "monthly": monthly_counts(ev),
+        "fmd": cumulative_fmd(mags),
+        "gr": b_value(mags),
+        "depth": depth_bins(ev),
+        "mag_types": dict(Counter(e.mag_type for e in ev)),
+        "largest": [
+            {
+                "id": e.id,
+                "time_kst": e.time_kst,
+                "mag": e.mag,
+                "mag_type": e.mag_type,
+                "depth_km": e.depth_km,
+                "place": e.place,
+            }
+            for e in top
+        ],
     }

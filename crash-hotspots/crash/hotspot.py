@@ -3,6 +3,7 @@
 Gi* 는 '이 칸과 이웃 칸을 합친 사고 수가, 분석 범위 전체 평균으로 기대되는 것보다 얼마나 많은가' 를 z 점수로 나타낸다.
 칸이 수만 개라 0.05 로 하나씩 검정하면 우연한 핫스팟이 수백 개 나온다 → Benjamini–Hochberg 로 거짓 발견 비율을 묶는다.
 """
+
 from __future__ import annotations
 
 import math
@@ -15,9 +16,9 @@ from .utmk import to_wgs84
 
 @dataclass
 class Grid:
-    x0: float           # 왼쪽 아래 모서리 (UTM-K m)
+    x0: float  # 왼쪽 아래 모서리 (UTM-K m)
     y0: float
-    cell: float         # 칸 한 변 (m)
+    cell: float  # 칸 한 변 (m)
     counts: np.ndarray  # [행(y), 열(x)]
 
     def center(self, i: int, j: int) -> tuple[float, float]:
@@ -40,8 +41,9 @@ def make_grid(points: list[dict], cell_m: float, weight: str | None = None) -> G
 def _offsets(band_m: float, cell_m: float) -> list[tuple[int, int]]:
     """칸 중심 사이 거리가 band_m 이하인 (di, dj). 자기 자신 포함 (Gi* 의 '*')."""
     r = int(band_m // cell_m)
-    return [(di, dj) for di in range(-r, r + 1) for dj in range(-r, r + 1)
-            if math.hypot(di, dj) * cell_m <= band_m + 1e-9]
+    return [
+        (di, dj) for di in range(-r, r + 1) for dj in range(-r, r + 1) if math.hypot(di, dj) * cell_m <= band_m + 1e-9
+    ]
 
 
 def _window_sum(a: np.ndarray, offsets: list[tuple[int, int]]) -> np.ndarray:
@@ -50,7 +52,7 @@ def _window_sum(a: np.ndarray, offsets: list[tuple[int, int]]) -> np.ndarray:
     h, w = a.shape
     out = np.zeros_like(a, dtype=float)
     for di, dj in offsets:
-        out += p[r + di:r + di + h, r + dj:r + dj + w]
+        out += p[r + di : r + di + h, r + dj : r + dj + w]
     return out
 
 
@@ -66,11 +68,11 @@ def gi_star(g: Grid, band_m: float, mask: np.ndarray | None = None) -> np.ndarra
     x = np.where(mask, g.counts, 0.0)
     n = int(mask.sum())
     xbar = x[mask].mean()
-    s = math.sqrt(max((x[mask] ** 2).mean() - xbar ** 2, 0.0))
+    s = math.sqrt(max((x[mask] ** 2).mean() - xbar**2, 0.0))
     offs = _offsets(band_m, g.cell)
-    lsum = _window_sum(x, offs)                         # 이웃(자신 포함) 사고 합
-    wsum = _window_sum(mask.astype(float), offs)        # 이웃(자신 포함) 칸 수 — 이진 가중이라 Σw² 도 같다
-    denom = s * np.sqrt(np.maximum(n * wsum - wsum ** 2, 0.0) / (n - 1))
+    lsum = _window_sum(x, offs)  # 이웃(자신 포함) 사고 합
+    wsum = _window_sum(mask.astype(float), offs)  # 이웃(자신 포함) 칸 수 — 이진 가중이라 Σw² 도 같다
+    denom = s * np.sqrt(np.maximum(n * wsum - wsum**2, 0.0) / (n - 1))
     with np.errstate(invalid="ignore", divide="ignore"):
         z = (lsum - xbar * wsum) / denom
     z[~mask] = np.nan
@@ -115,6 +117,13 @@ def zones(g: Grid, hot: np.ndarray, z: np.ndarray) -> list[dict]:
         wi = sum(g.counts[i, j] * i for i, j in cells) / crashes if crashes else np.mean([c[0] for c in cells])
         wj = sum(g.counts[i, j] * j for i, j in cells) / crashes if crashes else np.mean([c[1] for c in cells])
         lat, lon = to_wgs84(g.x0 + (wj + 0.5) * g.cell, g.y0 + (wi + 0.5) * g.cell)
-        out.append({"cells": len(cells), "crashes": crashes, "max_z": round(float(max(z[i, j] for i, j in cells)), 2),
-                    "lat": round(lat, 5), "lon": round(lon, 5)})
+        out.append(
+            {
+                "cells": len(cells),
+                "crashes": crashes,
+                "max_z": round(float(max(z[i, j] for i, j in cells)), 2),
+                "lat": round(lat, 5),
+                "lon": round(lon, 5),
+            }
+        )
     return sorted(out, key=lambda d: (-d["crashes"], -d["max_z"]))

@@ -5,6 +5,7 @@
 두 기준 기온은 0.5°C 간격으로 모두 대 보고 오차 제곱합이 가장 작은 쌍을 고릅니다.
 외부 패키지 없이 3×3 정규방정식을 직접 풉니다 (CI 의 의존성을 dbt 하나로 유지하려고).
 """
+
 from __future__ import annotations
 
 
@@ -34,7 +35,9 @@ def _fit(temps, ys, th, tc):
     return beta, sse
 
 
-def fit_temperature(temps: list[float], ys: list[float], heat_range=(8.0, 18.0), cool_max=24.0, step=0.5) -> dict | None:
+def fit_temperature(
+    temps: list[float], ys: list[float], heat_range=(8.0, 18.0), cool_max=24.0, step=0.5
+) -> dict | None:
     """가장 잘 맞는 (난방 기준, 냉방 기준)과 기울기·설명력(R²). 자료가 모자라면 None."""
     n = len(ys)
     if n < 20:
@@ -55,15 +58,27 @@ def fit_temperature(temps: list[float], ys: list[float], heat_range=(8.0, 18.0),
     if best is None:
         return None
     th, tc, sse, (base, heat, cool) = best
-    return {"heat_below": th, "cool_above": tc, "base_mw": round(base), "heat_mw_per_c": round(heat),
-            "cool_mw_per_c": round(cool), "r2": round(1 - sse / sst, 3) if sst else None, "days": n}
+    return {
+        "heat_below": th,
+        "cool_above": tc,
+        "base_mw": round(base),
+        "heat_mw_per_c": round(heat),
+        "cool_mw_per_c": round(cool),
+        "r2": round(1 - sse / sst, 3) if sst else None,
+        "days": n,
+    }
 
 
 def temperature_analysis(con) -> dict:
     """평일만 써서 일평균·일최대 수요 각각 적합 (쉬는 날은 수요 수준이 달라 섞지 않음)."""
-    rows = con.execute("select temp_mean, mean_mw, peak_mw from fct_demand_daily where day_type = 'weekday' order by demand_date").fetchall()
+    rows = con.execute(
+        "select temp_mean, mean_mw, peak_mw from fct_demand_daily where day_type = 'weekday' order by demand_date"
+    ).fetchall()
     t = [float(r[0]) for r in rows]
-    out = {"mean": fit_temperature(t, [float(r[1]) for r in rows]), "peak": fit_temperature(t, [float(r[2]) for r in rows])}
+    out = {
+        "mean": fit_temperature(t, [float(r[1]) for r in rows]),
+        "peak": fit_temperature(t, [float(r[2]) for r in rows]),
+    }
     out["points"] = [[round(a, 2), round(b), c] for a, b, c in rows]
     return out
 
@@ -110,7 +125,7 @@ def ols(xs: list[list[float]], ys: list[float]) -> dict | None:
     sst = sum((y - mean) ** 2 for y in ys)
     s2 = sse / (n - k)
     se = []
-    for j in range(k):                       # (XᵀX)⁻¹ 의 대각 원소만 필요 → 단위 벡터로 j 번째 열을 풂
+    for j in range(k):  # (XᵀX)⁻¹ 의 대각 원소만 필요 → 단위 벡터로 j 번째 열을 풂
         col = _solve(ata, [1.0 if i == j else 0.0 for i in range(k)])
         se.append((s2 * col[j]) ** 0.5 if col and col[j] > 0 else None)
     return {"beta": beta, "se": se, "r2": 1 - sse / sst if sst else None, "n": n}
@@ -121,7 +136,9 @@ def _design(rows, months, temp_key, rad_scale=100.0):
     for r in rows:
         dummies = [1.0 if r["month"] == m else 0.0 for m in months]
         t = r[temp_key]
-        xs.append(dummies + [r["night_min_mw"], r["midday_rad"] / rad_scale, max(t - COOL_C, 0.0), max(HEAT_C - t, 0.0)])
+        xs.append(
+            dummies + [r["night_min_mw"], r["midday_rad"] / rad_scale, max(t - COOL_C, 0.0), max(HEAT_C - t, 0.0)]
+        )
     return xs
 
 
@@ -132,34 +149,59 @@ def fit_solar(rows: list[dict], target: str = "midday_mw", temp_key: str = "midd
     if len(rows) < len(months) + 10:
         return None
     xs = _design(rows, months, temp_key)
-    k = len(months) + 1                       # 달별 절편 다음이 새벽 최저, 그 다음이 일사량
-    keep = [j for j in range(len(xs[0])) if j <= k or any(x[j] for x in xs)]   # 겨울의 냉방항·여름의 난방항처럼 모두 0인 열은 뺌
+    k = len(months) + 1  # 달별 절편 다음이 새벽 최저, 그 다음이 일사량
+    keep = [
+        j for j in range(len(xs[0])) if j <= k or any(x[j] for x in xs)
+    ]  # 겨울의 냉방항·여름의 난방항처럼 모두 0인 열은 뺌
     fit = ols([[x[j] for j in keep] for x in xs], [float(r[target]) for r in rows])
     if fit is None:
         return None
     b, se = fit["beta"][k], fit["se"][k]
-    return {"mw_per_100w": round(b), "se": round(se) if se else None,
-            "ci95": [round(b - 1.96 * se), round(b + 1.96 * se)] if se else None,
-            "r2": round(fit["r2"], 3) if fit["r2"] is not None else None, "days": fit["n"]}
+    return {
+        "mw_per_100w": round(b),
+        "se": round(se) if se else None,
+        "ci95": [round(b - 1.96 * se), round(b + 1.96 * se)] if se else None,
+        "r2": round(fit["r2"], 3) if fit["r2"] is not None else None,
+        "days": fit["n"],
+    }
 
 
 SEASONS = {"winter": (12, 1, 2), "spring": (3, 4, 5), "summer": (6, 7, 8), "autumn": (9, 10, 11)}
 
 
 def solar_analysis(con) -> dict:
-    cols = ["demand_date", "month", "midday_mw", "night_min_mw", "evening_mw", "midday_temp", "evening_temp", "midday_rad", "midday_vs_night"]
-    rows = [dict(zip(cols, r)) for r in con.execute(f"select {', '.join(cols)} from ana_solar_daily order by demand_date").fetchall()]
+    cols = [
+        "demand_date",
+        "month",
+        "midday_mw",
+        "night_min_mw",
+        "evening_mw",
+        "midday_temp",
+        "evening_temp",
+        "midday_rad",
+        "midday_vs_night",
+    ]
+    rows = [
+        dict(zip(cols, r))
+        for r in con.execute(f"select {', '.join(cols)} from ana_solar_daily order by demand_date").fetchall()
+    ]
     for r in rows:
         for c in cols[1:]:
             r[c] = float(r[c]) if r[c] is not None else None
-    out = {"midday": fit_solar(rows), "evening": fit_solar(rows, "evening_mw", "evening_temp"),
-           "seasons": {s: fit_solar([r for r in rows if r["month"] in ms]) for s, ms in SEASONS.items()},
-           "cool_above": COOL_C, "heat_below": HEAT_C}
+    out = {
+        "midday": fit_solar(rows),
+        "evening": fit_solar(rows, "evening_mw", "evening_temp"),
+        "seasons": {s: fit_solar([r for r in rows if r["month"] in ms]) for s, ms in SEASONS.items()},
+        "cool_above": COOL_C,
+        "heat_below": HEAT_C,
+    }
     # 같은 달 안 맑음(상위 3분의 1)과 흐림(하위 3분의 1)의 평균 일사량 차이 → 계수로 환산한 '전형적인 차이'
     t = con.execute("""select avg(case when sun_tercile = 3 then midday_rad end) - avg(case when sun_tercile = 1 then midday_rad end)
                        from ana_solar_terciles""").fetchone()[0]
     if out["midday"] and t:
         out["sunny_cloudy_rad_gap"] = round(float(t))
         out["sunny_cloudy_mw"] = round(out["midday"]["mw_per_100w"] * float(t) / 100)
-    out["points"] = [[r["midday_rad"], r["midday_vs_night"], int(r["month"])] for r in rows if r["midday_rad"] is not None]
+    out["points"] = [
+        [r["midday_rad"], r["midday_vs_night"], int(r["month"])] for r in rows if r["midday_rad"] is not None
+    ]
     return out

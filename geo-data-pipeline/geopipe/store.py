@@ -1,4 +1,5 @@
 """저장: 사람이 읽고 diff 할 수 있는 CSV(data/events.csv)가 원본, SQLite 는 분석·질의용으로 매번 다시 만듦."""
+
 from __future__ import annotations
 
 import csv
@@ -17,9 +18,20 @@ def load_csv(path: Path) -> dict[str, Event]:
     out = {}
     with path.open(encoding="utf-8", newline="") as f:
         for r in csv.DictReader(f):
-            out[r["id"]] = Event(id=r["id"], time_utc=r["time_utc"], time_kst=r["time_kst"], updated=int(r["updated"]),
-                                 lat=float(r["lat"]), lon=float(r["lon"]), depth_km=float(r["depth_km"]), mag=float(r["mag"]),
-                                 mag_type=r["mag_type"], place=r["place"], status=r["status"], type=r["type"])
+            out[r["id"]] = Event(
+                id=r["id"],
+                time_utc=r["time_utc"],
+                time_kst=r["time_kst"],
+                updated=int(r["updated"]),
+                lat=float(r["lat"]),
+                lon=float(r["lon"]),
+                depth_km=float(r["depth_km"]),
+                mag=float(r["mag"]),
+                mag_type=r["mag_type"],
+                place=r["place"],
+                status=r["status"],
+                type=r["type"],
+            )
     return out
 
 
@@ -38,7 +50,10 @@ def to_sqlite(path: Path, events: dict[str, Event]) -> None:
         path.unlink()
     con = sqlite3.connect(path)
     con.execute(f"CREATE TABLE events ({', '.join(f + (' TEXT PRIMARY KEY' if f == 'id' else '') for f in FIELDS)})")
-    con.executemany(f"INSERT INTO events VALUES ({', '.join('?' for _ in FIELDS)})", [tuple(e.row()[k] for k in FIELDS) for e in events.values()])
+    con.executemany(
+        f"INSERT INTO events VALUES ({', '.join('?' for _ in FIELDS)})",
+        [tuple(e.row()[k] for k in FIELDS) for e in events.values()],
+    )
     con.execute("CREATE INDEX idx_time ON events(time_utc)")
     con.commit()
     con.close()

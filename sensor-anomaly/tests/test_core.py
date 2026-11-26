@@ -8,7 +8,7 @@ def test_cycle_features_linear_ramp():
     f = data.cycle_features(x)
     names = data.STATS
     assert np.isclose(f[0, names.index("mean")], 5.0)
-    assert np.isclose(f[0, names.index("slope")], 10.0)        # 사이클 길이를 1로 본 기울기
+    assert np.isclose(f[0, names.index("slope")], 10.0)  # 사이클 길이를 1로 본 기울기
     assert np.isclose(f[1, names.index("std")], 0.0) and np.isclose(f[1, names.index("diff_rms")], 0.0)
     assert f.shape == (2, len(names))
 
@@ -33,7 +33,7 @@ def test_debounce_requires_consecutive():
 def test_alert_latency():
     fault = np.array([0, 0, 1, 1, 1, 0, 0, 1, 1, 0], bool)
     alerts = np.array([0, 0, 0, 1, 1, 0, 0, 0, 0, 0], bool)
-    assert detect.alert_latency(fault, alerts) == [1, -1]      # 두 번째 고장 구간은 놓침
+    assert detect.alert_latency(fault, alerts) == [1, -1]  # 두 번째 고장 구간은 놓침
 
 
 def test_detector_false_alarm_close_to_target():
@@ -51,7 +51,7 @@ def test_forward_chain_folds_train_strictly_before_test():
     folds = detect.forward_chain_folds(100, n_blocks=10, first_test=5)
     assert len(folds) == 5
     for k, (tr, te) in enumerate(folds, start=5):
-        assert tr.max() < te.min()                       # 미래로 학습하지 않음
+        assert tr.max() < te.min()  # 미래로 학습하지 않음
         assert tr.min() == 0 and te.min() == k * 10 and len(te) == 10
 
 

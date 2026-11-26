@@ -3,6 +3,7 @@
 파일: kor_ppp_2020_1km_ASCII_XYZ.zip — 안에 X(경도),Y(위도),Z(인구) CSV 하나. 칸 중심 좌표, 해상도 30초(약 0.0083°).
 CC BY 4.0, 출처 표기: "WorldPop (www.worldpop.org)".
 """
+
 from __future__ import annotations
 
 import csv

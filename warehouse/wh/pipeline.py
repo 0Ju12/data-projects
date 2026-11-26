@@ -3,6 +3,7 @@
 단계: 원본 확인 → dbt build(모델·테스트·변경 이력) → 날짜 파티션 내보내기 → 실행 기록
 모든 단계는 같은 날짜로 다시 돌려도 결과가 같도록(멱등) 만들었습니다.
 """
+
 from __future__ import annotations
 
 import csv
@@ -22,18 +23,44 @@ SOURCES = {
     "demand_csv": ("../power-demand/data/kpx_hourly_demand_2025.csv", ["날짜", "1시", "24시"]),
     "weather_csv": ("../power-demand/data/weather_2025.csv", ["time", "mean"]),
     "solar_csv": ("data/solar_2025.csv", ["time", "rad_mean", "cloud_mean"]),
-    "jobs_csv": ("data/jobs.csv", ["source", "job_id", "title", "posted_at_utc", "skills", "skills_dict", "first_seen", "last_seen"]),
+    "jobs_csv": (
+        "data/jobs.csv",
+        ["source", "job_id", "title", "posted_at_utc", "skills", "skills_dict", "first_seen", "last_seen"],
+    ),
     "jobs_fetch_csv": ("data/jobs_fetch_log.csv", ["run_date", "source", "fetched", "overlap"]),
-    "candles_csv": ("data/market_candles.csv", ["exchange", "asset", "day_utc", "open", "high", "low", "close", "volume"]),
+    "candles_csv": (
+        "data/market_candles.csv",
+        ["exchange", "asset", "day_utc", "open", "high", "low", "close", "volume"],
+    ),
     "fx_csv": ("data/fx_rates.csv", ["day", "base", "quote", "rate"]),
     "pkg_csv": ("data/pkg_downloads.csv", ["registry", "package", "day", "downloads"]),
     "disasters_csv": ("data/disasters.csv", ["event_key", "event_type", "alert_level", "from_date", "to_date"]),
 }
-RUN_FIELDS = ["run_at_utc", "logical_date", "status", "models", "tests_pass", "tests_warn", "tests_fail",
-              "seconds", "rows_demand_hourly", "rows_quakes", "snapshot_versions", "exported_rows", "sources_sha", "rows_jobs", "rows_candles", "rows_pkg", "rows_disasters"]
+RUN_FIELDS = [
+    "run_at_utc",
+    "logical_date",
+    "status",
+    "models",
+    "tests_pass",
+    "tests_warn",
+    "tests_fail",
+    "seconds",
+    "rows_demand_hourly",
+    "rows_quakes",
+    "snapshot_versions",
+    "exported_rows",
+    "sources_sha",
+    "rows_jobs",
+    "rows_candles",
+    "rows_pkg",
+    "rows_disasters",
+]
 
 
-SNAPSHOTS = {"snap_quakes": "quake_id", "snap_disasters": "event_key"}     # 변경 이력 표 → 정렬 키 (실행 사이에 파일로 이어 감)
+SNAPSHOTS = {
+    "snap_quakes": "quake_id",
+    "snap_disasters": "event_key",
+}  # 변경 이력 표 → 정렬 키 (실행 사이에 파일로 이어 감)
 
 
 class SourceError(RuntimeError):
@@ -64,7 +91,9 @@ def check_sources(vars_: dict | None = None, root: Path = ROOT) -> dict:
     return out
 
 
-def dbt(args: list[str], vars_: dict | None = None, db: str | None = None, root: Path = ROOT, target_path: str | None = None):
+def dbt(
+    args: list[str], vars_: dict | None = None, db: str | None = None, root: Path = ROOT, target_path: str | None = None
+):
     """dbt 를 하위 프로세스로 실행. DBT_BIN 환경변수로 다른 가상환경의 dbt 를 가리킬 수 있습니다 (Airflow 와 분리)."""
     cmd = [os.environ.get("DBT_BIN", "dbt"), *args, "--profiles-dir", str(root), "--project-dir", str(root)]
     if target_path:
@@ -80,7 +109,14 @@ def dbt(args: list[str], vars_: dict | None = None, db: str | None = None, root:
 def run_results(target: Path) -> dict:
     """dbt 가 남긴 run_results.json 을 요약"""
     rr = json.loads((target / "run_results.json").read_text(encoding="utf-8"))
-    s = {"models": 0, "tests_pass": 0, "tests_warn": 0, "tests_fail": 0, "failed": [], "seconds": round(rr.get("elapsed_time", 0), 2)}
+    s = {
+        "models": 0,
+        "tests_pass": 0,
+        "tests_warn": 0,
+        "tests_fail": 0,
+        "failed": [],
+        "seconds": round(rr.get("elapsed_time", 0), 2),
+    }
     for r in rr["results"]:
         kind, st = r["unique_id"].split(".")[0], r["status"]
         if kind in ("model", "snapshot", "seed") and st == "success":
@@ -94,6 +130,7 @@ def run_results(target: Path) -> dict:
 
 def _connect(db: str, read_only=True):
     import duckdb
+
     return duckdb.connect(db, read_only=read_only)
 
 
@@ -103,7 +140,7 @@ def export_day(day: str, db: str, out_dir: Path) -> dict:
     임시 파일에 쓴 뒤 바꿔치기하고, 정렬·압축을 고정해 같은 날짜를 몇 번 돌려도 같은 파일이 됩니다.
     자료에 없는 날짜는 빈 파일을 만들지 않고 0행으로 보고합니다.
     """
-    date.fromisoformat(day)                      # 형식 확인 (SQL 에 그대로 넣지 않도록)
+    date.fromisoformat(day)  # 형식 확인 (SQL 에 그대로 넣지 않도록)
     con = _connect(db)
     try:
         n = con.execute("select count(*) from fct_demand_hourly where demand_date = ?", [day]).fetchall()[0][0]
@@ -116,7 +153,8 @@ def export_day(day: str, db: str, out_dir: Path) -> dict:
         tmp, final = part / ".part.tmp.parquet", part / "part.parquet"
         con.execute(
             f"copy (select hour_start_kst, hour_ending, demand_mw, temp_mean from fct_demand_hourly "
-            f"where demand_date = '{day}' order by hour_start_kst) to '{tmp.as_posix()}' (format parquet, compression zstd)")
+            f"where demand_date = '{day}' order by hour_start_kst) to '{tmp.as_posix()}' (format parquet, compression zstd)"
+        )
         os.replace(tmp, final)
         return {"day": day, "rows": n, "path": str(final), "sha": _sha(final)}
     finally:
@@ -136,13 +174,15 @@ def table_counts(db: str) -> dict:
     con = _connect(db)
     try:
         q = lambda s: con.execute(s).fetchall()[0][0]
-        return {"rows_demand_hourly": q("select count(*) from fct_demand_hourly"),
-                "rows_quakes": q("select count(*) from stg_quakes"),
-                "snapshot_versions": q("select count(*) from snap_quakes"),
-                "rows_jobs": q("select count(*) from fct_job_postings"),
-                "rows_candles": q("select count(*) from stg_candles"),
-                "rows_pkg": q("select count(*) from stg_pkg_downloads"),
-                "rows_disasters": q("select count(*) from stg_disasters")}
+        return {
+            "rows_demand_hourly": q("select count(*) from fct_demand_hourly"),
+            "rows_quakes": q("select count(*) from stg_quakes"),
+            "snapshot_versions": q("select count(*) from snap_quakes"),
+            "rows_jobs": q("select count(*) from fct_job_postings"),
+            "rows_candles": q("select count(*) from stg_candles"),
+            "rows_pkg": q("select count(*) from stg_pkg_downloads"),
+            "rows_disasters": q("select count(*) from stg_disasters"),
+        }
     finally:
         con.close()
 
@@ -153,7 +193,7 @@ def restore_state(db: str, state: Path) -> int:
     CI 는 매번 빈 DB 에서 시작하므로, 이력을 state/snap_quakes.parquet 로 저장소에 남기고 실행 전에 다시 넣습니다.
     이렇게 해야 어제까지 쌓인 판 위에 오늘의 변경이 이어집니다.
     """
-    Path(db).parent.mkdir(parents=True, exist_ok=True)   # 처음 실행이면 DB 폴더가 아직 없음
+    Path(db).parent.mkdir(parents=True, exist_ok=True)  # 처음 실행이면 DB 폴더가 아직 없음
     n = 0
     for name in SNAPSHOTS:
         f = state / f"{name}.parquet"
@@ -180,7 +220,9 @@ def save_state(db: str, state: Path) -> int:
             if name not in have:
                 continue
             tmp, final = state / f".{name}.tmp.parquet", state / f"{name}.parquet"
-            con.execute(f"copy (select * from {name} order by {key}, dbt_valid_from) to '{tmp.as_posix()}' (format parquet, compression zstd)")
+            con.execute(
+                f"copy (select * from {name} order by {key}, dbt_valid_from) to '{tmp.as_posix()}' (format parquet, compression zstd)"
+            )
             os.replace(tmp, final)
             if name == "snap_quakes":
                 n = con.execute(f"select count(*) from {name}").fetchall()[0][0]
@@ -201,7 +243,11 @@ def record_run(history: Path, row: dict) -> None:
     rows = []
     if history.exists():
         with history.open(encoding="utf-8", newline="") as f:
-            rows = [{k: r.get(k, "") for k in RUN_FIELDS} for r in csv.DictReader(f) if r.get("logical_date") != row["logical_date"]]
+            rows = [
+                {k: r.get(k, "") for k in RUN_FIELDS}
+                for r in csv.DictReader(f)
+                if r.get("logical_date") != row["logical_date"]
+            ]
     rows.append({k: row.get(k, "") for k in RUN_FIELDS})
     rows.sort(key=lambda r: r["logical_date"])
     tmp = history.with_suffix(".tmp")
@@ -212,9 +258,16 @@ def record_run(history: Path, row: dict) -> None:
     os.replace(tmp, history)
 
 
-def run(day: str, db: str | None = None, vars_: dict | None = None, out_dir: Path | None = None,
-        history: Path | None = None, root: Path = ROOT, export_day_override: str | None = None,
-        state: Path | None = None) -> dict:
+def run(
+    day: str,
+    db: str | None = None,
+    vars_: dict | None = None,
+    out_dir: Path | None = None,
+    history: Path | None = None,
+    root: Path = ROOT,
+    export_day_override: str | None = None,
+    state: Path | None = None,
+) -> dict:
     """하루치 전체 실행. 실패해도 실행 기록은 남깁니다."""
     db = db or str(root / "target" / "warehouse.duckdb")
     Path(db).parent.mkdir(parents=True, exist_ok=True)
@@ -222,7 +275,11 @@ def run(day: str, db: str | None = None, vars_: dict | None = None, out_dir: Pat
     history = history or root / "runs" / "history.csv"
     state = state or root / "state"
     t0 = time.time()
-    row = {"run_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "logical_date": day, "status": "failed"}
+    row = {
+        "run_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "logical_date": day,
+        "status": "failed",
+    }
     try:
         src = check_sources(vars_, root)
         row["sources_sha"] = "-".join(v["sha"][:6] for v in src.values())
@@ -247,7 +304,7 @@ def run(day: str, db: str | None = None, vars_: dict | None = None, out_dir: Pat
         record_run(history, row)
 
 
-if __name__ == "__main__":   # python -m wh.pipeline 2025-03-01
+if __name__ == "__main__":  # python -m wh.pipeline 2025-03-01
     r = run(sys.argv[1] if len(sys.argv) > 1 else date.today().isoformat())
     print(json.dumps(r, ensure_ascii=False, indent=1))
     sys.exit(0 if r["status"] == "success" else 1)

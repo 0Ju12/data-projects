@@ -1,4 +1,5 @@
 """공공데이터 CSV 읽기: 인코딩(CP949/UTF-8)과 기관마다 다른 열 이름을 흡수한다."""
+
 from __future__ import annotations
 
 import csv

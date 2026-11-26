@@ -6,6 +6,7 @@
 
 cells: [{"lat", "lon", "pop"}], facilities: [{"name", "lat", "lon", "tier"}]
 """
+
 from __future__ import annotations
 
 from .geo import PointIndex
@@ -23,7 +24,7 @@ class Network:
     def __init__(self, g: RoadGraph, cells: list[dict], snap_m: float, access_kmh: float):
         self.g, self.cells, self.snap_m, self.access_kmh = g, cells, snap_m, access_kmh
         self.idx = PointIndex(g.nodes)
-        self.rev = g.reversed()             # 칸 → 응급실 시간을 응급실 쪽에서 한 번에 풀기 위해
+        self.rev = g.reversed()  # 칸 → 응급실 시간을 응급실 쪽에서 한 번에 풀기 위해
         self.snapped = [self.idx.nearest(c["lat"], c["lon"], snap_m) for c in cells]
 
     def travel_times(self, ers: list[dict], tiers: list[str], cutoff_min: float | None = None):
@@ -55,8 +56,11 @@ class Network:
             else:
                 minutes.append((r[0] + _snap_cost(hit[1], self.access_kmh)) / 60)
                 nearest.append(origin[r[1]])
-        info = {"targets": sum(e["tier"] in tiers for e in ers), "targets_unsnapped": unsnapped,
-                "cells_no_road": sum(h is None for h in self.snapped)}
+        info = {
+            "targets": sum(e["tier"] in tiers for e in ers),
+            "targets_unsnapped": unsnapped,
+            "cells_no_road": sum(h is None for h in self.snapped),
+        }
         return minutes, nearest, info
 
 
@@ -74,7 +78,7 @@ def coverage(cells: list[dict], minutes: list[float | None], limit_min: float) -
     }
 
 
-BANDS = [15, 30, 60, 90]           # 지도 색 구간과 같게 (30·60분 기준이 경계에 오도록)
+BANDS = [15, 30, 60, 90]  # 지도 색 구간과 같게 (30·60분 기준이 경계에 오도록)
 
 
 def bands(cells: list[dict], minutes: list[float | None]) -> list[dict]:
@@ -120,5 +124,9 @@ def vulnerable(row: dict, targets: list[dict], share: float = 0.27) -> dict:
         else:
             checks[t["name"]] = round(1 - v["share_within"], 4)
     known = {k: v for k, v in checks.items() if v is not None}
-    return {"outside": checks, "is_vulnerable": any(v >= share for v in known.values()) if known else None,
-            "basis": sorted(known), "missing": sorted(k for k, v in checks.items() if v is None)}
+    return {
+        "outside": checks,
+        "is_vulnerable": any(v >= share for v in known.values()) if known else None,
+        "basis": sorted(known),
+        "missing": sorted(k for k, v in checks.items() if v is None),
+    }

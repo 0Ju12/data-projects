@@ -8,6 +8,7 @@
 RADIUS_KM 안의 탐지도 같은 열원으로 봅니다.
 한계: 여러 날 이어지는 큰 산불도 같은 자리에서 반복 탐지될 수 있어 잘못 걸러질 수 있습니다.
 """
+
 from __future__ import annotations
 
 import csv

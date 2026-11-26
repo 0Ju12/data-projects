@@ -7,6 +7,7 @@
   키가 필요 없고, 한 번 받은 값은 data/weather_2025.csv 에 저장해 다시 받지 않습니다.
 - 공휴일: 2025년 법정공휴일·대체공휴일·임시공휴일 (행정안전부 발표 기준)
 """
+
 from __future__ import annotations
 
 import csv
@@ -17,10 +18,24 @@ from pathlib import Path
 
 CITIES = {"서울": (37.57, 126.98), "부산": (35.18, 129.08), "대전": (36.35, 127.38), "광주": (35.16, 126.85)}
 HOLIDAYS_2025 = {
-    "2025-01-01": "신정", "2025-01-27": "임시공휴일", "2025-01-28": "설날 연휴", "2025-01-29": "설날", "2025-01-30": "설날 연휴",
-    "2025-03-01": "삼일절", "2025-03-03": "대체공휴일", "2025-05-05": "어린이날·부처님오신날", "2025-05-06": "대체공휴일",
-    "2025-06-03": "대통령선거", "2025-06-06": "현충일", "2025-08-15": "광복절", "2025-10-03": "개천절",
-    "2025-10-05": "추석 연휴", "2025-10-06": "추석", "2025-10-07": "추석 연휴", "2025-10-08": "대체공휴일", "2025-10-09": "한글날",
+    "2025-01-01": "신정",
+    "2025-01-27": "임시공휴일",
+    "2025-01-28": "설날 연휴",
+    "2025-01-29": "설날",
+    "2025-01-30": "설날 연휴",
+    "2025-03-01": "삼일절",
+    "2025-03-03": "대체공휴일",
+    "2025-05-05": "어린이날·부처님오신날",
+    "2025-05-06": "대체공휴일",
+    "2025-06-03": "대통령선거",
+    "2025-06-06": "현충일",
+    "2025-08-15": "광복절",
+    "2025-10-03": "개천절",
+    "2025-10-05": "추석 연휴",
+    "2025-10-06": "추석",
+    "2025-10-07": "추석 연휴",
+    "2025-10-08": "대체공휴일",
+    "2025-10-09": "한글날",
     "2025-12-25": "성탄절",
 }
 
@@ -43,9 +58,13 @@ def load_demand(path: Path) -> list[tuple[datetime, float]]:
 def fetch_weather(start: str, end: str) -> dict[str, list[float]]:
     temps = {}
     for name, (lat, lon) in CITIES.items():
-        url = ("https://archive-api.open-meteo.com/v1/archive?"
-               f"latitude={lat}&longitude={lon}&start_date={start}&end_date={end}&hourly=temperature_2m&timezone=Asia%2FSeoul")
-        with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "power-demand-portfolio"}), timeout=60) as r:
+        url = (
+            "https://archive-api.open-meteo.com/v1/archive?"
+            f"latitude={lat}&longitude={lon}&start_date={start}&end_date={end}&hourly=temperature_2m&timezone=Asia%2FSeoul"
+        )
+        with urllib.request.urlopen(
+            urllib.request.Request(url, headers={"User-Agent": "power-demand-portfolio"}), timeout=60
+        ) as r:
             d = json.loads(r.read())
         temps[name] = d["hourly"]["temperature_2m"]
         temps["time"] = d["hourly"]["time"]

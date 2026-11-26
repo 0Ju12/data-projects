@@ -5,6 +5,7 @@
 - 응답 항목 이름은 명세서로 아직 확인하지 않았다. 그래서 받은 XML 항목을 이름 그대로 모두 CSV 에 저장하고,
   읽을 때 아래 별칭 목록으로 열을 찾는다. 처음 받은 뒤 별칭을 실제 이름에 맞게 정리할 것.
 """
+
 from __future__ import annotations
 
 import csv
@@ -50,15 +51,16 @@ def load(path: Path) -> list[dict]:
         try:
             lat, lon = float(r[c_lat]), float(r[c_lon])
         except (TypeError, ValueError):
-            continue                                    # 좌표 없는 행은 뺀다 (개수는 summary 에 남김)
+            continue  # 좌표 없는 행은 뺀다 (개수는 summary 에 남김)
         if not (33.0 <= lat <= 39.0 and 124.0 <= lon <= 132.0):
             continue
         key = (r[c_name].strip(), round(lat, 5), round(lon, 5))
         if key in seen:
             continue
         seen.add(key)
-        out.append({"name": key[0], "lat": lat, "lon": lon,
-                    "tier": normalize_tier(r.get(c_tier, "") if c_tier else "")})
+        out.append(
+            {"name": key[0], "lat": lat, "lon": lon, "tier": normalize_tier(r.get(c_tier, "") if c_tier else "")}
+        )
     return out
 
 
@@ -84,6 +86,7 @@ def from_osm(data: dict) -> list[dict]:
 def merge_provisional(osm_rows: list[dict], centers: list[dict], within_m: float = 300) -> list[dict]:
     """임시 목록 = 위키백과 권역센터(종별 있음) + OSM 응급실 태그. 같은 병원이 두 곳에 있으면(300 m 안) 권역센터 쪽을 남긴다."""
     from .geo import haversine_m
+
     out = list(centers)
     for r in osm_rows:
         if not any(haversine_m(r["lat"], r["lon"], c["lat"], c["lon"]) <= within_m for c in centers):
@@ -101,8 +104,8 @@ def save(rows: list[dict], path: Path) -> None:
 
 
 BASE = "https://apis.data.go.kr/B552657/ErmctInfoInqireService"
-API = f"{BASE}/getEgytListInfoInqire"                    # 응급의료기관 목록
-BEDS_API = f"{BASE}/getEmrrmRltmUsefulSckbdInfoInqire"   # 응급실 실시간 가용 병상
+API = f"{BASE}/getEgytListInfoInqire"  # 응급의료기관 목록
+BEDS_API = f"{BASE}/getEmrrmRltmUsefulSckbdInfoInqire"  # 응급실 실시간 가용 병상
 
 
 def parse_items(xml_bytes: bytes) -> tuple[list[dict], int]:
@@ -148,7 +151,9 @@ def fetch(service_key: str, out: Path, rows_per_page: int = 500, opener=urllib.r
     return _write_csv(_all_pages(API, {"serviceKey": service_key}, rows_per_page, opener), out)
 
 
-def fetch_beds(service_key: str, out: Path, sido: str = "경상북도", when: str = "", opener=urllib.request.urlopen) -> int:
+def fetch_beds(
+    service_key: str, out: Path, sido: str = "경상북도", when: str = "", opener=urllib.request.urlopen
+) -> int:
     """응급실 실시간 가용 병상 한 번 찍기 → out 에 이어 붙임 (수집 시각 열 'collected_at' 추가).
     정기적으로 돌리면(예: 매시) 시간대·요일별 혼잡을 볼 수 있다. 응답 항목은 이름 그대로 모두 저장한다
     (명세서상 hvec = 응급실 가용 병상 수로 알려져 있으나 받은 뒤 확인할 것)."""

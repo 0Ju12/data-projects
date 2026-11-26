@@ -5,9 +5,10 @@
 - 범위 밖 값(위도·경도·깊이)과 규모가 없는 이벤트는 버리지 않고 '격리'해 품질 보고서에 개수를 남김
 - 시간은 UTC 와 KST(UTC+9) 둘 다 저장
 """
+
 from __future__ import annotations
 
-from dataclasses import dataclass, asdict, field
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timedelta, timezone
 
 KST = timezone(timedelta(hours=9))
@@ -43,7 +44,7 @@ class Quality:
     kept: int = 0
     mag_types: dict = field(default_factory=dict)
 
-    def merge(self, other: "Quality") -> "Quality":
+    def merge(self, other: Quality) -> Quality:
         out = Quality()
         for k in ("received", "duplicates", "revised", "no_magnitude", "out_of_range", "not_earthquake", "kept"):
             setattr(out, k, getattr(self, k) + getattr(other, k))
@@ -63,9 +64,14 @@ def to_event(f: dict) -> Event | None:
         time_utc=t.strftime("%Y-%m-%dT%H:%M:%SZ"),
         time_kst=t.astimezone(KST).strftime("%Y-%m-%d %H:%M:%S"),
         updated=int(p.get("updated") or 0),
-        lon=g[0], lat=g[1], depth_km=g[2] if len(g) > 2 else None,
-        mag=p.get("mag"), mag_type=(p.get("magType") or "").lower(),
-        place=p.get("place") or "", status=p.get("status") or "", type=p.get("type") or "",
+        lon=g[0],
+        lat=g[1],
+        depth_km=g[2] if len(g) > 2 else None,
+        mag=p.get("mag"),
+        mag_type=(p.get("magType") or "").lower(),
+        place=p.get("place") or "",
+        status=p.get("status") or "",
+        type=p.get("type") or "",
     )
 
 

@@ -9,6 +9,7 @@
 - er_cells      1 km 칸 응급실까지 이동 시간·인구 (6–11, 6·7 은 4×4·2×2 칸을 합쳐 가볍게)  er-access/docs/data.json
 - er_sites      응급실 위치 (5–11)
 """
+
 from __future__ import annotations
 
 import csv
@@ -24,7 +25,11 @@ from .tiling import TileSet
 ROOT = Path(__file__).resolve().parents[2]
 DOCS = Path(__file__).resolve().parents[1] / "docs"
 ATTR = "지진 USGS · 산불 NASA FIRMS, Open-Meteo · 도로 © OpenStreetMap (HOT) · 인구 GHSL"
-ER_TARGETS = ["m_center", "m_regional", "m_any"]      # er-access data.json 칸 열 순서 (지역센터 이상, 권역센터, 아무 응급실)
+ER_TARGETS = [
+    "m_center",
+    "m_regional",
+    "m_any",
+]  # er-access data.json 칸 열 순서 (지역센터 이상, 권역센터, 아무 응급실)
 
 
 def load_quakes(path: Path) -> list[dict]:
@@ -35,12 +40,23 @@ def load_quakes(path: Path) -> list[dict]:
 
 
 def add_quakes(ts: TileSet, rows: list[dict], zooms=range(3, 12)) -> None:
-    rows = sorted(rows, key=lambda r: float(r["mag"]))          # 큰 지진이 위에 그려지게 나중에
+    rows = sorted(rows, key=lambda r: float(r["mag"]))  # 큰 지진이 위에 그려지게 나중에
     for z in zooms:
         for k, r in enumerate(rows):
-            ts.add_point("quakes", z, float(r["lon"]), float(r["lat"]),
-                         {"mag": float(r["mag"]), "depth": float(r["depth_km"] or 0), "time": r["time_kst"][:16],
-                          "place": r["place"], "year": int(r["time_kst"][:4])}, fid=k + 1)
+            ts.add_point(
+                "quakes",
+                z,
+                float(r["lon"]),
+                float(r["lat"]),
+                {
+                    "mag": float(r["mag"]),
+                    "depth": float(r["depth_km"] or 0),
+                    "time": r["time_kst"][:16],
+                    "place": r["place"],
+                    "year": int(r["time_kst"][:4]),
+                },
+                fid=k + 1,
+            )
 
 
 def add_fire(ts: TileSet, d: dict, grid_zooms=range(4, 12), point_zooms=range(5, 12), days_back=7) -> dict:
@@ -50,8 +66,15 @@ def add_fire(ts: TileSet, d: dict, grid_zooms=range(4, 12), point_zooms=range(5,
     for z in grid_zooms:
         for key, v in wx.items():
             lat, lon = map(float, key.split("_"))
-            ts.add_box("fire_grid", z, lon - step / 2, lat - step / 2, lon + step / 2, lat + step / 2,
-                       {"ffwi": v[0], "tmax": v[1], "rh": v[2], "wind": v[3], "rain": v[4], "near": d["near"].get(key, "")})
+            ts.add_box(
+                "fire_grid",
+                z,
+                lon - step / 2,
+                lat - step / 2,
+                lon + step / 2,
+                lat + step / 2,
+                {"ffwi": v[0], "tmax": v[1], "rh": v[2], "wind": v[3], "rain": v[4], "near": d["near"].get(key, "")},
+            )
     since = (date.fromisoformat(day) - timedelta(days=days_back - 1)).isoformat()
     det = [x for x in d["detections"] if since <= x[0] <= day]
     for z in point_zooms:
@@ -76,9 +99,12 @@ def _aggregate(cells: list, deg: float, f: int) -> list[tuple]:
         for t in range(3):
             vals = [(c[4 + t], c[2]) for c in g if c[4 + t] is not None]
             if not vals:
-                mins.append(None); continue
+                mins.append(None)
+                continue
             w = sum(p for _, p in vals)
-            mins.append(round(sum(m * p for m, p in vals) / w, 1) if w else round(sum(m for m, _ in vals) / len(vals), 1))
+            mins.append(
+                round(sum(m * p for m, p in vals) / w, 1) if w else round(sum(m for m, _ in vals) / len(vals), 1)
+            )
         out.append((i * big, j * big, big, pop, mins))
     return out
 
@@ -95,16 +121,34 @@ def add_er(ts: TileSet, d: dict, cell_zooms=range(6, 12), site_zooms=range(5, 12
     for z in site_zooms:
         for name, lat, lon, tier in d["ers"]:
             ts.add_point("er_sites", z, lon, lat, {"name": name, "tier": tier})
-    return {"cells": len(d["cells"]), "sites": len(d["ers"]), "sigun": len(sigun), "built": d["summary"].get("built"),
-            "er_source": d["summary"].get("er_source"),
-            "targets": [{"key": k, "name": t.get("name"), "minutes": t.get("minutes"),
-                         "cells_with_value": sum(c[4 + i] is not None for c in d["cells"])}
-                        for i, (k, t) in enumerate(zip(ER_TARGETS, d["summary"]["targets"]))]}
+    return {
+        "cells": len(d["cells"]),
+        "sites": len(d["ers"]),
+        "sigun": len(sigun),
+        "built": d["summary"].get("built"),
+        "er_source": d["summary"].get("er_source"),
+        "targets": [
+            {
+                "key": k,
+                "name": t.get("name"),
+                "minutes": t.get("minutes"),
+                "cells_with_value": sum(c[4 + i] is not None for c in d["cells"]),
+            }
+            for i, (k, t) in enumerate(zip(ER_TARGETS, d["summary"]["targets"]))
+        ],
+    }
 
 
 LAYER_FIELDS = {
     "quakes": {"mag": "Number", "depth": "Number", "time": "String", "place": "String", "year": "Number"},
-    "fire_grid": {"ffwi": "Number", "tmax": "Number", "rh": "Number", "wind": "Number", "rain": "Number", "near": "String"},
+    "fire_grid": {
+        "ffwi": "Number",
+        "tmax": "Number",
+        "rh": "Number",
+        "wind": "Number",
+        "rain": "Number",
+        "near": "String",
+    },
     "fire_points": {"day": "String", "static": "Boolean", "frp": "Number"},
     "er_cells": {"pop": "Number", "m_center": "Number", "m_regional": "Number", "m_any": "Number"},
     "er_sites": {"name": "String", "tier": "String"},
@@ -133,18 +177,35 @@ def build(root: Path = ROOT, out: Path = DOCS) -> dict:
     for (z, _, _), layers in ts.tiles.items():
         for name in layers:
             zr[name].append(z)
-    meta = {"name": "korea-public-data", "format": "pbf", "attribution": ATTR, "generated": time.strftime("%Y-%m-%d %H:%M"),
-            "vector_layers": [{"id": k, "fields": v, "minzoom": min(zr[k]), "maxzoom": max(zr[k])} for k, v in LAYER_FIELDS.items() if k in present],
-            "sources": info}
+    meta = {
+        "name": "korea-public-data",
+        "format": "pbf",
+        "attribution": ATTR,
+        "generated": time.strftime("%Y-%m-%d %H:%M"),
+        "vector_layers": [
+            {"id": k, "fields": v, "minzoom": min(zr[k]), "maxzoom": max(zr[k])}
+            for k, v in LAYER_FIELDS.items()
+            if k in present
+        ],
+        "sources": info,
+    }
     out.mkdir(parents=True, exist_ok=True)
-    stats = pmtiles.write(out / "korea.pmtiles", encoded, meta, bounds=(124.0, 30.0, 132.0, 39.5), center=(128.2, 36.2, 6))
+    stats = pmtiles.write(
+        out / "korea.pmtiles", encoded, meta, bounds=(124.0, 30.0, 132.0, 39.5), center=(128.2, 36.2, 6)
+    )
     stats["seconds"] = round(time.time() - t0, 1)
     sizes = defaultdict(int)
     for k, v in encoded.items():
         sizes[k[0]] += len(v)
     stats["raw_bytes_by_zoom"] = dict(sorted(sizes.items()))
-    (out / "layers.json").write_text(json.dumps({"generated": meta["generated"], "stats": stats, "sources": info,
-                                                  "vector_layers": meta["vector_layers"]}, ensure_ascii=False, indent=1), encoding="utf-8")
+    (out / "layers.json").write_text(
+        json.dumps(
+            {"generated": meta["generated"], "stats": stats, "sources": info, "vector_layers": meta["vector_layers"]},
+            ensure_ascii=False,
+            indent=1,
+        ),
+        encoding="utf-8",
+    )
     return stats
 
 

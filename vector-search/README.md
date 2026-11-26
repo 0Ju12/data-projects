@@ -22,8 +22,7 @@ OPENBLAS_NUM_THREADS=1 vectorlab pipeline --out report.json
 ```python
 from vectorlab import Index, append, save_new
 
-save_new("custom.sqlite", ["a", "b"], ["서울", "부산"],
-         [[1, 0], [0, 1]], clusters=2, encoder="my-model-v1")
+save_new("custom.sqlite", ["a", "b"], ["서울", "부산"], [[1, 0], [0, 1]], clusters=2, encoder="my-model-v1")
 append("custom.sqlite", ["c"], ["수원"], [[0.9, 0.1]], encoder="my-model-v1")
 index = Index("custom.sqlite")
 print(index.search([0.9, 0.2], k=2))

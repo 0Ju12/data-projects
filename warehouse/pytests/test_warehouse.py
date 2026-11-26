@@ -2,6 +2,7 @@
 
 실제 자료 파일에 기대지 않도록 원본 경로를 dbt 변수로 바꿔 넣습니다.
 """
+
 import csv
 import json
 import shutil
@@ -11,14 +12,29 @@ import duckdb
 import pytest
 
 from wh import pipeline as P
+from wh.report import build_report, lineage
+from wh.sources import extras as X
 from wh.sources import jobs as J
 from wh.sources import market as M
-from wh.sources import extras as X
-from wh.report import build_report, lineage
 
-pytestmark = pytest.mark.skipif(shutil.which(P.os.environ.get("DBT_BIN", "dbt")) is None, reason="dbt 가 설치돼 있지 않음")
+pytestmark = pytest.mark.skipif(
+    shutil.which(P.os.environ.get("DBT_BIN", "dbt")) is None, reason="dbt 가 설치돼 있지 않음"
+)
 
-QUAKE_HEAD = ["id", "time_utc", "time_kst", "updated", "lat", "lon", "depth_km", "mag", "mag_type", "place", "status", "type"]
+QUAKE_HEAD = [
+    "id",
+    "time_utc",
+    "time_kst",
+    "updated",
+    "lat",
+    "lon",
+    "depth_km",
+    "mag",
+    "mag_type",
+    "place",
+    "status",
+    "type",
+]
 
 
 def ms(s):
@@ -33,23 +49,70 @@ def write_quakes(path, rows):
 
 
 def quake(i, mag, updated, status="automatic", place="10 km E of Ulsan, South Korea"):
-    return [i, "2025-03-01T00:00:00Z", "2025-03-01 09:00:00", ms(updated), 35.5, 129.9, 10.0, mag, "mb", place, status, "earthquake"]
+    return [
+        i,
+        "2025-03-01T00:00:00Z",
+        "2025-03-01 09:00:00",
+        ms(updated),
+        35.5,
+        129.9,
+        10.0,
+        mag,
+        "mb",
+        place,
+        status,
+        "earthquake",
+    ]
 
 
 def event(key, level, start, end, modified="2025-03-05T00:00:00"):
-    return {"event_key": key, "event_type": key.split("-")[0], "name": "Event " + key, "country": "Korea", "iso3": "KOR", "alert_level": level,
-            "alert_score": 1, "severity": 100, "severity_unit": "km/h", "from_date": start, "to_date": end, "modified_at": modified,
-            "lon": 127.0, "lat": 36.0, "is_current": "true"}
+    return {
+        "event_key": key,
+        "event_type": key.split("-")[0],
+        "name": "Event " + key,
+        "country": "Korea",
+        "iso3": "KOR",
+        "alert_level": level,
+        "alert_score": 1,
+        "severity": 100,
+        "severity_unit": "km/h",
+        "from_date": start,
+        "to_date": end,
+        "modified_at": modified,
+        "lon": 127.0,
+        "lat": 36.0,
+        "is_current": "true",
+    }
 
 
 def candle(exchange, asset, quote, day, close):
-    return {"exchange": exchange, "asset": asset, "quote": quote, "day_utc": day, "open": close, "high": close * 1.01,
-            "low": close * 0.99, "close": close, "volume": 10}
+    return {
+        "exchange": exchange,
+        "asset": asset,
+        "quote": quote,
+        "day_utc": day,
+        "open": close,
+        "high": close * 1.01,
+        "low": close * 0.99,
+        "close": close,
+        "volume": 10,
+    }
 
 
 def job(source, jid, title, posted, skills="", lo="", hi="", remote="true"):
-    return {"source": source, "job_id": jid, "title": title, "company": "Acme", "location": "", "remote": remote,
-            "posted_at_utc": posted, "salary_min": lo, "salary_max": hi, "url": "https://example.org/" + jid, "skills": skills}
+    return {
+        "source": source,
+        "job_id": jid,
+        "title": title,
+        "company": "Acme",
+        "location": "",
+        "remote": remote,
+        "posted_at_utc": posted,
+        "salary_min": lo,
+        "salary_max": hi,
+        "url": "https://example.org/" + jid,
+        "skills": skills,
+    }
 
 
 @pytest.fixture
@@ -69,29 +132,84 @@ def src(tmp_path):
             w.writerow([(t + timedelta(hours=h)).strftime("%Y-%m-%dT%H:%M"), 5, 7, 6, 6, 6.0])
     with (tmp_path / "solar.csv").open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["time", "rad_seoul", "rad_busan", "rad_daejeon", "rad_gwangju", "rad_mean", "cloud_seoul", "cloud_busan", "cloud_daejeon", "cloud_gwangju", "cloud_mean"])
+        w.writerow(
+            [
+                "time",
+                "rad_seoul",
+                "rad_busan",
+                "rad_daejeon",
+                "rad_gwangju",
+                "rad_mean",
+                "cloud_seoul",
+                "cloud_busan",
+                "cloud_daejeon",
+                "cloud_gwangju",
+                "cloud_mean",
+            ]
+        )
         t = datetime(2025, 3, 1)
         for h in range(72):
-            r = max(0, 600 - 100 * abs(h % 24 - 13))           # 13시(12:00~13:00) 최대
+            r = max(0, 600 - 100 * abs(h % 24 - 13))  # 13시(12:00~13:00) 최대
             w.writerow([(t + timedelta(hours=h)).strftime("%Y-%m-%dT%H:%M")] + [r] * 5 + [20] * 5)
-    write_quakes(tmp_path / "quakes.csv", [
-        quake("a1", 4.5, "2025-03-01T01:00:00"), quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
-        quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan")])
+    write_quakes(
+        tmp_path / "quakes.csv",
+        [
+            quake("a1", 4.5, "2025-03-01T01:00:00"),
+            quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
+            quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan"),
+        ],
+    )
     J.save({}, tmp_path / "jobs.csv")
     ex = {}
-    J.merge(ex, [job("remoteok", "1", "Senior Data Engineer", "2025-03-01T10:00:00Z", "Python|SQL|dbt|Data Engineer (role)", 90000, 130000),
-                 job("remoteok", "2", "Registered Nurse", "2025-03-02T10:00:00Z", "", 110, 130),
-                 job("arbeitnow", "be-dev-1", "Backend Developer (m/w/d)", "2025-03-03T08:00:00Z", "Python|Backend (role)"),
-                 job("arbeitnow", "koch-2", "Teilzeitkraft Küche", "2025-03-10T08:00:00Z", "")], "2025-03-11", "v1")
+    J.merge(
+        ex,
+        [
+            job(
+                "remoteok",
+                "1",
+                "Senior Data Engineer",
+                "2025-03-01T10:00:00Z",
+                "Python|SQL|dbt|Data Engineer (role)",
+                90000,
+                130000,
+            ),
+            job("remoteok", "2", "Registered Nurse", "2025-03-02T10:00:00Z", "", 110, 130),
+            job("arbeitnow", "be-dev-1", "Backend Developer (m/w/d)", "2025-03-03T08:00:00Z", "Python|Backend (role)"),
+            job("arbeitnow", "koch-2", "Teilzeitkraft Küche", "2025-03-10T08:00:00Z", ""),
+        ],
+        "2025-03-11",
+        "v1",
+    )
     J.save(ex, tmp_path / "jobs.csv")
-    J.log_fetch([{"run_date": "2025-03-11", "source": "remoteok", "fetched": 2, "new": 2, "changed": 0, "pages": 1, "overlap": "first_run"},
-                 {"run_date": "2025-03-11", "source": "arbeitnow", "fetched": 2, "new": 2, "changed": 0, "pages": 1, "overlap": "first_run"}], tmp_path / "fetch.csv")
+    J.log_fetch(
+        [
+            {
+                "run_date": "2025-03-11",
+                "source": "remoteok",
+                "fetched": 2,
+                "new": 2,
+                "changed": 0,
+                "pages": 1,
+                "overlap": "first_run",
+            },
+            {
+                "run_date": "2025-03-11",
+                "source": "arbeitnow",
+                "fetched": 2,
+                "new": 2,
+                "changed": 0,
+                "pages": 1,
+                "overlap": "first_run",
+            },
+        ],
+        tmp_path / "fetch.csv",
+    )
     # 시세: 2025-03-06(목)~03-10(월) 5일, 환율은 영업일(목·금·월)에만
     cs, fx = {}, {}
     for i, d in enumerate(["2025-03-06", "2025-03-07", "2025-03-08", "2025-03-09", "2025-03-10"]):
         usd = 100.0 + i
         cs[("coinbase", "BTC", d)] = candle("coinbase", "BTC", "USD", d, usd)
-        cs[("upbit", "BTC", d)] = candle("upbit", "BTC", "KRW", d, usd * 1400 * 1.02)      # 환율 1400 일 때 2% 비쌈
+        cs[("upbit", "BTC", d)] = candle("upbit", "BTC", "KRW", d, usd * 1400 * 1.02)  # 환율 1400 일 때 2% 비쌈
     for d, r in (("2025-03-06", 1400), ("2025-03-07", 1400), ("2025-03-10", 1428)):
         fx[(d, "KRW")] = {"day": d, "base": "USD", "quote": "KRW", "rate": r}
     M._save(cs, tmp_path / "candles.csv", M.C_FIELDS)
@@ -100,19 +218,45 @@ def src(tmp_path):
     pk = {}
     for i in range(56):
         d = (date(2025, 1, 6) + timedelta(days=i)).isoformat()
-        pk[("pypi", "dbt-core", d)] = {"registry": "pypi", "package": "dbt-core", "day": d, "downloads": 100 if i < 28 else 150}
+        pk[("pypi", "dbt-core", d)] = {
+            "registry": "pypi",
+            "package": "dbt-core",
+            "day": d,
+            "downloads": 100 if i < 28 else 150,
+        }
     for i in range(10):
         d = (date(2025, 2, 17) + timedelta(days=i)).isoformat()
         pk[("npm", "react", d)] = {"registry": "npm", "package": "react", "day": d, "downloads": 1000}
     M._save(pk, tmp_path / "pkg.csv", X.P_FIELDS)
-    M._save({e["event_key"]: e for e in [event("TC-1", "Green", "2025-03-01T00:00:00", "2025-03-04T00:00:00"),
-                                         event("FL-2", "Orange", "2025-03-02T00:00:00", "2025-03-02T00:00:00")]}, tmp_path / "dis.csv", X.D_FIELDS)
-    return {"vars": {"quakes_csv": str(tmp_path / "quakes.csv"), "demand_csv": str(tmp_path / "demand.csv"),
-                     "weather_csv": str(tmp_path / "weather.csv"), "solar_csv": str(tmp_path / "solar.csv"), "quake_fresh_days": 100000,
-                     "jobs_csv": str(tmp_path / "jobs.csv"), "jobs_fetch_csv": str(tmp_path / "fetch.csv"),
-                     "candles_csv": str(tmp_path / "candles.csv"), "fx_csv": str(tmp_path / "fx.csv"),
-                     "pkg_csv": str(tmp_path / "pkg.csv"), "disasters_csv": str(tmp_path / "dis.csv")},
-            "db": str(tmp_path / "wh.duckdb"), "target": str(tmp_path / "target"), "dir": tmp_path}
+    M._save(
+        {
+            e["event_key"]: e
+            for e in [
+                event("TC-1", "Green", "2025-03-01T00:00:00", "2025-03-04T00:00:00"),
+                event("FL-2", "Orange", "2025-03-02T00:00:00", "2025-03-02T00:00:00"),
+            ]
+        },
+        tmp_path / "dis.csv",
+        X.D_FIELDS,
+    )
+    return {
+        "vars": {
+            "quakes_csv": str(tmp_path / "quakes.csv"),
+            "demand_csv": str(tmp_path / "demand.csv"),
+            "weather_csv": str(tmp_path / "weather.csv"),
+            "solar_csv": str(tmp_path / "solar.csv"),
+            "quake_fresh_days": 100000,
+            "jobs_csv": str(tmp_path / "jobs.csv"),
+            "jobs_fetch_csv": str(tmp_path / "fetch.csv"),
+            "candles_csv": str(tmp_path / "candles.csv"),
+            "fx_csv": str(tmp_path / "fx.csv"),
+            "pkg_csv": str(tmp_path / "pkg.csv"),
+            "disasters_csv": str(tmp_path / "dis.csv"),
+        },
+        "db": str(tmp_path / "wh.duckdb"),
+        "target": str(tmp_path / "target"),
+        "dir": tmp_path,
+    }
 
 
 def build(src, *args):
@@ -137,15 +281,23 @@ def test_build_passes_and_shapes(src):
 def test_hour_24_stays_on_its_own_day(src):
     """'24시' 는 그날 23:00 에 시작하는 구간 — 다음 날 0시로 넘어가면 날짜별 24행이 깨진다"""
     assert build(src).returncode == 0
-    start, day, mw = q(src, "select hour_start_kst, demand_date, demand_mw from fct_demand_hourly where demand_date = '2025-03-01' and hour_ending = 24")[0]
+    start, day, mw = q(
+        src,
+        "select hour_start_kst, demand_date, demand_mw from fct_demand_hourly where demand_date = '2025-03-01' and hour_ending = 24",
+    )[0]
     assert start == datetime(2025, 3, 1, 23, 0) and day == date(2025, 3, 1) and mw == 50000 + 2400
-    first = q(src, "select hour_start_kst from fct_demand_hourly where demand_date = '2025-03-02' and hour_ending = 1")[0][0]
+    first = q(src, "select hour_start_kst from fct_demand_hourly where demand_date = '2025-03-02' and hour_ending = 1")[
+        0
+    ][0]
     assert first == datetime(2025, 3, 2, 0, 0)
 
 
 def test_daily_summary_values(src):
     assert build(src).returncode == 0
-    peak, low, hour, lf = q(src, "select peak_mw, min_mw, peak_hour_ending, load_factor from fct_demand_daily where demand_date = '2025-03-02'")[0]
+    peak, low, hour, lf = q(
+        src,
+        "select peak_mw, min_mw, peak_hour_ending, load_factor from fct_demand_daily where demand_date = '2025-03-02'",
+    )[0]
     assert (peak, low, hour) == (51000 + 2400, 51000 + 100, 24)
     assert lf == pytest.approx((51000 + 1250) / (51000 + 2400), abs=1e-4)
 
@@ -180,18 +332,28 @@ def test_snapshot_keeps_history_when_usgs_revises(src):
     """규모가 4.5 → 4.8 로 고쳐지면: 옛 판은 닫히고(valid_to), 새 판이 열린다. 안 바뀐 지진은 한 판 그대로"""
     assert build(src).returncode == 0
     assert q(src, "select count(*), count(dbt_valid_to) from snap_quakes")[0] == (3, 0)
-    write_quakes(src["dir"] / "quakes.csv", [
-        quake("a1", 4.8, "2025-03-05T00:00:00", "reviewed"), quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
-        quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan")])
+    write_quakes(
+        src["dir"] / "quakes.csv",
+        [
+            quake("a1", 4.8, "2025-03-05T00:00:00", "reviewed"),
+            quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
+            quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan"),
+        ],
+    )
     assert build(src).returncode == 0
-    hist = q(src, "select mag, status, dbt_valid_to is null from snap_quakes where quake_id = 'a1' order by dbt_valid_from")
+    hist = q(
+        src, "select mag, status, dbt_valid_to is null from snap_quakes where quake_id = 'a1' order by dbt_valid_from"
+    )
     assert hist == [(4.5, "automatic", False), (4.8, "reviewed", True)]
     assert q(src, "select count(*) from snap_quakes where quake_id = 'a2'")[0][0] == 1
     # 같은 원본으로 한 번 더 돌려도 판이 늘지 않는다 (멱등)
     assert build(src).returncode == 0
     assert q(src, "select count(*) from snap_quakes")[0][0] == 4
     # "3월 2일에는 a1 을 얼마로 알고 있었나" 를 되물을 수 있다
-    asof = q(src, "select mag from snap_quakes where quake_id = 'a1' and dbt_valid_from <= timestamp '2025-03-02' and (dbt_valid_to > timestamp '2025-03-02' or dbt_valid_to is null)")
+    asof = q(
+        src,
+        "select mag from snap_quakes where quake_id = 'a1' and dbt_valid_from <= timestamp '2025-03-02' and (dbt_valid_to > timestamp '2025-03-02' or dbt_valid_to is null)",
+    )
     assert asof == [(4.5,)]
 
 
@@ -202,11 +364,16 @@ def test_history_survives_a_fresh_database(src, tmp_path):
     assert P.save_state(src["db"], state) == 3
     first = (state / "snap_quakes.parquet").read_bytes()
     P.save_state(src["db"], state)
-    assert (state / "snap_quakes.parquet").read_bytes() == first          # 같은 내용이면 같은 파일
-    P.Path(src["db"]).unlink()                                            # 다음 날: 빈 DB
-    write_quakes(src["dir"] / "quakes.csv", [
-        quake("a1", 4.8, "2025-03-05T00:00:00", "reviewed"), quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
-        quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan")])
+    assert (state / "snap_quakes.parquet").read_bytes() == first  # 같은 내용이면 같은 파일
+    P.Path(src["db"]).unlink()  # 다음 날: 빈 DB
+    write_quakes(
+        src["dir"] / "quakes.csv",
+        [
+            quake("a1", 4.8, "2025-03-05T00:00:00", "reviewed"),
+            quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
+            quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan"),
+        ],
+    )
     assert P.restore_state(src["db"], state) == 3
     assert build(src).returncode == 0
     assert q(src, "select mag from snap_quakes where quake_id = 'a1' order by dbt_valid_from") == [(4.5,), (4.8,)]
@@ -233,9 +400,15 @@ def test_incremental_monthly_equals_full_rebuild(src, tmp_path):
     # 다음 날: 예전 지진 하나가 고쳐지고(4.5→5.6), 새 달의 지진이 하나 들어옴
     new = quake("b1", 6.2, "2025-04-03T00:00:00", "reviewed", "70 km E of Hualien, Taiwan")
     new[1], new[2] = "2025-04-02T03:00:00Z", "2025-04-02 12:00:00"
-    write_quakes(src["dir"] / "quakes.csv", [
-        quake("a1", 5.6, "2025-03-05T00:00:00", "reviewed"), quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
-        quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan"), new])
+    write_quakes(
+        src["dir"] / "quakes.csv",
+        [
+            quake("a1", 5.6, "2025-03-05T00:00:00", "reviewed"),
+            quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
+            quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan"),
+            new,
+        ],
+    )
     p = build(src)
     assert p.returncode == 0, p.stdout[-1500:]
     inc = q(src, MONTHLY)
@@ -250,13 +423,17 @@ def test_incremental_monthly_equals_full_rebuild(src, tmp_path):
 def test_incremental_drift_is_caught_by_reconciliation(src):
     """원본에서 지진이 빠지면 증분 집계에는 옛 값이 남는다 — 합계 대조 테스트가 이를 잡아야 한다"""
     assert build(src).returncode == 0
-    write_quakes(src["dir"] / "quakes.csv", [
-        quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
-        quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan")])
+    write_quakes(
+        src["dir"] / "quakes.csv",
+        [
+            quake("a2", 5.0, "2025-03-01T01:00:00", "reviewed"),
+            quake("a3", 4.1, "2025-03-01T01:00:00", place="90 km SSE of Tateyama, Japan"),
+        ],
+    )
     p = build(src)
     assert p.returncode != 0
     assert "assert_quakes_monthly_matches_source" in P.run_results(P.Path(src["target"]))["failed"]
-    assert build(src, "--full-refresh").returncode == 0          # 처음부터 다시 만들면 맞춰진다
+    assert build(src, "--full-refresh").returncode == 0  # 처음부터 다시 만들면 맞춰진다
 
 
 def test_export_is_idempotent_and_partitioned(src):
@@ -266,7 +443,7 @@ def test_export_is_idempotent_and_partitioned(src):
     b = P.export_day("2025-03-02", src["db"], out)
     assert a["rows"] == 24 and a["sha"] == b["sha"]
     files = sorted(p.name for p in (out / "fct_demand_hourly" / "demand_date=2025-03-02").iterdir())
-    assert files == ["part.parquet"]                       # 임시 파일이 남지 않는다
+    assert files == ["part.parquet"]  # 임시 파일이 남지 않는다
     back = duckdb.sql(f"select count(*), min(hour_ending), max(hour_ending) from '{a['path']}'").fetchall()[0]
     assert back == (24, 1, 24)
 
@@ -316,7 +493,13 @@ def test_lineage_and_report(src, tmp_path):
     assert ("demand.csv", "stg_demand_wide") in pairs and ("int_demand_hourly", "fct_demand_hourly") in pairs
     assert ("stg_quakes", "snap_quakes") in pairs
     layer = {n["name"]: n["layer"] for n in nodes}
-    assert layer["demand.csv"] < layer["stg_demand_wide"] < layer["int_demand_hourly"] < layer["fct_demand_hourly"] < layer["fct_demand_daily"]
+    assert (
+        layer["demand.csv"]
+        < layer["stg_demand_wide"]
+        < layer["int_demand_hourly"]
+        < layer["fct_demand_hourly"]
+        < layer["fct_demand_daily"]
+    )
     root = tmp_path / "proj"
     (root / "target").mkdir(parents=True)
     for f in ("manifest.json", "run_results.json"):
@@ -329,22 +512,46 @@ def test_lineage_and_report(src, tmp_path):
 def test_dag_file_is_valid_python_and_names_tasks():
     code = (P.ROOT / "dags" / "warehouse_daily.py").read_text(encoding="utf-8")
     compile(code, "warehouse_daily.py", "exec")
-    for t in ("collect_jobs", "collect_market", "collect_packages", "collect_disasters", "check_sources", "dbt_build", "export_partition", "record", "report"):
+    for t in (
+        "collect_jobs",
+        "collect_market",
+        "collect_packages",
+        "collect_disasters",
+        "check_sources",
+        "dbt_build",
+        "export_partition",
+        "record",
+        "report",
+    ):
         assert f"def {t}(" in code
 
 
 # ---------- 채용 공고
 
+
 def test_job_marts(src):
     assert build(src).returncode == 0
-    rows = q(src, "select job_key, is_tech, skill_count, salary_quality, salary_mid_usd from fct_job_postings order by 1")
-    assert rows == [("arbeitnow:be-dev-1", True, 2, "none", None), ("arbeitnow:koch-2", False, 0, "none", None),
-                    ("remoteok:1", True, 4, "annual", 110000.0), ("remoteok:2", False, 0, "suspect_low", None)]
+    rows = q(
+        src, "select job_key, is_tech, skill_count, salary_quality, salary_mid_usd from fct_job_postings order by 1"
+    )
+    assert rows == [
+        ("arbeitnow:be-dev-1", True, 2, "none", None),
+        ("arbeitnow:koch-2", False, 0, "none", None),
+        ("remoteok:1", True, 4, "annual", 110000.0),
+        ("remoteok:2", False, 0, "suspect_low", None),
+    ]
     # 2025-03-03 이 속한 주: 기술 공고 1건(백엔드), 그 전 주: 1건(데이터 엔지니어)
-    wk = q(src, "select week_start, skill, postings, tech_postings, share_of_tech from fct_skill_demand_weekly where skill = 'Python' order by 1")
+    wk = q(
+        src,
+        "select week_start, skill, postings, tech_postings, share_of_tech from fct_skill_demand_weekly where skill = 'Python' order by 1",
+    )
     assert wk == [(date(2025, 2, 24), "Python", 1, 1, 1.0), (date(2025, 3, 3), "Python", 1, 1, 1.0)]
     assert q(src, "select postings from dim_skill where skill = 'dbt'")[0][0] == 1
-    assert q(src, "select sum(postings), sum(tech_postings), sum(with_suspect_salary) from fct_jobs_daily")[0] == (4, 2, 1)
+    assert q(src, "select sum(postings), sum(tech_postings), sum(with_suspect_salary) from fct_jobs_daily")[0] == (
+        4,
+        2,
+        1,
+    )
 
 
 def test_skill_outside_dictionary_fails(src):
@@ -360,11 +567,21 @@ def test_find_skills_title_and_body():
     rules, version = J.load_skill_dict()
     assert len(version) == 8
     f = lambda t, b="": J.find_skills(t, b, rules).split("|")
-    assert f("Senior Data Engineer", "<p>We use <b>Python</b>, dbt and Airflow on AWS.</p>") == ["AWS", "Airflow", "Data Engineer (role)", "Python", "dbt"]
+    assert f("Senior Data Engineer", "<p>We use <b>Python</b>, dbt and Airflow on AWS.</p>") == [
+        "AWS",
+        "Airflow",
+        "Data Engineer (role)",
+        "Python",
+        "dbt",
+    ]
     assert "Java" not in f("JavaScript Developer") and "JavaScript" in f("JavaScript Developer")
     assert "Java" in f("Java Engineer") and "JavaScript" not in f("Java Engineer")
     assert f("Barista", "Go to our store. Scalable team. Spring is coming. Swift code required for transfer.") == [""]
-    assert "Go" in f("Golang Developer") and "Scala" in f("Scala Engineer") and "Spring" in f("Dev", "Spring Boot services")
+    assert (
+        "Go" in f("Golang Developer")
+        and "Scala" in f("Scala Engineer")
+        and "Spring" in f("Dev", "Spring Boot services")
+    )
     # 직무 이름은 제목에서만: 본문에 'frontend' 가 나와도 프런트엔드 공고가 아니다
     assert "Frontend (role)" not in f("Data Analyst", "works with the frontend team")
     assert "C++" in f("Embedded C++ Engineer") and "C#/.NET" in f(".NET Developer")
@@ -372,7 +589,7 @@ def test_find_skills_title_and_body():
 
 def test_fix_mojibake():
     assert J.fix_mojibake("Engineer â\x80\x94 Kubernetes") == "Engineer — Kubernetes"
-    assert J.fix_mojibake("Teilzeitkraft Küche") == "Teilzeitkraft Küche"          # 정상 문자열은 그대로
+    assert J.fix_mojibake("Teilzeitkraft Küche") == "Teilzeitkraft Küche"  # 정상 문자열은 그대로
     assert J.fix_mojibake("Ã¼ber") == "über" and J.fix_mojibake("") == ""
 
 
@@ -383,37 +600,64 @@ def fake_feeds(pages):
     def get(url):
         calls.append(url)
         if "remoteok" in url:
-            return [{"legal": "x"}, {"id": "1", "position": "Data Engineer", "company": "A", "epoch": 1741000000, "salary_min": 90000,
-                                     "salary_max": 120000, "url": "https://remoteOK.com/j/1", "description": "<p>Python and SQL</p>", "tags": ["golang"]}]
+            return [
+                {"legal": "x"},
+                {
+                    "id": "1",
+                    "position": "Data Engineer",
+                    "company": "A",
+                    "epoch": 1741000000,
+                    "salary_min": 90000,
+                    "salary_max": 120000,
+                    "url": "https://remoteOK.com/j/1",
+                    "description": "<p>Python and SQL</p>",
+                    "tags": ["golang"],
+                },
+            ]
         n = int(url.split("page=")[1])
         return {"data": pages[n - 1] if n <= len(pages) else []}
+
     return get, calls
 
 
 def arb(slug, ts=1741000000):
-    return {"slug": slug, "title": "Dev " + slug, "company_name": "B", "remote": False, "created_at": ts, "url": "https://x/" + slug, "description": "Kotlin"}
+    return {
+        "slug": slug,
+        "title": "Dev " + slug,
+        "company_name": "B",
+        "remote": False,
+        "created_at": ts,
+        "url": "https://x/" + slug,
+        "description": "Kotlin",
+    }
 
 
 def test_collect_stops_at_overlap_and_is_idempotent(tmp_path, monkeypatch):
     jp, lp = tmp_path / "jobs.csv", tmp_path / "log.csv"
     get, calls = fake_feeds([[arb("a"), arb("b")], [arb("b"), arb("c")], [arb("d")], [arb("e")]])
     res = {e["source"]: e for e in J.collect("2025-03-11", jp, lp, get, pause=0)}
-    assert res["arbeitnow"]["pages"] == 3 and res["arbeitnow"]["new"] == 4 and res["arbeitnow"]["overlap"] == "first_run"   # 처음: 3쪽까지만
+    assert (
+        res["arbeitnow"]["pages"] == 3 and res["arbeitnow"]["new"] == 4 and res["arbeitnow"]["overlap"] == "first_run"
+    )  # 처음: 3쪽까지만
     assert res["remoteok"]["new"] == 1
     rows = J.load(jp)
-    assert rows[("remoteok", "1")]["skills"] == "Data Engineer (role)|Python|SQL"                    # 엉뚱한 태그(golang)는 쓰지 않음
+    assert rows[("remoteok", "1")]["skills"] == "Data Engineer (role)|Python|SQL"  # 엉뚱한 태그(golang)는 쓰지 않음
     assert rows[("remoteok", "1")]["url"] == "https://remoteok.com/j/1" and "description" not in rows[("remoteok", "1")]
     first = jp.read_bytes()
     J.collect("2025-03-11", jp, lp, get, pause=0)
-    assert jp.read_bytes() == first                                              # 같은 날 다시 돌려도 같은 파일
+    assert jp.read_bytes() == first  # 같은 날 다시 돌려도 같은 파일
     log = {r["source"]: r for r in csv.DictReader(lp.open(encoding="utf-8"))}
-    assert log["arbeitnow"]["new"] == "4" and log["arbeitnow"]["overlap"] == "first_run"   # 다시 돌려도 그날 기록이 지워지지 않음
+    assert (
+        log["arbeitnow"]["new"] == "4" and log["arbeitnow"]["overlap"] == "first_run"
+    )  # 다시 돌려도 그날 기록이 지워지지 않음
     # 다음 날: 새 공고 z 가 맨 앞에 오고, 1쪽에서 이미 아는 a 를 만나 멈춘다
     get2, calls2 = fake_feeds([[arb("z"), arb("a")], [arb("b")]])
     res2 = {e["source"]: e for e in J.collect("2025-03-12", jp, lp, get2, pause=0)}
     assert res2["arbeitnow"]["pages"] == 1 and res2["arbeitnow"]["new"] == 1 and res2["arbeitnow"]["overlap"] == "yes"
     rows = J.load(jp)
-    assert rows[("arbeitnow", "a")]["first_seen"] == "2025-03-11" and rows[("arbeitnow", "a")]["last_seen"] == "2025-03-12"
+    assert (
+        rows[("arbeitnow", "a")]["first_seen"] == "2025-03-11" and rows[("arbeitnow", "a")]["last_seen"] == "2025-03-12"
+    )
     assert rows[("arbeitnow", "c")]["last_seen"] == "2025-03-11"
 
 
@@ -430,29 +674,49 @@ def test_collect_reports_gap_and_survives_failure(tmp_path):
         if "arbeitnow" in url:
             raise TimeoutError("timeout")
         return [{"legal": "x"}]
+
     res = {e["source"]: e for e in J.collect("2025-03-21", jp, lp, broken, pause=0)}
     assert res["arbeitnow"]["overlap"] == "error:TimeoutError" and res["remoteok"]["fetched"] == 0
-    assert len(J.load(jp)) == 2 + 8                                              # 실패해도 모아 둔 공고는 그대로
+    assert len(J.load(jp)) == 2 + 8  # 실패해도 모아 둔 공고는 그대로
 
 
 def test_content_change_is_recorded(tmp_path):
     ex = {}
     J.merge(ex, [job("remoteok", "1", "Data Engineer", "2025-03-01T00:00:00Z", "", 90000, 120000)], "2025-03-11", "v1")
-    st = J.merge(ex, [job("remoteok", "1", "Data Engineer", "2025-03-01T00:00:00Z", "", 100000, 130000)], "2025-03-12", "v1")
+    st = J.merge(
+        ex, [job("remoteok", "1", "Data Engineer", "2025-03-01T00:00:00Z", "", 100000, 130000)], "2025-03-12", "v1"
+    )
     r = ex[("remoteok", "1")]
-    assert st["changed"] == 1 and r["changed_on"] == "2025-03-12" and r["salary_min"] == 100000 and r["first_seen"] == "2025-03-11"
-    assert J.merge(ex, [job("remoteok", "1", "Data Engineer", "2025-03-01T00:00:00Z", "", 100000, 130000)], "2025-03-13", "v1")["changed"] == 0
+    assert (
+        st["changed"] == 1
+        and r["changed_on"] == "2025-03-12"
+        and r["salary_min"] == 100000
+        and r["first_seen"] == "2025-03-11"
+    )
+    assert (
+        J.merge(
+            ex, [job("remoteok", "1", "Data Engineer", "2025-03-01T00:00:00Z", "", 100000, 130000)], "2025-03-13", "v1"
+        )["changed"]
+        == 0
+    )
 
 
 # ---------- 시세·환율
 
+
 def test_premium_and_weekend_fx(src):
     """주말에는 금요일 환율을 쓰고 그 사실을 표시한다. 월요일에 환율이 2% 오르면 같은 원화 가격의 프리미엄은 0 이 된다"""
     assert build(src).returncode == 0
-    rows = q(src, "select day_utc, usdkrw, is_fx_filled, fx_stale_days, premium_pct from fct_krw_premium_daily order by 1")
+    rows = q(
+        src, "select day_utc, usdkrw, is_fx_filled, fx_stale_days, premium_pct from fct_krw_premium_daily order by 1"
+    )
     assert [r[:4] for r in rows] == [
-        (date(2025, 3, 6), 1400.0, False, 0), (date(2025, 3, 7), 1400.0, False, 0),
-        (date(2025, 3, 8), 1400.0, True, 1), (date(2025, 3, 9), 1400.0, True, 2), (date(2025, 3, 10), 1428.0, False, 0)]
+        (date(2025, 3, 6), 1400.0, False, 0),
+        (date(2025, 3, 7), 1400.0, False, 0),
+        (date(2025, 3, 8), 1400.0, True, 1),
+        (date(2025, 3, 9), 1400.0, True, 2),
+        (date(2025, 3, 10), 1428.0, False, 0),
+    ]
     assert [r[4] for r in rows[:4]] == pytest.approx([2.0] * 4, abs=1e-6)
     assert rows[4][4] == pytest.approx(0.0, abs=1e-6)
     assert q(src, "select days, avg_premium_pct, days_over_3pct from fct_premium_monthly")[0] == (5, 1.6, 0)
@@ -496,8 +760,18 @@ def fake_market(today="2025-03-11", revise=None):
         if "upbit" in url:
             to = date.fromisoformat(url.split("to=")[1][:10])
             days = [(to - timedelta(days=i + 1)).isoformat() for i in range(200)]
-            return [{"candle_date_time_utc": d + "T00:00:00", "opening_price": 1, "high_price": 200, "low_price": 1,
-                     "trade_price": close("upbit", d), "candle_acc_trade_volume": 5} for d in days if d <= end.isoformat()]
+            return [
+                {
+                    "candle_date_time_utc": d + "T00:00:00",
+                    "opening_price": 1,
+                    "high_price": 200,
+                    "low_price": 1,
+                    "trade_price": close("upbit", d),
+                    "candle_acc_trade_volume": 5,
+                }
+                for d in days
+                if d <= end.isoformat()
+            ]
         if "coinbase" in url:
             a, b = (date.fromisoformat(x[:10]) for x in (url.split("start=")[1], url.split("end=")[1]))
             out, d = [], a
@@ -507,7 +781,14 @@ def fake_market(today="2025-03-11", revise=None):
                 d += timedelta(days=1)
             return out
         a, b = url.split("/v1/")[1].split("?")[0].split("..")
-        return {"rates": {d: {"KRW": 1400, "JPY": 150, "EUR": 0.9} for d in P.daterange(a, b) if date.fromisoformat(d).weekday() < 5}}
+        return {
+            "rates": {
+                d: {"KRW": 1400, "JPY": 150, "EUR": 0.9}
+                for d in P.daterange(a, b)
+                if date.fromisoformat(d).weekday() < 5
+            }
+        }
+
     return get, calls
 
 
@@ -516,18 +797,18 @@ def test_market_collect_backfill_incremental_and_revision(tmp_path):
     get, _ = fake_market()
     st = M.collect("2025-03-11", cp, fp, get, pause=0, backfill_days=30)
     assert st["end"] == "2025-03-10" and st["errors"] == []
-    assert st["candles_total"] == 31 * 2 * len(M.ASSETS)             # 끝난 날까지만, 오늘 봉은 없음
-    assert st["fx_total"] == 21 * 3                                    # 영업일 21일 × 통화 3개 (주말은 원본에 없음)
+    assert st["candles_total"] == 31 * 2 * len(M.ASSETS)  # 끝난 날까지만, 오늘 봉은 없음
+    assert st["fx_total"] == 21 * 3  # 영업일 21일 × 통화 3개 (주말은 원본에 없음)
     first = cp.read_bytes()
     st2 = M.collect("2025-03-11", cp, fp, get, pause=0, backfill_days=30)
-    assert st2["candles_new"] == 0 and st2["candles_changed"] == 0 and cp.read_bytes() == first      # 다시 돌려도 같은 파일
+    assert st2["candles_new"] == 0 and st2["candles_changed"] == 0 and cp.read_bytes() == first  # 다시 돌려도 같은 파일
     # 이틀 뒤: 새 날 2일이 붙고, 그사이 고쳐진 3월 9일 봉은 겹쳐 받는 구간에서 바뀐다
     get3, calls = fake_market("2025-03-13", revise={("upbit", "2025-03-09"): 555.0})
     st3 = M.collect("2025-03-13", cp, fp, get3, pause=0, backfill_days=30)
     assert st3["candles_new"] == 2 * 2 * len(M.ASSETS) and st3["candles_changed"] == len(M.ASSETS)
     rows = M._load(cp, lambda r: (r["exchange"], r["asset"], r["day_utc"]))
     assert rows[("upbit", "BTC", "2025-03-09")]["close"] == "555" and ("upbit", "BTC", "2025-03-13") not in rows
-    assert all("2025-02" not in u for u in calls if "coinbase" in u)   # 증분: 처음부터 다시 받지 않음
+    assert all("2025-02" not in u for u in calls if "coinbase" in u)  # 증분: 처음부터 다시 받지 않음
 
 
 def test_market_collect_survives_partial_failure(tmp_path):
@@ -537,22 +818,31 @@ def test_market_collect_survives_partial_failure(tmp_path):
         if "coinbase" in url:
             raise ConnectionError("down")
         return good(url)
+
     st = M.collect("2025-03-11", tmp_path / "c.csv", tmp_path / "fx.csv", get, pause=0, backfill_days=10)
     assert len(st["errors"]) == len(M.ASSETS) and st["candles_total"] == 11 * len(M.ASSETS) and st["fx_total"] > 0
 
 
 # ---------- 패키지 내려받기 · 재해 경보
 
+
 def test_pkg_weekly_drops_partial_week_and_compares_4w(src):
     assert build(src).returncode == 0
-    wk = q(src, "select week_start, downloads, prev_downloads from fct_pkg_weekly where package = 'dbt-core' order by 1")
+    wk = q(
+        src, "select week_start, downloads, prev_downloads from fct_pkg_weekly where package = 'dbt-core' order by 1"
+    )
     assert len(wk) == 8 and wk[0] == (date(2025, 1, 6), 700, None) and wk[4] == (date(2025, 2, 3), 1050, 700)
     # react: 2/17~2/23 한 주만 7일이 차고, 2/24 주는 3일뿐이라 빠진다
-    assert q(src, "select week_start, downloads from fct_pkg_weekly where package = 'react'") == [(date(2025, 2, 17), 7000)]
-    sd = q(src, "select skill, postings_4w, downloads_4w, downloads_prev_4w, downloads_change_pct from fct_skill_supply_demand order by 1")
-    assert ("dbt", 1, 4200, 2800, 50.0) in sd                      # 뒤 4주 150×28, 앞 4주 100×28 → +50%
+    assert q(src, "select week_start, downloads from fct_pkg_weekly where package = 'react'") == [
+        (date(2025, 2, 17), 7000)
+    ]
+    sd = q(
+        src,
+        "select skill, postings_4w, downloads_4w, downloads_prev_4w, downloads_change_pct from fct_skill_supply_demand order by 1",
+    )
+    assert ("dbt", 1, 4200, 2800, 50.0) in sd  # 뒤 4주 150×28, 앞 4주 100×28 → +50%
     react = [r for r in sd if r[0] == "React"][0]
-    assert react[1:] == (0, 7000, None, None)                       # 비교할 앞 4주가 없으면 변화율을 비움
+    assert react[1:] == (0, 7000, None, None)  # 비교할 앞 4주가 없으면 변화율을 비움
 
 
 def test_package_mapped_to_unknown_skill_fails(src, tmp_path):
@@ -571,12 +861,23 @@ def test_disaster_marts_and_alert_history(src, tmp_path):
     assert build(src).returncode == 0
     rows = q(src, "select event_key, type_name, alert_rank, duration_days from fct_disaster_events order by 1")
     assert rows == [("FL-2", "홍수", 2, 1), ("TC-1", "태풍·열대저기압", 1, 4)]
-    assert q(src, "select event_type, events, orange_or_red from fct_disasters_monthly order by 1") == [("FL", 1, 1), ("TC", 1, 0)]
+    assert q(src, "select event_type, events, orange_or_red from fct_disasters_monthly order by 1") == [
+        ("FL", 1, 1),
+        ("TC", 1, 0),
+    ]
     assert q(src, "select count(*) from fct_alert_changes")[0][0] == 0
     # 다음 날: 태풍이 Green → Red 로 오르고, 홍수는 수정 시각만 바뀜 → 등급이 바뀐 태풍만 새 판이 생긴다
-    M._save({e["event_key"]: e for e in [event("TC-1", "Red", "2025-03-01T00:00:00", "2025-03-06T00:00:00", "2025-03-06T00:00:00"),
-                                         event("FL-2", "Orange", "2025-03-02T00:00:00", "2025-03-02T00:00:00", "2025-03-06T00:00:00")]},
-            P.Path(src["vars"]["disasters_csv"]), X.D_FIELDS)
+    M._save(
+        {
+            e["event_key"]: e
+            for e in [
+                event("TC-1", "Red", "2025-03-01T00:00:00", "2025-03-06T00:00:00", "2025-03-06T00:00:00"),
+                event("FL-2", "Orange", "2025-03-02T00:00:00", "2025-03-02T00:00:00", "2025-03-06T00:00:00"),
+            ]
+        },
+        P.Path(src["vars"]["disasters_csv"]),
+        X.D_FIELDS,
+    )
     assert build(src).returncode == 0
     assert q(src, "select event_key, count(*) from snap_disasters group by 1 order by 1") == [("FL-2", 1), ("TC-1", 2)]
     assert [r[:3] for r in q(src, "select * from fct_alert_changes")] == [("TC-1", "Green", "Red")]
@@ -587,11 +888,18 @@ def test_disaster_marts_and_alert_history(src, tmp_path):
     P.Path(src["db"]).unlink()
     P.restore_state(src["db"], state)
     assert build(src).returncode == 0
-    assert q(src, "select count(*) from snap_disasters")[0][0] == 3 and q(src, "select count(*) from fct_alert_changes")[0][0] == 1
+    assert (
+        q(src, "select count(*) from snap_disasters")[0][0] == 3
+        and q(src, "select count(*) from fct_alert_changes")[0][0] == 1
+    )
 
 
 def test_unknown_disaster_type_fails(src):
-    M._save({"XX-9": {**event("XX-9", "Green", "2025-03-01T00:00:00", "2025-03-01T00:00:00")}}, P.Path(src["vars"]["disasters_csv"]), X.D_FIELDS)
+    M._save(
+        {"XX-9": {**event("XX-9", "Green", "2025-03-01T00:00:00", "2025-03-01T00:00:00")}},
+        P.Path(src["vars"]["disasters_csv"]),
+        X.D_FIELDS,
+    )
     assert build(src).returncode != 0
 
 
@@ -609,14 +917,33 @@ def test_collect_packages_and_disasters(tmp_path):
             return {"downloads": [{"day": d, "downloads": 5} for d in P.daterange(a, b)]}
         page = int(url.split("pagenumber=")[1])
         n = 100 if page == 1 else 3
-        return {"features": [{"properties": {"eventtype": "FL", "eventid": f"{page}{i}", "name": "Flood", "country": "X", "iso3": "XXX",
-                                             "alertlevel": "Green", "alertscore": "1", "fromdate": "2025-03-01T00:00:00", "todate": "2025-03-02T00:00:00",
-                                             "datemodified": "2025-03-03T00:00:00", "iscurrent": "true", "severitydata": {"severity": 1, "severityunit": ""}},
-                              "geometry": {"type": "Point", "coordinates": [10.0, 20.0]}} for i in range(n)]}
+        return {
+            "features": [
+                {
+                    "properties": {
+                        "eventtype": "FL",
+                        "eventid": f"{page}{i}",
+                        "name": "Flood",
+                        "country": "X",
+                        "iso3": "XXX",
+                        "alertlevel": "Green",
+                        "alertscore": "1",
+                        "fromdate": "2025-03-01T00:00:00",
+                        "todate": "2025-03-02T00:00:00",
+                        "datemodified": "2025-03-03T00:00:00",
+                        "iscurrent": "true",
+                        "severitydata": {"severity": 1, "severityunit": ""},
+                    },
+                    "geometry": {"type": "Point", "coordinates": [10.0, 20.0]},
+                }
+                for i in range(n)
+            ]
+        }
+
     pp, dp = tmp_path / "pkg.csv", tmp_path / "dis.csv"
     st = X.collect_packages("2025-03-12", pp, seed, get, pause=0, backfill_days=5)
-    assert st["end"] == "2025-03-10" and st["errors"] == [] and st["total"] == 6 * 2      # 이틀 전까지, 5일 전부터
-    assert any("@angular%2Fcore" in u for u in calls)                   # 범위가 있는 이름은 / 를 인코딩해 보냄
+    assert st["end"] == "2025-03-10" and st["errors"] == [] and st["total"] == 6 * 2  # 이틀 전까지, 5일 전부터
+    assert any("@angular%2Fcore" in u for u in calls)  # 범위가 있는 이름은 / 를 인코딩해 보냄
     assert X.collect_packages("2025-03-12", pp, seed, get, pause=0, backfill_days=5)["new"] == 0
     st = X.collect_disasters("2025-03-12", dp, get, pause=0)
     assert st["pages"] == 2 and st["fetched"] == 103 and st["total"] == 103
@@ -628,7 +955,8 @@ def test_collect_packages_and_disasters(tmp_path):
 # ---- 분석: 수요-기온 두 구간 모형 (wh/analysis.py)
 def test_temperature_fit_recovers_known_breaks_and_slopes():
     from wh.analysis import fit_temperature
-    temps = [t / 2 for t in range(-20, 71)]               # -10 ~ 35°C
+
+    temps = [t / 2 for t in range(-20, 71)]  # -10 ~ 35°C
     ys = [60000 + 1000 * max(12 - t, 0) + 2000 * max(t - 20, 0) for t in temps]
     r = fit_temperature(temps, ys)
     assert (r["heat_below"], r["cool_above"]) == (12.0, 20.0)
@@ -638,21 +966,33 @@ def test_temperature_fit_recovers_known_breaks_and_slopes():
 
 def test_temperature_fit_refuses_tiny_samples():
     from wh.analysis import fit_temperature
+
     assert fit_temperature([1.0, 2.0, 3.0], [1.0, 2.0, 3.0]) is None
 
 
 def test_solar_fit_recovers_known_coefficient_and_placebo_is_flat():
     """달별 절편 + 새벽 최저 + 냉난방 + 일사량으로 만든 가짜 자료에서 일사량 계수를 다시 찾는지, 저녁(일사량 무관)은 0인지"""
     from wh.analysis import fit_solar
+
     rows = []
     for i in range(240):
         m = 1 + i % 12
-        rad = 200 + (i * 37) % 600                     # 200~800 W/m²
-        t = -5 + (i * 13) % 40                         # -5~34℃
+        rad = 200 + (i * 37) % 600  # 200~800 W/m²
+        t = -5 + (i * 13) % 40  # -5~34℃
         night = 50000 + (i * 71) % 9000
         mid = 1000 * m + 0.9 * night - 2500 * rad / 100 + 1500 * max(t - 24, 0) + 800 * max(16 - t, 0)
         eve = 500 * m + 1.1 * night + 1500 * max(t - 24, 0) + 800 * max(16 - t, 0)
-        rows.append({"month": m, "midday_rad": rad, "midday_temp": t, "evening_temp": t, "night_min_mw": night, "midday_mw": mid, "evening_mw": eve})
+        rows.append(
+            {
+                "month": m,
+                "midday_rad": rad,
+                "midday_temp": t,
+                "evening_temp": t,
+                "night_min_mw": night,
+                "midday_mw": mid,
+                "evening_mw": eve,
+            }
+        )
     r = fit_solar(rows)
     assert r["mw_per_100w"] == -2500 and r["r2"] == 1.0 and r["days"] == 240
     assert fit_solar(rows, "evening_mw", "evening_temp")["mw_per_100w"] == 0
@@ -663,6 +1003,7 @@ def test_solar_fit_recovers_known_coefficient_and_placebo_is_flat():
 
 def test_solar_fit_refuses_tiny_samples():
     from wh.analysis import fit_solar
+
     assert fit_solar([{"month": 1, "midday_rad": 100, "midday_temp": 0, "night_min_mw": 1, "midday_mw": 1}]) is None
 
 

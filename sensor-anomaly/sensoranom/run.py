@@ -5,6 +5,7 @@
 3) 지도학습 진단: 무작위 분할 vs 연속 구간 분할 정확도 비교 (이웃 사이클이 거의 같아 무작위 분할은 성능을 부풀림)
 4) 시계열 교차검증: 10구간 중 5~9번째를 차례로 시험 구간으로 두는 전진 연쇄 5겹 + 연속 구간 분할 정확도의 블록 부트스트랩 95% 신뢰구간
 """
+
 from __future__ import annotations
 
 import json
@@ -46,18 +47,31 @@ def evaluate(X, Y, comp, regime_aware: bool):
     test = ~np.isin(np.arange(n), tr_idx)
     y = (~normal[test]).astype(int)
     flags = ratio[test] > 1
-    per_level = {str(int(lv)): {"n": int((Y[test, c] == lv).sum()), "flagged": round(float(flags[Y[test, c] == lv].mean()), 3)} for lv in sorted(set(Y[test, c]))}
+    per_level = {
+        str(int(lv)): {"n": int((Y[test, c] == lv).sum()), "flagged": round(float(flags[Y[test, c] == lv].mean()), 3)}
+        for lv in sorted(set(Y[test, c]))
+    }
     stream = {}
     for k in (1, 3):
         al = detect.debounce(ratio > 1, k)
         lat = detect.alert_latency(~normal, al)
         held_normal = normal & test
         ok = [x for x in lat if x >= 0]
-        stream[f"k={k}"] = {"fault_segments": len(lat), "detected": len(ok), "median_latency_cycles": float(np.median(ok)) if ok else None,
-                            "false_alarms_per_100_normal": round(float(al[held_normal].mean() * 100), 2)}
-    res = {"train_cycles": int(len(tr_idx)), "test_cycles": int(test.sum()), "roc_auc": round(float(roc_auc_score(y, ratio[test])), 4),
-           "test_normal_false_alarm": round(float(flags[y == 0].mean()), 4), "test_fault_detected": round(float(flags[y == 1].mean()), 4),
-           "by_level": per_level, "stream": stream}
+        stream[f"k={k}"] = {
+            "fault_segments": len(lat),
+            "detected": len(ok),
+            "median_latency_cycles": float(np.median(ok)) if ok else None,
+            "false_alarms_per_100_normal": round(float(al[held_normal].mean() * 100), 2),
+        }
+    res = {
+        "train_cycles": int(len(tr_idx)),
+        "test_cycles": int(test.sum()),
+        "roc_auc": round(float(roc_auc_score(y, ratio[test])), 4),
+        "test_normal_false_alarm": round(float(flags[y == 0].mean()), 4),
+        "test_fault_detected": round(float(flags[y == 1].mean()), 4),
+        "by_level": per_level,
+        "stream": stream,
+    }
     return res, ratio
 
 
@@ -67,7 +81,7 @@ def anomaly(X, Y):
         g, rg = evaluate(X, Y, comp, False)
         out[comp] = {"global": g}
         best = rg
-        if comp != "cooler":                 # 냉각기 상태 = 운전 구간. 냉각기 자체는 전역 모델만
+        if comp != "cooler":  # 냉각기 상태 = 운전 구간. 냉각기 자체는 전역 모델만
             r, rr = evaluate(X, Y, comp, True)
             out[comp]["regime_aware"] = r
             best = rr
@@ -80,8 +94,11 @@ def diagnosis(X, Y, seed=0):
     from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
     from sklearn.pipeline import make_pipeline
     from sklearn.preprocessing import StandardScaler
-    models = {"random_forest": lambda: RandomForestClassifier(n_estimators=300, random_state=seed, n_jobs=-1),
-              "lda": lambda: make_pipeline(StandardScaler(), LinearDiscriminantAnalysis())}
+
+    models = {
+        "random_forest": lambda: RandomForestClassifier(n_estimators=300, random_state=seed, n_jobs=-1),
+        "lda": lambda: make_pipeline(StandardScaler(), LinearDiscriminantAnalysis()),
+    }
     out = {}
     tr_b, te_b = detect.block_split(len(X))
     for comp, c in COLS.items():
@@ -92,7 +109,10 @@ def diagnosis(X, Y, seed=0):
             for split, (tr, te) in {"random_split": (tr_r, te_r), "block_split": (tr_b, te_b)}.items():
                 clf = mk().fit(X[tr], y[tr])
                 p = clf.predict(X[te])
-                res[f"{mname}/{split}"] = {"accuracy": round(float((p == y[te]).mean()), 4), "macro_f1": round(float(f1_score(y[te], p, average="macro")), 4)}
+                res[f"{mname}/{split}"] = {
+                    "accuracy": round(float((p == y[te]).mean()), 4),
+                    "macro_f1": round(float(f1_score(y[te], p, average="macro")), 4),
+                }
                 if mname == "random_forest" and split == "block_split":
                     imp = sorted(zip(data.feature_names(), clf.feature_importances_), key=lambda x: -x[1])[:5]
                     res["rf_top_features"] = [[k, round(float(v), 4)] for k, v in imp]
@@ -106,8 +126,11 @@ def diagnosis_cv(X, Y, seed=0):
     from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
     from sklearn.pipeline import make_pipeline
     from sklearn.preprocessing import StandardScaler
-    models = {"random_forest": lambda: RandomForestClassifier(n_estimators=300, random_state=seed, n_jobs=-1),
-              "lda": lambda: make_pipeline(StandardScaler(), LinearDiscriminantAnalysis())}
+
+    models = {
+        "random_forest": lambda: RandomForestClassifier(n_estimators=300, random_state=seed, n_jobs=-1),
+        "lda": lambda: make_pipeline(StandardScaler(), LinearDiscriminantAnalysis()),
+    }
     folds = detect.forward_chain_folds(len(X))
     tr_b, te_b = detect.block_split(len(X))
     out = {}
@@ -122,8 +145,15 @@ def diagnosis_cv(X, Y, seed=0):
                 per["balanced_accuracy"].append(float(balanced_accuracy_score(y[te], p)))
                 per["macro_f1"].append(float(f1_score(y[te], p, average="macro")))
                 per["unseen_test_classes"].append(sorted(int(v) for v in set(y[te]) - set(y[tr])))
-            summary = {k: {"mean": round(float(np.mean(v)), 4), "std": round(float(np.std(v)), 4), "folds": [round(x, 4) for x in v]}
-                       for k, v in per.items() if k != "unseen_test_classes"}
+            summary = {
+                k: {
+                    "mean": round(float(np.mean(v)), 4),
+                    "std": round(float(np.std(v)), 4),
+                    "folds": [round(x, 4) for x in v],
+                }
+                for k, v in per.items()
+                if k != "unseen_test_classes"
+            }
             summary["unseen_test_classes"] = per["unseen_test_classes"]
             p = mk().fit(X[tr_b], y[tr_b]).predict(X[te_b])
             lo, hi = detect.block_bootstrap_ci(p == y[te_b])
@@ -135,8 +165,10 @@ def diagnosis_cv(X, Y, seed=0):
 
 def plots(streams, outdir: Path):
     import matplotlib
+
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
+
     fig, axes = plt.subplots(4, 1, figsize=(10, 9), sharex=True)
     for ax, (comp, (s, thr, lv)) in zip(axes, streams.items()):
         normal = lv == data.NORMAL[comp]
@@ -169,11 +201,32 @@ def main():
         plt_ok = False
     for k, v in res["anomaly"].items():
         for mode, m in v.items():
-            print(k, mode, {"auc": m["roc_auc"], "fa": m["test_normal_false_alarm"], "det": m["test_fault_detected"], "k3": m["stream"]["k=3"]})
+            print(
+                k,
+                mode,
+                {
+                    "auc": m["roc_auc"],
+                    "fa": m["test_normal_false_alarm"],
+                    "det": m["test_fault_detected"],
+                    "k3": m["stream"]["k=3"],
+                },
+            )
     for k, v in res["diagnosis"].items():
         print(k, {m: r["accuracy"] for m, r in v.items() if isinstance(r, dict)})
     for k, v in res["diagnosis_cv"].items():
-        print("cv", k, {m: (r["accuracy"]["mean"], r["accuracy"]["std"], r["balanced_accuracy"]["mean"], r["block_split_accuracy_ci95"]) for m, r in v.items()})
+        print(
+            "cv",
+            k,
+            {
+                m: (
+                    r["accuracy"]["mean"],
+                    r["accuracy"]["std"],
+                    r["balanced_accuracy"]["mean"],
+                    r["block_split_accuracy_ci95"],
+                )
+                for m, r in v.items()
+            },
+        )
     return res, plt_ok
 
 
