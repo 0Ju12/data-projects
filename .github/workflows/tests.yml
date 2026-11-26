@@ -1,29 +1,42 @@
 name: tests
 on: [push, pull_request]
 jobs:
+  lint:                  # 파이썬 서식·린트(ruff.toml)와 JS 서식(.prettierrc.json)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -q ruff==0.16.9
+      - run: ruff format --check .
+      - run: ruff check .
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: npx -y prettier@3.10.1 --check "**/*.{js,mjs,cjs}"
+
   test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - { dir: api-watch, deps: "-r requirements.txt" }
-          - { dir: geo-data-pipeline, deps: "pytest" }
-          - { dir: sensor-anomaly,    deps: "pytest numpy scikit-learn" }
-          - { dir: power-demand,      deps: "pytest numpy scikit-learn" }
-          - { dir: dart-analyzer,     deps: "pytest" }
-          - { dir: wildfire-watch,    deps: "pytest" }
-          - { dir: data-agent,        deps: "pytest anyio 'mcp>=1.9,<2'" }
-          - { dir: warehouse,         deps: "-r requirements.txt" }
-          - { dir: energy-transition, deps: "-r requirements.txt" }
-          - { dir: job-calendar,      deps: "pytest" }
-          - { dir: er-access,         deps: "pytest" }
-          - { dir: crash-hotspots,    deps: "pytest numpy" }
-          - { dir: public-data-mcp,   deps: "-r requirements.txt" }
+          - { dir: api-watch,         deps: "-r requirements.lock" }
+          - { dir: geo-data-pipeline, deps: "-r requirements.lock" }
+          - { dir: sensor-anomaly,    deps: "-r requirements.lock" }
+          - { dir: power-demand,      deps: "-r requirements.lock" }
+          - { dir: dart-analyzer,     deps: "-r requirements.lock" }
+          - { dir: wildfire-watch,    deps: "-r requirements.lock" }
+          - { dir: data-agent,        deps: "-r requirements.lock" }
+          - { dir: warehouse,         deps: "-r requirements.lock" }
+          - { dir: energy-transition, deps: "-r requirements.lock" }
+          - { dir: job-calendar,      deps: "-r requirements.lock" }
+          - { dir: er-access,         deps: "-r requirements.lock" }
+          - { dir: crash-hotspots,    deps: "-r requirements.lock" }
+          - { dir: public-data-mcp,   deps: "-r requirements.lock" }
           - { dir: krgeo,             deps: "-e .[test]" }
-          - { dir: map-tiles,         deps: "-r requirements.txt" }
-          - { dir: pipeline-status,   deps: "pytest" }
-          - { dir: er-finder,         deps: "pytest" }
+          - { dir: map-tiles,         deps: "-r requirements.lock" }
+          - { dir: pipeline-status,   deps: "-r requirements.lock" }
+          - { dir: er-finder,         deps: "-r requirements.lock" }
     defaults: { run: { working-directory: "${{ matrix.dir }}" } }
     steps:
       - uses: actions/checkout@v4
