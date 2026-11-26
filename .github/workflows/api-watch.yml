@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   pages: write
+  actions: read
   id-token: write
 concurrency:
   group: api-watch-monitor
@@ -15,6 +16,7 @@ concurrency:
 jobs:
   monitor:
     runs-on: ubuntu-latest
+    outputs: {site: '${{ steps.site.outputs.ok }}'}
     defaults: {run: {working-directory: api-watch}}
     steps:
       - uses: actions/checkout@v4
@@ -41,24 +43,30 @@ jobs:
           git push
       - uses: actions/checkout@v4
         with: {repository: 0Ju12/gravmag-wcf, path: _wcf}
-      - name: Assemble all existing Pages sections and API Watch
+      - name: Start from the last full site and refresh only API Watch
+        # geo daily builds the whole Pages site (maps, /near/, /tiles/, /status/ ...). Rebuilding it here
+        # dropped those sections every hour, so reuse geo daily's last published artifact instead.
+        id: site
         working-directory: .
+        env: {GH_TOKEN: '${{ github.token }}'}
         run: |
-          mkdir -p _pages
-          cp -r geo-data-pipeline/docs/. _pages/
-          cp -r power-demand/explorer _pages/power
-          cp -r wildfire-watch/docs _pages/fire
-          cp -r _wcf/web _pages/wcf
-          if [ -f warehouse/docs/index.html ]; then cp -r warehouse/docs _pages/warehouse; fi
-          if [ -f energy-transition/docs/index.html ]; then cp -r energy-transition/docs _pages/energy; fi
-          cp -r api-watch/public _pages/api-watch
-          cp -r job-calendar/docs _pages/jobs
+          run=$(gh run list -R "$GITHUB_REPOSITORY" -w geo-daily.yml -s success -L 1 --json databaseId -q '.[0].databaseId')
+          if [ -z "$run" ] || ! gh run download "$run" -R "$GITHUB_REPOSITORY" -n github-pages -D _prev; then
+            echo "No recent full site to build on; skipping deploy (the next geo daily run publishes this report)."
+            echo "ok=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          mkdir -p _pages && tar -xf _prev/artifact.tar -C _pages
+          test -f _pages/index.html
+          rm -rf _pages/api-watch && cp -r api-watch/public _pages/api-watch
           test -s _pages/api-watch/report.json
           test -s _pages/api-watch/index.html
+          echo "ok=true" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-pages-artifact@v3
+        if: steps.site.outputs.ok == 'true'
         with: {path: _pages}
   deploy:
     needs: monitor
+    if: needs.monitor.outputs.site == 'true'
     runs-on: ubuntu-latest
     concurrency: {group: pages-deployment, cancel-in-progress: false}
     environment:
