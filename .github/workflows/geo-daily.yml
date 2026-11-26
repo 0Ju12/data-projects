@@ -84,7 +84,7 @@ jobs:
           rm -rf docs/status
           (cd ../pipeline-status && python -m status.collect --repo "${{ github.repository }}") && cp -r ../pipeline-status/docs docs/status
       - uses: actions/upload-pages-artifact@v3
-        with: { path: geo-data-pipeline/docs }
+        with: { path: geo-data-pipeline/docs, retention-days: 3 }   # API Watch 매시간 배포가 이 사이트 위에 덧씌움
   deploy:
     concurrency: { group: pages-deployment, cancel-in-progress: false }
     needs: update
