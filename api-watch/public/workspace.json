@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-27T11:22:56.698299+00:00",
+  "last_check_at": "2026-11-27T20:17:11.867913+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.610482+00:00",
-        "duration_ms": 396.49
+        "checked_at": "2026-11-27T20:17:11.795526+00:00",
+        "duration_ms": 613.48
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.614399+00:00",
-        "duration_ms": 70.75
+        "checked_at": "2026-11-27T20:17:11.798185+00:00",
+        "duration_ms": 117.09
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.617499+00:00",
-        "duration_ms": 320.07
+        "checked_at": "2026-11-27T20:17:11.800075+00:00",
+        "duration_ms": 322.63
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.620242+00:00",
-        "duration_ms": 248.8
+        "checked_at": "2026-11-27T20:17:11.801817+00:00",
+        "duration_ms": 369.7
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.622437+00:00",
-        "duration_ms": 305.58
+        "checked_at": "2026-11-27T20:17:11.803254+00:00",
+        "duration_ms": 436.32
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.625094+00:00",
-        "duration_ms": 544.48
+        "checked_at": "2026-11-27T20:17:11.804920+00:00",
+        "duration_ms": 442.04
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.627465+00:00",
-        "duration_ms": 1938.6
+        "checked_at": "2026-11-27T20:17:11.806568+00:00",
+        "duration_ms": 1592.46
       }
     },
     {
@@ -110,8 +110,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.629686+00:00",
-        "duration_ms": 164.86
+        "checked_at": "2026-11-27T20:17:11.808181+00:00",
+        "duration_ms": 314.8
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.632645+00:00",
-        "duration_ms": 90.83
+        "checked_at": "2026-11-27T20:17:11.810195+00:00",
+        "duration_ms": 116.13
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.636097+00:00",
-        "duration_ms": 90.12
+        "checked_at": "2026-11-27T20:17:11.825426+00:00",
+        "duration_ms": 86.17
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.638312+00:00",
-        "duration_ms": 407.43
+        "checked_at": "2026-11-27T20:17:11.827292+00:00",
+        "duration_ms": 602.22
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.640647+00:00",
-        "duration_ms": 412.79
+        "checked_at": "2026-11-27T20:17:11.828829+00:00",
+        "duration_ms": 482.23
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.642942+00:00",
-        "duration_ms": 35.8
+        "checked_at": "2026-11-27T20:17:11.830438+00:00",
+        "duration_ms": 123.4
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.645223+00:00",
-        "duration_ms": 22.97
+        "checked_at": "2026-11-27T20:17:11.832180+00:00",
+        "duration_ms": 59.62
       }
     },
     {
@@ -207,9 +207,9 @@
         "docs": "https://openlibrary.org/dev/docs/api/search"
       },
       "last_run": {
-        "status": "warning",
-        "checked_at": "2026-11-27T11:22:56.648190+00:00",
-        "duration_ms": 3408.49
+        "status": "healthy",
+        "checked_at": "2026-11-27T20:17:11.834277+00:00",
+        "duration_ms": 245.76
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.651374+00:00",
-        "duration_ms": 88.35
+        "checked_at": "2026-11-27T20:17:11.835823+00:00",
+        "duration_ms": 307.47
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.653849+00:00",
-        "duration_ms": 72.83
+        "checked_at": "2026-11-27T20:17:11.837423+00:00",
+        "duration_ms": 169.88
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.672663+00:00",
-        "duration_ms": 32.83
+        "checked_at": "2026-11-27T20:17:11.852326+00:00",
+        "duration_ms": 103.68
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.684255+00:00",
-        "duration_ms": 14.85
+        "checked_at": "2026-11-27T20:17:11.858877+00:00",
+        "duration_ms": 25.23
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-27T11:22:56.689754+00:00",
-        "duration_ms": 74.82
+        "checked_at": "2026-11-27T20:17:11.862099+00:00",
+        "duration_ms": 202.46
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.693053+00:00",
-        "duration_ms": 36.83
+        "checked_at": "2026-11-27T20:17:11.864628+00:00",
+        "duration_ms": 71.17
       }
     },
     {
@@ -306,83 +306,71 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T11:22:56.698299+00:00",
-        "duration_ms": 49.14
+        "checked_at": "2026-11-27T20:17:11.867913+00:00",
+        "duration_ms": 174.91
       }
     }
   ],
   "incidents": [
     {
       "id": 31,
-      "target": "open-library",
-      "key": "latency",
-      "kind": "latency",
-      "severity": "warning",
-      "message": "3408 ms · 기준 3000 ms",
-      "opened_at": "2026-11-27T11:22:56.648190+00:00",
-      "last_seen_at": "2026-11-27T11:22:56.648190+00:00",
-      "resolved_at": null,
-      "occurrences": 1
-    },
-    {
-      "id": 30,
       "target": "rest-countries",
       "key": "json",
       "kind": "format",
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-27T11:22:56.689754+00:00",
+      "last_seen_at": "2026-11-27T20:17:11.862099+00:00",
       "resolved_at": null,
-      "occurrences": 47
+      "occurrences": 48
     }
   ],
   "ai_latest": {
-    "date": "2026-11-27",
-    "item_id": "ggml-org/llama.cpp:459181980",
-    "created_at": "2026-11-26T19:15:49.071730+00:00",
+    "date": "2026-11-28",
+    "item_id": "langchain-ai/langgraph:458637356",
+    "created_at": "2026-11-27T20:17:11.870544+00:00",
     "kind": "release",
     "label": "관심 저장소의 공식 릴리스",
-    "title": "llama.cpp · v1.1.0",
-    "technology": "llama.cpp",
-    "official_published_at": "2026-11-26T09:16:47Z",
-    "collected_at": "2026-11-26T19:15:49.071730+00:00",
-    "what": "여러 하드웨어 환경에서 언어 모델 추론을 실행하는 C/C++ 기반 프로젝트입니다.",
-    "why_for_you": "양자화·모델 크기·실행 환경이 지연과 품질에 미치는 영향을 직접 비교하는 학습에 적합합니다.",
+    "title": "LangGraph · langgraph-cli==0.4.44",
+    "technology": "LangGraph",
+    "official_published_at": "2026-11-25T20:52:34Z",
+    "collected_at": "2026-11-27T20:17:11.870544+00:00",
+    "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+    "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
     "flow": [
-      "모델 형식 확인",
-      "양자화 조건 선택",
-      "추론 실행",
-      "품질·자원 비교"
+      "상태 입력",
+      "검색·도구 노드",
+      "검증·분기",
+      "최종 응답"
     ],
-    "release_excerpt": "## Overview llama.cpp v1.1.0 adds the Inkling 2 family (base, Mini and DSpark), Domyn Edge 4B, Zaya1 8B, RAON-1-mini and Hy4 flash, splits DFlash speculative decoding into separate draft methods, and deprecates the old `llama_batch` API in favour of `llama_batch_ext`. It brings a large set of TTS and audio models (Kokoro, Zonos3-Mini, tiny-voca, VoxCPM2, MiniMax-Music3, YuE2, Fish S2, Higgs v3/VibeVoice-ASR and Kyutai Hibiki), token-aware chat parsing, named tool choice, automatic per-tensor quantization targeting ",
+    "release_excerpt": "Changes since cli==0.4.43 * feat(cli): add url to deploy list --json (#9793) * release(cli): 0.4.44 (#9794) * fix(cli): omit an empty secrets list when updating a deployment (#9737) * chore(deps): bump opentelemetry-api from 1.45.1 to 1.45.2 in /libs/cli (#9695) * feat(cli): deploy to BYOC data planes with only an API key (#9692)",
     "facts": [
       {
         "label": "공식 발표일",
-        "value": "2026-11-26T09:16:47Z"
+        "value": "2026-11-25T20:52:34Z"
       },
       {
         "label": "버전",
-        "value": "v1.1.0"
+        "value": "cli==0.4.44"
       },
       {
         "label": "저장소",
-        "value": "ggml-org/llama.cpp"
+        "value": "langchain-ai/langgraph"
       }
     ],
     "limits": [
-      "양자화 비트 수만으로 품질이나 속도를 예측할 수 없습니다.",
-      "지원 하드웨어와 모델 형식은 릴리스 원문에서 확인해야 합니다."
+      "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+      "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
     ],
-    "question": "메모리 사용량을 줄였을 때 어떤 질문 유형에서 품질 회귀가 생겼는지 어떻게 찾을까요?",
+    "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
     "sources": [
       {
         "title": "공식 릴리스 또는 프로젝트 원문",
-        "url": "https://github.com/ggml-org/llama.cpp/releases/tag/v1.1.0"
+        "url": "https://github.com/langchain-ai/langgraph/releases/tag/cli%3D%3D0.4.44"
       },
       {
         "title": "공식 저장소",
-        "url": "https://github.com/ggml-org/llama.cpp"
+        "url": "https://github.com/langchain-ai/langgraph"
       }
     ],
     "exercise": {
@@ -399,6 +387,67 @@
     "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
   },
   "ai_archive": [
+    {
+      "date": "2026-11-28",
+      "item_id": "langchain-ai/langgraph:458637356",
+      "created_at": "2026-11-27T20:17:11.870544+00:00",
+      "kind": "release",
+      "label": "관심 저장소의 공식 릴리스",
+      "title": "LangGraph · langgraph-cli==0.4.44",
+      "technology": "LangGraph",
+      "official_published_at": "2026-11-25T20:52:34Z",
+      "collected_at": "2026-11-27T20:17:11.870544+00:00",
+      "what": "상태와 분기를 가진 LLM 작업 흐름을 그래프로 구성하는 도구입니다.",
+      "why_for_you": "국보 RAG에서 검색·생성·인용 확인·실패 대응을 분리한 경험과 연결해 이해할 수 있습니다.",
+      "flow": [
+        "상태 입력",
+        "검색·도구 노드",
+        "검증·분기",
+        "최종 응답"
+      ],
+      "release_excerpt": "Changes since cli==0.4.43 * feat(cli): add url to deploy list --json (#9793) * release(cli): 0.4.44 (#9794) * fix(cli): omit an empty secrets list when updating a deployment (#9737) * chore(deps): bump opentelemetry-api from 1.45.1 to 1.45.2 in /libs/cli (#9695) * feat(cli): deploy to BYOC data planes with only an API key (#9692)",
+      "facts": [
+        {
+          "label": "공식 발표일",
+          "value": "2026-11-25T20:52:34Z"
+        },
+        {
+          "label": "버전",
+          "value": "cli==0.4.44"
+        },
+        {
+          "label": "저장소",
+          "value": "langchain-ai/langgraph"
+        }
+      ],
+      "limits": [
+        "그래프를 썼다는 이유만으로 에이전트의 정확성이 높아지는 것은 아닙니다.",
+        "반복 횟수·실패 경로·비용·권한을 별도로 평가해야 합니다."
+      ],
+      "question": "검색 결과가 부족할 때 재검색과 답변 거절 중 어느 경로를 선택할까요?",
+      "sources": [
+        {
+          "title": "공식 릴리스 또는 프로젝트 원문",
+          "url": "https://github.com/langchain-ai/langgraph/releases/tag/cli%3D%3D0.4.44"
+        },
+        {
+          "title": "공식 저장소",
+          "url": "https://github.com/langchain-ai/langgraph"
+        }
+      ],
+      "exercise": {
+        "title": "오늘의 10분 실습 · 모델 다운로드 없이 시작",
+        "steps": [
+          "공식 원문에서 지원 환경·호환성 변경 한 가지를 찾습니다.",
+          "내 프로젝트에 적용할 가설과 비교 기준을 한 문장씩 적습니다.",
+          "변경 전후에 같은 입력을 넣는 평가 항목 3개를 작성합니다."
+        ],
+        "output": "확인한 사실 1개 · 아직 확인하지 못한 점 1개 · 다음 실험 1개"
+      },
+      "composition": "공식 메타데이터 + 사전 작성한 한국어 기술 설명으로 자동 구성합니다. LLM이 릴리스를 검증하거나 모델 성능을 평가한 결과가 아닙니다.",
+      "fetch_errors": [],
+      "notification": "대시보드에서 하루 1개 갱신 · 메시지·이메일 자동 발송 없음"
+    },
     {
       "date": "2026-11-27",
       "item_id": "ggml-org/llama.cpp:459181980",
