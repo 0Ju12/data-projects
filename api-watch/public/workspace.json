@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-27T02:24:06.282953+00:00",
+  "last_check_at": "2026-11-27T11:22:56.698299+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.192673+00:00",
-        "duration_ms": 396.35
+        "checked_at": "2026-11-27T11:22:56.610482+00:00",
+        "duration_ms": 396.49
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.195578+00:00",
-        "duration_ms": 31.24
+        "checked_at": "2026-11-27T11:22:56.614399+00:00",
+        "duration_ms": 70.75
       }
     },
     {
@@ -39,9 +39,9 @@
         "docs": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/"
       },
       "last_run": {
-        "status": "warning",
-        "checked_at": "2026-11-27T02:24:06.197652+00:00",
-        "duration_ms": 3378.71
+        "status": "healthy",
+        "checked_at": "2026-11-27T11:22:56.617499+00:00",
+        "duration_ms": 320.07
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.200291+00:00",
-        "duration_ms": 127.26
+        "checked_at": "2026-11-27T11:22:56.620242+00:00",
+        "duration_ms": 248.8
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.201650+00:00",
-        "duration_ms": 295.8
+        "checked_at": "2026-11-27T11:22:56.622437+00:00",
+        "duration_ms": 305.58
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.203257+00:00",
-        "duration_ms": 265.18
+        "checked_at": "2026-11-27T11:22:56.625094+00:00",
+        "duration_ms": 544.48
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.205140+00:00",
-        "duration_ms": 2263.64
+        "checked_at": "2026-11-27T11:22:56.627465+00:00",
+        "duration_ms": 1938.6
       }
     },
     {
@@ -109,9 +109,9 @@
         "docs": "https://docs.github.com/en/rest/repos/repos#get-a-repository"
       },
       "last_run": {
-        "status": "critical",
-        "checked_at": "2026-11-27T02:24:06.206699+00:00",
-        "duration_ms": 10.31
+        "status": "healthy",
+        "checked_at": "2026-11-27T11:22:56.629686+00:00",
+        "duration_ms": 164.86
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.208935+00:00",
-        "duration_ms": 103.45
+        "checked_at": "2026-11-27T11:22:56.632645+00:00",
+        "duration_ms": 90.83
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.211200+00:00",
-        "duration_ms": 23.57
+        "checked_at": "2026-11-27T11:22:56.636097+00:00",
+        "duration_ms": 90.12
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.212552+00:00",
-        "duration_ms": 388.16
+        "checked_at": "2026-11-27T11:22:56.638312+00:00",
+        "duration_ms": 407.43
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.214075+00:00",
-        "duration_ms": 679.02
+        "checked_at": "2026-11-27T11:22:56.640647+00:00",
+        "duration_ms": 412.79
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.215419+00:00",
-        "duration_ms": 117.85
+        "checked_at": "2026-11-27T11:22:56.642942+00:00",
+        "duration_ms": 35.8
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.216992+00:00",
-        "duration_ms": 22.33
+        "checked_at": "2026-11-27T11:22:56.645223+00:00",
+        "duration_ms": 22.97
       }
     },
     {
@@ -207,9 +207,9 @@
         "docs": "https://openlibrary.org/dev/docs/api/search"
       },
       "last_run": {
-        "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.218734+00:00",
-        "duration_ms": 498.69
+        "status": "warning",
+        "checked_at": "2026-11-27T11:22:56.648190+00:00",
+        "duration_ms": 3408.49
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.220297+00:00",
-        "duration_ms": 78.92
+        "checked_at": "2026-11-27T11:22:56.651374+00:00",
+        "duration_ms": 88.35
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.221898+00:00",
-        "duration_ms": 90.92
+        "checked_at": "2026-11-27T11:22:56.653849+00:00",
+        "duration_ms": 72.83
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.264478+00:00",
-        "duration_ms": 35.68
+        "checked_at": "2026-11-27T11:22:56.672663+00:00",
+        "duration_ms": 32.83
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.272475+00:00",
-        "duration_ms": 510.05
+        "checked_at": "2026-11-27T11:22:56.684255+00:00",
+        "duration_ms": 14.85
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-27T02:24:06.276675+00:00",
-        "duration_ms": 65.81
+        "checked_at": "2026-11-27T11:22:56.689754+00:00",
+        "duration_ms": 74.82
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.278880+00:00",
-        "duration_ms": 22.65
+        "checked_at": "2026-11-27T11:22:56.693053+00:00",
+        "duration_ms": 36.83
       }
     },
     {
@@ -306,47 +306,35 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T02:24:06.282953+00:00",
-        "duration_ms": 51.41
+        "checked_at": "2026-11-27T11:22:56.698299+00:00",
+        "duration_ms": 49.14
       }
     }
   ],
   "incidents": [
     {
-      "id": 30,
-      "target": "crossref",
+      "id": 31,
+      "target": "open-library",
       "key": "latency",
       "kind": "latency",
       "severity": "warning",
-      "message": "3379 ms · 기준 3000 ms",
-      "opened_at": "2026-11-27T02:24:06.197652+00:00",
-      "last_seen_at": "2026-11-27T02:24:06.197652+00:00",
+      "message": "3408 ms · 기준 3000 ms",
+      "opened_at": "2026-11-27T11:22:56.648190+00:00",
+      "last_seen_at": "2026-11-27T11:22:56.648190+00:00",
       "resolved_at": null,
       "occurrences": 1
     },
     {
-      "id": 1,
-      "target": "github-catalog",
-      "key": "availability",
-      "kind": "availability",
-      "severity": "error",
-      "message": "HTTP 403",
-      "opened_at": "2026-11-26T08:52:21.206534+00:00",
-      "last_seen_at": "2026-11-27T02:24:06.206699+00:00",
-      "resolved_at": null,
-      "occurrences": 3
-    },
-    {
-      "id": 29,
+      "id": 30,
       "target": "rest-countries",
       "key": "json",
       "kind": "format",
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-27T02:24:06.276675+00:00",
+      "last_seen_at": "2026-11-27T11:22:56.689754+00:00",
       "resolved_at": null,
-      "occurrences": 46
+      "occurrences": 47
     }
   ],
   "ai_latest": {
@@ -1171,9 +1159,9 @@
   "portfolio": {
     "schema_version": 1,
     "source_repository": "0Ju12/0Ju12.github.io",
-    "source_sha": "67e7c7b6ec3637cba9d716c94ea85ce5afa5925b",
-    "source_updated_at": "2026-11-27T00:23:49Z",
-    "synced_at": "2026-11-27T02:24:02.375855+00:00",
+    "source_sha": "f6ef76790dee8ec3e88f42cb6c3b38cf8448c900",
+    "source_updated_at": "2026-11-27T07:36:51Z",
+    "synced_at": "2026-11-27T11:22:52.080525+00:00",
     "links": {
       "preparation": "https://0ju12.github.io/study/index.html",
       "study": "https://0ju12.github.io/study/index.html#/notes",
