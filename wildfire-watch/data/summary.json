@@ -1,30 +1,30 @@
 {
- "updated": "2026-11-27",
- "detections": 1031,
- "static_detections": 961,
- "fire_detections": 70,
- "fire_detections_on_land": 22,
- "static_sources": 57,
+ "updated": "2026-11-28",
+ "detections": 1081,
+ "static_detections": 1009,
+ "fire_detections": 72,
+ "fire_detections_on_land": 24,
+ "static_sources": 58,
  "detection_days": [
   "2026-11-03",
-  "2026-11-27"
+  "2026-11-28"
  ],
  "evaluation": {
   "first": "2026-11-04",
-  "last": "2026-11-26",
-  "days": 23,
-  "cell_days": 3519,
-  "positive_cell_days": 17,
-  "auc": 0.473,
-  "top20_hit": 0.059,
-  "mean_ffwi_pos": 12.6,
+  "last": "2026-11-27",
+  "days": 24,
+  "cell_days": 3672,
+  "positive_cell_days": 19,
+  "auc": 0.474,
+  "top20_hit": 0.053,
+  "mean_ffwi_pos": 12.7,
   "mean_ffwi_neg": 14.6
  },
  "fetch": {
-  "N20": 233,
-  "N21": 200,
+  "N20": 225,
+  "N21": 214,
   "SNPP": 0,
-  "new": 87,
-  "weather": "실패: URLError"
+  "new": 50,
+  "weather": "ok"
  }
 }
