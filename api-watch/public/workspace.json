@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_check_at": "2026-11-27T20:17:11.867913+00:00",
+  "last_check_at": "2026-11-28T02:56:42.819901+00:00",
   "targets": [
     {
       "slug": "air-quality",
@@ -12,8 +12,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.795526+00:00",
-        "duration_ms": 613.48
+        "checked_at": "2026-11-28T02:56:42.716420+00:00",
+        "duration_ms": 472.62
       }
     },
     {
@@ -26,8 +26,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.798185+00:00",
-        "duration_ms": 117.09
+        "checked_at": "2026-11-28T02:56:42.720006+00:00",
+        "duration_ms": 89.04
       }
     },
     {
@@ -40,8 +40,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.800075+00:00",
-        "duration_ms": 322.63
+        "checked_at": "2026-11-28T02:56:42.722916+00:00",
+        "duration_ms": 220.21
       }
     },
     {
@@ -54,8 +54,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.801817+00:00",
-        "duration_ms": 369.7
+        "checked_at": "2026-11-28T02:56:42.725678+00:00",
+        "duration_ms": 349.13
       }
     },
     {
@@ -68,8 +68,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.803254+00:00",
-        "duration_ms": 436.32
+        "checked_at": "2026-11-28T02:56:42.727766+00:00",
+        "duration_ms": 356.96
       }
     },
     {
@@ -82,8 +82,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.804920+00:00",
-        "duration_ms": 442.04
+        "checked_at": "2026-11-28T02:56:42.730333+00:00",
+        "duration_ms": 307.33
       }
     },
     {
@@ -96,8 +96,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.806568+00:00",
-        "duration_ms": 1592.46
+        "checked_at": "2026-11-28T02:56:42.732886+00:00",
+        "duration_ms": 1646.17
       }
     },
     {
@@ -110,8 +110,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.808181+00:00",
-        "duration_ms": 314.8
+        "checked_at": "2026-11-28T02:56:42.735250+00:00",
+        "duration_ms": 189.99
       }
     },
     {
@@ -124,8 +124,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.810195+00:00",
-        "duration_ms": 116.13
+        "checked_at": "2026-11-28T02:56:42.738192+00:00",
+        "duration_ms": 587.42
       }
     },
     {
@@ -138,8 +138,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.825426+00:00",
-        "duration_ms": 86.17
+        "checked_at": "2026-11-28T02:56:42.741772+00:00",
+        "duration_ms": 46.08
       }
     },
     {
@@ -152,8 +152,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.827292+00:00",
-        "duration_ms": 602.22
+        "checked_at": "2026-11-28T02:56:42.744219+00:00",
+        "duration_ms": 426.1
       }
     },
     {
@@ -166,8 +166,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.828829+00:00",
-        "duration_ms": 482.23
+        "checked_at": "2026-11-28T02:56:42.756676+00:00",
+        "duration_ms": 333.44
       }
     },
     {
@@ -180,8 +180,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.830438+00:00",
-        "duration_ms": 123.4
+        "checked_at": "2026-11-28T02:56:42.759571+00:00",
+        "duration_ms": 232.36
       }
     },
     {
@@ -194,8 +194,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.832180+00:00",
-        "duration_ms": 59.62
+        "checked_at": "2026-11-28T02:56:42.762114+00:00",
+        "duration_ms": 37.62
       }
     },
     {
@@ -208,8 +208,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.834277+00:00",
-        "duration_ms": 245.76
+        "checked_at": "2026-11-28T02:56:42.765600+00:00",
+        "duration_ms": 327.45
       }
     },
     {
@@ -222,8 +222,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.835823+00:00",
-        "duration_ms": 307.47
+        "checked_at": "2026-11-28T02:56:42.767955+00:00",
+        "duration_ms": 173.21
       }
     },
     {
@@ -236,8 +236,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.837423+00:00",
-        "duration_ms": 169.88
+        "checked_at": "2026-11-28T02:56:42.770628+00:00",
+        "duration_ms": 97.94
       }
     },
     {
@@ -250,8 +250,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.852326+00:00",
-        "duration_ms": 103.68
+        "checked_at": "2026-11-28T02:56:42.792933+00:00",
+        "duration_ms": 148.52
       }
     },
     {
@@ -264,8 +264,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.858877+00:00",
-        "duration_ms": 25.23
+        "checked_at": "2026-11-28T02:56:42.804192+00:00",
+        "duration_ms": 16.78
       }
     },
     {
@@ -278,8 +278,8 @@
       },
       "last_run": {
         "status": "critical",
-        "checked_at": "2026-11-27T20:17:11.862099+00:00",
-        "duration_ms": 202.46
+        "checked_at": "2026-11-28T02:56:42.810182+00:00",
+        "duration_ms": 174.14
       }
     },
     {
@@ -292,8 +292,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.864628+00:00",
-        "duration_ms": 71.17
+        "checked_at": "2026-11-28T02:56:42.813901+00:00",
+        "duration_ms": 104.41
       }
     },
     {
@@ -306,8 +306,8 @@
       },
       "last_run": {
         "status": "healthy",
-        "checked_at": "2026-11-27T20:17:11.867913+00:00",
-        "duration_ms": 174.91
+        "checked_at": "2026-11-28T02:56:42.819901+00:00",
+        "duration_ms": 92.95
       }
     }
   ],
@@ -320,9 +320,9 @@
       "severity": "error",
       "message": "기대 JSON array 형식과 다르거나 해석할 수 없습니다.",
       "opened_at": "2026-11-16T07:38:01.013721+00:00",
-      "last_seen_at": "2026-11-27T20:17:11.862099+00:00",
+      "last_seen_at": "2026-11-28T02:56:42.810182+00:00",
       "resolved_at": null,
-      "occurrences": 48
+      "occurrences": 49
     }
   ],
   "ai_latest": {
